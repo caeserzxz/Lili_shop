@@ -236,40 +236,38 @@ function compress(event, callback) {
 	} else {
 		try {
 			var file = event.currentTarget.files[0];
-			 if(!/image\/\w+/.test(file.type)){   
-        			alert("请确保文件为图像类型");  
-        			return false;  
-     		 } 
+            var file_type = file.type;
+			if(!/image\/\w+/.test(file.type)){
+                file_type = 'image/jpg';
+			}
+
 			var reader = new FileReader();
 			reader.onload = function (e) {
 			var image = $('<img/>');
 			image.load(function () {
-			console.log("开始压缩");
-			var square = 700;
-			var canvas = document.createElement('canvas');
-			canvas.width = square;
-			canvas.height = square;
-			var context = canvas.getContext('2d');
-		    context.clearRect(0, 0, square, square);
-			var imageWidth;
-			var imageHeight;
-			var offsetX = 0;
-			var offsetY = 0;
-			if (this.width > this.height) {
-		      imageWidth = Math.round(square * this.width / this.height);
-		      imageHeight = square;
-		      offsetX = - Math.round((imageWidth - square) / 2);
-			} else {
-		      imageHeight = Math.round(square * this.height / this.width);
-		      imageWidth = square;
-		      offsetY = - Math.round((imageHeight - square) / 2);
-			}
-			context.drawImage(this, offsetX, offsetY, imageWidth, imageHeight);
-			var data = canvas.toDataURL('image/jpeg');
-			 	//压缩完成执行回调
-		     	callback(data);
-			});
-			image.attr('src', e.target.result);
+				console.log("开始压缩");
+                var canvas = document.createElement('canvas');
+                var width = this.width;
+                var height = this.height;
+
+                //如果图片大于80万像素，计算压缩比并将大小压至80万以下
+                var ratio;
+                if ((ratio = width * height / 800000) > 1) {
+                    ratio = Math.sqrt(ratio);
+                    width /= ratio;
+                    height /= ratio;
+                }
+                canvas.width = width;
+                canvas.height = height;
+
+				var context = canvas.getContext('2d');
+			    context.clearRect(0, 0, width, height);
+				context.drawImage(this, 0, 0, width, height);
+				var data = canvas.toDataURL(file_type);
+					//压缩完成执行回调
+			     	callback(data);
+				});
+				image.attr('src', e.target.result);
 			};
 			reader.readAsDataURL(file);
 		} catch(e) {
