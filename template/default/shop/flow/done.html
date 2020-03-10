@@ -13,9 +13,21 @@
         <img src="__STATIC__/mobile/default/images/payY.png" alt="">
         {if condition="$orderInfo.isPay == 1" }
             {if condition="$orderInfo.pay_code == 'offline'"}
-                <p class="fs34 fw_b color_3">待审核订单</p>
-                <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-                <span class="fs24 color_9">等待后台审核支付凭证</span>
+                {if condition="$orderInfo.offlineimg == ''"}
+                    <p class="fs34 fw_b color_3">待上传打款凭证</p>
+                    <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+                    <span class="fs24 color_9">等待用户上传线下打款凭证</span>
+                    <div class="button" style="width: 100%;">
+                    <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b goupload">上传凭证</a>
+                    <a href="javascript:;" class="color_w fs28 BGcolor_3 fw_b gopay">其他支付</a>
+                    </div>
+                    
+                {else/}
+                    <p class="fs34 fw_b color_3">待审核订单</p>
+                    <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+                    <span class="fs24 color_9">等待后台审核支付凭证</span>
+                {/if}
+                
             {else/}
                 <p class="fs34 fw_b color_3">待支付订单</p>
                 <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
@@ -101,6 +113,13 @@
 {block name="footer"}
 <script type="text/javascript">
 var goPay = {$goPay};
+
+$('.goupload').on('click',function(){
+    //弹一下窗
+    offlineChoose = true;
+    //弹一下窗
+    $('.offlinepage').css('left',0);
+})
 $('.base-header .left-arrow').attr('href','/')
   //选择支付方式
   $('.gopay').on('click',function(){
