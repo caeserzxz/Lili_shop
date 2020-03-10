@@ -198,7 +198,9 @@ class UsersModel extends BaseModel
                         return '需要填写邀请信息才能注册.';
                     }
                     $share_user_id = 0;
-                    if ($register_invite_code == 2) {//会员ID
+                    if ($register_invite_code == 1) {//邀请码
+                        $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
+                    }elseif ($register_invite_code == 2) {//会员ID
                         $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
                     }elseif ($register_invite_code == 3) {//会员手机号
                         $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');

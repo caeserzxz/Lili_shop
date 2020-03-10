@@ -681,7 +681,7 @@ class Users extends ApiController
                 'year'    => $year,
                 'month'   => $month,
                 'days'    => $day,
-                'log'   => $sign_integral.'|0',
+                'logs'   => $sign_integral.'|0',
                 'integral'   => $sign_integral,
                 'last_time' => time()
             ];
