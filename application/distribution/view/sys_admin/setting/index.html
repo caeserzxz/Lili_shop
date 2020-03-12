@@ -208,6 +208,18 @@
                             <input type="text" name="setting[share_nick_name_xy]"  class="input-small" value="{$setting.share_nick_name_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">呢称相对居中：</label>
+                        <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="setting[share_nick_name_center]" value="0" {$setting['share_nick_name_center']<=0?'checked':''} type="radio">关闭
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="setting[share_nick_name_center]" value="1" {$setting['share_nick_name_center']==1?'checked':''} type="radio" >开启
+                                </label>
+                                <span class="help-line" style="vertical-align: middle;">x：相对头像居中</span>
+                        </div>
+                    </div>
 
                     <div class="form-group">
                         <label class="col-sm-2 control-label">呢称颜色：</label>

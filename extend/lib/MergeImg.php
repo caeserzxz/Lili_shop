@@ -47,6 +47,14 @@ class MergeImg{
 
         //呢称
         $share_nick_name_xy = explode(',',$data['share_nick_name_xy']);
+        if($data['share_nick_name_center']==1){
+            //相对头像居中
+            $arr = imagettfbbox ($data['share_nick_name_size'],0,$fontfile,$data['share_nick_name']);
+            //文字所占宽度 = 文字右上角X - 文字左上角X
+            $nick_name_width = $arr[4] - $arr[6];
+            //计算相对居中的起点位置X
+            $share_nick_name_xy[0] = $share_avatar_xy[0] + $data['share_avatar_width']/2 - $nick_name_width/2;
+        }
         $rgb = $this->hex2rgb($data['share_nick_name_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
         imagettftext($im, $data['share_nick_name_size'], 0, $share_nick_name_xy[0] , $share_nick_name_xy[1] ,$balk, $fontfile, $data['share_nick_name']);
@@ -127,6 +135,14 @@ class MergeImg{
 
         //呢称
         $share_nick_name_xy = explode(',',$data['share_goods_nickname_xy']);
+        if($data['share_goods_nickname_center']==1){
+            //相对头像居中
+            $arr = imagettfbbox ($data['share_goods_nickname_size'],0,$fontfile,$data['share_nick_name']);
+            //文字所占宽度 = 文字右上角X - 文字左上角X
+            $nick_name_width = $arr[4] - $arr[6];
+            //计算相对居中的起点位置X
+            $share_nick_name_xy[0] = $share_avatar_xy[0] + $data['share_goods_avatar_width']/2 - $nick_name_width/2;
+        }
         $rgb = $this->hex2rgb($data['share_goods_nickname_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
         imagettftext($im, $data['share_goods_nickname_size'], 0, $share_nick_name_xy[0] , $share_nick_name_xy[1] ,$balk, $fontfile, $data['share_nick_name']);

@@ -755,6 +755,7 @@ class Users extends ApiController
         $data['share_avatar_shape'] = settings('share_avatar_shape');
         $data['share_nick_name_xy'] = settings('share_nick_name_xy');
         $data['share_nick_name_color'] = settings('share_nick_name_color');
+        $data['share_nick_name_center'] = settings('share_nick_name_center');
         $data['share_nick_name_size'] = settings('share_nick_name_size');
         $data['share_qrcode_xy'] = settings('share_qrcode_xy');
         $data['share_qrcode_width'] = settings('share_qrcode_width');

@@ -426,6 +426,7 @@ class Goods extends ApiController
         $data['share_goods_xy'] =  $settings['share_goods_xy'];
         $data['share_goods_wh'] =  $settings['share_goods_wh'];
         $data['share_goods_name_xy'] =  $settings['share_goods_name_xy'];
+        $data['share_goods_nickname_center'] =  $settings['share_goods_nickname_center'];
         $data['share_goods_name_color'] =  $settings['share_goods_name_color'];
         $data['share_goods_name_size'] =  $settings['share_goods_name_size'];
         $data['share_goods_name_br'] =  $settings['share_goods_name_br'];

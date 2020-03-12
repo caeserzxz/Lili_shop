@@ -152,6 +152,7 @@ class Setting extends AdminController
         $data['share_avatar_shape'] = $post['setting']['share_avatar_shape'];
         $data['share_nick_name_xy'] = $post['setting']['share_nick_name_xy'];
         $data['share_nick_name_color'] = $post['setting']['share_nick_name_color'];
+        $data['share_nick_name_center'] = $post['setting']['share_nick_name_center'];
         $data['share_nick_name_size'] = $post['setting']['share_nick_name_size'];
         $data['share_qrcode_xy'] = $post['setting']['share_qrcode_xy'];
         $data['share_qrcode_width'] = $post['setting']['share_qrcode_width'];
