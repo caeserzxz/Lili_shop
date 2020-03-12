@@ -119,6 +119,7 @@ $('.goupload').on('click',function(){
     offlineChoose = true;
     //弹一下窗
     $('.offlinepage').css('left',0);
+    $('#payListBox').html('<input type="radio" class="check" name="pay_id" value="3" data-pay_code="offline" id="offline"  checked="checked" style="display: none;">');
 })
 $('.base-header .left-arrow').attr('href','/')
   //选择支付方式
