@@ -87,6 +87,7 @@ class Setting extends AdminController
         $data['share_goods_avatar_width'] = $post['share_goods_avatar_width'];
         $data['share_goods_avatar_shape'] = $post['share_goods_avatar_shape'];
         $data['share_goods_nickname_xy'] = $post['share_goods_nickname_xy'];
+        $data['share_goods_nickname_center'] = $post['share_goods_nickname_center'];
         $data['share_goods_nickname_color'] = $post['share_goods_nickname_color'];
         $data['share_goods_nickname_size'] = $post['share_goods_nickname_size'];
         $data['share_goods_qrcode_xy'] = $post['share_goods_qrcode_xy'];
