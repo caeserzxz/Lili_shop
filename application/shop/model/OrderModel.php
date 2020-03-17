@@ -123,10 +123,6 @@ class OrderModel extends BaseModel
                     }
                 }//end
 
-                //执行支付成功后的相关处理
-                if ($info['is_pay_eval'] == 1) {
-                    $this->paySuccessEval($info);
-                }//end
             } catch (Exception $e) {
             }
 

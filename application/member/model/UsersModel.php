@@ -146,9 +146,9 @@ class UsersModel extends BaseModel
         if (empty($wxInfo)){
             $wxInfo['wxuid'] = 0;
         }
-        $inArr['pid'] = 0;
         //分享注册
         if ($is_admin == false) {
+            $inArr['pid'] = 0;
             if ($wxInfo['wxuid'] > 0) {//微信访问根据微信分享来源记录，执行
                 $bind_share_rule = settings('bind_share_rule');
                 if ($bind_share_rule == 0){//按最先分享绑定
