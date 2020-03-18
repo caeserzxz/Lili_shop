@@ -19,6 +19,7 @@ function(require, exports, module) {
     uploadimte = null;
     $(".js_new_upload").each(function() {
         var $el = $(this),
+            fun = $el.data("fun"),
         $form = $el.closest(".js_upload_container"),
         sname = $el.data("submitname"),
         upload_path = $el.data("uploadpath"),
@@ -51,6 +52,9 @@ function(require, exports, module) {
             },
             FileUploaded: function(a, b, c) {
                 $.isPlainObject(c) ? (c.image.progressid = b.id, c.image.sname = sname, c.image.deletepath = deletepath, c.image.index = $form.find("li.imgbox").length, $(".js_fileList", $form).append(render_item(c.image)), uploadimte.remove()) : (uploadimte.addClass("uploadify-error"), uploadimte.remove(), a.files.removeFile(b), config.msg.info(c || config.lang.uplodError))
+                if (fun == '') return false;
+                if (typeof(fun) == 'function') return fun(c);
+                if (typeof(fun) != 'undefined') return eval(fun+'(c)');
             },
             UploadComplete: function() {
                 $(".uploadify-progress-bar", uploadimte).remove()

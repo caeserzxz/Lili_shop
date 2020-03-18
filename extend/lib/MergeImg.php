@@ -14,13 +14,30 @@ class MergeImg{
 	        return false;
         }
         $fontfile = PATH_SEPARATOR == ';' ? app()->getRootPath().'public/static/share/msyhbd.ttc' : './static/share/msyhbd.ttc';
-        $imagecreate = $this->isjpg($data['share_bg']);
+
+        //背景图处理
+        list($width, $height) = getimagesize('.'.$data['share_bg']);
+        $imagecreate = $this->isjpg('.'.$data['share_bg']);
         $im_bg = $imagecreate('.'.$data['share_bg']);
-        $imagesx = imagesx($im_bg);
-        $imagesy = imagesy($im_bg);
+        $per = round(750/$width,3);
+        $n_w = $width*$per;
+        $n_h = $height*$per;
         imagesavealpha($im_bg, true);
-        $im = imagecreatetruecolor($imagesx, $imagesy);
-        imagecopy($im, $im_bg, 0, 0, 0,0,$imagesx,$imagesy);
+        $bim = imagecreatetruecolor(750, 1330);
+        //为画布分配颜色
+        $color = imagecolorallocate($bim,255,255,255);
+        //填充颜色
+        imagefill($bim,0,0,$color);
+        imagecopyresampled($bim, $im_bg,0, 0,0, 0,$n_w, $n_h, $width, $height);
+
+        $im = imagecreatetruecolor(750, 1330);
+        //为画布分配颜色
+        $color = imagecolorallocate($im,255,255,255);
+        //填充颜色
+        imagefill($im,0,0,$color);
+        imagecopymerge($im, $bim, 0,0,0, 0,$n_w,$n_h, 100);
+
+
         //头像处理
 		//缩放比例
         list($width, $height) = getimagesize($data['share_avatar']);
@@ -29,7 +46,7 @@ class MergeImg{
         if ($data['share_avatar_shape'] == 0){
             $wx_himg = $this->createRoundImg($wx_himg,$width, $height);
         }
-        $per = round($data['share_avatar_width']/$width,3);
+        $per = round($data['share_avatar_width']*2/$width,3);
         $n_w = $width*$per;
         $n_h = $height*$per;
         $him = imagecreatetruecolor($n_w, $n_h);
@@ -41,38 +58,40 @@ class MergeImg{
         imagecopyresampled($him, $wx_himg,0, 0,0, 0,$n_w, $n_h, $width, $height);
         //缩放比例end
         $share_avatar_xy = explode(',',$data['share_avatar_xy']);
-        imagecopymerge($im, $him, $share_avatar_xy[0],$share_avatar_xy[1],0, 0,$n_w,$n_h, 100);
+        imagecopymerge($im, $him, $share_avatar_xy[0]*2,$share_avatar_xy[1]*2,0, 0,$n_w,$n_h, 100);
         imagedestroy($him);
         //头像处理end
 
         //呢称
         $share_nick_name_xy = explode(',',$data['share_nick_name_xy']);
+        $share_nick_name_size = $data['share_nick_name_size'] * 1.6;
+
         if($data['share_nick_name_center']==1){
             //相对头像居中
-            $arr = imagettfbbox ($data['share_nick_name_size'],0,$fontfile,$data['share_nick_name']);
+            $arr = imagettfbbox ($share_nick_name_size,0,$fontfile,$data['share_nick_name']);
             //文字所占宽度 = 文字右上角X - 文字左上角X
             $nick_name_width = $arr[4] - $arr[6];
             //计算相对居中的起点位置X
-            $share_nick_name_xy[0] = $share_avatar_xy[0] + $data['share_avatar_width']/2 - $nick_name_width/2;
+            $share_nick_name_xy[0] = $share_avatar_xy[0] * 2 + $data['share_avatar_width'] - $nick_name_width/2;
         }
         $rgb = $this->hex2rgb($data['share_nick_name_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
-        imagettftext($im, $data['share_nick_name_size'], 0, $share_nick_name_xy[0] , $share_nick_name_xy[1] ,$balk, $fontfile, $data['share_nick_name']);
+        imagettftext($im, $share_nick_name_size, 0, $share_nick_name_xy[0]*2 , $share_nick_name_xy[1]*2+$share_nick_name_size+10 ,$balk, $fontfile, $data['share_nick_name']);
         //呢称
 
         //二维码处理
-        //缩放比例end
+        //缩放比例
         list($width, $height) = getimagesize($data['share_qrcode']);
         $imagecreate = $this->isjpg($data['share_qrcode']);
         $qrcode = $imagecreate($data['share_qrcode']);
-        $per = round($data['share_qrcode_width']/$width,3);
+        $per = round($data['share_qrcode_width']*2/$width,3);
         $n_w = $width*$per;
         $n_h = $height*$per;
         $qim = imagecreatetruecolor($n_w, $n_h);
         imagecopyresampled($qim, $qrcode,0, 0,0, 0,$n_w, $n_h, $width, $height);
         //缩放比例end
         $share_qrcode_xy = explode(',',$data['share_qrcode_xy']);
-        imagecopymerge($im, $qim, $share_qrcode_xy[0],$share_qrcode_xy[1],0, 0,$n_w,$n_h, 100);
+        imagecopymerge($im, $qim, $share_qrcode_xy[0]*2,$share_qrcode_xy[1]*2,0, 0,$n_w,$n_h, 100);
         imagedestroy($qim);
         if (empty($fileName)){
             ob_clean();

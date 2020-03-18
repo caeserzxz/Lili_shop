@@ -144,7 +144,7 @@ class Setting extends AdminController
         }
 
         $data['share_avatar'] = './static/share/avatar.jpg';
-        $data['share_nick_name'] = '测试';
+        $data['share_nick_name'] = '邀请者昵称';
         $data['share_qrcode'] = './static/share/qrcode.png';
 
         $data['share_avatar_xy'] = $post['setting']['share_avatar_xy'];
