@@ -1082,7 +1082,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                                                     });
                                                 break;
                                             case "file":
-                                                d.defaults.max_file_size = "10mb",
+                                                d.defaults.max_file_size = "30mb",
                                                     d.defaults.mime_types = [{
                                                         title: "自定义文件",
                                                         extensions: "txt,xml,pdf,zip,doc,ppt,xls,docx,pptx,xlsx,apk"
