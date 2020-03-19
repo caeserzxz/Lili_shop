@@ -665,7 +665,7 @@ class CartModel extends BaseModel
                 }
             }
         }
-        foreach ($sfList as $sf_id=>$sf){
+        foreach ($sfList as $sf){
             foreach ($sf as $code => $row) {
                 if (empty($n_info[$code]['shipping_fee']) == true){
                     $n_info[$code]['shipping_fee'] = 0;
@@ -673,20 +673,20 @@ class CartModel extends BaseModel
                 $n_info[$code]['name'] = $shippingList[$code]['shipping_name'];
                 $n_info[$code]['code'] = $code;
                 $n_info[$code]['sf_id'] = $row['sf_id'];
-
-                if ($row['consume'] > 0 && $cartList[$sf_id]['totalGoodsPrice'] >= $row['consume']) {
+                $sf_id = $row['sf_id'];
+                if ($row['consume'] > 0 && $sfCartList[$sf_id]['totalGoodsPrice'] >= $row['consume']) {
                     $n_info[$code]['shipping_fee'] += 0;
                 } else {
                     if ($sf['valuation'] == 1){//根据商品数量计算
-                        if ($cartList[$sf_id]['buyGoodsNum'] > $row['start']) {
-                            $d_num = $cartList[$sf_id]['buyGoodsNum'] - $row['start'];
+                        if ($sfCartList[$sf_id]['buyGoodsNum'] > $row['start']) {
+                            $d_num = $sfCartList[$sf_id]['buyGoodsNum'] - $row['start'];
                             $d_num = ceil($d_num / $row['plus']);
                             $n_info[$code]['shipping_fee'] += $row['postage'] + ($d_num * $row['postageplus']);
                         } else {
                             $n_info[$code]['shipping_fee'] += $row['postage'];
                         }
                     }else{//根据商品重量计算
-                        $buyGoodsWeight = $cartList[$sf_id]['buyGoodsWeight'] / 1000;
+                        $buyGoodsWeight = $sfCartList[$sf_id]['buyGoodsWeight'] / 1000;
                         if ($buyGoodsWeight > $row['start']) {
                             $d_num = $buyGoodsWeight - $row['start'];
                             $d_num = ceil($d_num / $row['plus']);
