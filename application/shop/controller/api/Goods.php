@@ -60,7 +60,9 @@ class Goods extends ApiController
         
         $sqlOrder = input('order','','trim');
         $sort_by = strtoupper(input('sort','DESC','trim'));
-	$this->sqlOrder = "is_best DESC";
+        if (in_array(strtoupper($sort_by), array('DESC', 'ASC')) == false) {
+            $sort_by = 'DESC';
+        }
          if (empty($sqlOrder)){
 
             $search['is_best'] = input('is_best',0,'intval');
@@ -78,9 +80,7 @@ class Goods extends ApiController
         }
        
         if (empty($this->sqlOrder)) {               
-            if (in_array(strtoupper($sort_by), array('DESC', 'ASC')) == false) {
-                $sort_by = 'DESC';
-            }
+
             switch ($sqlOrder){
                 case 'sales':
                     $this->sqlOrder = "virtual_sale $sort_by,goods_id DESC";

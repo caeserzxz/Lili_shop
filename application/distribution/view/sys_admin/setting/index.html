@@ -3,7 +3,7 @@
 <link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
 <link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
 <link rel="stylesheet" href="__STATIC__/js/jquery/jquery_ui/jquery-ui.css">
-<script src="__STATIC__/js/jquery/jquery_ui/jquery.easyui.min.js"></script>
+<script src="__STATIC__/js/jquery/jquery_ui/jquery-ui.js"></script>
 <style>
     #share_img_box{
         width:375px;height: 666px; border: 1px solid #000;
@@ -310,7 +310,7 @@
     }
 
     $(function() {
-        $('.share_img_list img').click(function () {
+        $('.share_img_list img').on('click',function () {
             $('#share_bg_img').attr("src",$(this).attr('src'));
         })
         //二维码处理
