@@ -1,4 +1,4 @@
-<view class='page2'>
+<view class='page2' wx:if="{{list.length > 0}}">
   <view class='weui-cells top_box'>
     <view class='weui-cell'>
       <view class='weui-cell__bd fs32'>当前收藏夹共{{counts}}件商品</view>
@@ -60,7 +60,7 @@
   </view>
 </view>
 
-<view class='nodata' hidden='{{list == null}}'>
+<view class='nodata' wx:else>
   <view>
     <image src="/images/emptyCart.png" mode="widthFix" />
   </view>

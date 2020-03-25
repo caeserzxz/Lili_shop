@@ -40,6 +40,7 @@ Page({
                 bestlsitcount: res.allSort.best.length,
                 rowslist: res.allSort.rows,
                 childlist: res.classList,
+                categoryselect: res.allSort.rows[0].id,
             })
         })
     },

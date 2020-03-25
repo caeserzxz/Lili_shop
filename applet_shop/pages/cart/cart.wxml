@@ -27,7 +27,7 @@
                         </view>
                     </label>
                     <view class="weui-media-box__hd">
-                        <image class="weui-media-box__thumb" src="{{item.pic}}" />
+                        <image class="weui-media-box__thumb" src="{{https_path}}{{item.pic}}" />
                     </view>
                     <view class="weui-media-box__bd goodsinfo" style="width:100%;">
                         <view class="weui-media-box__title fs28">{{item.goods_name}}</view>

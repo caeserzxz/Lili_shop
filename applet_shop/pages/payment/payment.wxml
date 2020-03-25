@@ -26,7 +26,7 @@
   <view wx:for="{{goodsList}}" wx:key data-index="{{index}}">
   <view class='weui-cell goodsinfo'>
     <view class='weui-cell__hd'>
-      <image src='{{item.pic}}' class='goodsimg'></image>
+      <image src='{{https_path}}{{item.pic}}' class='goodsimg'></image>
     </view>
     <view class='weui-cell__bd'>
       <view class='name fs28 text-default'>{{item.goods_name}}</view>

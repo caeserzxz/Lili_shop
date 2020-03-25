@@ -29,6 +29,7 @@ Page({
     unusedNum: 0, //可使用优惠卷数量
     bonus_id: 0, //使用优惠卷id, 为0不使用
     buy_msg: '', //留言
+    https_path: api.https_path,
   },
   //数量减
   minus: function(e) {

@@ -29,7 +29,8 @@ Page({
         selectAll: false,
         scrollY: true,
         imgUrl: getApp().globalData.imgUrl,
-        edit: 1
+        edit: 1,
+        https_path: api.https_path,
     },
 
 
