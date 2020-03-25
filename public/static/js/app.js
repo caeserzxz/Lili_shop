@@ -191,3 +191,24 @@ $(document).on('click','.list_tr_open',function(){
 	}
 
 })
+
+//自定义点击选项样式
+function diy_radio(){
+    $('label').each(function(){
+        var _this = $(this);
+        if (_this.find('.diy--radioInput').length > 0){
+        	return true;
+        }
+        if (_this.find('.checkbox-slider').length > 0){
+            return true;
+        }
+        if (_this.find('input[type="radio"]').length > 0){
+            _this.find('input[type="radio"]').after('<span class="diy--radioInput"></span>');
+        }else if (_this.find('input[type="checkbox"]').length > 0){
+            _this.find('input[type="checkbox"]').after('<span class="diy--checkbox diy--radioInput"></span>');
+        }
+    })
+}
+$(function () {
+    diy_radio();
+})

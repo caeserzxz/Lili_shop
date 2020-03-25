@@ -460,6 +460,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                                             }),
                                             d.trigger("init", g);
                                         region_sel();
+                                        diy_radio();
                                         if (fn) eval(fn+'()');
                                     })
                             })

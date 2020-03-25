@@ -202,3 +202,31 @@ min-height:90px !important;
 }
 
 #jump_page{ margin-left:10px;height: 29px; width: 40px;}
+
+label input[type="radio"],label input[type="checkbox"]{
+	display:none
+}
+.diy--radioInput {
+	background-color:#fff;
+	border:1px solid rgba(0,0,0,0.15);
+	border-radius:100%;
+	display:inline-block;
+	height:16px;
+	margin-top:-1px;
+	margin-right: 5px;
+	vertical-align:middle;
+	width:16px;
+	line-height:1
+}
+label input[type="radio"]:checked + .diy--radioInput:after,label input[type="checkbox"]:checked + .diy--radioInput:after {
+	background-color:#fb6638;
+	border-radius:100%;
+	content:"";
+	display:inline-block;
+	height:12px;
+	margin:1px;
+	width:12px
+}
+.diy--checkbox.diy--radioInput,label input[type="radio"]:checked + .diy--checkbox.diy--radioInput:after,label input[type="checkbox"]:checked + .diy--checkbox.diy--radioInput:after {
+	border-radius:0
+}
