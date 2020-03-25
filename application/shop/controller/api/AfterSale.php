@@ -176,6 +176,7 @@ class AfterSale extends ApiController
         }
         $data = $this->getPageList($this->Model, $where,'*',7);
         $OrderGoodsModel = new OrderGoodsModel();
+        $return['list'] = [];
         foreach ($data['list'] as $key=>$row){
             $row['goods'] = $OrderGoodsModel->find($row['rec_id'])->toArray();
             $row['goods']['exp_price'] = explode('.',$row['goods']['sale_price']);

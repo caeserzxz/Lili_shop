@@ -517,7 +517,7 @@ class Users extends ApiController
         $scene = $user['token'];
         $mini = new MiniModel();
         $qrcode = $mini->get_qrcode($page,$scene);
-        $imageName = $user['user_id']."_qrcode_".date("Y").'.png';
+        $imageName = $user['user_id']."_qrcode_".date("Y").'.jpg';
         if (strstr($qrcode,",")){
             $qrcode = explode(',',$qrcode);
             $qrcode = $qrcode[1];
@@ -738,9 +738,10 @@ class Users extends ApiController
     function getShareImg(){
         $MergeImg = new \lib\MergeImg();
         $mun = input('num',0,'intval');
+        $is_xcx = input('is_xcx',0,'intval');
         $data['share_avatar'] = $this->getHeadImg(true);
         $data['share_nick_name'] = $this->userInfo['nick_name'];
-        $data['share_qrcode'] = $this->getMyCode();
+        $data['share_qrcode'] = $is_xcx == 0 ? $this->getMyCode() : $this->get_user_mini_qrcode();
 
         $data['share_bg'] = settings('share_bg');
         $data['share_bg'] = explode(',',$data['share_bg']);

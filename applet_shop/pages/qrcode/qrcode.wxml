@@ -5,19 +5,19 @@
     <!-- <view><image src='/images/mycode05.png' />分享链接</view> -->
   </view>
 
-  <view class='bigqrcode' style='height:760rpx;'>
-        <!-- <block wx:for="{{imgs}}" wx:key> -->
+  <view class='bigqrcode' >
+        <!-- <block wx:for="{{imgs}}" wx:key>   -->
             <view class='active' >
-                <image src='{{https_path}}{{img}}' mode='widthFix'  style='height:100%;'/>
+                <image src='{{img}}' style='height:1000rpx;' />
             </view>
         <!-- </block> -->
     </view>
 
-  <view class='smallqrcode'>
+  <!-- <view class='smallqrcode'>
     <block wx:for="{{imgs}}" wx:key wx:for-index="index">
       <view class='{{select == index?"active":""}}' >
         <image data-url='{{item}}' id="{{index}}" bindtap='changeImg' src='{{https_path}}{{item}}' mode='widthFix' />
       </view>
     </block>
-  </view>
+  </view> -->
 </view>

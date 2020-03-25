@@ -35,7 +35,7 @@ class Bonus extends ApiController
     /*------------------------------------------------------ */
     public function getFreeList()
     {
-        $return['data'] = $this->Model->getList();
+        $return['data'] = $this->Model->getListByFree();
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }

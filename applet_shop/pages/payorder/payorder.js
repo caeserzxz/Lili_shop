@@ -110,7 +110,7 @@ Page({
             //   
             // }
           } else {
-            api.error_msg('网络异常!',1500);
+            api.error_msg(rs_data.msg,1500);
           }
         })
 

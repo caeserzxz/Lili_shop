@@ -25,9 +25,9 @@
         </block>
       </swiper>
     </view>
-    <view class='card-flex grid3 index_card_01'>
+    <view wx:if="{{navMenuList.length>0}}" class='card-flex grid3 index_card_01'>
       <block wx:for="{{navMenuList}}" wx:key>
-        <navigator class='flex_item'>
+        <navigator class='flex_item' url="{{item.xcxurl}}">
           <view class='icon'>
             <image src="{{https_path}}{{item.imgurl}}" />
           </view>

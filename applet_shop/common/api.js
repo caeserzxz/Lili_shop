@@ -214,12 +214,12 @@ function pagelist(_url, _pages, _data, callback) {
 //判断是否已经登录
 function islogin() {
     const user_devtoken = getcache('user_devtoken')
-    if (user_devtoken == "") {
-        wx.redirectTo({
-          url: '/pages/authorizeLogin/authorizeLogin',
-        })
-        return false
-    }
+    // if (user_devtoken == "") {
+    //     wx.redirectTo({
+    //       url: '/pages/authorizeLogin/authorizeLogin',
+    //     })
+    //     return false
+    // }
 }
 
 /**

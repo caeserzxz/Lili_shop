@@ -105,3 +105,17 @@
   border-radius: 50%;
   background-color: #F65236;
 }
+
+.user_info .auth_box{
+  text-align: center;
+  padding:40rpx 0 20rpx 0;
+}
+.loginORregist{
+  background-color:rgb(247, 102, 76);
+  padding:5rpx 10rpx;
+  width:140rpx;
+  margin:0 auto;
+  color:#fff;
+  border-radius:7rpx;
+  margin-top:20rpx;
+}

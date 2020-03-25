@@ -200,7 +200,7 @@ Page({
   goshopinfo:function(e){
     let goods_id = e.currentTarget.dataset.goods_id;
     wx.navigateTo({
-      url: ' '+goods_id,
+      url: '/pages/productDetails/productDetails?goods_id='+goods_id,
     })
   },
   /**

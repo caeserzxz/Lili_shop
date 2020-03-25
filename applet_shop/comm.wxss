@@ -717,8 +717,8 @@
 }
 
 .card-flex .flex_item .icon {
-    width: 90rpx;
-    height: 90rpx;
+    width: 130rpx;
+    height: 130rpx;
     margin: 0 auto;
 }
 

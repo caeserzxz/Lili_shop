@@ -38,7 +38,7 @@ Page({
                 nodata: '正在努力加载中...', //我也是有底线的
                 isloaddata: false,
             })
-            api.fetchPost(api.https_path + '/shop/api.order/saleafterlist', _data, function(err, res) {
+          api.fetchPost(api.https_path + '/shop/api.after_sale/getList', _data, function(err, res) {
                 console.log(res)
                 if (res.code == 1) {
                     const list = That.data.list

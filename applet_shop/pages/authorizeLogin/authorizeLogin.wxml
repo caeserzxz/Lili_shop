@@ -3,4 +3,5 @@
     <image src='{{user_avatar ? user_avatar: defultimg}}'></image>
   </view>
   <button open-type="getUserInfo" class='bygd' bindgetuserinfo="userInfoHandler">微信授权登录</button>
+  <button class='bygd' bindtap="goindex">暂不授权</button>
 </view>

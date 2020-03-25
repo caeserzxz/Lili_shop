@@ -59,6 +59,9 @@ class Index extends ApiController
             $result = [];
             $result['slideList'] = SlideModel::getRows();//获取幻灯片
             $result['navMenuList'] = NavMenuModel::getRows();//获取导航菜单
+            foreach ($result['navMenuList'] as $k => &$v) {
+                $v['xcxurl'] = miniPathReplace($v['url']);
+            }
             $result['classGoods'] = $GoodsModel->getIndexClass();//获取商品橱窗商品
             $result['promoteList'] = $GoodsModel->getIndexPromoteList();//促销商品
             $result['bestGoods'] = $GoodsModel->getIndexBestGoods();//猜你喜欢

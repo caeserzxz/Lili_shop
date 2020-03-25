@@ -11,6 +11,7 @@ use app\mainadmin\model\PaymentModel;
 use app\member\model\RechargeLogModel;
 use app\shop\model\OrderModel;
 use app\distribution\model\RoleOrderModel;
+use app\weixin\model\WeiXinUsersModel;
 
 
 class Payment extends ClientbaseController
@@ -112,6 +113,19 @@ class Payment extends ClientbaseController
             //微信JS支付
             $code_str = $this->payment->getJSAPI($order);
             exit($code_str);
+        }elseif($this->pay_code == 'miniAppPay') {
+            $open_id = (new WeiXinUsersModel())->where('user_id',$this->userInfo['user_id'])->value('wx_openid');
+            //微信JS支付
+            $code_arr = $this->payment->getJSAPI($order,$open_id);
+            if($code_arr['err_code']){
+                $return['code'] = 0;
+                $return['msg'] = $code_arr['err_code_des'];
+                return $this->ajaxReturn($return);
+            };
+            $return['code'] = 1;
+            $return['data'] = $code_arr;
+            return $this->ajaxReturn($return);
+            // return $this->success('获取成功',$code_str);
         }elseif ($this->pay_code == 'weixinH5') {
             //微信H5支付
             $return = $this->payment->get_code($order, $config);

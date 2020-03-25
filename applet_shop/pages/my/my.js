@@ -7,8 +7,12 @@ Page({
      * 页面的初始数据
      */
     data: {
+        islogin: false,
         memberinfo: [],
         https_path:api.https_path,
+        wait_pay_num:0,
+        wait_shipping_num:0,
+        wait_sign_num: 0,
     },
 
     /**
@@ -23,16 +27,19 @@ Page({
     //获取用户资料
     getmemberinfo: function() {
         const That = this
-        api.fetchPost(api.https_path + '/member/api.users/getInfo', {}, function(err, res) {
+      api.fetchPost(api.https_path + '/member/api.users/getcenterinfo', {}, function(err, res) {
             if (res.code == 1) {
-                if (res.info.headimgurl.indexOf("http") >= 0) {
+                if (res.userInfo.headimgurl.indexOf("http") >= 0) {
                     console.log('包含此字符串')
                 }else{
-                    res.info.headimgurl = api.https_path + res.info.headimgurl
+                    res.userInfo.headimgurl = api.https_path + res.userInfo.headimgurl
                 }
                 That.setData({
-                    memberinfo: res.info,
-                    sign_in: res.sign_in,
+                    memberinfo: res.userInfo,
+                    islogin: true,
+                    wait_pay_num: res.orderStats.wait_pay_num,
+                    wait_shipping_num: res.orderStats.wait_shipping_num,
+                    wait_sign_num: res.orderStats.wait_sign_num,
                 })
             } else {
                 api.error_msg(res.msg)
@@ -46,6 +53,11 @@ Page({
         wx.navigateTo({
             url: '/pages/set/set',
         })
+    },
+    godologin(){
+      wx.redirectTo({
+        url: '/pages/authorizeLogin/authorizeLogin',
+      })
     },
 
     /**

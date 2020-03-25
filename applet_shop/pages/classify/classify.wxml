@@ -27,7 +27,7 @@
           <view class='card-flex grid3'>
             <navigator wx:for="{{item.children}}" wx:key="child" wx:for-index="idxx" wx:for-item="vo" url="/pages/goodsList/goodsList?categoryid={{vo}}&pid={{item.id}}" class='flex_item'>
               <view class='icon'>
-                <image src="{{childlist[vo].pic}}" />
+                <image src="{{api.https_path}}{{childlist[vo].pic}}" />
               </view>
               <view class='text'>{{childlist[vo].name}}</view>
             </navigator>

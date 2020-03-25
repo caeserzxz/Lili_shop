@@ -1,5 +1,6 @@
 <view class='page'>
-    <view class='user_info'>
+    
+    <view wx:if="{{islogin}}" class='user_info'>
         <view class='weui-cells mt0'>
             <view class='weui-cell'>
                 <view class='weui-cell__hd'>
@@ -13,7 +14,7 @@
                     </navigator>
                     <view class='text-muted mt10'><!-- 用户描述 --></view>
                 </view>
-                <!-- <view class='weui-cell__ft'>
+                <view class='weui-cell__ft'>
                     <navigator url="/pages/message/message" class="icon icon_msg">
                         <view class='dot'></view>
                         <image src='/images/myIcon01.png' />
@@ -21,7 +22,7 @@
                     <view bindtap='goSetting' class="icon icon_set">
                         <image src='/images/myIcon02.png' />
                     </view>
-                </view> -->
+                </view>
             </view>
         </view>
         <view class='card-flex grid4'>
@@ -43,6 +44,12 @@
             </navigator>
         </view>
     </view>
+    <view wx:else class='user_info'>
+      <view class="auth_box">
+      <image src='/images/df_tx.png'></image>
+      <view class="loginORregist" bindtap='godologin'>授权登录</view>
+      </view>
+    </view>
 
     <view class='weui-panel my_order'>
         <view class='weui-panel__hd border_none'>
@@ -52,28 +59,27 @@
         <view class='weui-panel__bd'>
             <view class='card-flex grid5'>
                 <navigator url='/pages/myorders/myorders?orderstauts=waitPay' class='flex_item'>
-                    <view class='dot'></view>
+                    <view wx:if='{{wait_pay_num>0}}' class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon03.png" />
                     </view>
                     <view class='text'>待付款</view>
                 </navigator>
                 <navigator url='/pages/myorders/myorders?orderstauts=waitShipping' class='flex_item'>
-                    <view class='dot'></view>
+                    <view wx:if='{{wait_shipping_num>0}}' class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon04.png" />
                     </view>
                     <view class='text'>待发货</view>
                 </navigator>
                 <navigator url='/pages/myorders/myorders?orderstauts=waitSign' class='flex_item'>
-                    <view class='dot'></view>
+                    <view wx:if='{{wait_sign_num>0}}' class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon05.png" />
                     </view>
                     <view class='text'>待收货</view>
                 </navigator>
                 <navigator url='/pages/myorders/myorders?orderstauts=sign' class='flex_item'>
-                    <view class='dot'></view>
                     <view class='icon'>
                         <image src="/images/myIcon06.png" />
                     </view>
