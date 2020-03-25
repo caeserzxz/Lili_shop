@@ -201,7 +201,9 @@ function(a, b) {
                     c(a).ajaxSubmit({
                         dataType: "json",
                         success: function(a) {
-                            g && g.modal("hide"),
+                           if (a.code != 0){
+                                g && g.modal("hide");
+                            }
                             f.run(a);
                             d.button("reset"),e.button("reset")
                         },

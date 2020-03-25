@@ -19,7 +19,7 @@
 			<div id="specvals_{{item.id}}" data-id="{{item.id}}" data-toggle="specvals" class="m-b">
 				{{each item.all_val as zitem zindex}}
 				<label class="checkbox-inline input-s-sm" id="spe_{{zitem.key}}" onclick="{{if is_supplyer==1}}return false;{{/if}} ">
-					<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" {{specifications_checked item.id zitem.key}} />{{zitem.val}}
+					<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" {{specifications_checked item.id zitem.key}} /><span class="diy--checkbox diy--radioInput"></span>{{zitem.val}}
 				</label>
 				{{/each}}
 			</div>
@@ -144,7 +144,7 @@
 		<div id="specvals_{{id}}" data-id="{{id}}" data-toggle="specvals" class="m-b">
 			{{each spevalList as zitem zindex}}
 			<label class="checkbox-inline input-s-sm" id="Label1">
-				<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" />{{zitem.val}}
+				<input type="checkbox" value="{{zitem.key}}" title="{{zitem.val}}" /><span class="diy--checkbox diy--radioInput"></span>{{zitem.val}}
 			</label>
 			{{/each}}
 		</div>
