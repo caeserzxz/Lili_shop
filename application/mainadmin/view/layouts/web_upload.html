@@ -38,7 +38,7 @@ function WebUploaderDiy(_pick){
             _this.find('.info').text('上传0%...');
             uploader.makeThumb( file, function( error, src ) {
                 if ( error ) {
-                    $('<div class="error">不能预览</div>').appendTo(pick);
+                    $('<div class="error">不能预览</div>').appendTo(uploader_pick);
                     return;
                 }
                 _this.find('.upload-file').css("background-image","url("+src+")");
@@ -113,7 +113,7 @@ function WebUploaderDiy(_pick){
         }else if(_this.find('.info').length > 0){
             _this.find('.info').html('上传成功！');
         }
-        pick.prev().val(data.savename);
+        uploader_pick.prev().val(data.savename);
     });
 
     // 文件上传失败，显示上传出错。
@@ -122,7 +122,7 @@ function WebUploaderDiy(_pick){
         var $error = uploader_pick.find('div.error');
         // 避免重复创建
         if ( !$error.length ) {
-            $error = $('<div class="error"></div>').appendTo(pick);
+            $error = $('<div class="error"></div>').appendTo(uploader_pick);
         }
 
         $error.text('上传失败');
