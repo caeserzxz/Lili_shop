@@ -23,7 +23,7 @@ class Passport extends Controller
     {
         if ($this->request->isAjax()) {
             $model = new SupplyerModel;
-            if ($model->login(input('post.User'))) {
+            if ($model->login(input('post.User','','trim'))) {
                 return $this->success('登录成功', url('index/index'));
             }
             return $this->error($model->getError() ?: '登录失败');

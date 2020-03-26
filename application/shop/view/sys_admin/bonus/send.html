@@ -110,17 +110,17 @@ function adduser(){
 }
 WebUploaderDiy('.upload-file');
 $(document).on('click',".upload-file input", function () {
-    pick = $(this).parents('.upload-file');
+    uploader_pick = $(this).parents('.upload-file');
     var extdata = pick.data('extdata');
     if (uploadering == 1) return false;
-    if (typeof(pick.data('uploadpath')) != 'undefined'){
-        uploader.options.server = pick.data('uploadpath');
+    if (typeof(uploader_pick.data('uploadpath')) != 'undefined'){
+        uploader.options.server = uploader_pick.data('uploadpath');
     }
     if (typeof(extdata) == 'object'){
         uploader.options.formData.extdata = JSON.stringify(extdata);
     }
     uploader.on( 'uploadAccept', function( file,data ) {
-        var _this = pick.parent();
+        var _this = uploader_pick.parent();
         console.log(data);
         var userList =data.data;
         $.each(userList,function(i,val){

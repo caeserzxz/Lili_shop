@@ -24,7 +24,7 @@ class SupplyerModel extends BaseModel
     {
         // 验证用户名密码是否正确
         if (!$supplyer = self::useGlobalScope(false)->where([
-            'supplyer_name' => $data['user_name'],
+            'supplyer_name' => trim($data['user_name']),
             'password' => _hash($data['password'])
         ])->find()) {
             $this->error = '登录失败, 用户名或密码错误';

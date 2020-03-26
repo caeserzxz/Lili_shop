@@ -313,10 +313,10 @@ window.goods_setting = {
 }
 
 $(document).on('click',".upload-file input", function () {
-    pick = $(this).parents('.upload-file');
+    uploader_pick = $(this).parents('.upload-file');
     if (uploadering == 1) return false;
     uploader.options.server = '{:url("mainAdmin/Attachment/goodsUpload")}';
-    uploader.options.formData.sku = pick.data('sku');
+    uploader.options.formData.sku = uploader_pick.data('sku');
 	uploader.options.formData.gid = '{$row.goods_id|intval}';
 });
 
@@ -326,7 +326,7 @@ $(document).on('click',".delete_sku_img", function () {
 	jq_ajax('{:url("mainAdmin/attachment/removeImg")}','id='+_this.data('id'),function(res){
 		if (res.code==0){
 			_alert(res.msg);
-			return falsel
+			return false;
 		}
 		var obj = _this.parents('.file-item');
 		obj.find('input').val('');
