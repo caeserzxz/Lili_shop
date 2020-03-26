@@ -507,7 +507,7 @@
 
 .groupOrder .groupScale {
   background-color: #fff;
-  overflow: hidden;
+  overflow: auto;
 }
 
 .groupOrder .groupScale .cell {
