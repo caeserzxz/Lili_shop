@@ -314,10 +314,10 @@
             $('#share_bg_img').attr("src",$(this).attr('src'));
         })
         //二维码处理
-        $(".share_qrcode").draggable({stop: function( event, ui ) {
+        $(".share_qrcode").draggable({containment:'#share_img_box',stop: function( event, ui ) {
             //console.log(ui);
             $("input[name='setting[share_qrcode_xy]']").val(ui.position.left+','+ui.position.top);
-        }}).resizable({stop: function( event, ui ) {
+        }}).resizable({containment:'#share_img_box',stop: function( event, ui ) {
             //console.log(ui);
             $("input[name='setting[share_qrcode_width]']").val(ui.size.width);
             $(".share_qrcode").css({'height':ui.size.width+'px'});
@@ -332,10 +332,10 @@
         }).removeClass('hide');
 
         //头像处理
-        $(".share_avatar").draggable({stop: function( event, ui ) {
+        $(".share_avatar").draggable({containment:'#share_img_box',stop: function( event, ui ) {
             //console.log(ui);
             $("input[name='setting[share_avatar_xy]']").val(ui.position.left+','+ui.position.top);
-        }}).resizable({stop: function( event, ui ) {
+        }}).resizable({containment:'#share_img_box',stop: function( event, ui ) {
             //console.log(ui);
             $("input[name='setting[share_avatar_width]']").val(ui.size.width);
             $(".share_avatar").css({'height':ui.size.width+'px'});
@@ -360,7 +360,7 @@
         })
 
         //呢称处理
-        $(".share_nick_name").draggable({stop: function( event, ui ) {
+        $(".share_nick_name").draggable({containment:'#share_img_box',stop: function( event, ui ) {
             //console.log(ui);
             $("input[name='setting[share_nick_name_xy]']").val(ui.position.left+','+ui.position.top);
         }});
