@@ -105,7 +105,7 @@ class ShippingTpl extends AdminController
 			$info .= '，当前模板设为默认模板.';
 		}
 		$this->_Log($row['sf_id'],$info);//记录日志
-		
+		$this->Model->cleanMemcache();
 	}
 	/*------------------------------------------------------ */
 	//-- 修改前调用
@@ -142,7 +142,8 @@ class ShippingTpl extends AdminController
 			$this->Model->where($where)->update(['is_default'=>0]);
 			$info .= '，当前模板设为默认模板.';
 		}		
-		$this->_Log($row['sf_id'],$info);//记录日志		
+		$this->_Log($row['sf_id'],$info);//记录日志
+		$this->Model->cleanMemcache();		
 	}
 	/*------------------------------------------------------ */
 	//-- 删除
