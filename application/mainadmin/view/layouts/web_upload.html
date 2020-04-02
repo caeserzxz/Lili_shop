@@ -23,6 +23,11 @@ function WebUploaderDiy(_pick){
     uploader.on('fileQueued', function (file) {
         var _this = uploader_pick.parent();
         uploader_pick.find('div.error').remove();
+        if (uploadering == 1){
+            _alert('有文件正在上传，不能同时操作.');
+            return false;
+        }
+
         uploadering = 1;
         if (_this.find('.upload-file').data('type') == 'file'){
             _this.find('.upload-file').data('text',_this.find('.webuploader-pick').text());
@@ -32,7 +37,7 @@ function WebUploaderDiy(_pick){
         }else if (_this.find('.file-item').length > 0){
             var $li = $('<div><img><div class="info">' + file.name + '</div></div>'),
                 $img = $li.find('img');
-            pick.parent().find('.file-item').html( $li );
+            uploader_pick.parent().find('.file-item').html( $li );
         }else if (_this.find('.upload-file').length > 0){
             _this.find('.info').data('text',_this.find('.info').text());
             _this.find('.info').text('上传0%...');

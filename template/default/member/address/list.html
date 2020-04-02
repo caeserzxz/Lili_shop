@@ -39,8 +39,8 @@
     {{each list as item index}}
     <li>
         {{if index == '0' }}
-            <div class="top" data-index="{{index}}">
-                <div class="address">
+            <div class="top block" data-index="{{index}}">
+                <div class="address" data-index="{{index}}">
                     <div class="info">
                         <div>
                             <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
@@ -56,7 +56,7 @@
         {{else}}
             <object>
                 <div class="block" data-index="{{index}}">
-                    <div class="address">
+                    <div class="address" data-index={{index}}">
                         <div class="info">
                             <div>
                                 <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
@@ -286,4 +286,5 @@
         }
 
     })
+
 </script>

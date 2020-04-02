@@ -159,12 +159,15 @@ function searchgoods(keyword,selects) {
 
 $(document).on('click','.js_radio_undertake',function(){
 	$('.radio_undertake_'+$(this).attr('name')).addClass('hide');
-	
-	$.each($(this).data('class').split('|'),function(i,v){
-		$('.'+v).removeClass('hide');
-	})
-	
-	
+	if ($(this).attr('type') == 'checkbox'){
+		if ($(this).is(":checked")){
+            $('.'+$(this).data('class')).removeClass('hide');
+		}
+	}else{
+        $.each($(this).data('class').split('|'),function(i,v){
+            $('.'+v).removeClass('hide');
+        })
+	}
 })
 
 //全选定义
@@ -211,4 +214,26 @@ function diy_radio(){
 }
 $(function () {
     diy_radio();
+})
+//数值加减
+$(document).on('click','.spinner-buttons',function(){
+	var spinner = $(this).parents('.spinner');
+    var input = spinner.find('input');
+    var num = input.val();
+	var fun = spinner.data('fun');
+    if ($(this).find('button').hasClass('spinner-up')){
+        if (num == input.attr('max')){
+            return false;
+        }
+        num++;
+	}else{
+    	if (num == input.attr('min')){
+			return false;
+		}
+        num--;
+	}
+    input.val(num);
+	if (typeof(fun) != 'undefined'){
+		eval(fun+'(num)');
+	}
 })

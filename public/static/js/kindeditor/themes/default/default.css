@@ -1143,3 +1143,5 @@
 .ke-plugin-template .ke-right {
 	float: right;
 }
+
+.ke-icon-diy_video {background-image: url("../common/media.gif") !important;width: 16px;height: 16px;background-size: 16px;}

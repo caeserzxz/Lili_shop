@@ -260,7 +260,7 @@
                 {{else}}
                 <td style="padding:5px;">
                     <div class="file-item thumbnail">
-                        <div class="upload-file" data-sku='{{tr.key}}' style="background-image:url('{{tr.ProductImg?tr.ProductImg:'__STATIC__/main/img/def_img.jpg'}}');" data-dimg="__STATIC__/main/img/def_img.jpg"></div>
+                        <div class="upload-file goods_sku" data-sku='{{tr.key}}' style="background-image:url('{{tr.ProductImg?tr.ProductImg:'__STATIC__/main/img/def_img.jpg'}}');" data-dimg="__STATIC__/main/img/def_img.jpg"></div>
                         <div class="info">点击上传</div>
                         <input type="hidden" class="file_path" name="Products[{{index}}][ProductImg]" data-id="{{tr.key}}" data-name="ProductImg" value="{{tr.ProductImg}}"><input type="hidden" name="Products[{{index}}][SkuId]" value="{{tr.sku_id}}" />
                         <a class="delete_sku_img item_close" href="javascript:void(0)" data-id="{{tr.ProductImgId}}" data-name="ProductImgId" title="删除" ></a>
@@ -312,12 +312,12 @@ window.goods_setting = {
 	specifications_path: '{:url("sys_admin.skuCustom/skuByCategory",["supplyer_id"=>$row["supplyer_id"]])}'
 }
 
-$(document).on('click',".upload-file input", function () {
-    uploader_pick = $(this).parents('.upload-file');
+$(document).on('click',".goods_sku input", function () {
+    uploader_pick = $(this).parents('.goods_sku');
     if (uploadering == 1) return false;
     uploader.options.server = '{:url("mainAdmin/Attachment/goodsUpload")}';
     uploader.options.formData.sku = uploader_pick.data('sku');
-	uploader.options.formData.gid = '{$row.goods_id|intval}';
+    uploader.options.formData.gid = '{$row.goods_id|intval}';
 });
 
 $(document).on('click',".delete_sku_img", function () {

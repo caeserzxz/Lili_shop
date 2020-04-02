@@ -56,7 +56,7 @@ function(a, b) {
         function() {
             g.each(function() {
                 var a = c(this),
-                b = a.data("config"),
+                b = a.data("config"), fun = a.data("fun"),name=a.attr("name"),
                 d = a.data("tongji"),
                 f = b ? e.kindeditor[b] : e.kindeditor["default"];
                 if (d) {
@@ -68,6 +68,9 @@ function(a, b) {
                         f = c.extend({},
                         f, {
                             afterChange: function() {
+                                if (typeof(fun) !== 'undefined'){
+                                    eval(fun+"(this,name)");
+                                }
                                 var a = "remain" == d ? h - this.count("text") : this.count("text");
                                 0 > a || a > h ? i.addClass("error") : i.removeClass("error"),
                                 i.html(j.format(a))

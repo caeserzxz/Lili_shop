@@ -408,7 +408,7 @@ function(a) {
         a.TableData.is_supplyer = window.goods_data.is_supplyer,
         this.specificationstable.html(template("specifications_table_template", this.TableData)),
         i.show(),
-		WebUploaderDiy('.upload-file');
+		WebUploaderDiy('.goods_sku');
     },
     k.prototype.changeval = function(a) { ! window.goods_data.products[a] && (window.goods_data.products[a] = {}),
         b(document).on("change", '[data-id="' + a + '"]',
