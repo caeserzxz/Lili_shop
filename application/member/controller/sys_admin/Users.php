@@ -399,10 +399,11 @@ class Users extends AdminController
          $rows = $viewObj->where('b.pid', $user_id)->select()->toArray();
         $result['buyGoods'] = [];
         $nowUser = [];
-        $result['dividend_amount'] = $nowUser['dividend_amount'] = 0;
-        $result['order_amount'] = $nowUser['order_amount'] = 0;
+
         $order_ids = $user_order_ids = [];
         $buy_ser_ids = [];
+        $team_amount = [];
+        $user_amount = [];
         foreach ($rows as $row) {
             if ($row['goods_id'] < 1)  continue;
             $order_ids[$row['order_id']] = 1;
@@ -410,9 +411,10 @@ class Users extends AdminController
             $result['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $result['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
             $result['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
-            $result['dividend_amount'] += $row['dividend_amount'];
-            $result['order_amount'] += $row['order_amount'];
+            $team_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
+            $team_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
         }
+
         $viewObj = $this->Model->alias('u')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price');
         $viewObj->join("shop_order_info o", 'u.user_id=o.user_id AND o.order_status = 1 AND o.add_time between ' . strtotime($dtime[0]) . ' and ' . (strtotime($dtime[1]) + 86399), 'left');
         $viewObj->join("shop_order_goods og", 'og.order_id=o.order_id', 'left');
@@ -424,16 +426,27 @@ class Users extends AdminController
             $result['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $result['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
             $result['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
-            $result['dividend_amount'] += $row['dividend_amount'];
-            $result['order_amount'] += $row['order_amount'];
+            $team_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
+            $team_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
 
             $nowUser['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $nowUser['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
             $nowUser['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
             $user_order_ids[$row['order_id']] = 1;
-            $nowUser['dividend_amount'] += $row['dividend_amount'];
-            $nowUser['order_amount'] += $row['order_amount'];
-
+            $user_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
+            $user_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
+        }
+        $result['dividend_amount'] = 0;
+        $result['order_amount'] = 0;
+        foreach ($team_amount as $tarr){
+            $result['dividend_amount'] += $tarr['dividend_amount'];
+            $result['order_amount'] += $tarr['order_amount'];
+        }
+        $nowUser['dividend_amount'] = 0;
+        $nowUser['order_amount'] = 0;
+        foreach ($user_amount as $uarr){
+            $nowUser['dividend_amount'] += $uarr['dividend_amount'];
+            $nowUser['order_amount'] += $uarr['order_amount'];
         }
 
         $result['code'] = 1;
