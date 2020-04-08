@@ -95,7 +95,7 @@ KindEditor.plugin('smimage', function (K) {
 						return;
 					}
 					// insert local image
-					if (showLocal && showRemote && tabs && tabs.selectedIndex === 1 || !showRemote) {
+					if (showLocal && showRemote && tabs && tabs.selectedIndex === 0 || !showRemote) {
 						if (uploadbutton.fileBox.val() == '') {
 							alert(self.lang('pleaseSelectFile'));
 							return;
