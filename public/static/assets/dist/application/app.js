@@ -44,7 +44,7 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             extraFileUploadParams: window.extraFileUploadParams
                         },
                         simple: {
-                            items: ["source", "undo", "redo", "plainpaste", "plainpaste", "wordpaste", "clearhtml", "quickformat", "selectall", "fullscreen", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "hr", "removeformat", "|", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "|", "emoticons", "image", "link", "unlink", "preview","diy_video"],
+                            items: ["source", "undo", "redo", "plainpaste", "plainpaste", "wordpaste", "clearhtml", "quickformat", "selectall", "fullscreen", "fontname", "fontsize", "|", "forecolor", "hilitecolor", "bold", "italic", "underline", "hr", "removeformat", "|", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "|", "emoticons", "image", "link", "unlink", "preview","baidumap","diy_video"],
                             height: "300px",
                             width: "100%",
                             afterCreate: function() {
@@ -52,7 +52,8 @@ define("dist/application/app", ["$", "./setting",  "./method", "./extend", "./el
                             },
                             afterBlur: function() {
                                 this.sync()
-                            }
+                            },
+                            allowFileManager: true
                         },
                         mini: {
                             items: ["fontsize", "forecolor", "hilitecolor", "bold", "italic", "removeformat", "justifyleft", "justifycenter", "justifyright", "insertorderedlist", "insertunorderedlist", "link", "unlink","image","diy_video"],

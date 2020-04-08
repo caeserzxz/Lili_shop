@@ -211,6 +211,9 @@ function priceFormat($price,$show_yuan = false,$type=0){
 			break;
 		case 5: // 先四舍五入，不保留小数
 			$price = round($price);
+            break;
+        case 6://不四舍五入，保留两位小数
+            $price = floor($price*100)/100;
 			break;
 	}   
 
