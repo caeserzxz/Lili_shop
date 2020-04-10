@@ -97,7 +97,7 @@ class GoodsTag extends AdminController
         $id = input('id', 0, 'intval');
         if ($id < 1) return $this->error('传递参数失败！');
         $data = $this->Model->where('id', $id)->find();
-        unlink('.' . $data['imgurl']);
+        // unlink('.' . $data['imgurl']);
         $res = $data->delete();
         if ($res < 1) return $this->error();
         $this->Model->cleanMemcache();
