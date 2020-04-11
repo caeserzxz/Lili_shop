@@ -105,7 +105,7 @@ class ShippingTpl extends AdminController
 			$info .= '，当前模板设为默认模板.';
 		}
 		$this->_Log($row['sf_id'],$info);//记录日志
-		$this->Model->cleanMemcache();
+		$this->Model->cleanMemcache($this->supplyer_id);
 	}
 	/*------------------------------------------------------ */
 	//-- 修改前调用
@@ -143,7 +143,7 @@ class ShippingTpl extends AdminController
 			$info .= '，当前模板设为默认模板.';
 		}		
 		$this->_Log($row['sf_id'],$info);//记录日志
-		$this->Model->cleanMemcache();		
+		$this->Model->cleanMemcache($this->supplyer_id);		
 	}
 	/*------------------------------------------------------ */
 	//-- 删除
@@ -157,7 +157,7 @@ class ShippingTpl extends AdminController
         }
 		$res = $this->Model->where($where)->delete();
 		if ($res < 1) return $this->error();
-		$this->Model->cleanMemcache();
+		$this->Model->cleanMemcache($this->supplyer_id);
 		$this->_Log($sf_id,'删除运费模板');//记录日志
 		return $this->success('删除成功',url('index'));
 	}
