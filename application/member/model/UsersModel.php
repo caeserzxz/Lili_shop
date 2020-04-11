@@ -205,7 +205,7 @@ class UsersModel extends BaseModel
                     }elseif ($register_invite_code == 3) {//会员手机号
                         $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
                     }
-                    if ($share_user_id < 1){
+                    if ($share_user_id < 1 && $register_must_invite == 1){
                         return '邀请帐号不存在.';
                     }
                     $inArr['pid'] = $share_user_id;
