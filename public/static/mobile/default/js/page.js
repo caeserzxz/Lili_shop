@@ -59,32 +59,33 @@
 
 //弹出窗口定义
 function _alert(title,fun){
-	var obj = $('.alertBox');
-	
-	obj.find('.text').html(title);	
-	if (typeof(fun) == 'undefined'){
-		obj.find('.button').css('display','flex').click(function(){
-			obj.hide();
-		});
-		obj.find('.buttonBox').hide();
-	}else if (typeof(fun) == 'string'){
-		obj.find('.button').css('display','flex').click(function(){
-			window.location.href = fun;
-		});	
-		obj.find('.buttonBox').css('display','none');
-		
-	}else{
-		obj.find('button').hide();
-		obj.find('buttonBox').show();
-		obj.find('.cancel').click(function(){
-			obj.hide();
-		});
-		obj.find('.confirm').click(function(){
-			obj.hide();
-			return fun();
-		})
-	}
-	obj.show();	
+    var obj = $('.alertBox');
+
+    obj.find('.text').html(title);
+    if (typeof(fun) == 'undefined'){
+        obj.find('.button').css('display','flex').click(function(){
+            obj.hide();
+        });
+        obj.find('.buttonBox').hide();
+    }else if (typeof(fun) == 'string'){
+        obj.find('.button').css('display','flex').click(function(){
+            window.location.href = fun;
+        });
+        obj.find('.buttonBox').css('display','none');
+
+    }else{
+        obj.find('button').hide();
+        obj.find('buttonBox').show();
+        obj.find('.cancel').click(function(){
+            obj.find('.confirm').unbind("click");
+            obj.hide();
+        });
+        obj.find('.confirm').bind("click",function(){
+            obj.hide();
+            return fun();
+        })
+    }
+    obj.show();
 }
 /* *
 * 调用此方法发送HTTP请求。
@@ -275,4 +276,13 @@ function compress(event, callback) {
 			//调用上传方式  不压缩
 		}
 	}
+}
+
+//弹出提示
+function _toast(text,time){
+    var time=time||1500
+    $('body').append('<div class="ZP-toast" ><div style="top:50%">'+text+'</div></div>')
+    setTimeout(function(){
+        $('.ZP-toast').remove()
+    },time)
 }

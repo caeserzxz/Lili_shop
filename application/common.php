@@ -193,8 +193,8 @@ function userLevel($integral,$returnName=true){
 /*------------------------------------------------------ */
 function priceFormat($price,$show_yuan = false,$type=0){    
 	switch ($type){
-		case 0:
-			$price = number_format($price, 2, '.', '');
+		case 0://不四舍五入，保留两位小数
+            $price = floor($price*100)/100;
 			break;
 		case 1: // 保留不为 0 的尾数
 			$price = preg_replace('/(.*)(\\.)([0-9]*?)0+$/', '\1\2\3', number_format($price, 2, '.', ''));
@@ -212,8 +212,8 @@ function priceFormat($price,$show_yuan = false,$type=0){
 		case 5: // 先四舍五入，不保留小数
 			$price = round($price);
             break;
-        case 6://不四舍五入，保留两位小数
-            $price = floor($price*100)/100;
+        case 6://四舍五入，保留两位小数
+            $price = number_format($price, 2, '.', '');
 			break;
 	}   
 

@@ -670,14 +670,16 @@ class CartModel extends BaseModel
                 if (empty($n_info[$code]['shipping_fee']) == true){
                     $n_info[$code]['shipping_fee'] = 0;
                 }
+
                 $n_info[$code]['name'] = $shippingList[$code]['shipping_name'];
                 $n_info[$code]['code'] = $code;
                 $n_info[$code]['sf_id'] = $row['sf_id'];
                 $sf_id = $row['sf_id'];
+
                 if ($row['consume'] > 0 && $sfCartList[$sf_id]['totalGoodsPrice'] >= $row['consume']) {
                     $n_info[$code]['shipping_fee'] += 0;
                 } else {
-                    if ($sf['valuation'] == 1){//根据商品数量计算
+                    if ($row['valuation'] == 1){//根据商品数量计算
                         if ($sfCartList[$sf_id]['buyGoodsNum'] > $row['start']) {
                             $d_num = $sfCartList[$sf_id]['buyGoodsNum'] - $row['start'];
                             $d_num = ceil($d_num / $row['plus']);
