@@ -494,16 +494,36 @@ class Flow extends ApiController
         $orderGoods = [];
         $cart_ids = [];
         $add_time = time();
+        $bonus_money = $bonus['info']['type_money'];
+        $goodsBonus = [];
+        $goodsBonus['totalMoney'] = 0;
+        foreach ($cartList['goodsList'] as $key => $og) {
+            if (empty($bonus) == false) {
+                if ($og['is_use_bonus'] == 1) {
+                    $goodsBonus['goods_end'] = $og['goods_id'];
+                    $goodsBonus['goods'][$og['goods_id']] = $og['sale_price'] * $og['goods_number'];
+                    $goodsBonus['totalMoney'] += $og['sale_price'] * $og['goods_number'];
+                }
+            }
+        }
         foreach ($cartList['goodsList'] as $key => $og) {
             $cart_ids[] = $og['rec_id'];
             $bonus_ids = 0;
             $bonus_after_price = 0;
+            $usd_bonus_price = 0;
             if (empty($bonus) == false) {
                 if ($og['is_use_bonus'] == 1) {
                     $bonus_ids = $bonus['bonus_id'];
                     $scale = $og['sale_price'] / $cartList['use_bonus_goods_amount'];//对比总订单商品价格占比
                     $use_bonus = bcmul($bonus['info']['type_money'], $scale, 2);//精确两位小数，不四舍五入
                     $bonus_after_price = $og['sale_price'] - $use_bonus;
+                    $per = $goodsBonus['goods'][$og['goods_id']] / $goodsBonus['totalMoney'];
+                    if ($goodsBonus['goods_end'] == $og['goods_id']){
+                        $usd_bonus_price = $bonus_money;
+                    }else{
+                        $usd_bonus_price = bcmul($bonus['info']['type_money'], $per, 2);
+                        $bonus_money -= $usd_bonus_price;
+                    }
                 }
             }
             $goods = array(
@@ -535,6 +555,7 @@ class Flow extends ApiController
                 'buy_again_discount' => $og['buy_again_discount'],
                 'bonus_ids' => $bonus_ids,
                 'bonus_after_price' => $bonus_after_price,
+                'usd_bonus_price' => $usd_bonus_price
             );
             $orderGoods[] = $goods;
         }

@@ -80,15 +80,15 @@ class AfterSale extends ClientbaseController{
             return $this->error('此订单不能申请售后，请联系客服.');
         }
 
-        //计算单件商品实际可退金额
-        $total_sale_price = $OrderGoodsModel->where('order_id', $goods['order_id'])->SUM('sale_price');//计算订单商品单价汇总
-        $offer_price = $orderInfo['goods_amount'] - ($orderInfo['order_amount'] - $orderInfo['shipping_fee'])-$orderInfo['use_bonus'];//计算订单总优惠金额，除去优惠劵
-        $return_pre = $goods['sale_price'] / $total_sale_price;//计算当前商品占比
-        $return_price = priceFormat($goods['sale_price'] - ($offer_price * $return_pre));
-        if($goods['bonus_after_price']>0){
-            $use_bonus = $goods['sale_price']-$goods['bonus_after_price'];//单个商品享受的优惠券金额
-            $return_price = $return_price-$use_bonus;
-        }
+
+        $usd_bonus_price = $goods['usd_bonus_price'];
+        $one_bonus_price = priceFormat($usd_bonus_price / $goods['goods_number'],false,6);
+        $return_bouns_money = $goods['after_sale_num'] * $one_bonus_price;
+        $return_price = $goods['sale_price'] - $one_bonus_price;//单价退款金额
+        $end_return_all = $goods['sale_price'] * $goods['return_num'] - ($usd_bonus_price - $return_bouns_money);//全退金额
+
+        $this->assign('end_return_all', $end_return_all);
+        $this->assign('return_price', $return_price);
 
         $this->assign('return_price', $return_price);
         //end
