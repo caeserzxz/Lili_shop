@@ -11,7 +11,7 @@
 <tbody>
 {volist name="data.list" id="vo" }
 <tr>
-    <td colspan="6"><input type="checkbox" name="order_id" value="{$vo.order_id}" class="m-r"> <span class="m-r">订单编号：{$vo.order_sn}</span>
+    <td colspan="6"><label><input type="checkbox" name="order_id" value="{$vo.order_id}" class="m-r"><span class="diy--checkbox diy--radioInput"></span></label> <span class="m-r">订单编号：{$vo.order_sn}</span>
         <span class="m-r">下单时间：{$vo.add_time|dateTpl}</span>
          <span class="m-r">{$vo.merger_name} {$vo.address}</span>
         <a href="{:url('info',array('order_id'=>$vo['order_id']))}" class="btn btn-sm btn-default fr" title="查看详情">
