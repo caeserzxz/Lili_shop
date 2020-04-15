@@ -72,7 +72,8 @@ class AfterSale extends ClientbaseController{
             return $this->error('没有找到相关商品.');
         }
 
-        if ($goods['goods_number'] -  $goods['after_sale_num'] < 1){
+        $goods['return_num'] = $goods['goods_number'] -  $goods['after_sale_num'];
+        if ($goods['return_num'] < 1){
             return $this->error('此订单商品售后已全部申请，不能继续操作.');
         }
         $orderInfo = (new OrderModel)->info($goods['order_id']);

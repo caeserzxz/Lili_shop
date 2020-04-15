@@ -46,7 +46,7 @@ class UsersBindSuperiorModel extends BaseModel
         }
 
         $where[] = ['','exp',Db::raw("match(superior) against('{$user_id}')")];
-        $allCount = $this->where($where)->count('user_id');
+        $allCount = $this->where($where)->count();
 
         if ($allCount < 1) return true;//没有下级不执行
 
