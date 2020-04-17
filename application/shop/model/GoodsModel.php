@@ -481,7 +481,7 @@ class GoodsModel extends BaseModel
                     $u_price = $GoodsPricesModel->where($map)->value('price');
                     if ($u_price > 0) {
                         if ($goods['level_price_type'] == 2) {//自定义折扣
-                            $all_price[] = $goods['shop_price'] * $u_price / 100;
+                            $all_price[] =  $all_price[0] * $u_price / 100;
                         } elseif ($goods['level_price_type'] == 3) {//指定固定售价(多规格的子商品价格统一售价)
                             $all_price[] = $u_price;
                         }
@@ -496,7 +496,7 @@ class GoodsModel extends BaseModel
                 $u_price = $GoodsPricesModel->where($map)->value('price');
                 if ($u_price > 0) {
                     if ($goods['role_price_type'] == 1) {//自定义折扣
-                        $all_price[] = $goods['shop_price'] * $u_price / 100;
+                        $all_price[] = $all_price[0] * $u_price / 100;
                     } elseif ($goods['role_price_type'] == 2) {//指定固定售价(多规格的子商品价格统一售价)
                         $all_price[] = $u_price;
                     }
