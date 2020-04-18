@@ -139,5 +139,23 @@ class Kdapieorder
         $json = json_encode($array);
         return urldecode($json);
     }
+    /**
+     * Json方式 查询订单物流轨迹
+     */
+    public function getOrderTracesByJson($shipping_code,$invoice_no){
+        $requestData= "{'OrderCode':'','ShipperCode':'$shipping_code','LogisticCode':'$invoice_no'}";
 
+        $datas = array(
+            'EBusinessID' =>  $this->kd_id,
+            'RequestType' => '1002',
+            'RequestData' => urlencode($requestData) ,
+            'DataType' => '2',
+        );
+
+        $datas['DataSign'] = $this->encrypt($requestData, $this->ke_appkey);
+        $result=$this->sendPost($this->ke_requrl, $datas);
+        //根据公司业务处理返回的信息......
+
+        return $result;
+    }
 }
