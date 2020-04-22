@@ -1,0 +1,118 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>{$row['id']>0?'编辑':'添加'}模板</strong>
+            </li>
+        </ul>
+        <a class="text-muted pull-right pointer p-r m-t-md" data-toggle="back" title="返回"><i
+                class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper w-f">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                <div class="form-group">
+                    <label class="control-label">模板标题：</label>
+                    <div class="col-sm-8">
+                        <input type="text" class="input-xxlarge" data-rule-maxlength="150" data-rule-required="true"
+                               name="title" value="{$row.title}"><span class="maroon">*</span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">头像类型：</label>
+                    <div class=" controls">
+                        <label class="radio-inline">
+                            <input name="share_type" value="0" {$row['share_type']|tplckval='=0','checked',true} class="js_radio_undertake" type="radio">
+                            商城名称
+                        </label>
+                        <label class="radio-inline">
+                            <input name="share_type" value="1" {$row['share_type']|tplckval='=1','checked'} class="js_radio_undertake" type="radio" data-class="share_type_box">自定义
+                        </label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label ">分享图片：</label>
+                    <div class="col-sm-8">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload"  data-count="9" data-submitname="images" data-uploadpath="{:url('uploadShareImg')}"  data-delpath="{:url('removeImg')}"  style="position: relative; z-index: 1;">上传图片</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline"><small>建议尺寸：建议尺寸540*540px，JPG、PNG格式，图片小于2MB，默认显示第1张图片，最多9张 (可拖拽图片调整显示顺序) </small></span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue">
+                            </div>
+                            <ul class="ipost-list ui-sortable js_fileList share_img_list" data-required="true" style="width:450px;">
+                                {volist name="$row.images" id="image"  }
+                                <li class="imgbox"  data-path="{$image}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}"  title="删除" ></a>
+                                    <span class="item_box"><img src="{$image}"></span>
+                                    <input type="hidden" name="images[]" value="{$image}">
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">头像类型：</label>
+                    <div class=" controls">
+                        <label class="radio-inline">
+                            <input name="share_type" value="0" {$row['share_type']|tplckval='=0','checked',true} class="js_radio_undertake" type="radio">
+                            商城名称
+                        </label>
+                        <label class="radio-inline">
+                            <input name="share_type" value="1" {$row['share_type']|tplckval='=1','checked'} class="js_radio_undertake" type="radio" data-class="share_type_box">自定义
+                        </label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="radio_undertake_share_type share_type_box {$row['share_type']|tplckval='=0','hide',true}" >
+                    <div class="form-group">
+                        <label class="control-label">分享昵称：</label>
+                        <div class="col-sm-8">
+                            <input type="text" class="input-large" data-rule-maxlength="150" data-rule-required="true"
+                                   name="nick_name" value="{$row.nick_name}"><span class="maroon">*</span>
+                        </div>
+                    </div>
+
+                    <div class="form-group ">
+                        <label class="control-label">分享头像：</label>
+                        <div class="controls ">
+                            <img class="thumb_img" name="imagefile" id="imagefile" src="{$row.pic|default='__STATIC__/main/img/def_img.jpg'}" style="max-height: 100px;" />
+                            <input class="hide" type="text" id="classpic" name="avatar" value="{$row.avatar}" />
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <p><span class="help-inline">图片尺寸：128*128像素</span><br /><a href="javascript:;" onclick="$('#classpic').val('');$('#imagefile').attr('src','__STATIC__/main/img/def_img.jpg');"><i class="fa fa-trash-o m-r-xs"></i>清除图片</a></p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+</section>
+<footer class="footer bg-white b-t p-t">
+    <div class="form-group">
+        <div class="col-sm-4 col-sm-offset-1">
+            <input name="id" type="hidden" value="{$row.id|intval}">
+            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+        </div>
+    </div>
+</footer>
+</form>
+
+
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+    seajs.use(["dist/plupload/init.js"])
+</script>
+{/block}
