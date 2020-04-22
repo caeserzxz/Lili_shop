@@ -58,6 +58,7 @@ class AdminPriv extends AdminController
         $planList = array();
         $files = scandir($planPath);
         $path_arr = [];
+        $ext_modules = config('config.ext_modules');
         foreach ($files as $file) {
             if ($file == '.' || $file == '..') {
                 continue;
@@ -70,11 +71,12 @@ class AdminPriv extends AdminController
                 continue;
             }
             $path_arr[] = ['module'=>$file,'key'=>$file,'val'=>$file_path];
-            if ($file == 'shop'){
-                foreach (config('config.shop_modules') as $module){
+            if (empty($ext_modules[$file]) == false){
+                foreach ($ext_modules[$file] as $module){
                     $path_arr[] = ['module'=>$file,'key'=>$module,'val'=>$planPath . '/' . $module . '/controller/sys_admin'];
                 }
             }
+
         }
         foreach ($path_arr as $path){
             $files = scandir($path['val']);

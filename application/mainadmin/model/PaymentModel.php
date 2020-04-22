@@ -38,9 +38,17 @@ class PaymentModel extends BaseModel
 			foreach ($data as $key=>$row){
 				if ($row['status'] == 0){
 					unset($data[$key]);
-				}
+				}elseif ($row['pay_code'] == 'weixin'){
+                    $pay_config = json_decode(urldecode($row['pay_config']),true);
+                    $is_wx = session('is_wx');
+                    if ($is_wx == 1 && in_array('JSAPI',$pay_config['support']) == false){
+                        unset($data[$key]);
+                    }elseif ($is_wx == 2 && in_array('H5',$pay_config['support']) == false){
+                        unset($data[$key]);
+                    }
+                }
 			}
-		}		
+		}
 		return $data;
 	}
 	

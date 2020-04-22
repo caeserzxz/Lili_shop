@@ -3,7 +3,7 @@
 //-- 支付相关
 /*------------------------------------------------------ */
 
-namespace app\shop\controller;
+namespace app\publics\controller;
 
 use app\ClientbaseController;
 use app\mainadmin\model\PaymentModel;
@@ -109,10 +109,69 @@ class Payment extends ClientbaseController
         $config = parseUrlParam($this->pay_code); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
         $config['body'] = $OrderModel->getPayBody($order_id);
         $wxInfo = session('wxInfo');
-        if ($this->pay_code == 'weixin' && $wxInfo['wx_openid'] && strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
-            //微信JS支付
-            $code_str = $this->payment->getJSAPI($order);
-            exit($code_str);
+        if ($this->pay_code == 'weixin') {
+            if (strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
+                //微信JS支付
+                $jsApiParameters = $this->payment->getJSAPI($order);
+                if(stripos($order['order_sn'],'recharge') !== false) {
+                    $go_url = url('member/wallet/index', array('type' => 'recharge'));
+                    $back_url = url('member/wallet/recharge', array('order_id' => $order['order_id']));
+                }elseif(stripos($order['order_sn'],'role') !== false){
+                    $go_url = url('distribution/role_goods/done',array('order_id'=>$order['order_id']));
+                    $back_url = $go_url;
+                }else{
+                    $go_url = url('shop/order/info',array('order_id'=>$order['order_id']));
+                    $back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));
+                }
+                $html = <<<EOF
+	<script type="text/javascript">
+	//调用微信JS api 支付
+	function jsApiCall()
+	{
+		WeixinJSBridge.invoke(
+			'getBrandWCPayRequest',$jsApiParameters,
+			function(res){
+				//WeixinJSBridge.log(res.err_msg);
+				 if(res.err_msg == "get_brand_wcpay_request:ok") {
+				    location.href='$go_url';
+				 }else{				   
+				    if (res.err_msg == 'get_brand_wcpay_request:cancel'){
+				        alert('支付过程中用户取消.');
+				    }else{
+				        alert(res.err_code+' - '+res.err_desc+' - '+res.err_msg);
+				    }
+				 	
+				    location.href='$back_url';
+				 }
+			}
+		);
+	}
+
+	function callpay()
+	{
+		if (typeof WeixinJSBridge == "undefined"){
+		    if( document.addEventListener ){
+		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
+		    }else if (document.attachEvent){
+		        document.attachEvent('WeixinJSBridgeReady', jsApiCall);
+		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
+		    }
+		}else{
+		    jsApiCall();
+		}
+	}
+	callpay();
+	</script>
+EOF;
+                exit($html);
+            }else{
+                //微信H5支付
+                $return = $this->payment->get_H5code($order, $config);
+                if ($return['status'] != 1) {
+                    $this->error($return['msg'], url($returnDoneUrl, ['order_id' => $order_id]));
+                }
+                $this->assign('deeplink', $return['result']);
+            }
         }elseif($this->pay_code == 'miniAppPay') {
             $open_id = (new WeiXinUsersModel())->where('user_id',$this->userInfo['user_id'])->value('wx_openid');
             //微信JS支付
@@ -126,13 +185,6 @@ class Payment extends ClientbaseController
             $return['data'] = $code_arr;
             return $this->ajaxReturn($return);
             // return $this->success('获取成功',$code_str);
-        }elseif ($this->pay_code == 'weixinH5') {
-            //微信H5支付
-            $return = $this->payment->get_code($order, $config);
-            if ($return['status'] != 1) {
-                $this->error($return['msg'], url($returnDoneUrl, ['order_id' => $order_id]));
-            }
-            $this->assign('deeplink', $return['result']);
         }elseif($this->pay_code == 'offline'){//线下支付
             $payment['pay_config'] = json_decode(urldecode($payment['pay_config']),true);
             $this->assign('payment', $payment);

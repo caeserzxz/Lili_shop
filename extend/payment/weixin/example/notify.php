@@ -1,7 +1,7 @@
 <?php
 ini_set('date.timezone','Asia/Shanghai');
 error_reporting(E_ERROR);
-use app\shop\model\UpdatePayModel;
+use app\publics\model\UpdatePayModel;
 
 require_once dirname(dirname(__FILE__))."/lib/WxPay.Api.php";
 require_once dirname(dirname(__FILE__))."/lib/WxPay.Notify.php";

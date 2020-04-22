@@ -38,18 +38,18 @@ class Setting extends AdminController
     /*------------------------------------------------------ */
     public function uploadapp(){
         if($_FILES['file']['size'] > 100000000){
-            $result['code'] = 1;
+            $result['code'] = 0;
             $result['msg'] = '最大支持 100M MB上传.';
             return $this->ajaxReturn($result);
         }
         if (strstr($_FILES["file"]['type'],'application') == false) {
-            $result['code'] = 1;
+            $result['code'] = 0;
             $result['msg'] = '未能识别文件格式，请核实.';
             return $this->ajaxReturn($result);
         }
         $file_type = end(explode('.',$_FILES['file']['name']));
         if (in_array($file_type,['apk']) == false){
-            $result['code'] = 1;
+            $result['code'] = 0;
             $result['msg'] = '格式不对，只支持 (apk格式)，请核实.';
             return $this->ajaxReturn($result);
         }
@@ -57,7 +57,7 @@ class Setting extends AdminController
         makeDir($dir);
         $file_name = random_str(16).'.'.$file_type;
         move_uploaded_file($_FILES['file']['tmp_name'],$dir.$file_name);
-        $result['code'] = 0;
+        $result['code'] = 1;
         $result['filename'] = trim($dir.$file_name,'.');
         return $this->ajaxReturn($result);
     }

@@ -12,6 +12,7 @@ class ClientbaseController extends BaseController{
     public $is_wx = 0;
     /* @var array $allowAllAction 登录验证白名单 */
     protected $allowAllAction = [
+        'activity/index/index',// 活动页
         'member/passport/login',// 登录页面
         'member/passport/register',// 注册页面
         'member/passport/forgetpwd',// 注册页面
@@ -94,6 +95,9 @@ class ClientbaseController extends BaseController{
         }
         if (empty($this->userInfo)){
 		    session('REQUEST_URI',$_SERVER['REQUEST_URI']);
+            if ($this->request->isAjax()){
+                return $this->error('请登陆后操作.');
+            }
             return $this->redirect('member/passport/login');
         }
 		

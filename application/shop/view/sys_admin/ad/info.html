@@ -79,9 +79,7 @@
                                         <div class="col-sm-4">
                                             <input name="data[{$k}][type_val]"  class="type_val input-xlarge" type="text" value="{$vo.type_val}">
                                             <input name="data[{$k}][ext_id]" class="ext_id" type="hidden" value="{$vo.ext_id}">
-                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$vo['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
-                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$vo['bind_type']=='goods'?'':'hide'}">绑定商品</a>
-                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$vo['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                            <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default" >绑定URL</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -99,7 +97,7 @@
                                     </td>
                                     <td>
                                         <div class="col-sm-2">
-                                            <select  name="data[0][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                            <select  name="data[0][bind_type]" onChange="showUrlType(this);" class="input-medium" style="width:200px;">
                                                 <option value="">请选择</option>
                                                 {foreach name="WeixinReplyType" item="vv"}
                                                 <option value="{$vv.ext_val}">{$vv.name}</option>
@@ -111,9 +109,7 @@
                                         <div class="col-sm-4">
                                             <input name="data[0][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
                                             <input name="data[0][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
-                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
-                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
-                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                            <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default" >绑定URL</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -129,7 +125,7 @@
                                     </td>
                                     <td>
                                         <div class="col-sm-2">
-                                            <select  name="data[1][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                            <select  name="data[1][bind_type]" onChange="showUrlType(this);" class="input-medium" style="width:200px;">
                                                 <option value="">请选择</option>
                                                 {foreach name="WeixinReplyType" item="vv"}
                                                 <option value="{$vv.ext_val}">{$vv.name}</option>
@@ -141,9 +137,7 @@
                                         <div class="col-sm-4">
                                             <input name="data[1][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
                                             <input name="data[1][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
-                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
-                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
-                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                            <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default"  >绑定URL</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -159,7 +153,7 @@
                                     </td>
                                     <td>
                                         <div class="col-sm-2">
-                                            <select  name="data[2][bind_type]" onChange="showUrlType(this,0);" class="input-medium" style="width:200px;">
+                                            <select  name="data[2][bind_type]" onChange="showUrlType(this);" class="input-medium" style="width:200px;">
                                                 <option value="">请选择</option>
                                                 {foreach name="WeixinReplyType" item="vv"}
                                                 <option value="{$vv.ext_val}">{$vv.name}</option>
@@ -171,9 +165,7 @@
                                         <div class="col-sm-4">
                                             <input name="data[2][type_val]"  class="type_val input-xlarge" type="text" value="{$row.data}">
                                             <input name="data[2][ext_id]" class="ext_id" type="hidden" value="{$row.ext_id}">
-                                            <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
-                                            <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
-                                            <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                                            <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default" >绑定URL</a>
                                         </div>
                                     </td>
                                 </tr>
@@ -244,9 +236,7 @@
                 <div class="col-sm-4 must">
                     <input name="type_val"  class="type_val input-xlarge" type="text" value="{$row.data}">
                     <input name="ext_id" class="ext_id" type="hidden" value="{$row.ext_id}">
-                    <a href="javascript:;" data-remote="{:url("mainadmin/article/searchBox")}" data-toggle="ajaxModal" class="article_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='article'?'':'hide'}"  >绑定文章</a>
-                    <a href="javascript:;" data-remote="{:url("sys_admin.goods/searchBox")}" data-toggle="ajaxModal" class="goods_btn type_bding_btn btn btn-sm btn-default   {$row['bind_type']=='goods'?'':'hide'}">绑定商品</a>
-                    <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="link_btn type_bding_btn btn btn-sm btn-default {$row['bind_type']=='link'?'':'hide'}" >绑定URL</a>
+                    <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default" >绑定URL</a>
                 </div>
             </td>
             <td><input type="text" name="limit_num" min=0.01  class="input-ssmall" data-rule-ismoney="true" value="{$fg_goods_info[limit_num]}"></td>
@@ -273,34 +263,35 @@
         }
     }
 
-    function showUrlType(sel, input_id) {
-        $(sel).parents('tr').find(".type_bding_btn").addClass('hide');
+    function showUrlType(sel) {
+        $(sel).parents('tr').find(".type_bding_btn").remove();
         $(sel).parents('tr').find(".type_val").val('');
         $(sel).parents('tr').find(".ext_id").val(0);
-        $(sel).parents('tr').find(".ext_activity").val(0);
-        if (sel.value == 'article')   $(sel).parents('tr').find(".article_btn").removeClass('hide');
-        else if (sel.value == 'link') {
-            $(sel).parents('tr').find(".type_val").val('http://');
-            $(sel).parents('tr').find(".link_btn").removeClass('hide');
+
+        var sel_value = sel.value;
+        if (sel.value == 'link'){
+            sel_value = 'all';
+            $("#type_val").val('http://');
         }
-        else if (sel.value == 'goods') $(sel).parents('tr').find(".goods_btn").removeClass('hide');
-        else if (sel.value == 'activity') $(sel).parents('tr').find(".activity_btn").removeClass('hide');
+        if (sel.value != 'tel'){
+            $(sel).parents('tr').find('.col-sm-4').append('<a href="javascript:;" data-remote="{:_url('publics/sys_admin.links/index',['linksfun'=>'assigBack','linkstype'=>"【sel_value】"])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default" id="links_btn" >绑定URL</a>');
+        }
+
     }
-    function assigBack(type, type_id, id, title, tid) {
-        console.log(this_tr);
+    function assigBack(type, type_id, id, title, url) {
         $(this_tr).find(".ext_id").val(id);
-        $(this_tr).find(".ext_activity").val(tid);
-        $(this_tr).find(".type_val").val(title);
-    }
-    var McMore = {
-        selectUrlCallback: function (url, type, type_id) {
+        $("#ext_id").val(id);
+        if (id == 0){
             $(this_tr).find(".type_val").val(url);
-            $(".modal-dialog .close").trigger("click");
+        }else{
+            $(this_tr).find(".type_val").val(title);
         }
+        $(".modal-dialog .close").trigger("click");
     }
+
     $(function () {
         showAdType();
-        $('.type_bding_btn').on('click',function (e) {
+        $(document).on('click','.type_bding_btn',function (e) {
             this_tr =  $(this).parents('tr');
         });
     })

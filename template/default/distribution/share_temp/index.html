@@ -1,0 +1,131 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/shareCircle.css" />
+<link rel="stylesheet" href="__STATIC__/js/Swiper-4.0.7/swiper.min.css" />
+<style>
+    .swiper-container {
+        position: fixed;
+        top: 0;
+        background: rgba(0, 0, 0, .8);
+        width: 100%;
+        height: 100%;
+    }
+</style>
+{/block}
+{block name='pageType'}shareCircle{/block}
+{block name="main" }
+
+
+
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="page-bd">
+
+            <div class="block">
+                <div class="user">
+                    <img src="../assets/images/seckillimg.png" alt="">
+                </div>
+                <div class="right">
+                    <p class="name fs30 fw_b">坠落眼角的烟火</p>
+                    <p class="text fs26 color_3" id="text01">
+                        捂紧钱包，大姑要放大招！敲新款仙女裙加到！七夕将至，你确定不要买一件美美哒仙女裙去约会？感受一下全场焦点和100%回头率
+                    </p>
+                    <div class="imglist">
+                        <img src="../assets/images/shareCircle03.png" alt="" onclick="seeimg($(this))">
+                        <img src="../assets/images/shareCircle04.png" alt="" onclick="seeimg($(this))">
+                        <img src="../assets/images/shareCircle05.png" alt="" onclick="seeimg($(this))">
+                        <img src="../assets/images/shareCircle06.png" alt="" onclick="seeimg($(this))">
+                        <img src="../assets/images/shareCircle07.png" alt="" onclick="seeimg($(this))">
+                        <img src="../assets/images/shareCircle08.png" alt="" onclick="seeimg($(this))">
+                    </div>
+                    <div class="color_9 operate">
+                        <p class="fs24">今天 10:20</p>
+                        <div class="fs22 btn" data-clipboard-target="#text01"><img src="__STATIC__/mobile/default/images/shareCircle01.png"
+                                                                                   alt=""><span>复制文案</span></div>
+                        <div class="fs22 showSave"><img src="__STATIC__/mobile/default/images/shareCircle02.png" alt=""><span>保存图片</span></div>
+                    </div>
+
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+    <!-- 保存图片模块 -->
+    <div class="model saveBox" style="display: none">
+        <div class="modelBG" onclick="$(this).parents('.model').hide()"></div>
+        <div class="content">
+            <p class="fs34 fw_b color_3 title">保存图片</p>
+            <div class="imgLabel">
+
+            </div>
+            <div class="btnBox">
+                <span class="fs28 color_6" onclick="$(this).parents('.model').hide()">取消</span>
+                <span class="fs28 color_r" onclick='sevaimg()'>保存到本地</span>
+            </div>
+        </div>
+
+    </div>
+    <!-- 分享图片模块 -->
+    <div class="model shareBox" style="display: none">
+        <div class="modelBG" onclick="$(this).parents('.model').hide()"></div>
+        <div class="content" id="result">
+            <img src="../assets/images/goods01.png" alt="" class="goodsimg">
+            <div class="name fs28 fw_b color_3" style="overflow: hidden">冬季新款羽绒服宽松面包服休闲百搭短款羽绒服女红色喜庆</div>
+            <div class="info">
+                <div class="left">
+                    <div class="color_3 fs30 num money">
+                        <p class="fw_b fm_p">￥</p><em class="fs52">199</em><i>.00</i>
+                    </div>
+                    <div class="user">
+                        <img src="../assets/images/seckillimg.png" alt="">
+                        <div>
+                            <p class="fs28 color_3 fw_b">狂风扫落叶</p>
+                            <span class="fs24 color_9">我推荐了新商品，快查看呀</span>
+                        </div>
+                    </div>
+                </div>
+                <div class="right"><img src="../assets/images/code.png" alt=""></div>
+            </div>
+        </div>
+        <div class="bottomBtn">
+            <div class="fs22 color_3 btn" data-clipboard-text="这是需要复制的内容">
+                <img src="../assets/images/shareCircle09.png" alt="">
+                <span>复制链接</span>
+            </div>
+            <div class="fs22 color_3 btn" onclick="saveShareImg()">
+                <img src="../assets/images/shareCircle10.png" alt="">
+                <span>保存图片</span>
+            </div>
+            <div class="fs22 color_3 btn">
+                <img src="../assets/images/shareCircle11.png" alt="">
+                <span>发送好友</span>
+            </div>
+        </div>
+    </div>
+
+{/block}
+{block name="footer"}
+<script src="__STATIC__/js/clipboard/2.0.4/clipboard.min.js"></script>
+<script>
+    $(function () {
+        //保存图片
+        $('.showSave').on('click', function () {
+            // _toast('您暂无保存图片的权限',2000)
+            showSave($(this))
+        })
+        //复制文案
+        var clipboard = new ClipboardJS('.btn');
+        clipboard.on('success', function (e) {
+            _toast('复制成功')
+            e.clearSelection();
+        });
+        clipboard.on('error', function (e) {
+            _toast('复制失败')
+
+        });
+    });
+
+
+</script>
+{/block}

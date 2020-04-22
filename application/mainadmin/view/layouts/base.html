@@ -80,9 +80,8 @@ $(function () {
             <div class="am-fl tpl-header-button switch-button">
                 <i class="fa fa-bars"></i>
             </div>
-
            {volist name="top_menus" id="vo"}
-                <a class="am-fl tpl-header-fun-button {$_module==$vo['key']?'top_select':'top_no_select'}"  href="<?php echo url($vo['key'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
+                <a class="am-fl tpl-header-fun-button {$_module==$vo['module']?'top_select':'top_no_select'}"  href="<?php echo url($vo['group'].'/'.$vo['controller'].'/'.$vo['action']) ?>"><i class="fa {$vo.icon}"></i> {$vo.name}</a>
 
            {/volist}
 
@@ -119,15 +118,15 @@ $(function () {
         <ul class="sidebar-nav">
             <li class="sidebar-nav-heading"><i class="fa fa-home"></i> 管理后台</li>
             <?php foreach ($menus as $key => $item):
-                if (empty($item['submenu'])==false){
-                    $vob = reset($item['submenu']);
-                    if (empty($vob['submenu']) == false){
-                        $vob = reset($vob['submenu']);
-                    }
-                    $_url = url($vob['group'].'/'.$vob['controller'].'/'.$vob['action']);
-                }else{
-                    $_url = isset($item['controller']) ? url($item['group'].'/'.$item['controller'].'/'.$item['action']) : 'javascript:void(0);';
-                }
+            if (empty($item['submenu'])==false){
+            $vob = reset($item['submenu']);
+            if (empty($vob['submenu']) == false){
+            $vob = reset($vob['submenu']);
+            }
+            $_url = url($vob['group'].'/'.$vob['controller'].'/'.$vob['action']);
+            }else{
+            $_url = isset($item['controller']) ? url($item['group'].'/'.$item['controller'].'/'.$item['action']) : 'javascript:void(0);';
+            }
             ?>
                 <li class="sidebar-nav-link">
                     <a href="<?=$_url?>"

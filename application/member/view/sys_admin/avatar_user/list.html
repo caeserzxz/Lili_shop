@@ -1,4 +1,3 @@
-
 <table class="table  table-hover m-b-none ">
     <thead>
         <tr>
@@ -13,13 +12,11 @@
         <tr>
        	  	<td>{$g.id}</td>
             <td>{$g.user_name}</td>
-       	  	<td><img src="{$g.headimgurl}" style="max-width:100px;max-width:80px;"/></td>
-            
+       	  	<td><img src="{$g.headimgurl}" style="max-width:30px;"/></td>
             <td>
                 <a href="{:url('info',array('id'=>$g['id']))}" class="m-xs" title="编辑">
                     <i class="fa fa-edit text-muted"></i>
                 </a>
-               
             </td>
         </tr>
 {/volist}

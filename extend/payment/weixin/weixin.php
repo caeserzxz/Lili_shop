@@ -38,7 +38,7 @@ class weixin
      */
     function get_code($order, $config)
     {
-        $notify_url = SITE_URL . '/index.php/shop/payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $notify_url = SITE_URL . '/index.php/publics/payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 
         $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
@@ -54,7 +54,47 @@ class weixin
         if (empty($url2))
             return '没有获取到支付地址, 请检查支付配置' . print_r($result, true);
         return '<img alt="模式二扫码支付" src="/index.php?m=shop&c=index&a=qr_code&data='.urlencode($url2).'" style="width:110px;height:110px;"/>';
-    }    
+    }
+    /**
+     * 生成支付代码
+     * @param   array   $order      订单信息
+     * @param   array   $config    支付方式信息
+     */
+    function get_H5code($order, $config)
+    {
+        $notify_url = _url('publics/payment/notifyUrl',['pay_code'=>'weixinH5'],true,true);  // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $sceneInfo = json_encode([
+            'h5_info' => [
+                'type' => 'Wap',
+                'wap_url' => SITE_URL,
+                'wap_name' => '支付'
+            ]
+        ], JSON_UNESCAPED_UNICODE);
+
+        $input = new \WxPayUnifiedOrder();
+        $input->SetBody($config['body']); // 商品描述
+        $input->SetAttach("weixinH5"); // 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
+        $input->SetOut_trade_no($order['order_sn'] . time()); // 商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
+        $input->SetTotal_fee($order['order_amount'] * 100); // 订单总金额，单位为分，详见支付金额
+        $input->SetTrade_type("MWEB"); // 交易类型   取值如下：JSAPI，NATIVE，APP，MWEB 详细说明见参数规定    MWEB--H5wap支付
+        $input->SetNotify_url($notify_url); // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $input->SetSceneInfo($sceneInfo);
+
+        try {
+            $return = \WxPayApi::unifiedOrder($input);
+
+        } catch (\Exception $e) {
+
+            return ['status' => -1, 'msg' => $e->getMessage()];
+        }
+
+        if ($return['return_code'] == 'SUCCESS' && $return['result_code'] == 'SUCCESS') {
+            return ['status' => 1, 'msg' => $return['return_msg'], 'result' => $return['mweb_url']];
+        } else {
+
+            return ['status' => -1, 'msg' => $return['return_msg'], 'result' => $return];
+        }
+    }
     /**
      * 服务器点对点响应操作给支付接口方调用
      * 
@@ -78,16 +118,6 @@ class weixin
 
     function getJSAPI($order)
     {
-    	if(stripos($order['order_sn'],'recharge') !== false) {
-            $go_url = url('member/wallet/index', array('type' => 'recharge'));
-            $back_url = url('member/wallet/recharge', array('order_id' => $order['order_id']));
-        }elseif(stripos($order['order_sn'],'role') !== false){
-                $go_url = url('distribution/role_goods/done',array('order_id'=>$order['order_id']));
-                $back_url = $go_url;
-    	}else{
-    		$go_url = url('shop/order/info',array('order_id'=>$order['order_id']));
-    		$back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));
-    	}
         //①、获取用户openid
         $tools = new \JsApiPay();
         //$openId = $tools->GetOpenid();
@@ -101,57 +131,16 @@ class weixin
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("tp_wx_pay");
-        $input->SetNotify_url(SITE_URL.'/index.php/shop/Payment/notifyUrl/pay_code/weixin');
+        $input->SetNotify_url(SITE_URL.'/index.php/publics/Payment/notifyUrl/pay_code/weixin');
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order2 = \WxPayApi::unifiedOrder($input);
+        if (empty($order2['prepay_id'])){
+            return $order2;
+        }
         //echo '<font color="#f00"><b>统一下单支付单信息</b></font><br/>';
         //printf_info($order);exit;  
-        $jsApiParameters = $tools->GetJsApiParameters($order2);
-
-        $html = <<<EOF
-	<script type="text/javascript">
-	//调用微信JS api 支付
-	function jsApiCall()
-	{
-		WeixinJSBridge.invoke(
-			'getBrandWCPayRequest',$jsApiParameters,
-			function(res){
-				//WeixinJSBridge.log(res.err_msg);
-				 if(res.err_msg == "get_brand_wcpay_request:ok") {
-				    location.href='$go_url';
-				 }else{				   
-				    if (res.err_msg == 'get_brand_wcpay_request:cancel'){
-				        alert('支付过程中用户取消.');
-				    }else{
-				        alert(res.err_code+' - '+res.err_desc+' - '+res.err_msg);
-				    }
-				 	
-				    location.href='$back_url';
-				 }
-			}
-		);
-	}
-
-	function callpay()
-	{
-		if (typeof WeixinJSBridge == "undefined"){
-		    if( document.addEventListener ){
-		        document.addEventListener('WeixinJSBridgeReady', jsApiCall, false);
-		    }else if (document.attachEvent){
-		        document.attachEvent('WeixinJSBridgeReady', jsApiCall);
-		        document.attachEvent('onWeixinJSBridgeReady', jsApiCall);
-		    }
-		}else{
-		    jsApiCall();
-		}
-	}
-	callpay();
-	</script>
-EOF;
-        
-    return $html;
-
+        return  $tools->GetJsApiParameters($order2);
     }
 
     

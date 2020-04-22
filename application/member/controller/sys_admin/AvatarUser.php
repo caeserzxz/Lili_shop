@@ -1,7 +1,7 @@
 <?php
-namespace app\shop\controller\sys_admin;
+namespace app\member\controller\sys_admin;
 use app\AdminController;
-use app\shop\model\AvatarUserModel;
+use app\member\model\AvatarUserModel;
 /*------------------------------------------------------ */
 //-- 虚拟会员
 /*------------------------------------------------------ */

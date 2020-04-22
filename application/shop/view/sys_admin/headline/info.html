@@ -134,7 +134,7 @@
                 <label class="control-label">选择绑定链接</label>
                 <div class="col-sm-4" >
                     <input name="link" id="link" class="input-xlarge"  type="text" value='{if condition="$row.link_type eq 'link' "}{$row.link_data}{/if}'>
-                    <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index')}" data-toggle="iframeModal" class="btn btn-sm btn-default">绑定URL</a>
+                    <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack'])}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default {$row['bind_type']=='tel'?'hide':''}" id="links_btn" >绑定URL</a>
                 </div>
             </div>
             <!--商品列表-->
@@ -275,8 +275,9 @@
     function delLinkGoods(select_type, goods_id) {
         $('#' + select_type + '_tr_' + goods_id).remove();
     }
-    function assigBack(type,type_id,id,title,tid){
-        $("#link").val(title);
+    function assigBack(type, type_id, id, title, url) {
+        $("#link").val(url);
+        $(".modal-dialog .close").trigger("click");
     }
 
     function initGoodsList(id,goods_type){

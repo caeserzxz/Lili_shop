@@ -12,7 +12,7 @@ class Attachment extends AdminController{
 
     protected $_root_;
     public $supplyer_id = 0;
-//*------------------------------------------------------ */
+    //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
     public function initialize(){
@@ -23,9 +23,31 @@ class Attachment extends AdminController{
         }
         $this->_root_ = Request::root();
     }
-
-
     /**
+     * 公用上传
+     */
+    public function upload()
+    {
+        $type = input('type','','trim');
+        if ($type == 'activity'){
+            $dir = 'activity/';
+        }else{
+            $data['code'] = 1;
+            $data['msg'] = '未定义上传类型.';
+            return $this->ajaxReturn($data);
+        }
+        $result = $this->_upload($_FILES['file'],$dir);
+        if ($result['error']) {
+            $data['code'] = 1;
+            $data['msg'] = $result['info'];
+            return $this->ajaxReturn($data);
+        }
+        $savepath = trim($result['info'][0]['savepath'],'.');
+        $data['src'] = $savepath.$result['info'][0]['savename'];
+        $data['code'] = 0;
+        return $this->ajaxReturn($data);
+    }
+        /**
      * 编辑器上传
      */
     public function editer_upload() {
@@ -185,7 +207,6 @@ class Attachment extends AdminController{
      * 商品上传
      */
     public function goodsUpload() {
-        if ($_FILES['file']){
             $thumb['width'] = 350;
             $thumb['height'] = 300;
 
@@ -243,18 +264,8 @@ class Attachment extends AdminController{
             $data['savename'] = $result['info'][0]['savename'];
             $data['src'] = $file_url;
             return $this->ajaxReturn($data);
-        }
-        $result = $this->_upload($_FILES['imgFile'],'gdimg/');
-        if ($result['error']) {
-            $data['code'] = 1;
-            $data['msg'] = $result['info'];
-            return $this->ajaxReturn($data);
-        }
-        $result['url']= '/'.$result['info'][0]['savepath'].$result['info'][0]['savename'];
-        return $this->ajaxReturn($result);
+
     }
-
-
 
     /**
      * 删除商品图片

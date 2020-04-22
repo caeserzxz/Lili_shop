@@ -12,36 +12,36 @@
     <div class="paType">
         <img src="__STATIC__/mobile/default/images/payY.png" alt="">
         {if condition="$orderInfo.isPay == 1" }
-            {if condition="$orderInfo.pay_code == 'offline'"}
-                {if condition="$orderInfo.offlineimg == ''"}
-                    <p class="fs34 fw_b color_3">待上传打款凭证</p>
-                    <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-                    <span class="fs24 color_9">等待用户上传线下打款凭证</span>
-                    <div class="button" style="width: 100%;">
-                    <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b goupload">上传凭证</a>
-                    <a href="javascript:;" class="color_w fs28 BGcolor_3 fw_b gopay">其他支付</a>
-                    </div>
-                    
-                {else/}
-                    <p class="fs34 fw_b color_3">待审核订单</p>
-                    <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-                    <span class="fs24 color_9">等待后台审核支付凭证</span>
-                {/if}
-                
-            {else/}
-                <p class="fs34 fw_b color_3">待支付订单</p>
-                <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-                <span class="fs24 color_9">待支付订单金额</span>
-            {/if}
-        
-        {elseif condition="$orderInfo.pay_code == 'cod'" /}
-        	<p class="fs34 fw_b color_3">订单提交成功</p>
-        	<div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-        	<span class="fs24 color_9">订单金额</span>
+        {if condition="$orderInfo.pay_code == 'offline'"}
+        {if condition="$orderInfo.offlineimg == ''"}
+        <p class="fs34 fw_b color_3">待上传打款凭证</p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">等待用户上传线下打款凭证</span>
+        <div class="button" style="width: 100%;">
+            <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b goupload">上传凭证</a>
+            <a href="javascript:;" class="color_w fs28 BGcolor_3 fw_b gopay">其他支付</a>
+        </div>
+
         {else/}
-            <p class="fs34 fw_b color_3">订单支付成功 </p>
-            <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
-            <span class="fs24 color_9">已支付订单金额</span>
+        <p class="fs34 fw_b color_3">待审核订单</p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">等待后台审核支付凭证</span>
+        {/if}
+
+        {else/}
+        <p class="fs34 fw_b color_3">待支付订单</p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">待支付订单金额</span>
+        {/if}
+
+        {elseif condition="$orderInfo.pay_code == 'cod'" /}
+        <p class="fs34 fw_b color_3">订单提交成功</p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">订单金额</span>
+        {else/}
+        <p class="fs34 fw_b color_3">订单支付成功 </p>
+        <div class="color_3 fs72 num money">{$orderInfo.order_amount}</div>
+        <span class="fs24 color_9">已支付订单金额</span>
         {/if}
 
     </div>
@@ -63,8 +63,8 @@
     <div class="button">
         <a href="/" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
         <a href="{:url('order/info',['order_id'=>$orderInfo['order_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
-         {if condition="$orderInfo.isPay == 1 && $orderInfo.pay_code != 'offline'" }
-            <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>
+        {if condition="$orderInfo.isPay == 1 && $orderInfo.pay_code != 'offline'" }
+        <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>
         {/if}
     </div>
 </div>
@@ -76,7 +76,7 @@
         <div class="title fs36 color_3 fw_b">请选择支付方式</div>
         <div class="cantre pay" id="payListBox">
 
-                <p class="get_list_tip">加载中...</p>
+            <p class="get_list_tip">加载中...</p>
 
         </div>
         <div class="buttBox">
@@ -89,15 +89,15 @@
     {{each data as item index}}
     <div class="block">
         <label for="{{item.pay_code}}" style="width: 100%;">
-        <div class="payType">
-            <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
-            <div>
-                <span class="fs30 color_3">{{item.pay_name}}</span>
-                {{if item.pay_code == 'balance'}}
-                <span class="fs26 color_r">(￥{{balance_money}})</span>
-                {{/if}}
+            <div class="payType">
+                <img src="__STATIC__/mobile/default/images/{{item.img}}" alt="">
+                <div>
+                    <span class="fs30 color_3">{{item.pay_name}}</span>
+                    {{if item.pay_code == 'balance'}}
+                    <span class="fs26 color_r">(￥{{balance_money}})</span>
+                    {{/if}}
+                </div>
             </div>
-        </div>
         </label>
         <label for="{{item.pay_code}}">
             <div class="iconBox">
@@ -112,36 +112,36 @@
 {/block}
 {block name="footer"}
 <script type="text/javascript">
-var goPay = {$goPay};
+    var goPay = {$goPay};
 
-$('.goupload').on('click',function(){
-    //弹一下窗
-    offlineChoose = true;
-    //弹一下窗
-    $('.offlinepage').css('left',0);
-    $('#payListBox').html('<input type="radio" class="check" name="pay_id" value="3" data-pay_code="offline" id="offline"  checked="checked" style="display: none;">');
-})
-$('.base-header .left-arrow').attr('href','/')
-  //选择支付方式
-  $('.gopay').on('click',function(){
-	  jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
-		  if (res.code==0){
-			  _alert(res.msg);
-			  return false;
-		  }
-		  $('#payListBox').html(template('payListTpl',res));
-		  $('.model').show();
-	  });
-  });
-  $('.closeBox').on('click',function(){
-            $('.model').hide();
-  });
-  $('.payBtn').on('click',function(){	  
- 		var obj = $('input:radio[name="pay_id"]:checked');      	
-		if (typeof(obj.val()) == 'undefined') {
-		    _alert('请选择支付方式.');
-			return false;
-		}
+    $('.goupload').on('click',function(){
+        //弹一下窗
+        offlineChoose = true;
+        //弹一下窗
+        $('.offlinepage').css('left',0);
+        $('#payListBox').html('<input type="radio" class="check" name="pay_id" value="3" data-pay_code="offline" id="offline"  checked="checked" style="display: none;">');
+    })
+    $('.base-header .left-arrow').attr('href','/')
+    //选择支付方式
+    $('.gopay').on('click',function(){
+        jq_ajax('{:url("publics/api.pay/getList")}','',function(res){
+            if (res.code==0){
+                _alert(res.msg);
+                return false;
+            }
+            $('#payListBox').html(template('payListTpl',res));
+            $('.model').show();
+        });
+    });
+    $('.closeBox').on('click',function(){
+        $('.model').hide();
+    });
+    $('.payBtn').on('click',function(){
+        var obj = $('input:radio[name="pay_id"]:checked');
+        if (typeof(obj.val()) == 'undefined') {
+            _alert('请选择支付方式.');
+            return false;
+        }
         var pay_code = obj.data("pay_code");
 
         //线下支付
@@ -156,8 +156,8 @@ $('.base-header .left-arrow').attr('href','/')
             //上传图片判断
             var payimg = $(".payimg").attr('src');
             if(typeof(payimg) == 'undefined' || payimg == ''){
-               _alert('请上传支付凭证.'); 
-               return false;
+                _alert('请上传支付凭证.');
+                return false;
             }
 
             var arr = new Object();
@@ -171,12 +171,12 @@ $('.base-header .left-arrow').attr('href','/')
                 }
                 // window.location.reload();
             })
-            
+
         }
-	    window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
-  });
-  if (goPay == 1){
-	   window.location.href = '{:_url("shop/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
- }
+        window.location.href = '{:_url("publics/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code='+pay_code;
+    });
+    if (goPay == 1){
+        window.location.href = '{:_url("publics/payment/getCode",'',false)}/?order_id={$orderInfo['order_id']}&pay_code={$orderInfo['pay_code']}';
+    }
 </script>
 {/block}

@@ -56,7 +56,7 @@
                   <td>
                     <input type="hidden" value="{$vo.pid}" name="ps[{$vo.id}][parent_id]"/>
                     <input name="ps[{$vo.id}][keyword]" id="keyword_{$vo.id}" class="input-text {$vo['keyword_value']==''?'hide':''}" style="width:50px;" value="{$vo.keyword}" type="hidden" >
-                      <a href="javascript:;" data-url="{:url('publics/sys_admin.links/index',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="iframeModal" class="bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'}" id="Url_btn_{$vo.id}" >绑定URL</a>
+                      <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'}" id="Url_btn_{$vo.id}" >绑定URL</a>
 
                       <a href="javascript:;" data-remote="{:url('sys_admin.replyText/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='click'?'':'hide'}" id="ReplyText_btn_{$vo.id}">绑定关键字</a>
                   </td>
@@ -221,5 +221,10 @@ var McMore = {
        $(".modal-dialog .close").trigger("click");
    }
  }
+</script>
+{/block}
+{block name="footer" }
+<script type="text/javascript">
+     seajs.use(["dist/plupload/init.js"])
 </script>
 {/block}

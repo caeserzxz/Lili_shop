@@ -52,6 +52,10 @@
                             <option value="{$index}" {$row['pay_config'][$prow['name']]==$index?'selected':''}>{$val}</option>
                             {/volist}
                         </select>
+                        {elseif condition="$prow['type'] == 'checkbox'"/}
+                            {volist name="prow.option" id="val" key='k'}
+                            <label><input type="checkbox"  name="pay_config[{$prow['name']}][]" {:in_array($val['value'],$row['pay_config']['support'])?'checked':''} value="{$val.value}">{$val.name}</label>
+                            {/volist}
                         {elseif condition="$prow['type'] == 'textarea'"/}
                         <textarea name="pay_config[{$prow['name']}]"  {$prow['is_must']==1?'data-rule-required="true"':''}
                                   style="width:80%; height:130px;">{$row['pay_config'][$prow['name']]}</textarea>

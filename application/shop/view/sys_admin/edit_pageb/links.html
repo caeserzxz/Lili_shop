@@ -40,7 +40,9 @@
                 <li class=""><a href="#sut_article">文章</a></li>
                 <li class="hide"><a href="#sut_coupon">超级券</a></li>
                 <li ><a href="#sut_diypage">装修</a></li>
-
+                {notempty name="$is_activity"}
+                <li ><a href="#sut_activity">活动</a></li>
+                {/notempty}
             </ul>
             <div class="tab-content ">
 
@@ -90,6 +92,21 @@
                         <span class="input-group-addon btn btn-default select-btn" data-type="diypage">搜索</span>
                     </div>
                     <div id="select-diypage-list"></div>
+                </div>
+                <div class="tab-pane" id="sut_activity">
+                    {empty name="ActivityList"}
+                    <div class="tip">暂无相关活动信息。</div>
+                    {else/}
+                        {volist name="ActivityList" id="vo" }
+                        <div class="line good">
+                            <div class="image"><img src="{$vo.activity_img}"/></div>
+                            <nav title="选择" class="btn btn-default btn-sm" data-href="/activity/index/index/id/{$vo.id}">选择</nav>
+                            <div class="text">
+                                <p class="name">{$vo.activity_title}</p>
+                            </div>
+                        </div>
+                        {/volist}
+                    {/empty}
                 </div>
             </div>
         </div>

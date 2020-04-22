@@ -52,7 +52,7 @@ class Region extends AdminController
 		if (!$reader->canRead($filePath)) { // 这里是用Reader尝试去读文件，07不行用05，05不行就报错。注意，这里的return是Yii框架的方式。
             $reader = PHPExcel_IOFactory::createReader('Excel5');
 			if (!$reader->canRead($filePath)) {
-					return $this->_error('读取excel文件失败！');
+					return $this->error('读取excel文件失败！');
 			}
 		}
 		$PHPExcel = $reader->load($filePath); // Reader读出来后，加载给Excel实例

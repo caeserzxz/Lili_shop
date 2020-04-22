@@ -21,7 +21,6 @@
           </header>
           <div class="panel-body">
 
-              <div class="line line-dashed line-lg pull-in"></div>
               <div class="form-group">
                   <label class="control-label">站内信标题：</label>
                   <div class="controls" >
@@ -35,7 +34,7 @@
                   <div class="controls" >
                       <input name="ext_data" id="type_val_0"  class="input-xlarge"  style="width:50%;" type="text" readonly value="{$row.ext_data}">
                       <input name="ext_id" id="type_val_key_0" type="hidden" value="{$row.ext_id}">
-                      <a href="javascript:;" data-remote="{:url('mainadmin/article/searchBox',array('_menu_index'=>0))}"  data-toggle="ajaxModal" class="type_bding_btn_0 btn btn-sm btn-default" id="article_btn_0" >绑定文章</a>
+                      <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',['linksfun'=>'assigBack','linkstype'=>'article'])}"  data-toggle="ajaxModal" class="type_bding_btn btn btn-sm btn-default " id="links_btn" >绑定文章</a>
                   </div>
               </div>
 
@@ -187,14 +186,16 @@
         $('.type-show').hide();
         $('.type-'+type).show();
     }
-    //选择文章
-    function assigBack(type,type_id,id,title,tid){
-        $("#type_val_key_"+type_id).val(id);
-        $("#ext_activity_"+type_id).val(tid);
-        $("#type_val_"+type_id).val(title);
+
+    function assigBack(type,type_id,id,title,url){
+        $("#type_val_key_0").val(id);
+        if (id == 0){
+            $("#type_val_0").val(url);
+        }else{
+            $("#type_val_0").val(title);
+        }
         $(".modal-dialog .close").trigger("click");
     }
-
     //删除会员
     function delLinkUser(select_type, key_val) {
         $('#' + select_type + '_tr_' + key_val).remove();

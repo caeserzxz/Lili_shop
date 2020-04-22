@@ -31,14 +31,13 @@ class Payment extends AdminController
 	//-- $data array 自动读取对应的数据
 	/*------------------------------------------------------ */
 	public function asInfo($data){
-
 		if (empty($data['pay_code']) == false){
             $file = Env::get('extend_path')."/payment/".$data['pay_code']."/config.php";
             $def_config = include $file;
 			$data['def_config'] = $def_config['config'];
 		}
 		$data['pay_config'] = json_decode(urldecode($data['pay_config']),true);
-		return $data;
+        return $data;
 	}
    /*------------------------------------------------------ */
 	//-- 修改前调用

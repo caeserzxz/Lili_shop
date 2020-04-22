@@ -72,10 +72,22 @@ class Order extends AdminController
     //-- 首页
     /*------------------------------------------------------ */
     public function welcome(){
+        //$this->upMenuList(0,1);
         return (new \app\mainadmin\controller\Index())->index();
     }
-
-  
+    /*------------------------------------------------------ */
+    //-- 更新菜单层级
+    /*------------------------------------------------------ */
+    public function upMenuList($pid=0, $level = 1)
+    {
+        $MenuListModel = new \app\mainadmin\model\MenuListModel();
+        $rows = $MenuListModel->where('pid',$pid)->select();
+        if (empty($rows)) return false;
+        foreach ($rows as $row){
+            $MenuListModel->where('id',$row['id'])->update(['level'=>$level]);
+            $this->upMenuList($row['id'],$level+1);
+        }
+    }
 
     /*------------------------------------------------------ */
     //-- 获取列表

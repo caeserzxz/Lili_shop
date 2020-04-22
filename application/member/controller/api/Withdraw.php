@@ -238,14 +238,14 @@ class Withdraw extends ApiController
 		if ($inArr['amount'] <= 0){
             return $this->error('请输入提现金额.');
         }
-        if (empty($this->userInfo['pay_password'])){
-            return $this->error('还没有设置支付密码，请先设置.');
-        }
-        $pay_password = input('pay_password');
-        $pay_password = f_hash($pay_password);
-        if ($pay_password != $this->userInfo['pay_password']){
-             return $this->error('支付密码错误，请核实.');
-        }
+//        if (empty($this->userInfo['pay_password'])){
+//            return $this->error('还没有设置支付密码，请先设置.');
+//        }
+//        $pay_password = input('pay_password');
+//        $pay_password = f_hash($pay_password);
+//        if ($pay_password != $this->userInfo['pay_password']){
+//             return $this->error('支付密码错误，请核实.');
+//        }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
         $inArr['account_type'] = input('account_type','','trim');
 		$inArr['account_id'] = input('account_id') * 1;
@@ -293,8 +293,12 @@ class Withdraw extends ApiController
             }
             $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
             makeDir($file_path);
-            $file_name = $file_path.random_str(12).'.jpg';
-            file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$qrcodefile)));
+            $extend = trim(substr($qrcodefile,11,4),';');
+            $file_name = $file_path.random_str(12).'.'.$extend;
+            if ($extend == 'jpeg'){
+                $file_name = $file_path.random_str(12).'.jpg';
+            }
+            file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$qrcodefile)));
             $inArr['qrcode_file'] = trim($file_name,'.');
         }else{//银行卡提现
             $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();

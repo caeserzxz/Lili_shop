@@ -1,5 +1,5 @@
 <?php
-namespace app\shop\model;
+namespace app\member\model;
 use app\BaseModel;
 use think\facade\Cache;
 //*------------------------------------------------------ */
@@ -7,9 +7,9 @@ use think\facade\Cache;
 /*------------------------------------------------------ */
 class AvatarUserModel extends BaseModel
 {
-	protected $table = 'shop_avatar_user';
+	protected $table = 'users_avatar_user';
 	public $pk = 'id';
-    protected static $mkey = 'shop_avatar_user_mkey';
+    protected static $mkey = 'users_avatar_user_mkey';
 	 /*------------------------------------------------------ */
 	//-- 清除缓存
 	/*------------------------------------------------------ */ 

@@ -17,6 +17,7 @@ function(require, exports, module) {
         sname = $el.data("submitname"),
         upload_path = $el.data("uploadpath"),
         datas = eval("(" + $el.data("data") + ")") || null;
+        var isError = false;
         $el.uploader({
             multi: !0,
             url: upload_path,
@@ -31,17 +32,22 @@ function(require, exports, module) {
                 $el.html('正在上传：'+Math.ceil(b.size / 1024)+'KB('+b.percent+'%)');
             },
             FileUploaded: function(a, b, c) {
-                if (c.code == 1){
+                if (c.code == 0){
+                    isError = true;
                     _alert(c.msg);
                     return false;
                 }
                 $el.parent().find('input[type="text"]').val(c.filename);
             },
             UploadComplete: function() {
-                $el.html('上传成功，点击重新上传');
+                if (isError == true){
+                    $el.html('点击上传');
+                }else{
+                    $el.html('上传成功，点击重新上传');
+                }
+                isError = false;
             }
-        },
-        "file"),
+        }),
         $("ul.ipost-list", $form).sortable({
             opacity: .8
         })
