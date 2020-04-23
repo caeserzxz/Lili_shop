@@ -19,7 +19,7 @@ class FavourGoods extends AdminController
     //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
-    public function initialize($isretrun = true)
+    public function initialize()
     {
         parent::initialize();
         $this->Model = new FavourGoodsModel();

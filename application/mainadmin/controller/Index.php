@@ -165,6 +165,8 @@ class Index extends AdminController
         $info['order_amount'] = 0;
         $info['order_pay_num'] = 0;
         $info['dividend_amount'] = 0;
+        $info['shipping_num'] = 0;
+        $info['sign_num'] = 0;
         foreach ($rows as $row){
             $info['all_add_num'] += 1;//全部订单
             if ($row['order_status'] == 1){

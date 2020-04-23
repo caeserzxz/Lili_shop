@@ -46,7 +46,7 @@ class AdminController extends BaseController
     /*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
-    protected function initialize($check_priv = true)
+    protected function initialize()
     {
         parent::initialize();
 
@@ -61,7 +61,7 @@ class AdminController extends BaseController
         // 验证登录
         $this->checkLogin();
         define('AUID', $this->admin['info']['user_id']);
-        if ($check_priv == true) {
+        if ($this->isCheckPriv == true) {
             //自动验证权限
             $this->_priv($this->module, $this->controller, $this->action);
         }
@@ -115,15 +115,12 @@ class AdminController extends BaseController
                 }
             }
         }
-
-        if (empty($ext_modules)){
-
-        }
-        if (in_array($module, config('config.shop_modules'))) {
-            $privRows = $allPriv['shop'];
-        } else {
+        if (empty($ext_modules[$module]) == false){
+            $privRows = $allPriv[$ext_modules[$module]];
+        }else{
             $privRows = $allPriv[$module];
         }
+
         $privIds = [];
         $module_controller = str_replace(['_', 'sysadmin.'], '', $module . ':' . $controller . ':');
         foreach ($privRows as $row) {
@@ -133,6 +130,7 @@ class AdminController extends BaseController
                 }
             }
         }
+
         $isTrue = empty($privIds) ? true : array_intersect($role_action, $privIds);
         if (empty($isTrue) == false) return true;
         if ($isReturn == true) return false;
@@ -187,12 +185,55 @@ class AdminController extends BaseController
                 }
             }
         }
-
+        $new_menus = [];
         foreach ($data['menus'] as $group => $menu) {
             if (empty($menu['list']) == true) {
-                unset($menus[$group]);
+                unset($data['menus'][$group]);
                 continue;
             }
+
+
+            foreach ($menu['list'] as $mlkey=>$ml){
+
+                if (empty($ml['submenu']) == false){
+                    foreach ($ml['submenu'] as $mlskey=>$mls) {
+
+                        if (empty($mls['submenu']) == false){
+                            foreach ($mls['submenu'] as $mlsskey=>$mlss) {
+                                if ($mlss['group'] != $group && empty($groupList[$mlss['group']])) {
+                                    $data['groupList'][$mlss['group']] = $group;
+                                }
+                            }
+                            if (empty($mlss['controller']) && empty($mlss['submenu'])) {
+                                unset($menu['list'][$mlkey]['submenu'][$mlskey]['submenu'][$mlsskey]);
+                                continue;
+                            }
+                        }
+                        if (empty($mls['controller']) && empty($mls['submenu'])) {
+                            unset($menu['list'][$mlkey]['submenu'][$mlskey]);
+                            continue;
+                        }
+                        if ($mls['group'] != $group && empty($groupList[$mls['group']])) {
+                            $data['groupList'][$mls['group']] = $group;
+                        }
+                    }
+                }
+
+                if (empty($menu['list'][$mlkey]['controller']) && empty($menu['list'][$mlkey]['submenu'])){
+                    unset($menu['list'][$mlkey]);
+                    continue;
+                }
+                if ($ml['group'] != $group && empty($groupList[$ml['group']])){
+                    $data['groupList'][$ml['group']] = $group;
+                }
+            }
+            if (empty($menu['controller']) && empty($menu['list'])){
+                continue;
+            }
+            $new_menus[$group] = $menu;
+        }
+        $data['menus'] = $new_menus;
+        foreach ($data['menus'] as $group => $menu) {
             $_menu = reset($menu['list']);
             for ($i = 0; $i < 5; $i++) {
                 if (empty($_menu['controller'])) {
@@ -202,23 +243,7 @@ class AdminController extends BaseController
                 }
             }
             $data['top_menus'][$group] = ['name' => $menu['name'], 'icon' => $menu['icon'],'module'=>$group, 'group' => $_menu['group'], 'controller' => $_menu['controller'], 'action' => $_menu['action']];
-            foreach ($menu['list'] as $ml){
-                if ($ml['group'] != $group && empty($groupList[$ml['group']])){
-                    $data['groupList'][$ml['group']] = $group;
-                }
-                foreach ($ml['submenu'] as $mls){
-                    if ($mls['group'] != $group && empty($groupList[$mls['group']])){
-                        $data['groupList'][$mls['group']] = $group;
-                    }
-                    foreach ($mls['submenu'] as $mlss){
-                        if ($mlss['group'] != $group && empty($groupList[$mlss['group']])){
-                            $data['groupList'][$mlss['group']] = $group;
-                        }
-                    }
-                }
-            }
         }
-
         Cache::set($mkey, $data, 60);
         return $data;
     }
@@ -235,7 +260,7 @@ class AdminController extends BaseController
 
         $_module = $this->module;
         if (empty($menusData['groupList'][$_module]) == false){
-           $this->module =$menusData['groupList'][$this->module];
+            $this->module =$menusData['groupList'][$this->module];
         }
         $data = $menusData['menus'][$this->module]['list'];
         $list_type = input('list_type','','trim');
@@ -315,127 +340,127 @@ class AdminController extends BaseController
      * 验证登录状态
      */
     private function checkLogin()
-{
-    // 验证当前请求是否在白名单
-    if (in_array($this->routeUri, $this->allowAllAction)) {
+    {
+        // 验证当前请求是否在白名单
+        if (in_array($this->routeUri, $this->allowAllAction)) {
+            return true;
+        }
+        // 验证登录状态
+        if (empty($this->admin) || (int)$this->admin['is_login'] !== 1) {
+            if ($this->request->isAjax()) {
+                return $this->error('登陆超时，请重新登陆.');
+            }
+            $this->redirect($_SERVER['SCRIPT_NAME'] . '/mainadmin/passport/login');
+            return false;
+        }
         return true;
     }
-    // 验证登录状态
-    if (empty($this->admin) || (int)$this->admin['is_login'] !== 1) {
-        if ($this->request->isAjax()) {
-            return $this->error('登陆超时，请重新登陆.');
-        }
-        $this->redirect($_SERVER['SCRIPT_NAME'] . '/mainadmin/passport/login');
-        return false;
-    }
-    return true;
-}
 
     //*------------------------------------------------------ */
     //-- 清理字典数据缓存
     /*------------------------------------------------------ */
     public function clearDict()
-{
-    \app\mainadmin\model\PubDictModel::cleanMemcache(input('group'));
-    echo '执行成功.';
-    exit;
-}
+    {
+        \app\mainadmin\model\PubDictModel::cleanMemcache(input('group'));
+        echo '执行成功.';
+        exit;
+    }
 
 
     /*------------------------------------------------------ */
     //-- 添加/修改
     /*------------------------------------------------------ */
     public function info()
-{
-    $pk = $this->Model->pk;
-    if ($this->request->isPost()) {
-        if (false === $data = $_POST) {
-            $this->error($this->Model->getError());
-        }
-        if (empty($data[$pk])) {
-            $this->_priv($this->module, $this->controller, 'add');
-            if (method_exists($this, 'beforeAdd')) {
-                $data = $this->beforeAdd($data);
+    {
+        $pk = $this->Model->pk;
+        if ($this->request->isPost()) {
+            if (false === $data = $_POST) {
+                $this->error($this->Model->getError());
             }
-            unset($data[$pk]);
-            $res = $this->Model->allowField(true)->save($data);
-            if ($res > 0) {
-                $data[$pk] = $this->Model->$pk;
-                if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($res);
-                if (method_exists($this, 'afterAdd')) {
-                    $result = $this->afterAdd($data);
-                    if (is_array($result)) return $this->ajaxReturn($result);
+            if (empty($data[$pk])) {
+                $this->_priv($this->module, $this->controller, 'add');
+                if (method_exists($this, 'beforeAdd')) {
+                    $data = $this->beforeAdd($data);
                 }
-                return $this->success('添加成功.', url('index'));
-            }
-        } else {
-            $this->_priv($this->module, $this->controller, 'edit');
-            if (method_exists($this, 'beforeEdit')) {
-                $data = $this->beforeEdit($data);
-            }
-            $res = $this->Model->allowField(true)->save($data, $data[$pk]);
-            if ($res > 0) {
-                if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($data[$pk]);
-                if (method_exists($this, 'afterEdit')) {
-                    $result = $this->afterEdit($data);
-                    if (is_array($result)) return $this->ajaxReturn($result);
+                unset($data[$pk]);
+                $res = $this->Model->allowField(true)->save($data);
+                if ($res > 0) {
+                    $data[$pk] = $this->Model->$pk;
+                    if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($res);
+                    if (method_exists($this, 'afterAdd')) {
+                        $result = $this->afterAdd($data);
+                        if (is_array($result)) return $this->ajaxReturn($result);
+                    }
+                    return $this->success('添加成功.', url('index'));
                 }
-                return $this->success('修改成功.', url('index'));
+            } else {
+                $this->_priv($this->module, $this->controller, 'edit');
+                if (method_exists($this, 'beforeEdit')) {
+                    $data = $this->beforeEdit($data);
+                }
+                $res = $this->Model->allowField(true)->save($data, $data[$pk]);
+                if ($res > 0) {
+                    if (method_exists($this->Model, 'cleanMemcache')) $this->Model->cleanMemcache($data[$pk]);
+                    if (method_exists($this, 'afterEdit')) {
+                        $result = $this->afterEdit($data);
+                        if (is_array($result)) return $this->ajaxReturn($result);
+                    }
+                    return $this->success('修改成功.', url('index'));
+                }
             }
+            return $this->error('操作失败.');
         }
-        return $this->error('操作失败.');
+
+        $id = input($pk, 0, 'intval');
+        $row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);
+
+        if ($id > 0 && empty($row) == false) {
+            $row = $row->toArray();
+        }
+        if (method_exists($this, 'asInfo')) {
+            $row = $this->asInfo($row);
+        }
+
+        $this->assign("row", $row);
+        $ishtml = input('ishtml', 0, 'intval');
+        if ($this->request->isAjax() && $ishtml == 0) {
+            $result['code'] = 1;
+            $result['data'] = $this->fetch('info')->getContent();
+            return $this->ajaxReturn($result);
+        }
+
+        return $this->fetch('info');
+
     }
-
-    $id = input($pk, 0, 'intval');
-    $row = ($id == 0) ? $this->Model->getField() : $this->Model->find($id);
-
-    if ($id > 0 && empty($row) == false) {
-        $row = $row->toArray();
-    }
-    if (method_exists($this, 'asInfo')) {
-        $row = $this->asInfo($row);
-    }
-
-    $this->assign("row", $row);
-    $ishtml = input('ishtml', 0, 'intval');
-    if ($this->request->isAjax() && $ishtml == 0) {
-        $result['code'] = 1;
-        $result['data'] = $this->fetch('info')->getContent();
-        return $this->ajaxReturn($result);
-    }
-
-    return $this->fetch('info');
-
-}
 
     /**
      * ajax修改单个字段值
      */
     public function ajaxEdit()
-{
+    {
 
-    $pk = $this->Model->getPk();
-    $id = input($pk, 0, 'intval');
-    $field = input('field', '', 'trim');
-    if ($id == '' || $field == '') return $this->error('缺少必要传参.');
-    $data[$field] = input('value', '', 'trim');
-    $toggle = input('toggle');
-    if ($toggle) {
-        $data[$field] = $toggle === 'true' || $toggle === 1 ? 1 : 0;
-    }
-
-    if (method_exists($this, 'beforeAjax')) {
-        $data = $this->beforeAjax($id, $data);
-    }
-    $map[$pk] = $id;
-    //允许异步修改的字段列表  放模型里面去 TODO
-    if (false !== $this->Model->save($data, $map)) {
-        if (method_exists($this, 'afterAjax')) {
-            $this->afterAjax($id, $data);
+        $pk = $this->Model->getPk();
+        $id = input($pk, 0, 'intval');
+        $field = input('field', '', 'trim');
+        if ($id == '' || $field == '') return $this->error('缺少必要传参.');
+        $data[$field] = input('value', '', 'trim');
+        $toggle = input('toggle');
+        if ($toggle) {
+            $data[$field] = $toggle === 'true' || $toggle === 1 ? 1 : 0;
         }
+
+        if (method_exists($this, 'beforeAjax')) {
+            $data = $this->beforeAjax($id, $data);
+        }
+        $map[$pk] = $id;
+        //允许异步修改的字段列表  放模型里面去 TODO
+        if (false !== $this->Model->save($data, $map)) {
+            if (method_exists($this, 'afterAjax')) {
+                $this->afterAjax($id, $data);
+            }
+        }
+        return $this->success();
     }
-    return $this->success();
-}
 
 
 }

@@ -27,9 +27,9 @@ class Order extends AdminController
     //*------------------------------------------------------ */
     //-- 初始化
     /*------------------------------------------------------ */
-    public function initialize($isretrun = true)
+    public function initialize()
     {
-        parent::initialize($isretrun);
+        parent::initialize();
         $this->Model = new OrderModel();
         $this->shipping_model = new ShippingModel();
         $this->setting_model = new SettingsModel();
