@@ -20,7 +20,7 @@ class ClientbaseController extends BaseController{
         'shop/goods',//商城商品相关
         'shop/flow/cart',//购物车
         'shop/article',//文章相关
-        'shop/payment',//支付相关
+        'publics/payment',//支付相关
         'fightgroup',//拼团相关
         'second',//秒杀相关
         'publics/download',//app下载
