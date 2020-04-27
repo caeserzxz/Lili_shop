@@ -28,9 +28,17 @@ class UsersBindSuperiorModel extends BaseModel
         }else{
             $superior = $user_id;
         }
+        $superior_sub = substr($superior,0,800);//以防值过大，转换数组内存溢出
+        $superiorArr = explode(',',$superior_sub);
         if (empty($data)){//不存在数据时执行
             $inData['user_id'] = $user_id;
             $inData['pid'] = $pid;
+            if (empty($superiorArr[1]) == false){
+                $inData['pid_b'] = $superiorArr[1];
+            }
+            if (empty($superiorArr[2]) == false) {
+                $inData['pid_c'] = $superiorArr[2];
+            }
             $inData['superior'] = $superior;
             $res = $this->save($inData);
             if ($res < 1){
@@ -39,23 +47,64 @@ class UsersBindSuperiorModel extends BaseModel
             return true;
         }
         $upData['pid'] = $pid;
+        if (empty($superiorArr[2]) == false){
+            $upData['pid_b'] = $superiorArr[2];
+        }else{
+            $upData['pid_b'] = 0;
+        }
+        if (empty($superiorArr[3]) == false) {
+            $upData['pid_c'] = $superiorArr[3];
+        }else{
+            $upData['pid_c'] = 0;
+        }
         $upData['superior'] = $superior;
         $res = $this->where('user_id',$user_id)->update($upData);
         if ($res < 1){
             return false;
         }
 
-        $where[] = ['','exp',Db::raw("match(superior) against('{$user_id}')")];
+        $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+        $where[] = ['user_id','<>',$user_id];
         $allCount = $this->where($where)->count('user_id');
 
         if ($allCount < 1) return true;//没有下级不执行
 
         $upDataAll['superior'] = Db::raw("REPLACE(superior,'{$data['superior']}','{$superior}')");
         $res = $this->where($where)->update($upDataAll);
-
-        if ($allCount == $res){
-            return true;
+        if ($allCount != $res){
+            return false;
         }
-        return false;
+
+        $where = [];
+        $where[] = ['pid|pid_b','=',$user_id];
+        $rows = $this->where($where)->select();
+        foreach ($rows as $row){
+            $upDate = [];
+            if ($row['pid'] == $user_id) {
+                if (empty($superiorArr[1]) == false) {
+                    $upDate['pid_b'] = $superiorArr[1];
+                } else {
+                    $upDate['pid_b'] = 0;
+                }
+                if (empty($superiorArr[2]) == false) {
+                    $upDate['pid_c'] = $superiorArr[2];
+                } else {
+                    $upDate['pid_c'] = 0;
+                }
+            }elseif ($row['pid_b'] == $user_id){
+                if (empty($superiorArr[1]) == false) {
+                    $upDate['pid_c'] = $superiorArr[1];
+                } else {
+                    $upDate['pid_c'] = 0;
+                }
+            }else{
+                continue;
+            }
+            $res = $this->where('user_id',$row['user_id'])->update($upDate);
+            if ($res < 1){
+                return false;
+            }
+        }
+        return true;
     }
 }

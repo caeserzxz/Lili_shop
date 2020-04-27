@@ -23,7 +23,7 @@ class Links extends AdminController
         $this->assign('links', (new LinksModel)->links());
         $CategoryModel = new \app\shop\model\CategoryModel();
         $this->assign('CategoryList', $CategoryModel->getRows());
-
+      
         return $this->fetch();
     }
 

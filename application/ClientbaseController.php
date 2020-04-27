@@ -39,7 +39,6 @@ class ClientbaseController extends BaseController{
     {
 		global $userInfo;
 		parent::initialize();
-
 		//判断是否微信访问
         $this->is_wx = session('is_wx');
 		if (empty($this->is_wx)){
@@ -50,6 +49,7 @@ class ClientbaseController extends BaseController{
             }
             session('is_wx',$this->is_wx);
         }//end
+       
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
         $this->userInfo = $userInfo;
@@ -78,7 +78,16 @@ class ClientbaseController extends BaseController{
 		$this->assign([
 			'routeUri' => $this->routeUri,  // 当前uri			
 		]);
-        $this->assign('is_wx',$this->is_wx);//登陆会员信息
+        $this->assign('is_wx',$this->is_wx);//是否微信访问
+
+        if ($this->is_wx == 1 && session('is_xcx') == 1){//此处理以防小程序和微信H5都有访问，session冲突
+            $is_xcx = 0;
+            if (strpos($_SERVER['HTTP_USER_AGENT'], 'webview')) {
+                $is_xcx = 1;//小程序访问
+            }
+            $this->assign('is_xcx',$is_xcx);
+        }
+
     }
 
     /*------------------------------------------------------ */
@@ -110,12 +119,18 @@ class ClientbaseController extends BaseController{
      */
     protected function checkLoginUser(){
         global $userInfo;
+        //获取邀请码
+        $share_token = input('share_token', '', 'trim');
+        $se_share_token = session('share_token');
+        if (empty($share_token) == false && $se_share_token != $share_token) {
+            session('share_token', $share_token);
+        }
+        $dev_openid = input('dev_openid', '', 'trim');
+        if (empty($dev_openid) == false){//记录当前小程序的openid，小程序支付时调用
+            session('dev_openid', $dev_openid);
+        }
+
         if (empty($this->userInfo) == true) {
-            //获取邀请码
-            $share_token = input('share_token', '', 'trim');
-            if (empty($share_token) == false) {
-                session('share_token', $share_token);
-            }
             if ($this->is_wx == 1) {//微信网页访问执行
                 $wxInfo = session('wxInfo');
                 $UsersModel = new \app\member\model\UsersModel();
@@ -131,13 +146,13 @@ class ClientbaseController extends BaseController{
                             if ($wxInfo['user_id'] > 0) {
                                 session('userId', $wxInfo['user_id']);
                                 $this->userInfo = $userInfo = $UsersModel->info($wxInfo['user_id']);
+
                             }
                         }
                     }
                 }
 
                 if ($wxInfo['user_id'] <= 0) {//未注册，判断是否来自分享,记录分享来源
-                    $share_token = session('share_token');
                     if (empty($share_token) == false) {
                         $wxlog['wxuid'] = $wxInfo['wxuid'];
                         $wxlog['user_id'] = $UsersModel->getShareUser($share_token);

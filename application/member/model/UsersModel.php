@@ -33,22 +33,22 @@ class UsersModel extends BaseModel
     public function login($data = array())
     {
         $res = $this->checkPwd($data['password']);
-        if ($res !== true) return langMsg('密码不正确，格式错误.','member.login.password_format_error');
+        if ($res !== true) return langMsg('密码不正确，格式错误.', 'member.login.password_format_error');
         $password = f_hash($data['password']);
         $mobile = $data['mobile'] * 1;
         $userInfo = $this->where('mobile', $mobile)->find();
         if (empty($userInfo)) {
-            return langMsg('用户不存在.','member.login.not_exist');
+            return langMsg('用户不存在.', 'member.login.not_exist');
         }
-        if ($userInfo['is_ban'] == 1){
-            return langMsg('用户已被禁用.','member.login.is_ban');
+        if ($userInfo['is_ban'] == 1) {
+            return langMsg('用户已被禁用.', 'member.login.is_ban');
         }
 
         $time = time();
         if ($userInfo['login_odd_num'] >= 10) {
             if ($userInfo['login_odd_time'] > $time - 3600) {
-                $login_odd_time =  date('Y-m-d H:i:s', $userInfo['login_odd_time'] + 3600);
-                return langMsg('密码错误次数过多帐号封停，解封时间：' .$login_odd_time,'member.login.login_is_lock',[$login_odd_time]);
+                $login_odd_time = date('Y-m-d H:i:s', $userInfo['login_odd_time'] + 3600);
+                return langMsg('密码错误次数过多帐号封停，解封时间：' . $login_odd_time, 'member.login.login_is_lock', [$login_odd_time]);
             } else {
                 $userInfo['login_odd_num'] = 7;//如果已到解封时间，给3次机会再登陆
             }
@@ -56,45 +56,53 @@ class UsersModel extends BaseModel
         if ($userInfo['password'] != $password) {
             //记录异常登陆
             $this->where('user_id', $userInfo['user_id'])->update(['login_odd_time' => $time, 'login_odd_num' => $userInfo['login_odd_num'] + 1]);
-            return langMsg('用户密码不正确.','member.login.password_error');
+            return langMsg('用户密码不正确.', 'member.login.password_error');
         }
+        session('userId', $userInfo['user_id']);
+        return $this->doLogin($userInfo['user_id'], 'H5');
+    }
+    /*------------------------------------------------------ */
+    //-- 系统登陆后执行
+    /*------------------------------------------------------ */
+    public function doLogin($user_id, $source = '')
+    {
+        $share_token = session('share_token');
+        if (empty($share_token) == false){
+            $userInfo = $this->info($user_id);
+            if ($userInfo['is_bind'] == 0){
+                $upData['pid'] = $this->getShareUser($share_token);
+            }
+        }
+        $time = time();
         $upData['login_odd_num'] = 0;//登陆异常清空
         $upData['login_time'] = $time;
         $upData['login_ip'] = request()->ip();
-        $upData['last_login_time'] = $userInfo['login_time'];
-        $upData['last_login_ip'] = $userInfo['login_ip'];
-
-
-        $this->where('user_id', $userInfo['user_id'])->update($upData);
-        session('userId', $userInfo['user_id']);
+        $upData['last_login_time'] = Db::raw('last_login_time=login_time');
+        $upData['last_login_ip'] = Db::raw('last_login_ip=login_ip');
+        $this->upInfo($user_id, $upData);
         $LogLoginModel = new LogLoginModel();
         $inLog['log_ip'] = $upData['login_ip'];
         $inLog['log_time'] = $time;
-        $inLog['user_id'] = $userInfo['user_id'];
+        $inLog['user_id'] = $user_id;
         $LogLoginModel->save($inLog);
-        $this->userInfo = $this->info($userInfo['user_id']);//附值全局
-        $wxInfo = session('wxInfo');
-        if (empty($wxInfo) == false){
-            (new \app\weixin\model\WeiXinUsersModel)->where('wxuid',$wxInfo['wxuid'])->update(['user_id'=>$userInfo['user_id']]);
-        }
         //判断订单模块是否存在
         if (class_exists('app\shop\model\OrderModel')) {
             //执行订单自动签收
-            (new \app\shop\model\OrderModel)->autoSign($userInfo['user_id']);
-            (new \app\shop\model\CartModel)->loginUpCart($userInfo['user_id']);//更新购物车
+            (new \app\shop\model\OrderModel)->autoSign($user_id);
+            (new \app\shop\model\CartModel)->loginUpCart($user_id);//更新购物车
         }
 
-        if (empty($data['source']) == false){
-            if ($data['source'] == 'developers'){
-                $devtoken = random_str(10).date(s);
-                Cache::set('devlogin_'.$devtoken,$userInfo['user_id'],86400 * 7);
-                return [$data['source'],$devtoken];
+        $data['source'] = $source;
+        if ($data['source']) {
+            if ($data['source'] == 'developers') {//小程序
+                $devtoken = random_str(10) . date(s);
+                Cache::set('devlogin_' . $devtoken, $user_id, 3600);
+                return [$data['source'], $devtoken, $user_id];
             }
         }
 
-        return ['H5',$userInfo['user_id']];
+        return [$data['source'], $user_id];
     }
-
     /*------------------------------------------------------ */
     //-- 验证密码强度
     /*------------------------------------------------------ */
@@ -102,16 +110,16 @@ class UsersModel extends BaseModel
     {
         $pwd = trim($pwd);
         if (empty($pwd)) {
-            return langMsg('密码不能为空.','member.checkpwd.empty_pwd');
+            return langMsg('密码不能为空.', 'member.checkpwd.empty_pwd');
         }
         if (strlen($pwd) < 8) {//必须大于8个字符
-            return langMsg('密码必须大于八字符.','member.checkpwd.pwd_length_error');
+            return langMsg('密码必须大于八字符.', 'member.checkpwd.pwd_length_error');
         }
         if (preg_match("/^[0-9]+$/", $pwd)) { //必须含有特殊字符
-            return langMsg('密码不能全是数字.','member.checkpwd.pwd_not_number');
+            return langMsg('密码不能全是数字.', 'member.checkpwd.pwd_not_number');
         }
         if (preg_match("/^[a-zA-Z]+$/", $pwd)) {
-            return langMsg('密码不能全是字母.','member.checkpwd.pwd_not_letter');
+            return langMsg('密码不能全是字母.', 'member.checkpwd.pwd_not_letter');
         }
         /*if (preg_match("/^[0-9A-Z]+$/", $pwd)) {
             return '请包含数字，字母大小写或者特殊字符';
@@ -140,33 +148,8 @@ class UsersModel extends BaseModel
      * @param string $obj
      * @return bool|string
      */
-    public function register($inArr = array(), $wxuid = 0, $is_admin = false,&$obj = '')
+    public function register($inArr = array(), $wxuid = 0, $is_admin = false, &$obj = '')
     {
-        $wxInfo = session('wxInfo');
-        if (empty($wxInfo)){
-            $wxInfo['wxuid'] = 0;
-        }
-        //分享注册
-        if ($is_admin == false) {
-            $inArr['pid'] = 0;
-            if ($wxInfo['wxuid'] > 0) {//微信访问根据微信分享来源记录，执行
-                $bind_share_rule = settings('bind_share_rule');
-                if ($bind_share_rule == 0){//按最先分享绑定
-                    $sort = 'id ASC';
-                }else{//按最后分享绑定
-                    $sort = 'id DESC';
-                }
-                $share_user_id = (new \app\weixin\model\WeiXinInviteLogModel)->where('wxuid',$wxInfo['wxuid'])->order($sort)->value('user_id');
-                if (empty($share_user_id) == false){
-                    $inArr['pid'] = $share_user_id;
-                }
-            }else{
-                $share_token = session('share_token');
-                if (empty($share_token) == false){
-                    $inArr['pid'] = $this->getShareUser($share_token);
-                }
-            }
-        }//end
 
         if ($wxuid == 0) {
             if (empty($inArr)) {
@@ -190,22 +173,22 @@ class UsersModel extends BaseModel
             }
             $inArr['password'] = f_hash($inArr['password']);
 
-            if ($is_admin == false && $inArr['pid'] == 0){//非后台新增会员
+            if ($is_admin == false && $inArr['pid'] == 0) {//非后台新增会员
                 $register_invite_code = settings('register_invite_code');
                 $register_must_invite = settings('register_must_invite');
-                if ($register_invite_code > 0){
+                if ($register_invite_code > 0) {
                     if ($register_must_invite == 1 && empty($inArr['invite_code'])) {
                         return '需要填写邀请信息才能注册.';
                     }
                     $share_user_id = 0;
                     if ($register_invite_code == 1) {//邀请码
                         $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
-                    }elseif ($register_invite_code == 2) {//会员ID
+                    } elseif ($register_invite_code == 2) {//会员ID
                         $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
-                    }elseif ($register_invite_code == 3) {//会员手机号
+                    } elseif ($register_invite_code == 3) {//会员手机号
                         $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
                     }
-                    if ($share_user_id < 1 && $register_must_invite == 1){
+                    if ($share_user_id < 1 && $register_must_invite == 1) {
                         return '邀请帐号不存在.';
                     }
                     $inArr['pid'] = $share_user_id;
@@ -216,7 +199,10 @@ class UsersModel extends BaseModel
         $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
-
+        $inArr['pid'] = 0;
+        if ($is_admin == false){
+            $inArr['pid'] = $this->returnPid(0);
+        }
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
             Db::startTrans();
         }
@@ -227,7 +213,7 @@ class UsersModel extends BaseModel
         }
         $user_id = $res->user_id;
         if ($user_id < 29889) {
-            $this->where('user_id',$user_id)->delete();
+            $this->where('user_id', $user_id)->delete();
             $inArr['user_id'] = 29889;
             $res = $this->create($inArr);
             $user_id = $res->user_id;
@@ -260,9 +246,6 @@ class UsersModel extends BaseModel
         }
         //edn
         //捆绑微信会员信息
-        if ($wxuid == 0) {
-            $wxuid = $wxInfo['wxuid'];
-        }
         if ($wxuid > 0) {
             $WeiXinUsersModel = new WeiXinUsersModel();
             $res = $WeiXinUsersModel->bindUserId($wxuid, $user_id);
@@ -273,9 +256,9 @@ class UsersModel extends BaseModel
         } //end
         Db::commit();
         $bind_pid_time = settings('bind_pid_time');
-        if ($bind_pid_time < 1) {
+        if ($inArr['pid'] > 0 && $bind_pid_time < 1) {
             //写入九级关系链
-            $this->regUserBind($user_id,$inArr['pid']);
+            $this->regUserBind($user_id, $inArr['pid']);
         }
         //红包模块存在执行
         if (class_exists('app\shop\model\BonusModel')) {
@@ -284,11 +267,39 @@ class UsersModel extends BaseModel
         }
 
         //后台添加的用户，加日志
-        if($is_admin&&!empty($obj)){
-            $obj->_log($user_id, '后台手动新增会员-用户id:'.$user_id, 'member');
+        if ($is_admin && !empty($obj)) {
+            $obj->_log($user_id, '后台手动新增会员-用户id:' . $user_id, 'member');
         }
         return true;
     }
+    /*------------------------------------------------------ */
+    //-- 返上绑定上级ID
+    /*------------------------------------------------------ */
+    private function returnPid($user_id = 0)
+    {
+        if($user_id > 0){
+            return $this->where('user_id',$user_id)->value('pid');
+        }
+        $wxInfo = session('wxInfo');
+        if (empty($wxInfo)) {
+            $wxInfo['wxuid'] = 0;
+        }
+        $share_token = session('share_token');
+        //分享注册
+        if ($wxInfo['wxuid'] > 0) {//微信访问根据微信分享来源记录，执行
+            $bind_share_rule = settings('bind_share_rule');
+            if ($bind_share_rule == 0) {//按最先分享绑定
+                $sort = 'id ASC';
+            } else {//按最后分享绑定
+                $sort = 'id DESC';
+            }
+            $pid = (new \app\weixin\model\WeiXinInviteLogModel)->where('wxuid', $wxInfo['wxuid'])->order($sort)->value('user_id');
+        }elseif (empty($share_token) == false) {
+            $pid = $this->getShareUser($share_token);
+        }
+        return $pid;
+    }
+
     /*------------------------------------------------------ */
     //-- 找回用户密码
     /*------------------------------------------------------ */
@@ -355,7 +366,7 @@ class UsersModel extends BaseModel
         if ($res !== true) {
             return $res;
         }
-        if (is_numeric($data['pay_password']) == false){
+        if (is_numeric($data['pay_password']) == false) {
             return '请填写6位数字的支付密码.';
         }
         $count = $this->where('mobile', $data['mobile'])->count('user_id');
@@ -383,13 +394,13 @@ class UsersModel extends BaseModel
         if (empty($info) == false) return $info;
         if ($type == 'token') {
             $info = $this->where('token', $val)->find();
-            if (empty($info)){
+            if (empty($info)) {
                 return [];
             }
             $info = $info->toArray();
         } else {
             $info = $this->where('user_id', $val)->find();
-            if (empty($info)){
+            if (empty($info)) {
                 return [];
             }
             $info = $info->toArray();
@@ -407,17 +418,15 @@ class UsersModel extends BaseModel
         $info['level'] = userLevel($info['account']['total_integral'], false);//获取等级信息
         if ($info['role_id'] > 0) {
             $info['role'] = (new DividendRoleModel)->info($info['role_id']);
-        }else{
+        } else {
             $info['role']['role_id'] = 0;
             $info['role']['role_name'] = '粉丝';
         }
         //还没有执行绑定关系执行
-        if ($info['is_bind'] == 0 && $info['pid'] > 0){
+        if ($info['is_bind'] == 0) {
             $bind_pid_time = settings('bind_pid_time');
-            if ($bind_pid_time < 1){
-                $this->regUserBind($info['user_id'],$info['pid'],'edit');
-            }elseif($info['last_buy_time'] > 0){
-                $this->regUserBind($info['user_id'],$info['pid'],'edit');
+            if ($bind_pid_time < 1 || $info['last_buy_time'] > 0) {
+                $this->regUserBind($info['user_id'], $info['pid']);
             }
         }//end
         Cache::set($this->mkey . $val, $info, 30);
@@ -444,7 +453,7 @@ class UsersModel extends BaseModel
         if ($isCache == true) $info = Cache::get($mkey);
         if (empty($info) == false) return $info;
         $info = $this->where('u.user_id', $user_id)->alias('u')->field('u.user_id,u.mobile,ua.*')->join('users_account ua', 'u.user_id = ua.user_id', 'left')->find();
-        if (empty($info) == false){
+        if (empty($info) == false) {
             $info = $info->toArray();
         }
         Cache::set($mkey, $info, 60);
@@ -465,20 +474,20 @@ class UsersModel extends BaseModel
     //-- $val int/string 用户ID/分享token
     //-- $type string 类型
     /*------------------------------------------------------ */
-    public function getShareUser($val = '',$type = 'token')
+    public function getShareUser($val = '', $type = 'token')
     {
         if (empty($val)) return 0;
         $DividendSatus = settings('DividendSatus');
         if ($DividendSatus == 0) return 0;//不开启推荐，不执行
-        if ($type == 'token'){
+        if ($type == 'token') {
             $pInfo = $this->where('token', $val)->find();
-        }else{
+        } else {
             $pInfo = $this->where('user_id', $val)->find();
         }
         if (empty($pInfo)) return 0;
         if ($pInfo['is_ban'] == 1) {//如果用户被封禁，直接归被封禁用户的上级
             if ($pInfo['pid'] < 1) return 0;
-           return $this->getShareUser($pInfo['pid'],'user_id');
+            return $this->getShareUser($pInfo['pid'], 'user_id');
         }
         return $pInfo['user_id'];
     }
@@ -490,16 +499,15 @@ class UsersModel extends BaseModel
         $info = Cache::get($this->mkey . '_us_' . $user_id);
         if ($isCache == true && empty($info) == false) return $info;
         $user_id = $user_id * 1;
-        $UsersBind = new UsersBindModel();
-        $rows = $UsersBind->field("count('user_id') as num,level")->where('pid', $user_id)->group('level')->select();
-        $d_level = config('config.dividend_level');
+        $UsersBindSuperiorModel= new UsersBindSuperiorModel();
+        $levelField = ['pid','pid_b','pid_c'];
         $info['all'] = 0;
-        foreach ($d_level as $key => $val) {
-            $info[$key] = 0;
-        }
-        foreach ($rows as $row) {
-            $info['all'] += $row['num'];
-            $info[$row['level']] = $row['num'];
+        foreach ($levelField as $key=>$field){
+            $where = [];
+            $where[$field] = $user_id;
+            $count = $UsersBindSuperiorModel->where($where)->count();
+            $info[$key+1] = $count;
+            $info['all'] += $count;
         }
         Cache::set($this->mkey . '_us_' . $user_id, $info, 30);
         return $info;
@@ -507,66 +515,47 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 操作等级关联
     // -- user_id int 会员ID
-    // -- pid  int  所属上级ID
+    // -- pid  int  所属上级ID 值为-1时，执行查询来源
     // -- is_edit boolean 是否重新修改，不是修改发送绑定消息通知
     /*------------------------------------------------------ */
     public function regUserBind($user_id = 0, $pid = 0, $is_edit = false)
     {
-        static $UsersBindModel;
         if ($user_id < 1) return true;
-        if ($is_edit == false){
+        if ($is_edit == false) {
             $DividendSatus = settings('DividendSatus');
             if ($DividendSatus == 0) return true;//不开启推荐，不执行
-            $is_bind= $this->where('user_id', $user_id)->value('is_bind');
+            $is_bind = $this->where('user_id', $user_id)->value('is_bind');
             if ($is_bind > 0) return false;//已执行绑定不再执行
-            $this->where('user_id', $user_id)->update(['is_bind'=>1]);
-            //会员上级汇总处理
-            $res = (new UsersBindSuperiorModel)->treat($user_id,$pid);
-            if ($res == false){
-                return false;
-            }
-            //会员上级汇总处理end
         }
-
-
-
-        if (isset($UsersBindModel) == false){
-            $UsersBindModel = new UsersBindModel();
+        if ($pid == -1){
+            $pid = $this->returnPid($user_id);
         }
-
-        if ($is_edit == true) {//如果重新修改会员上级，清理原来的记录
-            $UsersBindModel->where('user_id',$user_id)->delete();
+        $UsersBindSuperiorModel = new UsersBindSuperiorModel();
+        //会员上级汇总处理
+        $res = $UsersBindSuperiorModel->treat($user_id, $pid);
+        if ($res == false) {
+            return false;
         }
-        $dividend_level = config('config.dividend_level');
-        $bind_max_level = config('config.bind_max_level');//后台记录50层的关系链config('config.dividend_level');
-        $_pid = $pid;
-        for ($level=1;$level<=$bind_max_level;$level++) {
-            if ($_pid < 1) break;
-            if ($level <= 2) {//只记录前两级发送通知
-                $sendUids[$_pid] = $dividend_level[$level];
-            }
-            $inArr['level'] = $level;
-            $inArr['user_id'] = $user_id;
-            $inArr['pid'] = $_pid;
-            $res = $UsersBindModel->create($inArr);
-            if ($is_edit == true && $res->pid < 1) return false;
-            $_pid = $this->where('user_id', $_pid)->value('pid');
-        }
-
-
 
         if ($is_edit == false) {
+            $this->where('user_id', $user_id)->update(['is_bind' => 1]);
+            if ($pid < 1) return true;
             //发送模板消息
             $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
             $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
             $wxInfo = $WeiXinUsersModel->info($user_id);
-
             $data['user_id'] = $user_id;
             $data['nickname'] = $wxInfo['wx_nickname'];
             $data['sex'] = $wxInfo['sex'] == 1 ? '男' : '女';
             $data['region'] = $wxInfo['wx_province'] . $wxInfo['wx_city'];
             $data['send_scene'] = 'bind_user_msg';
             unset($wxInfo);
+
+            $sendUids[$pid] = 1;
+            $usersBind = $UsersBindSuperiorModel->where('user_id',$user_id)->find();
+            if ($usersBind['pid_b'] > 0){
+                $sendUids[$usersBind['pid_b']] = 2;
+            }
             foreach ($sendUids as $uid => $val) {
                 $data['level'] = $val;
                 $data['openid'] = $WeiXinUsersModel->where('user_id', $uid)->value('wx_openid');
@@ -604,44 +593,44 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 签到首页
     /*------------------------------------------------------ */
-    public function signIndex($user_id = 0,$type = 0)
+    public function signIndex($user_id = 0, $type = 0)
     {
-        $redis_name = "sing_".$user_id."_".date('Ymd');
+        $redis_name = "sing_" . $user_id . "_" . date('Ymd');
         $info = Cache::get($redis_name);
-        if(empty($info)){
-            $info = (new UsersSignModel)->where(['user_id'=>$user_id])->field('time')->select();
-            Cache::set($redis_name,$info,86400);
+        if (empty($info)) {
+            $info = (new UsersSignModel)->where(['user_id' => $user_id])->field('time')->select();
+            Cache::set($redis_name, $info, 86400);
         }
         foreach ($info as $key => $value) {
             $data[] = $value['time'];
         }
         if ($type == 0) {
             $demo = implode("','", $data);
-            $demo = "'".$demo."'";
-        }else{
-             $demo = $data;
+            $demo = "'" . $demo . "'";
+        } else {
+            $demo = $data;
         }
         return $demo;
     }
     /*------------------------------------------------------ */
     //-- 签到首页七条历史记录
     /*------------------------------------------------------ */
-    public function signTime($user_id = 0,$type = 0)
+    public function signTime($user_id = 0, $type = 0)
     {
-        $redis_name = "signTime_".$user_id."_".date('Ymd');
+        $redis_name = "signTime_" . $user_id . "_" . date('Ymd');
         $info = Cache::get($redis_name);
-        if(empty($info)){
-            $info = (new UsersSignModel)->where(['user_id'=>$user_id])->field('time')->limit(7)->order('time desc')->select();
-            Cache::set($redis_name,$info,86400);
+        if (empty($info)) {
+            $info = (new UsersSignModel)->where(['user_id' => $user_id])->field('time')->limit(7)->order('time desc')->select();
+            Cache::set($redis_name, $info, 86400);
         }
         foreach ($info as $key => $value) {
             $data[] = date('n.d', $value['time']);;
         }
         if ($type == 0) {
             $demo = implode("','", $data);
-            $demo = "'".$demo."'";
-        }else{
-             $demo = $data;
+            $demo = "'" . $demo . "'";
+        } else {
+            $demo = $data;
         }
         return $demo;
     }
@@ -660,8 +649,8 @@ class UsersModel extends BaseModel
     {
         $data[0] = strtotime(date('Y-m-d', time()) . '00:00:00');
         $data[1] = strtotime(date('Y-m-d', time()) . '23:59:59');
-        $res = (new UsersSignModel)->where(['user_id'=>$user_id])->whereTime('time', 'between', [$data[0], $data[1]])->find();
-        $ress = $res?1:0;
+        $res = (new UsersSignModel)->where(['user_id' => $user_id])->whereTime('time', 'between', [$data[0], $data[1]])->find();
+        $ress = $res ? 1 : 0;
         return $ress;
     }
     /*------------------------------------------------------ */
@@ -669,29 +658,30 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     public function signInfos($user_id = 0, $date, $page, $limit)
     {
-        $where[] = ['user_id','=',$user_id];
-        $where[] = ['time','>=',$date[0]];
-        $where[] = ['time','<=',$date[1]];
-        $p = ($page-1)*$limit;
+        $where[] = ['user_id', '=', $user_id];
+        $where[] = ['time', '>=', $date[0]];
+        $where[] = ['time', '<=', $date[1]];
+        $p = ($page - 1) * $limit;
         $info = (new UsersSignModel)->where($where)->order('time desc')->limit($p, $limit)->select();
         foreach ($info as $key => $value) {
             $info[$key]['timeData'] = date('Y-m-d', $value['time']);
         }
         return $info;
     }
+
     public function signInfo($user_id = 0)
     {
-        $time1 = mktime(0,0,0,date('m'),1,date('Y'));
-        $time2 = mktime(23,59,59,date('m'),date('t'),date('Y'));
-        $where[] = ['user_id','=',$user_id];
-        $where[] = ['time','>=',$time1];
-        $where[] = ['time','<=',$time2];
+        $time1 = mktime(0, 0, 0, date('m'), 1, date('Y'));
+        $time2 = mktime(23, 59, 59, date('m'), date('t'), date('Y'));
+        $where[] = ['user_id', '=', $user_id];
+        $where[] = ['time', '>=', $time1];
+        $where[] = ['time', '<=', $time2];
 
-        $redis_name = "singInfo_".$user_id."_".date('Ymd');
+        $redis_name = "singInfo_" . $user_id . "_" . date('Ymd');
         $info = Cache::get($redis_name);
-        if(empty($info)){
+        if (empty($info)) {
             $info = (new UsersSignModel)->where($where)->order('time desc')->select();
-            Cache::set($redis_name,$info,86400);
+            Cache::set($redis_name, $info, 86400);
         }
         foreach ($info as $key => $value) {
             $info[$key]['timeData'] = date('Y-m-d', $value['time']);
@@ -705,14 +695,16 @@ class UsersModel extends BaseModel
     {
         $begin = strtotime(date('Y-m-d', time()) . '00:00:00');
         $end = strtotime(date('Y-m-d', time()) . '23:59:59');
-        $res = (new UsersSignModel)->where(['user_id'=>$user_id])->whereTime('time', 'between', [$begin, $end])->find();
-        if($res){ return false; }
+        $res = (new UsersSignModel)->where(['user_id' => $user_id])->whereTime('time', 'between', [$begin, $end])->find();
+        if ($res) {
+            return false;
+        }
 
         $inArr['use_integral'] = settings('sign_integral');
         $inArr['user_id'] = $user_id;
         $inArr['time'] = time();
-        $redis_name1 = "sing_".$user_id."_".date('Ymd');
-        $redis_name2 = "signTime_".$user_id."_".date('Ymd');
+        $redis_name1 = "sing_" . $user_id . "_" . date('Ymd');
+        $redis_name2 = "signTime_" . $user_id . "_" . date('Ymd');
         Db::startTrans();//启动事务
         try {
             $AccountLogModel = new AccountLogModel();
@@ -723,22 +715,32 @@ class UsersModel extends BaseModel
             $re = $AccountLogModel->change($changedata, $user_id, false);
             if ($re == true) {
                 $ress = Db::name('sign')->insert($inArr);
-                if($ress == true){
+                if ($ress == true) {
                     Db::commit();// 提交事务
                     Cache::rm($redis_name1);
                     Cache::rm($redis_name2);
                     return true;
-                }else{
+                } else {
                     Db::rollback();// 回滚事务
                     return false;
                 }
-            }else{
+            } else {
                 Db::rollback();// 回滚事务
                 return false;
             }
         } catch (Exception $e) {
-             Db::rollback();// 回滚事务
-             return $this->error($e->getMessage);
+            Db::rollback();// 回滚事务
+            return $this->error($e->getMessage);
         }
     }
+    /*------------------------------------------------------ */
+    //-- 团队统计
+    /*------------------------------------------------------ */
+    public function teamCount($user_id = 0)
+    {
+        if ($user_id < 1) return 0;
+        $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+        return (new UsersBindSuperiorModel)->where($where)->count() - 1;
+    }
+
 }

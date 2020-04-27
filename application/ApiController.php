@@ -30,7 +30,7 @@ class ApiController extends BaseController
             }
             if ($ajaxDataLog['time'] > $time - 10){
                 $ajaxDataLog['num']++;
-                if ($ajaxDataLog['num'] >= 30){
+                if ($ajaxDataLog['num'] >= 100){
                     $ajaxDataLog['limit'] = 1;
                 }
             }else{

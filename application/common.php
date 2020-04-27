@@ -73,13 +73,13 @@ function _url($url,$arr=[],$isNotHtml=true,$domain = false,$replaceAdminPath=fal
     if ($domain === '/'){
         $url = url($url,$arr,$isNotHtml,false);
     }else{
-        $url = url($url,$arr,$isNotHtml,$domain);
+         $url = url($url,$arr,$isNotHtml,$domain);
     }
     if (empty($domain) == false || $replaceAdminPath == true){
         $url = str_replace($_SERVER['SCRIPT_NAME'],'',$url);
     }
 
-    return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D','%5B','%5D'),array("'+","+'",'{{','}}','[',']'),$url);
+	return str_replace(array('%E3%80%90','%E3%80%91','%5B%5B','%5D%5D','%5B','%5D'),array("'+","+'",'{{','}}','[',']'),$url);
 }
 /**
  * 获取当前页面完整URL地址，前台调用
@@ -171,56 +171,56 @@ function mobileSubstr($phone = '', $strlen = false)
 }
 /*------------------------------------------------------ */
 //-- 过滤掉emoji表情
-/*------------------------------------------------------ */
+/*------------------------------------------------------ */ 
 function repEmoji($str){
     $str = preg_replace_callback( '/./u',function (array $match) {
-        return strlen($match[0]) >= 4 ? '' : $match[0];
-    },$str);
-    return $str;
+                return strlen($match[0]) >= 4 ? '' : $match[0];
+            },$str);
+     return $str;
 }
 /*------------------------------------------------------ */
 //-- 获取会员信息
-/*------------------------------------------------------ */
+/*------------------------------------------------------ */ 
 function userInfo($user_id,$return=true){
-    static $userList;
-    static $userModel;
-    if ($user_id < 1) return $return == true ? '--' : [];
-    if (!isset($userModel)){
-        $userModel = model('app\member\model\UsersModel');
-    }
-    if (!isset($userList[$user_id])){
-        $userList[$user_id] = $userModel->info($user_id);
-    }
-    if (empty($userList[$user_id])) return $return == true ? '--' : [];
-    $info = $userList[$user_id];
-    if ($return == true) return $info['nick_name'];
-    return $info;
+	static $userList;
+	static $userModel;
+	if ($user_id < 1) return $return == true ? '--' : [];
+	if (!isset($userModel)){
+		 $userModel = model('app\member\model\UsersModel');	
+	}
+	if (!isset($userList[$user_id])){
+		$userList[$user_id] = $userModel->info($user_id);
+	}
+	if (empty($userList[$user_id])) return $return == true ? '--' : [];
+	$info = $userList[$user_id];
+	if ($return == true) return $info['nick_name'];
+	return $info;
 }
 /*------------------------------------------------------ */
 //-- 获取会员等级
-/*------------------------------------------------------ */
+/*------------------------------------------------------ */ 
 function userLevel($integral,$returnName=true){
-    static $userLevelList;
-    if (!isset($userLevelList)){
-        $Model = model('app\member\model\UsersLevelModel');
-        $userLevelList = $Model->getRows();
-    }
-    $level = array();
-    if (empty($userLevelList)){
+	static $userLevelList;	
+	if (!isset($userLevelList)){
+		 $Model = model('app\member\model\UsersLevelModel');	
+		 $userLevelList = $Model->getRows();
+	}
+	$level = array();
+	if (empty($userLevelList)){
         if ($returnName == true) return '';
-        return $level;
+	    return $level;
     }
-    foreach ($userLevelList as $row){
-        if ($integral >= $row['min'] && $integral <= $row['max']){
-            $level = $row;
-            break;
-        }elseif ($row['max'] == 0){
-            $level = $row;
-            break;
-        }
-    }
-    if ($returnName == true) return $level['level_name'];
-    return $level;
+	foreach ($userLevelList as $row){
+		if ($integral >= $row['min'] && $integral <= $row['max']){
+			$level = $row;		
+			break;
+		}elseif ($row['max'] == 0){
+			$level = $row;
+			break;
+		}
+	}
+	if ($returnName == true) return $level['level_name'];
+	return $level;
 }
 /*------------------------------------------------------ */
 //-- 格式化价格
@@ -228,34 +228,34 @@ function userLevel($integral,$returnName=true){
 //-- @param   float   $price  价格
 //-- @return  string
 /*------------------------------------------------------ */
-function priceFormat($price,$show_yuan = false,$type=0){
-    switch ($type){
-        case 0://不四舍五入，保留两位小数
+function priceFormat($price,$show_yuan = false,$type=0){    
+	switch ($type){
+		case 0://不四舍五入，保留两位小数
             $price = floor($price*100)/100;
-            break;
-        case 1: // 保留不为 0 的尾数
-            $price = preg_replace('/(.*)(\\.)([0-9]*?)0+$/', '\1\2\3', number_format($price, 2, '.', ''));
-            if (substr($price, -1) == '.') $price = substr($price, 0, -1);
-            break;
-        case 2: // 不四舍五入，保留1位
-            $price = substr(number_format($price, 2, '.', ''), 0, -1);
-            break;
-        case 3: // 直接取整
-            $price = intval($price);
-            break;
-        case 4: // 四舍五入，保留 1 位
-            $price = number_format($price, 1, '.', '');
-            break;
-        case 5: // 先四舍五入，不保留小数
-            $price = round($price);
+			break;
+		case 1: // 保留不为 0 的尾数
+			$price = preg_replace('/(.*)(\\.)([0-9]*?)0+$/', '\1\2\3', number_format($price, 2, '.', ''));
+			if (substr($price, -1) == '.') $price = substr($price, 0, -1);
+			break;
+		case 2: // 不四舍五入，保留1位
+			$price = substr(number_format($price, 2, '.', ''), 0, -1);
+			break;
+		case 3: // 直接取整
+			$price = intval($price);
+			break;
+		case 4: // 四舍五入，保留 1 位
+			$price = number_format($price, 1, '.', '');
+			break;
+		case 5: // 先四舍五入，不保留小数
+			$price = round($price);
             break;
         case 6://四舍五入，保留两位小数
             $price = number_format($price, 2, '.', '');
-            break;
-    }
+			break;
+	}   
 
     if($show_yuan == false) return sprintf("%s", $price);
-    else return sprintf("￥%s元", $price);
+	else return sprintf("￥%s元", $price);
 }
 //价格拆分显示
 function priceShow($price){
@@ -291,59 +291,59 @@ function curl($url, $data = [])
 //-- rval 处理返回
 //-- default 是否默认
 /*------------------------------------------------------ */
-function tplckval($val='',$dval='',$rval='',$default = false){
-    if ($val !== 0){
-        if (empty($val) == true && $default === true) return $rval;
-        if (empty($dval) == true) return '';
-    }
-
-    if (is_array($dval)) return (in_array($val,$dval))?$rval:'';
-
-    if ($val === $dval) return $rval;
-
-    if (strstr($dval,'=')){
-        $dval = explode('=',$dval);
-        return ($val == $dval[1]) ? $rval : $default;
-    }
-    if (strstr($dval,'<>')){
-        $dval = explode('<>',$dval);
-        return ($val <> $dval[1]) ? $rval : $default;
-    }
-    if (strstr($dval,'>=')){
-        $dval = explode('>=',$dval);
-        return ($val >= $dval[1]) ? $rval : $default;
-    }
-    if (strstr($dval,'>')){
-        $dval = explode('>',$dval);
-        return ($val > $dval[1]) ? $rval : $default;
-    }
-    if (strstr($dval,'<=')){
-        $dval = explode('<=',$dval);
-        return ($val <= $dval[1]) ? $rval : $default;
-    }
-    if (strstr($dval,'<')){
-        $dval = explode('<',$dval);
-        return ($val < $dval[1]) ? $rval : $default;
-    }
-
+function tplckval($val='',$dval='',$rval='',$default = false){	
+	if ($val !== 0){
+		if (empty($val) == true && $default === true) return $rval;
+		if (empty($dval) == true) return '';
+	}
+	
+	if (is_array($dval)) return (in_array($val,$dval))?$rval:'';
+	
+	if ($val === $dval) return $rval;
+	
+	if (strstr($dval,'=')){
+		$dval = explode('=',$dval);	
+		return ($val == $dval[1]) ? $rval : $default;
+	}
+	if (strstr($dval,'<>')){
+		$dval = explode('<>',$dval);
+		return ($val <> $dval[1]) ? $rval : $default;
+	}
+	if (strstr($dval,'>=')){
+		$dval = explode('>=',$dval);
+		return ($val >= $dval[1]) ? $rval : $default;
+	}
+	if (strstr($dval,'>')){
+		$dval = explode('>',$dval);
+		return ($val > $dval[1]) ? $rval : $default;
+	}
+	if (strstr($dval,'<=')){
+		$dval = explode('<=',$dval);
+		return ($val <= $dval[1]) ? $rval : $default;
+	}
+	if (strstr($dval,'<')){
+		$dval = explode('<',$dval);
+		return ($val < $dval[1]) ? $rval : $default;
+	}
+	
 }
 /*------------------------------------------------------ */
 //-- 模板中调用，将GMT时间戳格式化为用户自定义时区日期
 /*------------------------------------------------------ */
-function dateTpl($time = '',$format = '',$return_false = false){
-    if ($format === true){
-        $time = time();
-        $format = 'Y-m-d H:i';
-    }elseif (empty($time)){
-        return ($return_false == false) ? '没有记录' : '';
-    }
-    if (empty($format)){
-        $format = 'Y-m-d H:i';
-    }
+function dateTpl($time = '',$format = '',$return_false = false){    
+	if ($format === true){ 
+		$time = time();
+		$format = 'Y-m-d H:i';
+	}elseif (empty($time)){
+		 return ($return_false == false) ? '没有记录' : '';
+	}
+	if (empty($format)){
+		$format = 'Y-m-d H:i';
+	}
     if ($return_false == true){
         return date($format, $time);
     }
-    if (date('Y') == date('Y', $time)){
+	if (date('Y') == date('Y', $time)){
         $format = str_replace('Y-','',$format);
     }else{
         $format = 'Y-m-d';
@@ -357,64 +357,64 @@ function dateTpl($time = '',$format = '',$return_false = false){
 //--@Param $leve 默认层级;设置; 不需要;
 //--@Param $newrows 递归子类的id; 设置：不需要;
 /*------------------------------------------------------ */
-function returnRows($rows,$pid = 0,$level = 1){
-    static $newrows = array();
-    if ($level == 1) $newrows = array();
-    $icon = array('&nbsp;&nbsp;│ ','&nbsp;&nbsp;├─ ','&nbsp;&nbsp;└─ ');
-    $now_id = 0;
-    foreach ($rows as $key=>$row){
-        $_pid = isset($row['pid'])?$row['pid']:0;
-        if ($pid != $_pid) continue;
-        if (isset($newrows[$row['id']])) continue;
-        $children = returnChildren($rows,$row['id']);
-        $row['children'] = ($children) ? $row['id'].','.join(',',$children) : $row['id'];
-        $row['level'] = $level;
-        if ($level > 1){
-            $now_icon = '';
-            for($i=1;$i<$level;$i++){
-                $now_icon .= ($i == $level-1) ? $icon[1] : $icon[0];
-            }
-            $row['icon'] = $now_icon;
-        }else{
-            $row['icon'] = '';
-        }
-
-        $now_id = $row['id'];
-        $newrows[$now_id] = $row;
-        unset($rows[$key]);
-        $nc = count($newrows);
-        if ($rows){
-            $newrows = returnRows($rows,$now_id,($level+1));
-        }
-        if (count($newrows) > $nc){
-            $end_arr = end($newrows);
-            if ($end_arr['icon']) $newrows[$end_arr['id']]['icon'] = str_replace($icon[1],$icon[2],$end_arr['icon']);
-        }
-    }
-    if ($now_id > 0) $newrows[$now_id]['icon'] = str_replace($icon[1],$icon[2],$newrows[$now_id]['icon']);
-    unset($rows);
-    return $newrows;
+function returnRows($rows,$pid = 0,$level = 1){	
+	static $newrows = array();
+	if ($level == 1) $newrows = array();  
+	$icon = array('&nbsp;&nbsp;│ ','&nbsp;&nbsp;├─ ','&nbsp;&nbsp;└─ ');
+	$now_id = 0;
+	foreach ($rows as $key=>$row){
+		$_pid = isset($row['pid'])?$row['pid']:0;
+		if ($pid != $_pid) continue;	
+		if (isset($newrows[$row['id']])) continue;						
+		$children = returnChildren($rows,$row['id']);
+		$row['children'] = ($children) ? $row['id'].','.join(',',$children) : $row['id'];
+		$row['level'] = $level;
+		if ($level > 1){
+			$now_icon = '';
+			for($i=1;$i<$level;$i++){
+				$now_icon .= ($i == $level-1) ? $icon[1] : $icon[0];
+			}
+			$row['icon'] = $now_icon;
+		}else{
+			$row['icon'] = '';	
+		}
+		
+		$now_id = $row['id'];
+		$newrows[$now_id] = $row;
+		unset($rows[$key]);		
+		$nc = count($newrows);
+		if ($rows){
+			 $newrows = returnRows($rows,$now_id,($level+1));
+		}
+		if (count($newrows) > $nc){
+			$end_arr = end($newrows);
+			if ($end_arr['icon']) $newrows[$end_arr['id']]['icon'] = str_replace($icon[1],$icon[2],$end_arr['icon']);
+		}
+	}
+	if ($now_id > 0) $newrows[$now_id]['icon'] = str_replace($icon[1],$icon[2],$newrows[$now_id]['icon']);
+	unset($rows);
+	return $newrows;
 }
 function returnChildren(&$rows,$pid = 0){
-    $newrows = array();
-    foreach ($rows as $key=>$row){
+	$newrows = array();
+	foreach ($rows as $key=>$row){
         if(isset($row['pid']) == false) continue;
         if ($pid != $row['pid']) continue;
-        $children = returnChildren($rows,$row['id']);
-        if ($children) $row['id'] .= ','.join(',',$children);
-        $newrows[] = $row['id'];
-    }
-    return $newrows;
+		$children = returnChildren($rows,$row['id']);
+		if ($children) $row['id'] .= ','.join(',',$children);
+		$newrows[] = $row['id'];
+	}
+	return $newrows;
 }
 /*------------------------------------------------------ */
 //-- 返回一个带有缩进级别的数组
 /*------------------------------------------------------ */
 function returnRecArr(&$rows){
-    $newrows = array();
-    foreach ($rows as $key=>$row){
-        $newrows[$row['pid']][$row['id']] = $row;
-    }
-    return $newrows;
+	$newrows = array();
+	foreach ($rows as $key=>$row){
+		$newrows[$row['pid']][$row['id']] = $row;
+	}
+	return $newrows;
 }
 /*------------------------------------------------------ */
 //-- 将数组转换组下拉选项
@@ -426,59 +426,59 @@ function returnRecArr(&$rows){
 //-- @return  string
 /*------------------------------------------------------ */
 function arrToSel(&$rows = array(), $selected = 0, $islimit = false, $level = 0 ){
-    $select = '';
-    $selected = explode(',',$selected);
-    if (empty($rows)){
-        return $select;
+	$select = '';
+	$selected = explode(',',$selected);
+	if (empty($rows)){
+	    return $select;
     }
-    foreach ($rows AS $key=>$val){
-        if (is_array($val) == false){
-            $selectedArr = (in_array($key,$selected)) ? "selected='selected'" : '';
-            $select .= '<option value="'.$key.'" '.$selectedArr.'>'.$val.'</option>';
-            continue;
-        }
-        if ($level > 0 && $val['level'] > $level) continue;
-        $select .= '<option ';
-        if ($islimit === true && $val['children'] != $val['id'] ){
-            $val['id'] = '';
-            $select .=  ' style="background:#999;" ';
-        }
-
-        if (isset($val['status']) && $val['status'] == 0){
-            $select .=  ' style="color:#CCC;" ';
-        }elseif (isset($val['is_sys']) && $val['is_sys'] == 1){
-            $select .=  ' style="color:#ff0000;"  ';
-        }
-        $text = htmlspecialchars(strip_tags($val['name']));
-        if (empty($val['dict_val']) == false){
-            $select .= ' value="'.$val['ext_val'].'"  ';
-            $selval = $val['ext_val'];
-        }else{
-            $select .= ' value="'.$val['id'].'" ';
-            $selval = $val['id'];
-
-        }
-        $select .= (in_array($selval,$selected)) ? "selected='selected'" : '';
-        if (empty($val['children'])){
+	foreach ($rows AS $key=>$val){
+		if (is_array($val) == false){
+			$selectedArr = (in_array($key,$selected)) ? "selected='selected'" : '';
+			$select .= '<option value="'.$key.'" '.$selectedArr.'>'.$val.'</option>';
+			 continue;	
+		}
+		if ($level > 0 && $val['level'] > $level) continue;		
+		$select .= '<option ';
+		if ($islimit === true && $val['children'] != $val['id'] ){
+			$val['id'] = '';
+			$select .=  ' style="background:#999;" ';
+		}
+		
+		if (isset($val['status']) && $val['status'] == 0){
+			$select .=  ' style="color:#CCC;" ';
+		}elseif (isset($val['is_sys']) && $val['is_sys'] == 1){
+			$select .=  ' style="color:#ff0000;"  ';
+		}
+	    $text = htmlspecialchars(strip_tags($val['name']));
+		if (empty($val['dict_val']) == false){
+			$select .= ' value="'.$val['ext_val'].'"  ';
+			$selval = $val['ext_val'];
+		}else{
+			$select .= ' value="'.$val['id'].'" ';
+			$selval = $val['id'];
+			
+		}
+		$select .= (in_array($selval,$selected)) ? "selected='selected'" : '';
+		if (empty($val['children'])){
             $val['children'] = '';
         }
-        $select .= ' data-text="'.$text.'"   data-children="' . $val['children'] . '"   label="'.$text.'" >';
-        if (isset($val['icon'])) $select .= $val['icon'];
-        $select .= $text;
-        $select .= '</option>';
-    }
-    return $select;
+		$select .= ' data-text="'.$text.'"   data-children="' . $val['children'] . '"   label="'.$text.'" >';
+		if (isset($val['icon'])) $select .= $val['icon'];
+		$select .= $text;
+		$select .= '</option>';
+	}
+	return $select;
 }
 /*------------------------------------------------------ */
 //-- 判断是否json，是返回数组
 /*------------------------------------------------------ */
 function isJson($string) {
-    $arr = json_decode($string,true);
-    return (json_last_error() == JSON_ERROR_NONE) ? $arr : $string;
+ $arr = json_decode($string,true);
+ return (json_last_error() == JSON_ERROR_NONE) ? $arr : $string;
 }
 /*------------------------------------------------------ */
 //-- 创建目录
-/*------------------------------------------------------ */
+/*------------------------------------------------------ */   
 function makeDir($folder){
     $reval = false;
     if (!file_exists($folder)){
@@ -523,25 +523,25 @@ function makeDir($folder){
 function checkDateIsValid($date, $formats = array("Y-m-d H:i:s","Y-m-d H:i")){
     $unixTime = strtotime($date);
     if (!$unixTime) return false;  //strtotime转换不对，日期格式显然不对
-    //校验日期的有效性，只要满足其中一个格式就OK
-    if (!is_array($formats)) $formats = explode(',',$formats);
+	 //校验日期的有效性，只要满足其中一个格式就OK
+	if (!is_array($formats)) $formats = explode(',',$formats);
     foreach ($formats as $format) {
-        if (date($format, $unixTime) == $date)  return true;
-    }
+    	if (date($format, $unixTime) == $date)  return true;
+	}
     return false;
 }
 /*------------------------------------------------------ */
 //-- 系统配置读取
 /*------------------------------------------------------ */
 function settings($key = ''){
-    static $settings;
-    if (!isset($settings)){
-        $settings = model('app\mainadmin\model\SettingsModel')->getRows();
-    }
-    if (empty($key) == false){
-        return isJson($settings[$key]);
-    }
-    return $settings;
+	static $settings;
+	if (!isset($settings)){
+		 $settings = model('app\mainadmin\model\SettingsModel')->getRows();
+	}
+	if (empty($key) == false){
+		return isJson($settings[$key]);		
+	}
+	return $settings;
 }
 /*------------------------------------------------------ */
 //-- 生成指定长度的随机字符串(包含大写英文字母, 小写英文字母, 数字)
@@ -562,37 +562,37 @@ function random_str($length,$isupper = false){
 /*------------------------------------------------------ */
 //-- 时间转换计算
 /*------------------------------------------------------ */
-function timeTran($show_time) {
-    $dur = time() - $show_time;
-    if ($dur < 0) {
-        return '刚刚';
-    }
-    if ($dur < 60) {
-        return $dur . '秒前';
-    }
-    if ($dur < 3600) {
-        return floor($dur / 60) . '分钟前';
-    }
-    if ($dur < 86400) {
-        return floor($dur / 3600) . '小时前';
-    }
-    if ($dur < 259200) {//3天内
-        return floor($dur / 86400) . '天前';
-    }
-    return date("Y-m-d", $show_time);
+function timeTran($show_time) {  
+    $dur = time() - $show_time;  
+    if ($dur < 0) {  
+        return '刚刚';  
+    } 
+	if ($dur < 60) {  
+		return $dur . '秒前';  
+	}
+	if ($dur < 3600) {  
+		return floor($dur / 60) . '分钟前';  
+	} 
+	if ($dur < 86400) {  
+		return floor($dur / 3600) . '小时前';  
+	} 
+	if ($dur < 259200) {//3天内  
+		return floor($dur / 86400) . '天前';  
+	}
+	return date("Y-m-d", $show_time); 
 }
-/*------------------------------------------------------ */
+ /*------------------------------------------------------ */
 // * 对银行卡号进行掩码处理
 // * @param  string $bankCardNo 银行卡号
 //* @return string             掩码后的银行卡号
 /*------------------------------------------------------ */
 function formatBankCardNo($bankCardNo){
-    //截取银行卡号前4位
-    $prefix = substr($bankCardNo,0,4);
-    //截取银行卡号后4位
-    $suffix = substr($bankCardNo,-4,4);
-    $maskBankCardNo = $prefix." **** **** **** ".$suffix;
-    return $maskBankCardNo;
+	//截取银行卡号前4位
+	$prefix = substr($bankCardNo,0,4);
+	//截取银行卡号后4位
+	$suffix = substr($bankCardNo,-4,4);
+	$maskBankCardNo = $prefix." **** **** **** ".$suffix;
+	return $maskBankCardNo;
 }
 
 /**
@@ -615,12 +615,12 @@ function parseUrlParam($str){
  *   实现中文字串截取无乱码的方法
  */
 function getSubstr($string, $start, $length) {
-    if(mb_strlen($string,'utf-8')>$length){
-        $str = mb_substr($string, $start, $length,'utf-8');
-        return $str.'...';
-    }else{
-        return $string;
-    }
+      if(mb_strlen($string,'utf-8')>$length){
+          $str = mb_substr($string, $start, $length,'utf-8');
+          return $str.'...';
+      }else{
+          return $string;
+      }
 }
 
 /*------------------------------------------------------ */
@@ -661,8 +661,8 @@ function downloadImage($url,$path){
 }
 
 /**
- * 获取用户真实IP
- */
+* 获取用户真实IP
+*/
 function get_client_ip($type = 0) {
     $type       =  $type ? 1 : 0;
     $ip         =   'unknown';
@@ -688,20 +688,20 @@ function get_client_ip($type = 0) {
 }
 
 /**
- * 过滤微信名里面的表情特殊符号
- */
+* 过滤微信名里面的表情特殊符号
+*/
 function filterEmoji($str){
-    $str = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $str);
-    $str = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $str);
-    $str = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $str);
-    $str = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $str);
-    $str = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $str);
-    $str = str_replace(array('"','\''), '', $str);
-    $str = preg_replace_callback( '/./u',function (array $match) {
-        return strlen($match[0]) >= 4 ? '' : $match[0];
-    },$str);
-    $str  = addslashes(trim($str));
-    return $str;
+	$str = preg_replace('/[\x{1F600}-\x{1F64F}]/u', '', $str);
+	$str = preg_replace('/[\x{1F300}-\x{1F5FF}]/u', '', $str);
+	$str = preg_replace('/[\x{1F680}-\x{1F6FF}]/u', '', $str);
+	$str = preg_replace('/[\x{2600}-\x{26FF}]/u', '', $str);
+	$str = preg_replace('/[\x{2700}-\x{27BF}]/u', '', $str);
+	$str = str_replace(array('"','\''), '', $str);
+	$str = preg_replace_callback( '/./u',function (array $match) {
+      		return strlen($match[0]) >= 4 ? '' : $match[0];
+    	},$str);
+	$str  = addslashes(trim($str));
+ 	return $str;
 }
 
 /**
@@ -710,10 +710,10 @@ function filterEmoji($str){
  */
 function getWxBackUrl() {
     $sys_protocal = isset($_SERVER['SERVER_PORT']) && $_SERVER['SERVER_PORT'] == '443' ? 'https://' : 'http://';
-    $php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
-    $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
-    $relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : $path_info);
-    return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$relate_url;
+        $php_self = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+        $path_info = isset($_SERVER['PATH_INFO']) ? $_SERVER['PATH_INFO'] : '';
+        $relate_url = isset($_SERVER['REQUEST_URI']) ? $_SERVER['REQUEST_URI'] : $php_self.(isset($_SERVER['QUERY_STRING']) ? '?'.$_SERVER['QUERY_STRING'] : $path_info);
+        return $sys_protocal.(isset($_SERVER['HTTP_HOST']) ? $_SERVER['HTTP_HOST'] : '').$relate_url;
 }
 
 /**
@@ -722,8 +722,8 @@ function getWxBackUrl() {
  */
 function miniPathReplace($json){
     $urla = $urlb = [];
-    $repUrl[] = [str_replace('/','\\/',config('config.host_path')),'/pages/index/index'];
-    $repUrl[] = ['/shop/goods/info/id/','/pages/productDetails/productDetails?goods_id='];
+	$repUrl[] = [str_replace('/','\\/',config('config.host_path')),'/pages/index/index'];
+	$repUrl[] = ['/shop/goods/info/id/','/pages/productDetails/productDetails?goods_id='];
     $repUrl[] = ['/member/center/index','/pages/my/my'];
     $repUrl[] = ['/shop/goods/index/cid/','/pages/goodsList/goodsList?categoryid='];
     $repUrl[] = ['/shop/goods/index','/pages/goodsList/goodsList'];
@@ -747,6 +747,6 @@ function miniPathReplace($json){
     foreach ($repUrl as $url){
         $urla[] = $url[0];
         $urlb[] = $url[1];
-    }
+	}
     return str_replace($urla,$urlb,$json);
 }

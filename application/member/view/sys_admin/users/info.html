@@ -22,8 +22,8 @@
                             <li><a href="#tabbank" data-toggle="tab">会员资料</a></li>
                             <li><a href="#tabdescribe" data-toggle="tab">地址信息</a></li>
                             <li><a href="#superior" class="superior_tab" data-toggle="tab">上级关系树</a></li>
-                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(九级团队人数 - {$teamCount})</a></li>
-                            <li><a href="#stat" class="stat_tab" data-toggle="tab">业绩统计</a></li>
+                            <li><a href="#tabchain" class="tabchain_tab" data-toggle="tab">下级关系树(团队人数 - {$teamCount})</a></li>
+                            <li><a href="#stat" class="stat_tab {$has_order==0?'hide':''}" data-toggle="tab">业绩统计</a></li>
                         </ul>
                     </header>
                     
@@ -60,7 +60,7 @@
                                     <div class="col-sm-3"><label>{$row.reg_time|dateTpl}</label></div>
                                      <label class="control-label">最近购买时间：</label>
                                     <div class="col-sm-3"><label>{$row.last_buy_time|dateTpl}</label>
-                                     <a href="{:url('shop/sys_admin.order/index',array('user_id'=>$row['user_id']))}" target="_blank"  class="m-xs" >
+                                     <a href="{:url('shop/sys_admin.order/index',array('user_id'=>$row['user_id']))}" target="_blank"  class="m-xs {$has_order==0?'hide':''}" >
                                          <i class="fa fa-search"></i> 查看会员订单
                                      </a>
                                     </div>
@@ -106,14 +106,7 @@
                                         </label>
                                     </div>
                                 </div>   
-                               <div class="form-group">
-                                  <label class="control-label">下级数量：</label>
-                                  <div class="col-sm-9"  >
-                                  <label> {volist name="d_level" id="dval" }
-                                     {$d_level[$key]}：<strong>{$userShareStats[$key]|intval}</strong>；　 
-                                   {/volist}</label>
-                                  </div>
-                              </div>
+
                             </div>      
                       	
                             <!--提现帐号-->

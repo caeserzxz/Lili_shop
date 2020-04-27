@@ -5,7 +5,7 @@ namespace app\member\controller\api;
 use app\ApiController;
 
 use app\member\model\UsersModel;
-use app\member\model\UsersBindModel;
+use app\member\model\UsersBindSuperiorModel;
 use app\distribution\model\DividendRoleModel;
 
 /*------------------------------------------------------ */
@@ -21,33 +21,37 @@ class MyTeam extends ApiController
     {
         parent::initialize();
 		$this->checkLogin();//验证登陆
-        $this->Model = new UsersBindModel();
+        $this->Model = new UsersBindSuperiorModel();
     }
     /*------------------------------------------------------ */
 	//-- 获取列表
 	/*------------------------------------------------------ */
  	public function getList(){
-        $where[] = ['pid','=',$this->userInfo['user_id']];
 		$level = input('level',0,'intval');
-		if ($level > 0){
-        	$where[] = ['level','=',$level];
-		}		
-		$user_id = input('user_id','','trim');
+		if ($level == 1) {
+            $where[] = ['pid', '=', $this->userInfo['user_id']];
+        }elseif ($level == 2){
+            $where[] = ['pid_b','=',$this->userInfo['user_id']];
+        }elseif ($level == 3){
+            $where[] = ['pid_c','=',$this->userInfo['user_id']];
+		}else{
+            $where[] = ['pid|pid_b|pid_c','=',$this->userInfo['user_id']];
+        }
+        $UsersModel = new UsersModel();
+        $user_id = input('user_id','','trim');
 		if (empty($user_id) == false){
 		    if (is_numeric($user_id) == true){
                 $where[] = ['user_id','=',$user_id];
             }else{
 		        $uwhere[] = ['nick_name','like','%'.$user_id.'%'];
-                $user_ids = (new UsersModel)->where($uwhere)->column('user_id');
+                $user_ids = $UsersModel->where($uwhere)->column('user_id');
                 if (empty($user_ids)) $user_ids = 0;
                 $where[] = ['user_id','in',$user_ids];
             }
-
 		}
 		
 		$this->sqlOrder = 'user_id DESC';
         $data = $this->getPageList($this->Model, $where,'user_id',10);
-		$UsersModel = new UsersModel();   
 		$DividendRoleModel = new DividendRoleModel();
         foreach ($data['list'] as $key=>$user){
             $user = $UsersModel->info($user['user_id']);

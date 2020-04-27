@@ -856,7 +856,7 @@ class OrderModel extends BaseModel
         //如果设置支付再绑定关系时执行
         $bind_pid_time = settings('bind_pid_time');
         if ($bind_pid_time == 1){//支付成功时绑定关系
-            $UsersModel->regUserBind($orderInfo['user_id']);
+            $UsersModel->regUserBind($orderInfo['user_id'],-1);
         }//end
         $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
         Db::startTrans();//启动事务

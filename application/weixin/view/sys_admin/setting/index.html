@@ -14,8 +14,14 @@
 <section class="scrollable  wrapper w-f">
  <form class="form-horizontal form-validate" method="post" action="{:url('save')}">
 			<section class="panel panel-default">
-                <div class="widget-body">
-                    <div class="collapse in">
+                <header>
+                    <ul class="nav nav-tabs">
+                        <li class="active"><a href="#public" data-toggle="tab">公众号</a></li>
+                        <li><a href="#xcx" data-toggle="tab">小程序</a></li>
+                    </ul>
+                </header>
+                <div class="tab-content">
+                    <div class="tab-pane active" id="public">
                         	<div class="form-group">
                                 <label class="control-label" for="plc_name">公众号名称：</label>
                                 <div class="controls">
@@ -78,6 +84,29 @@
                             </div>
                         </div>
                 </div>
+                 <div class="tab-pane " id="xcx">
+                     <div class="form-group">
+                         <label class="control-label">小程序名称：</label>
+                         <div class="controls">
+                             <input type="text" name="setting[xcx_name]" class="input-xlarge" data-rule-required="true" value="{$setting.xcx_name}">
+                             <span class="maroon">*</span>
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="control-label">AppId：</label>
+                         <div class="controls">
+                             <input type="text" name="setting[xcx_appid]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_appid}">
+                             <span class="maroon">*</span>
+                         </div>
+                     </div>
+                     <div class="form-group">
+                         <label class="control-label">AppSecret：</label>
+                         <div class="controls">
+                             <input type="text" name="setting[xcx_appsecret]" class="input-xxlarge" data-rule-required="true" value="{$setting.xcx_appsecret}">
+                             <span class="maroon">*</span>
+                         </div>
+                     </div>
+                 </div>
           </div>
 	</section>
 </section>

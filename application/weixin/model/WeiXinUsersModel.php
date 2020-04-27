@@ -4,7 +4,7 @@ namespace app\weixin\model;
 use app\BaseModel;
 use think\facade\Cache;
 use think\Db;
-use app\weixin\model\WeiXinModel;
+
 use app\member\model\UsersModel;
 //*------------------------------------------------------ */
 //-- 微信会员
@@ -26,6 +26,7 @@ class WeiXinUsersModel extends BaseModel
     public function login($access_token){
 		if (empty($access_token)) return false;
 		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();
+		$UsersModel = new UsersModel();
 		if (empty($wx_info) == false){
 		    if ($wx_info['update_time'] < time() - 86400 ){
                 $WeiXinModel = new WeiXinModel();
@@ -42,6 +43,7 @@ class WeiXinUsersModel extends BaseModel
                     $wx_info = $this->where('wxuid',$wx_info['wxuid'])->find();
                 }
             }
+            $UsersModel->doLogin($wx_info['user_id'],'wxH5');
 			return $wx_info->toArray();
 		}
 		//没有数据，执行注册会员
@@ -62,20 +64,22 @@ class WeiXinUsersModel extends BaseModel
 		$inarr['wx_city'] = $wx_arr['city'];
 		$inarr['wx_province'] = $wx_arr['province'];	
 		if (settings('register_status') == 2){//微信自动注册会员
-			Db::startTrans();		
+			Db::startTrans();
 			$res = $this->save($inarr);
 			if ($res < 1) return false;
-
+            $wxuid = $res->wxuid;
 			$userInArr['sex'] = $wx_arr['sex'] == '男' ? 1 : 2;
 			$userInArr['nick_name'] = $wx_arr['nickname'];
 			$userInArr['headimgurl'] = $wx_arr['headimgurl'];
-			$res = (new UsersModel)->register($userInArr,$this->wxuid);//注册会员
+			$res = $UsersModel->register($userInArr,$wxuid);//注册会员
 			if ($res != true) return $res;
-			return $this->info($this->wxuid,'wx');
+			return $this->info($wxuid,'wx');
 		}
 		$res = $this->save($inarr);
 		if ($res < 1) return false;
-		return $this->info($this->wxuid,'wx');
+        $wx_info = $this->info($this->wxuid,'wx');
+        $UsersModel->doLogin($wx_info['user_id'],'wxH5');
+		return $wx_info;
 	}
 		
 	

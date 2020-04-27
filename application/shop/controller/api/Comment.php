@@ -138,9 +138,14 @@ class Comment extends ApiController
 			$file_path = config('config._upload_').'comment/'.date('Ymd').'/';
 			makeDir($file_path);
 			foreach ($imgfile as $file){
-				$file_name = $file_path.random_str(12).'.jpg';
-				file_put_contents($file_name,base64_decode(str_replace('data:image/jpeg;base64,','',$file)));
-				$imgInArr['comment_id'] = $comment_id;
+                $extend = trim(substr($file,11,4),';');
+                $file_name = $file_path.random_str(12).'.'.$extend;
+                if ($extend == 'jpeg'){
+                    $file_name = $file_path.random_str(12).'.jpg';
+                }
+                file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$file)));
+
+                $imgInArr['comment_id'] = $comment_id;
 				$imgInArr['image'] = trim($file_name,'.');
 				$imgInArr['thumbnail'] = trim($file_name,'.');
 				$res = $GoodsCommentImagesModel->save($imgInArr);

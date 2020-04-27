@@ -61,7 +61,7 @@ class RoleOrderModel extends BaseModel
         $bind_pid_time = settings('bind_pid_time');
         if ($bind_pid_time == 1){
             $UsersModel =  new \app\member\model\UsersModel();
-            $UsersModel->regUserBind($orderInfo['user_id']);
+            $UsersModel->regUserBind($orderInfo['user_id'],-1);
         }//end
 
         $this->distribution($orderInfo,'pay');

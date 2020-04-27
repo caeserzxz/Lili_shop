@@ -11,9 +11,7 @@ use app\mainadmin\model\AdminUserModel;
  */
 class Passport extends AdminController
 {
-	public function initialize(){	
-		
-    }
+
     /**
      * 后台登录
      * @return array|mixed

@@ -19,7 +19,7 @@ class Attachment extends AdminController{
         $ckv = input('ckv','','trim');
         $checkCkv = checkCkv($ckv);
         if ($checkCkv == false){
-            parent::initialize(false);
+            parent::initialize();
         }
         $this->_root_ = Request::root();
     }

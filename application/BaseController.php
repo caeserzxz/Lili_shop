@@ -76,6 +76,9 @@ class BaseController extends Controller
 				if (md5($devtoken.$timeStamp.config('config.apikey')) !== $sign) return $this->error('接口验证失败！');
 				if (time() - intval($timeStamp/1000) > 60) return $this->error('请求超时.'.$timeStamp);
                 $userId = Cache::get('devlogin_'.$devtoken);
+                if ($userId > 0){
+                    Cache::set('devlogin_'.$devtoken,$userId,3600);//重新设置有效时间
+                }
             }
         }
         if ($userId > 0){

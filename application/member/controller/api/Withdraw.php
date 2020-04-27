@@ -299,6 +299,7 @@ class Withdraw extends ApiController
                 $file_name = $file_path.random_str(12).'.jpg';
             }
             file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$qrcodefile)));
+
             $inArr['qrcode_file'] = trim($file_name,'.');
         }else{//银行卡提现
             $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();

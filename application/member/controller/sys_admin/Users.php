@@ -4,10 +4,11 @@ namespace app\member\controller\sys_admin;
 
 use app\AdminController;
 use app\member\model\UsersModel;
+use app\member\model\UserAddressModel;
 use app\member\model\UsersBindSuperiorModel;
 
+
 use app\member\model\UsersLevelModel;
-use app\member\model\UsersBindModel;
 use app\distribution\model\DividendRoleModel;
 use app\distribution\model\DividendModel;
 use app\weixin\model\WeiXinUsersModel;
@@ -259,20 +260,26 @@ class Users extends AdminController
         if (empty($row)) return $this->error('用户不存在！');
         $row['wx'] = (new WeiXinUsersModel)->where('user_id', $user_id)->find();
         $this->assign("userShareStats", $this->Model->userShareStats($user_id));
-        $row['user_address'] = Db::table('users_address')->where('user_id', $user_id)->select();
+        $row['user_address'] = (new UserAddressModel)->where('user_id', $user_id)->select();
         $this->assign('row', $row);
         $this->assign('d_level', config('config.dividend_level'));
         $DividendRoleModel = new DividendRoleModel();
         $this->assign("roleList", $DividendRoleModel->getRows());
-        $this->assign("teamCount", (new UsersBindModel)->where('pid', $user_id)->count());
+        $this->assign("teamCount",$this->Model->teamCount($user_id));
         $where[] = ['dividend_uid', '=', $user_id];
         $where[] = ['status', 'in', [2, 3]];
         $DividendModel = new DividendModel();
         $dividend_amount = $DividendModel->where($where)->sum('dividend_amount');
         $this->assign("wait_money", $dividend_amount );
-        $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
-        $this->assign("end_date", date('Y/m/d'));
 
+        $has_order = 0;
+        //判断订单模块是否存在
+        if (class_exists('app\shop\model\OrderModel')) {
+            $has_order = 1;
+            $this->assign("start_date", date('Y/m/01', strtotime("-1 months")));
+            $this->assign("end_date", date('Y/m/d'));
+        }
+        $this->assign('has_order',$has_order);
         return $this->fetch('sys_admin/users/info');
     }
     /*------------------------------------------------------ */
@@ -362,11 +369,10 @@ class Users extends AdminController
             return $this->ajaxReturn($result);
         }
         $DividendRole = (new DividendRoleModel)->getRows();
-        $UsersBindModel = new UsersBindModel();
         $rows = $this->Model->field('user_id,nick_name,role_id')->where('pid', $user_id)->select();
         foreach ($rows as $key => $row) {
             $row['role_name'] = $DividendRole[$row['role_id']]['role_name'];
-            $row['teamCount'] = $UsersBindModel->where('pid', $row['user_id'])->count() + 1;
+            $row['teamCount'] = $this->Model->teamCount($row['user_id']) + 1;
             $rows[$key] = $row;
         }
         $result['list'] = $rows;
@@ -389,14 +395,19 @@ class Users extends AdminController
     public function evalStat()
     {
         $reportrange = input('reportrange', '2019/01/01 - 2019/03/21', 'trim');
-        $user_id = input('user_id', '29889', 'intval');
+        $user_id = input('user_id', '0', 'intval');
 
         $dtime = explode('-', $reportrange);
-        $UsersBindModel = new UsersBindModel();
-        $viewObj = $UsersBindModel->alias('b')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price');
-        $viewObj->join("shop_order_info o", 'b.user_id=o.user_id AND o.order_status = 1 AND o.add_time between ' . strtotime($dtime[0]) . ' and ' . (strtotime($dtime[1]) + 86399), 'left');
+        $UsersBindSuperiorModel = new UsersBindSuperiorModel();
+        $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+        $user_ids = $UsersBindSuperiorModel->where($where)->column('user_id');
+
+        $oWhere[] = ['o.user_id','in',$user_ids];
+        $oWhere[] = ['o.order_status','=',1];
+        $oWhere[] = ['o.add_time','between',[strtotime($dtime[0]),strtotime($dtime[1]) + 86399]];
+        $viewObj = (new \app\shop\model\OrderModel)->alias('o')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price');
         $viewObj->join("shop_order_goods og", 'og.order_id=o.order_id', 'left');
-         $rows = $viewObj->where('b.pid', $user_id)->select()->toArray();
+        $rows = $viewObj->where($oWhere)->select()->toArray();
         $result['buyGoods'] = [];
         $nowUser = [];
 
@@ -481,9 +492,9 @@ class Users extends AdminController
             if ($select_user_id == $userInfo['user_id']){
                 return $this->error('不能选择自己作为自己的上级.');
             }
-            $where[] = ['pid','=',$user_id];
-            $where[] = ['user_id','=',$select_user_id];
-            $count = (new UsersBindModel)->where($where)->count();
+            $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+            $where[] = ['user_id','<>',$user_id];
+            $count = (new UsersBindSuperiorModel)->where($where)->count();
             if ($count > 0){
                 return $this->error('不能选择自己的下级作为上级.');
             }
@@ -495,19 +506,13 @@ class Users extends AdminController
                 Db::rollback();
                 return $this->error('修改会员所属上级失败.');
             }
-            //会员上级汇总处理
-            $res = (new UsersBindSuperiorModel)->treat($user_id,$select_user_id);
-            if ($res == false){
-                Db::rollback();
-                return $this->error('汇总会员关系链失败.');
-            }
+
             //会员上级汇总处理end
             $res = $this->Model->regUserBind($user_id,$select_user_id,true);//重新绑定当前用户的关系链
             if ($res == false){
                 Db::rollback();
                 return $this->error('绑定当前会员关系链失败.');
             }
-            $this->evaleditSuperior($user_id);//执行重新生成所有下属的关系链
             Db::commit();//事务，提交
             Cache::rm($mkey);
             $this->_log($user_id, '调整会员所属上级，原所属上级ID：'.$userInfo['pid'], 'member');
@@ -520,24 +525,6 @@ class Users extends AdminController
         return $this->fetch('sys_admin/users/edit_superior');
     }
 
-    /*------------------------------------------------------ */
-    //-- 循执行调用更新关系链
-    /*------------------------------------------------------ */
-    protected function evaleditSuperior($pid,$level = 1){
-        $bind_max_level = config('config.bind_max_level');
-        if ($level > $bind_max_level){//循环到指定绑定层级跳出
-            return true;
-        }
-        $users = $this->Model->where('pid',$pid)->field('user_id,pid')->select();
-        if (empty($users)){
-            return true;//没有找到下级不执行
-        }
-        foreach ($users as $user){
-            $this->Model->regUserBind($user['user_id'],$pid,true);
-            $this->evaleditSuperior($user['user_id'],$level + 1);
-        }
-        return true;
-    }
 
     /*------------------------------------------------------ */
     //-- 搜索会员

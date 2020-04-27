@@ -79,7 +79,7 @@ class Menu extends AdminController
 							$_row['url'] = _url('shop/article/info',array('id'=>$rowb['keyword']),false,true);
 						}else{
 						    if ($_row['type'] == 'view'){
-                                if (strstr($rowb['keyword_value'],'http://') == false) {
+                                if (strstr($rowb['keyword_value'],'http://') == false && strstr($rowb['keyword_value'],'https://') == false) {
                                     $rowb['keyword_value'] = config('config.host_path').$rowb['keyword_value'];
                                 }
                                 $_row['url'] = $rowb['keyword_value'];
