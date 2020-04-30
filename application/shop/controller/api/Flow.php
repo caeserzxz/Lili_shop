@@ -564,6 +564,9 @@ class Flow extends ApiController
             Db::rollback();// 回滚事务
             return $this->error('未知原因，订单商品写入失败.');
         }
+
+
+        \lib\OrderMessage::set($this->userInfo['headimgurl'],$this->userInfo['nick_name']);
         $where[] = ['rec_id', 'in', $cart_ids];
         $this->Model->where($where)->delete();// 清理购物车的商品
         $this->Model->cleanMemcache();

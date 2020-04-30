@@ -1,0 +1,115 @@
+
+<style type="text/css">
+	.showmessage{
+	    position: absolute;
+	    top: 10px;
+	    z-index: 9;
+	    left: 10px;
+	    color: #fff;
+	    line-height: 0.5rem;
+	    background: #000000a6;
+	    border-radius: 12px;
+	    padding: 0 8px;
+	}
+
+	.msg_show_img{
+		width: 20px;
+	    height: 20px;
+	    border-radius: 50%;
+	    display: inline-block;
+	}
+
+	.msg_show_div{
+		display: inline-block;
+	    float: left;
+	    height: 20px;
+	}
+
+	.msg_show_name{
+		line-height: 24px;
+    /* margin-top: -14px; */
+	    display: inline-block;
+	    /* top: 19px; */
+	    margin-left: 4px;
+	    margin-top: :2px;
+	    /* position: absolute; */
+	    /* margin-top: -5px; */
+	    width: -9%;
+	    float: left;
+	    margin-top: 0.05rem;
+	}
+</style>
+<div style="display: none;" id="show_ordermessage">
+	{volist name="users" id="vo"}
+	<span class="msg_show" data-type="not-real">
+		<div class="msg_show_div">
+			<img src="{$vo.headimgurl}" class="msg_show_img" style="display: inline-block;">
+		</div>
+		<div name="user_name" class="msg_show_name">	
+			{$vo.user_name} {$data.content}
+		</div>
+	</span>
+	{/volist}
+
+</div>
+<script type="text/javascript">
+	<!-- 刷新频率必须要比获取真实频率要低 -->
+	$(function(){
+		var hit = "{$data['hit']}"
+		var frequency = "{$data['frequency']}"
+		var rfrequency =  "{$data['rfrequency']}"
+		var content = "{$data['content']}"
+		var num = height = 0 ;
+
+		height = $('.selectBox').height() +  $('.header').height() + $(document).height()/50 + $('.fui-header').height()
+
+		$('body').append('<div class="showmessage" style="top:'+height+'px"></div>');
+
+		setInterval(function(){
+		   a = $('.msg_show:eq(0)')
+		  $('.showmessage').html('')
+
+		   var type=a.data('type')
+
+		   rd = Math.ceil(Math.random()*100)
+		   if((type == 'not-real' && rd < hit) || (type == 'real')) {
+		   	 $('.showmessage').append($('.msg_show:eq(0)').html())
+		   	 a.remove()
+		   }
+
+		   //要实时查看有没有数据,没有就要加载
+		   if(a.length <= 0){
+		   	ajaxget('not-real')
+		   }
+
+
+		},frequency)	
+
+		setInterval(function(){
+			ajaxget('real')
+		},rfrequency)
+
+
+
+		function ajaxget(type){
+			$.ajax({
+		 	url:"{:url('getordermessage')}",
+		 	data:{type:type},
+		 	success:function(r){
+		 		if(r != ''){
+		 			for(var i=0 ; i< r.length;i++){
+		 				$('#show_ordermessage').prepend(getstr(r[i].headimgurl,r[i].user_name,content,type))
+		 			}
+		 		}
+		 	}
+		 })
+		}
+		function getstr(header_img,nickname,content,type){
+			return '<span class="msg_show" data-type="'+type+'"><div class="msg_show_div"><img class="msg_show_img" style="display: inline-block;" src="'+header_img+'"></div><div name="user_name"  class="msg_show_name">'+nickname+' '+content+'</div></span>'
+		}
+	})
+
+	
+
+</script>
+	
