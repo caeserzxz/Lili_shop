@@ -101,7 +101,7 @@ $('.postBtn').click(function(){
                   _alert(res.msg,'{:url("member/wallet/index")}');
                   return false;
               }
-              window.location.href = '{:_url("shop/payment/getPay",["order_id"=>"【res.data.order_id】","pay_code"=>"【pay_code】"])}';
+              window.location.href = '{:_url("publics/payment/getPay",["order_id"=>"【res.data.order_id】","pay_code"=>"【pay_code】"])}';
 		  }
 	})
 
