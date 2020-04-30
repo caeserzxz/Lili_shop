@@ -9,6 +9,7 @@ use \app\mainadmin\model\MenuListModel;
  */
 class Menus extends AdminController
 {
+    public $isUpLevel = false;
     /*------------------------------------------------------ */
     //-- 优先执行
     /*------------------------------------------------------ */
@@ -22,7 +23,7 @@ class Menus extends AdminController
     /*------------------------------------------------------ */
     public function index()
     {
-        $rows = $this->Model->order('pid DESC,sort_order DESC')->select()->toArray();
+        $rows = $this->Model->order('level DESC,sort_order DESC')->select()->toArray();
         $list = returnRecArr($rows);
         if (empty($list)) $list[0] = array();
         $this->assign('list', $list);
@@ -34,7 +35,6 @@ class Menus extends AdminController
     /*------------------------------------------------------ */
     public function asInfo($data)
     {
-        $data['right'] = explode(',', $data['right']);
         if ($data['id'] < 1){
             $data['pid'] = input('pid',0,'intval');
         }
@@ -51,7 +51,11 @@ class Menus extends AdminController
         $where[] = ['name', '=', $data['name']];
         $count = $this->Model->where($where)->count();
         if ($count > 0) return $this->error('已存在相同的菜单名称，不允许重复添加.');
-        $data['right'] = join(',',$data['right']);
+        $data['level'] = 0;
+        if ($data['pid'] > 0){
+            $data['level'] = $this->Model->where('id',$data['pid'])->value('level');
+        }
+        $data['level'] += 1;
         return $data;
     }
     /*------------------------------------------------------ */
@@ -68,8 +72,6 @@ class Menus extends AdminController
     public function beforeEdit($data)
     {
         if (empty($data['name'])) return $this->error('菜单名称不能为空.');
-        $data['right'] = join(',',$data['right']);
-
         //验证数据是否出现变化
         $dbarr = $this->Model->field(join(',', array_keys($data)))->where('id', $data['id'])->find()->toArray();
         $this->checkUpData($dbarr, $data);
@@ -80,9 +82,17 @@ class Menus extends AdminController
         if ($count > 0) return $this->error('已存在相同的菜单名称，不允许重复添加！');
         $pid = $this->Model->where('id', $data['pid'])->value('pid');
         if ($pid == $data['id']) {
-            return $this->error('不能转移到自己的下属.');
+            return $this->error('不能转移到自己的下级.');
         }
-
+        if ($data['pid'] != $dbarr['pid']){
+            $this->isUpLevel = true;
+            $data['level'] = $this->Model->where('id',$data['pid'])->value('level');
+            if (empty($data['level'])){
+                $data['level'] = 1;
+            }else{
+                $data['level'] += 1;
+            }
+        }
         return $data;
     }
     /*------------------------------------------------------ */
@@ -90,7 +100,23 @@ class Menus extends AdminController
     /*------------------------------------------------------ */
     public function afterEdit($data)
     {
+        if ($this->isUpLevel == true){
+            $this->upLevel($data['id'],$data['level']);
+        }
         $this->Model->cleanMemcache();
         return $this->success('修改成功.', url('index'));
+    }
+    /*------------------------------------------------------ */
+    //-- 更新下级菜单
+    /*------------------------------------------------------ */
+    private function upLevel($pid = 0,$level){
+        $ids = $this->Model->where('pid',$pid)->column('id');
+        if (empty($ids)) return false;
+        foreach ($ids as $id){
+            $upDate['level'] = $level + 1;
+            $this->Model->where('id',$id)->update($upDate);
+            $this->UpLevel($id,$upDate['level']);
+        }
+        return true;
     }
 }

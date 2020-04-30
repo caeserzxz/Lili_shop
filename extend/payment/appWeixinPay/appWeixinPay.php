@@ -37,7 +37,7 @@ class appWeixinPay
      */
     function get_code($order, $config_value)
     {
-        $notify_url = _url('shop/Payment/notifyUrl',['pay_code'=>'appWeixinPay'],true,true);  // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $notify_url = _url('publics/Payment/notifyUrl',['pay_code'=>'appWeixinPay'],true,true);  // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         $return_url = _url('shop/flow/done',['order_id'=>$order['order_id']],true,true);  //页面跳转同步通知页面路径
 
         $order_amount = $order['order_amount']*100;

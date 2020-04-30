@@ -13,24 +13,33 @@ use app\mainadmin\model\PaymentModel;
 
 class weixin
 {
+    public $pay_code = '';
     /**
      * 析构流函数
      */
-    public function  __construct($code=""){
+    public function  __construct(){
         require_once("lib/WxPay.Api.php"); // 微信扫码支付demo 中的文件         
         require_once("example/WxPay.NativePay.php");
         require_once("example/WxPay.JsApiPay.php");
-	   if(!$code){
+        $this->initialize();
+    }
+    /*------------------------------------------------------ */
+    //-- 初始化
+    /*------------------------------------------------------ */
+    public function initialize($code = '')
+    {
+        if (empty($code)){
             $code = 'weixin';
         }
-        $payment =  (new PaymentModel)->where('pay_code', 'weixin')->find();
+        $this->pay_code = $code;
+        $payment =  (new PaymentModel)->where('pay_code', $code)->find();
         $config = json_decode(urldecode($payment['pay_config']),true);
         \WxPayConfig::$appid = $config['appid']; // * APPID：绑定支付的APPID（必须配置，开户邮件中可查看）
         \WxPayConfig::$mchid = $config['mchid']; // * MCHID：商户号（必须配置，开户邮件中可查看）
         \WxPayConfig::$key = $config['key']; // KEY：商户支付密钥，参考开户邮件设置（必须配置，登录商户平台自行设置）
         \WxPayConfig::$appsecret = $config['appsecret']; // 公众帐号secert（仅JSAPI支付的时候需要配置)，
         \WxPayConfig::$app_type = $code;
-    }    
+    }
     /**
      * 生成支付代码
      * @param   array   $order      订单信息
@@ -38,7 +47,7 @@ class weixin
      */
     function get_code($order, $config)
     {
-        $notify_url = SITE_URL . '/index.php/publics/payment/notifyUrl/pay_code/weixin'; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
+        $notify_url = SITE_URL . '/index.php/publics/payment/notifyUrl/pay_code/'.$this->pay_code; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 
         $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
@@ -116,12 +125,14 @@ class weixin
         // 微信扫码支付这里没有页面返回
     }
 
-    function getJSAPI($order)
+    function getJSAPI($order,$openId='')
     {
         //①、获取用户openid
         $tools = new \JsApiPay();
         //$openId = $tools->GetOpenid();
-        $openId = session('wxInfo.wx_openid');
+        if (empty($openId)){
+            $openId = session('wxInfo.wx_openid');
+        }
         //②、统一下单
         $input = new \WxPayUnifiedOrder();
         $input->SetBody("支付订单：".$order['order_sn']);
@@ -131,7 +142,7 @@ class weixin
         $input->SetTime_start(date("YmdHis"));
         $input->SetTime_expire(date("YmdHis", time() + 600));
         $input->SetGoods_tag("tp_wx_pay");
-        $input->SetNotify_url(SITE_URL.'/index.php/publics/Payment/notifyUrl/pay_code/weixin');
+        $input->SetNotify_url(SITE_URL.'/index.php/publics/Payment/notifyUrl/pay_code/'.$this->pay_code);
         $input->SetTrade_type("JSAPI");
         $input->SetOpenid($openId);
         $order2 = \WxPayApi::unifiedOrder($input);

@@ -5,9 +5,7 @@
 /*------------------------------------------------------ */
 namespace app\member\controller;
 use app\ClientbaseController;
-use think\Db;
-use think\facade\Cache;
-use think\facade\Session;
+
 
 class Passport  extends ClientbaseController{
 	/*------------------------------------------------------ */
@@ -29,6 +27,24 @@ class Passport  extends ClientbaseController{
 		$this->assign('register_status',settings('register_status'));		
 		return $this->fetch('login');
 	}
+    /*------------------------------------------------------ */
+    //-- 微信登陆
+    /*------------------------------------------------------ */
+    public function wxLogin(){
+        if ($this->is_wx != 1) {//微信网页访问执行
+            return $this->error('请使用微信访问.');
+        }
+        $WeiXinModel = new \app\weixin\model\WeiXinModel();
+        $access_token = $WeiXinModel->getWxOpenId();// 获取微信用户WxOpenId
+        $wxInfo = $this->wxAutologin($access_token,true);
+        if ($wxInfo['user_id'] < 1){
+            return $this->error('微信未绑定会员，请登陆已注册的帐号进行绑定，再使用此功能.');
+        }
+        if (empty($this->userInfo) == true){
+            return $this->error('登陆失败，请联系客服审核帐号是否被封禁.');
+        }
+        return $this->success('登陆成功.',session('REQUEST_URI'));
+    }
 	/*------------------------------------------------------ */
     //-- 注册
     /*------------------------------------------------------ */

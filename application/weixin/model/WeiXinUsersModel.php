@@ -25,7 +25,9 @@ class WeiXinUsersModel extends BaseModel
 	/*------------------------------------------------------ */
     public function login($access_token){
 		if (empty($access_token)) return false;
-		$wx_info = $this->where('wx_openid',$access_token['openid'])->find();
+        $where['wx_openid'] = $access_token['openid'];
+        $where['is_xcx'] = 0;
+        $wx_info = $this->where($where)->find();
 		$UsersModel = new UsersModel();
 		if (empty($wx_info) == false){
 		    if ($wx_info['update_time'] < time() - 86400 ){
@@ -62,7 +64,8 @@ class WeiXinUsersModel extends BaseModel
 		$inarr['wx_nickname'] = $wx_arr['nickname'];
 		$inarr['wx_headimgurl'] = $wx_arr['headimgurl'];
 		$inarr['wx_city'] = $wx_arr['city'];
-		$inarr['wx_province'] = $wx_arr['province'];	
+		$inarr['wx_province'] = $wx_arr['province'];
+
 		if (settings('register_status') == 2){//微信自动注册会员
 			Db::startTrans();
 			$res = $this->save($inarr);
@@ -73,11 +76,12 @@ class WeiXinUsersModel extends BaseModel
 			$userInArr['headimgurl'] = $wx_arr['headimgurl'];
 			$res = $UsersModel->register($userInArr,$wxuid);//注册会员
 			if ($res != true) return $res;
-			return $this->info($wxuid,'wx');
-		}
-		$res = $this->save($inarr);
-		if ($res < 1) return false;
-        $wx_info = $this->info($this->wxuid,'wx');
+		}else{
+            $res = $this->save($inarr);
+            if ($res < 1) return false;
+            $wxuid = $res->wxuid;
+        }
+        $wx_info = $this->info($wxuid,'wx');
         $UsersModel->doLogin($wx_info['user_id'],'wxH5');
 		return $wx_info;
 	}

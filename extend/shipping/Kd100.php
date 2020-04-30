@@ -23,7 +23,6 @@ class Kd100{
 		$res = self::vget($url);
 
 		$res = json_decode($res,true);
-        print_r($res);
 		if ($res['message'] != 'ok'){
 			$return['msg'] = $res['message'];
 			return $return;

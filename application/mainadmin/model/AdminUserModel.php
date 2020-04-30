@@ -100,15 +100,17 @@ class AdminUserModel extends BaseModel
 			$data['update_time'] = time();
 		 }
 		 $res = $this->save($data,$data['user_id']);
-		 if ($res == true){	
+		 if ($res == true){
+		     $logData['log_ip'] = request()->ip();
+             $logData['log_time'] = time();
 			 if ($type == 'login'){//登陆处理
 				$logModel = new LogLoginModel();
-				$logModel->save(['log_ip'=>$data['login_ip'],'log_time'=>$data['login_time'],'user_id'=>$data['user_id']]);
 			 }elseif($type == 'editPwd'){//修改密码处理
-				 $logModel = new LogSysModel();	
-				 $logModel->save(['edit_id'=>$data['user_id'],'log_info'=>'修改管理员密码']);
+				 $logModel = new LogSysModel();
+                 $logData['log_info'] = '修改自己的管理员帐号密码';
 		 	}
-		 }
+             $logModel->save($logData);
+         }
 		 return $res;
 	 }
 	

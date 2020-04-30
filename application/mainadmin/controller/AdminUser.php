@@ -9,6 +9,7 @@ use app\mainadmin\model\AdminRoleModel;
  */
 class AdminUser extends AdminController
 {
+    public $isEditPwd = false;
 	/*------------------------------------------------------ */
 	//-- 优先执行
 	/*------------------------------------------------------ */
@@ -76,7 +77,12 @@ class AdminUser extends AdminController
 		$data['password'] = _hash($pwd);
 		return $data;
 	}
-
+    /*------------------------------------------------------ */
+    //-- 添加后处理
+    /*------------------------------------------------------ */
+    public function afterAdd($data) {
+        $this->_Log($data['user_id'],'添加管理员:'.$data['user_name']);
+    }
 	/*------------------------------------------------------ */
 	//-- 修改前处理
 	/*------------------------------------------------------ */
@@ -86,7 +92,19 @@ class AdminUser extends AdminController
 		unset($data['password']);
 		if (empty($pwd) == false){
 			$data['password'] = _hash($pwd);
+            $this->isEditPwd = true;
 		}
 		return $data;		
 	}
+    /*------------------------------------------------------ */
+    //-- 修改后处理
+    /*------------------------------------------------------ */
+    public function afterEdit($data) {
+        $info = '修改管理员:'.$data['user_name'];
+        if ($this->isEditPwd == true){
+            $info .= '，修改密码.';
+        }
+        $this->_Log($data['user_id'],$info);
+    }
+
 }

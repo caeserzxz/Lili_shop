@@ -34,6 +34,20 @@ class UpdatePayModel
             }
             $orderInfo['transaction_id'] = $data["transaction_id"];
             return $RoleOrderModel->updatePay($orderInfo);// 修改订单支付状态
+        } elseif (stripos($order_sn, 'ac') !== false) {//活动订单
+            if (strlen($order_sn) > 15) {
+                $order_sn = substr($order_sn, 0, 15);
+            }
+            $OrderModel = new AcOrderModel();
+            $orderInfo = $OrderModel->where('order_sn', "$order_sn")->field('order_id,order_amount,user_id,pay_status,activity_id')->find();
+            if (empty($orderInfo)) return false;
+            $orderInfo = $orderInfo->toArray();
+            if ($orderInfo['pay_status'] == 1) return true;
+            if ((string)($orderInfo['order_amount'] * 100) != (string)$data['total_fee']) {
+                return false; //验证失败
+            }
+            $orderInfo['transaction_id'] = $data["transaction_id"];
+            return $OrderModel->updatePay($orderInfo);// 修改订单支付状态
         } elseif (stripos($order_sn, 'recharge') !== false) {//用户在线充值
             if (strlen($order_sn) > 20) {
                 $order_sn = substr($order_sn, 0, 20);

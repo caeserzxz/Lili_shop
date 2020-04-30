@@ -59,6 +59,10 @@ class UsersModel extends BaseModel
             return langMsg('用户密码不正确.', 'member.login.password_error');
         }
         session('userId', $userInfo['user_id']);
+        $wxInfo = session('wxInfo');
+        if (empty($wxInfo) == false && $wxInfo['user_id'] < 1){
+            (new WeiXinUsersModel)->bindUserId($wxInfo['wxuid'], $userInfo['user_id']);
+        }
         return $this->doLogin($userInfo['user_id'], 'H5');
     }
     /*------------------------------------------------------ */
@@ -66,6 +70,7 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     public function doLogin($user_id, $source = '')
     {
+        if ($user_id < 1) return false;
         $share_token = session('share_token');
         if (empty($share_token) == false){
             $userInfo = $this->info($user_id);
@@ -95,7 +100,7 @@ class UsersModel extends BaseModel
         $data['source'] = $source;
         if ($data['source']) {
             if ($data['source'] == 'developers') {//小程序
-                $devtoken = random_str(10) . date(s);
+                $devtoken = session_id(). date('dhi');
                 Cache::set('devlogin_' . $devtoken, $user_id, 3600);
                 return [$data['source'], $devtoken, $user_id];
             }

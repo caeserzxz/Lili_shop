@@ -235,14 +235,17 @@ class WeiXinModel extends BaseModel {
 	/*------------------------------------------------------ */
 	//-- 获取微信openid
 	/*------------------------------------------------------ */
-	function getWxOpenId(){
+	function getWxOpenId($isSilent = false){
 		$code = input('code','','trim');
 		if (empty($code)){
 			//获取code
 			//$redirect_uri = urlencode(getUrl());
 			$redirect_uri = urlencode(getWxBackUrl());
-			//$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
-			$url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+			if ($isSilent == true){//使用静默授权
+                $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_base&state=oauth&connect_redirect=1#wechat_redirect';
+            }else{
+                $url = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid='.$this->SetConfig['weixin_appid'].'&redirect_uri='.$redirect_uri.'&response_type=code&scope=snsapi_userinfo&state=STATE#wechat_redirect';
+            }
 			 header("location:".$url);
 			 exit;
 		}

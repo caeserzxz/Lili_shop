@@ -7,7 +7,7 @@ namespace payment\alipayMobile;
 use think\facade\Env;
 
 use app\mainadmin\model\PaymentModel;
-use app\shop\model\UpdatePayModel;
+use app\publics\model\UpdatePayModel;
 
 error_reporting(E_ERROR);
 

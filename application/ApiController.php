@@ -55,13 +55,6 @@ class ApiController extends BaseController
         if (empty($this->userInfo) || $this->userInfo['user_id'] < 1) return $this->error('请登陆后再操作.');
         if($this->userInfo['is_ban']==1){
             session('userId', null);
-            $wxInfo = session('wxInfo');
-            if (empty($wxInfo) == false){
-            //如果微信对应会员信息中不存在手机号码，执行清理微信授权数据，存在则不清理，重新登陆会员，微信会自动捆绑新的会员信息
-                if (empty($this->userInfo['mobile']) == true){
-                    session('wxInfo', null);
-                }
-            }
             return $this->error('账号已被禁用.');
         }
         return true;

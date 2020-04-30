@@ -21,7 +21,9 @@
 
                     <li class="hide"><a href="#sut_coupon" data-toggle="tab">超级券</a></li>
                     <li><a href="#sut_diypage" data-toggle="tab">装修</a></li>
-                   
+                    {notempty name="$is_activity"}
+                    <li><a href="#sut_activity" data-toggle="tab">活动</a></li>
+                    {/notempty}
                 {/if}
 
             </ul>
@@ -79,7 +81,23 @@
                     </div>
                     <div id="select-diypage-list"></div>
                 </div>
-                
+                <div class="tab-pane" id="sut_activity">
+                    {empty name="ActivityList"}
+                    <div class="tip">暂无相关活动信息。</div>
+                    {else/}
+                    {volist name="ActivityList" id="vo" }
+                    <div class="line good">
+                        <div class="image"><img src="{$vo.activity_img}"/></div>
+                        <nav title="选择" class="btn btn-default btn-sm" data-id="0" data-href="/activity/index/index/id/{$vo.id}">
+                            选择
+                        </nav>
+                        <div class="text">
+                            <p class="name">{$vo.activity_title}</p>
+                        </div>
+                    </div>
+                    {/volist}
+                    {/empty}
+                </div>
             </div>
         </div>
         <div class="modal-footer">

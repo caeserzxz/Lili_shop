@@ -22,8 +22,9 @@ class MiniUsersModel extends WeiXinUsersModel
 		if(!$minidata['openid']){
 			return 'openid获取失败，请联系管理员';
 		}
-
-		$wx_info = $this->where('wx_openid',$minidata['openid'])->find();
+        $where['wx_openid'] = $minidata['openid'];
+        $where['is_xcx'] = 1;
+        $wx_info = $this->where($where)->find();
 		if(empty($wx_info)){
 			return $this->doLogin($wx_info['user_id'],$data['source']);
 		}
@@ -33,6 +34,7 @@ class MiniUsersModel extends WeiXinUsersModel
 		$sex_arr = ['未知','男','女'];
 		//没有数据，执行注册会员
 		$inarr['user_id'] = 0;
+        $inarr['is_xcx'] = 1;
 		$inarr['wx_openid'] = $minidata['openid'];		
 		$inarr['add_time'] = $inarr['update_time'] = time();
 		$inarr['sex'] = $sex_arr[$data['gender']];
@@ -41,15 +43,21 @@ class MiniUsersModel extends WeiXinUsersModel
 		$inarr['wx_headimgurl'] = $data['avatarUrl'];
 		$inarr['wx_city'] = $data['city'];
 		$inarr['wx_province'] = $data['province'];	
-		Db::startTrans();		
-		$res = $this->save($inarr);
-		if ($res < 1) return '数据入库失败';
-        $wxuid = $res->wxuid;
-		$userInArr['sex'] = $data['gender'];
-		$userInArr['nick_name'] = $data['nickName'];
-        $UsersModel = new UsersModel();
-        $res = $UsersModel->register($userInArr,$wxuid);//注册会员
-		if ($res != true) return $res;
+        if (settings('register_status') == 2) {//微信自动注册会员
+            Db::startTrans();
+            $res = $this->save($inarr);
+            if ($res < 1) return '数据入库失败';
+            $wxuid = $res->wxuid;
+            $userInArr['sex'] = $data['gender'];
+            $userInArr['nick_name'] = $data['nickName'];
+            $UsersModel = new UsersModel();
+            $res = $UsersModel->register($userInArr, $wxuid);//注册会员
+            if ($res != true) return $res;
+        }else{
+            $res = $this->save($inarr);
+            if ($res < 1) return '数据入库失败';
+            $wxuid = $res->wxuid;
+        }
 		//缓存微信账户数据 
         $wx_info = $this->info($wxuid,'wx');
 		return $UsersModel->doLogin($wx_info['user_id'],$data['source']);

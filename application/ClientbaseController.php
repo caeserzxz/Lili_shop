@@ -14,6 +14,7 @@ class ClientbaseController extends BaseController{
     protected $allowAllAction = [
         'activity/index/index',// 活动页
         'member/passport/login',// 登录页面
+        'member/passport/wxlogin',// 微信登录页面
         'member/passport/register',// 注册页面
         'member/passport/forgetpwd',// 注册页面
         'shop/index',//商城首页
@@ -45,11 +46,11 @@ class ClientbaseController extends BaseController{
             if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')) {
                 $this->is_wx = 1;//微信访问
             }else{
-                $this->is_wx = 2;
+                $this->is_wx = -1;
             }
             session('is_wx',$this->is_wx);
         }//end
-       
+
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
         $this->userInfo = $userInfo;
@@ -79,14 +80,6 @@ class ClientbaseController extends BaseController{
 			'routeUri' => $this->routeUri,  // 当前uri			
 		]);
         $this->assign('is_wx',$this->is_wx);//是否微信访问
-
-        if ($this->is_wx == 1 && session('is_xcx') == 1){//此处理以防小程序和微信H5都有访问，session冲突
-            $is_xcx = 0;
-            if (strpos($_SERVER['HTTP_USER_AGENT'], 'webview')) {
-                $is_xcx = 1;//小程序访问
-            }
-            $this->assign('is_xcx',$is_xcx);
-        }
 
     }
 
@@ -118,11 +111,12 @@ class ClientbaseController extends BaseController{
      * @return bool
      */
     protected function checkLoginUser(){
-        global $userInfo;
         //获取邀请码
         $share_token = input('share_token', '', 'trim');
         $se_share_token = session('share_token');
+        $isSaveLog = false;//是否记录微信分享日志
         if (empty($share_token) == false && $se_share_token != $share_token) {
+            $isSaveLog = true;
             session('share_token', $share_token);
         }
         $dev_openid = input('dev_openid', '', 'trim');
@@ -133,35 +127,24 @@ class ClientbaseController extends BaseController{
         if (empty($this->userInfo) == true) {
             if ($this->is_wx == 1) {//微信网页访问执行
                 $wxInfo = session('wxInfo');
-                $UsersModel = new \app\member\model\UsersModel();
+                $WeiXinModel = new \app\weixin\model\WeiXinModel();
                 if (empty($wxInfo) == true) {
-                    if (settings('weixin_auto_login') == 0) {
-                        $access_token = (new \app\weixin\model\WeiXinModel)->getWxOpenId();// 获取微信用户WxOpenId
-                        if (empty($access_token['openid']) == false) {//获取openid成功执行
-                            $wxInfo = (new \app\weixin\model\WeiXinUsersModel)->login($access_token);//用户存在进行登陆，否则进行注册操作
-                            if ($wxInfo === false) {
-                                return false;
-                            }
-                            session('wxInfo', $wxInfo);
-                            if ($wxInfo['user_id'] > 0) {
-                                session('userId', $wxInfo['user_id']);
-                                $this->userInfo = $userInfo = $UsersModel->info($wxInfo['user_id']);
-
-                            }
-                        }
+                    if (strpos($_SERVER['HTTP_USER_AGENT'], 'webview') || strpos($_SERVER['HTTP_USER_AGENT'], 'miniProgram')) {
+                        $access_token = $WeiXinModel->getWxOpenId(true);// 小程序嵌套时静默获取微信用户WxOpenId
+                    }else{
+                        $access_token = $WeiXinModel->getWxOpenId();// 获取微信用户WxOpenId
                     }
+                    $wxInfo = $this->wxAutologin($access_token);
                 }
 
-                if ($wxInfo['user_id'] <= 0) {//未注册，判断是否来自分享,记录分享来源
-                    if (empty($share_token) == false) {
-                        $wxlog['wxuid'] = $wxInfo['wxuid'];
-                        $wxlog['user_id'] = $UsersModel->getShareUser($share_token);
-                        $wxlog['share_token'] = $share_token;
-                        $wxlog['add_time'] = time();
-                        $res = (new \app\weixin\model\WeiXinInviteLogModel)->save($wxlog);
-                        if ($res > 0) {
-                            session('share_token', null);
-                        }
+                if ($isSaveLog == true && empty($wxInfo['user_id']) == true) {//未注册，判断是否来自分享,记录分享来源
+                    $wxlog['wxuid'] = $wxInfo['wxuid'];
+                    $wxlog['user_id'] =  (new \app\member\model\UsersModel)->getShareUser($share_token);
+                    $wxlog['share_token'] = $share_token;
+                    $wxlog['add_time'] = time();
+                    $res = (new \app\weixin\model\WeiXinInviteLogModel)->save($wxlog);
+                    if ($res > 0) {
+                        session('share_token', null);
                     }
                 }
 
@@ -173,18 +156,37 @@ class ClientbaseController extends BaseController{
         return false;
     }
     /*------------------------------------------------------ */
+    //-- 微信自动登陆
+    /*------------------------------------------------------ */
+    protected function wxAutologin($access_token,$isLogin = false)
+    {
+        global $userInfo;
+        $wxInfo = [];
+        if (empty($access_token['openid']) == true) {
+            return $wxInfo;
+        }
+        $wxInfo = (new \app\weixin\model\WeiXinUsersModel)->login($access_token);//用户存在进行登陆，否则进行注册操作
+        if (empty($wxInfo) == true) {
+            return $wxInfo;
+        }
+        session('wxInfo', $wxInfo);
+        if (empty($wxInfo['user_id']) == false) {
+            if (settings('weixin_auto_login') == 0 || $isLogin == true){
+                $_userInfo = (new \app\member\model\UsersModel)->info($wxInfo['user_id']);
+                if ($_userInfo['is_ban'] == 0){
+                    session('userId', $wxInfo['user_id']);
+                    $this->userInfo = $userInfo = $_userInfo;
+                }
+            }
+        }
+        return $wxInfo;
+    }
+    /*------------------------------------------------------ */
     //-- 退出
     /*------------------------------------------------------ */
     public function logout()
     {
         session('userId', null);
-        $wxInfo = session('wxInfo');
-        if (empty($wxInfo) == false){
-            //如果微信对应会员信息中不存在手机号码，执行清理微信授权数据，存在则不清理，重新登陆会员，微信会自动捆绑新的会员信息
-            if (empty($this->userInfo['mobile']) == true){
-                session('wxInfo', null);
-            }
-        }
         if ($this->request->isAjax()){
             return $this->success('退出成功.');
         }
