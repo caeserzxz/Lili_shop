@@ -25,7 +25,10 @@ class Index  extends ClientbaseController{
         $this->assign('tipsubscribe', $tipsubscribe);
         //调用自定义首页
         if ($isIndex == false && settings('shop_index_tpl') == 1){
-            return $this->diypage();
+            $res = $this->diypage(true);
+            if ($res !== false){
+                return $res;
+            }
         }
         //优惠券提示层背景
         $reg_bonus_bg=settings('reg_bonus_bg');
@@ -49,7 +52,7 @@ class Index  extends ClientbaseController{
         //广告
         $adList = (new \app\shop\model\AdModel)->getRows();
         $this->assign('adList', $adList);
-        
+
 		$this->assign('title', '首页');
 		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
 		$this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单
@@ -84,7 +87,7 @@ class Index  extends ClientbaseController{
     /*------------------------------------------------------ */
     //-- 自定义首页 -- 新
     /*------------------------------------------------------ */
-    public function diypage(){
+    public function diypage($byIndex = false){
         $pageid = input('pageid',0,'intval');
         $ShopPageTheme = new \app\shop\model\ShopPageTheme();
         if ($pageid > 0){
@@ -94,6 +97,9 @@ class Index  extends ClientbaseController{
             $pageid = $theme['st_id'];
         }
         if (empty($theme)){
+            if ($byIndex == true){
+                return false;
+            }
             return $this->error('页面不存在.');
         }
 
@@ -222,5 +228,5 @@ class Index  extends ClientbaseController{
         return $this->fetch($tmpPath.'index');
     }
 
-	
+
 }?>
