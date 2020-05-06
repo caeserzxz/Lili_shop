@@ -53,8 +53,8 @@ class WeiXinUsersModel extends BaseModel
 		//获取相关微信帐号信息
         $wx_arr = $WeiXinModel->getWxUserInfoSubscribe($access_token['openid']);
         //防止微信并发-插入出现脏写锁-支持三秒等待执行
-        $lock = empty(Cache::get('wxinfo_lock_'.$access_token['openid'])) ? 0 :Cache::get('wxinfo_lock_'.$access_token['openid']);
-        if($lock){
+        $lock = Cache::get('wxinfo_lock_'.$access_token['openid']);
+        if(empty($lock) == false){
 			sleep(1);
 			$this->login($access_token);
 		}
