@@ -33,11 +33,11 @@ class UsersBindSuperiorModel extends BaseModel
         if (empty($data)){//不存在数据时执行
             $inData['user_id'] = $user_id;
             $inData['pid'] = $pid;
-            if (empty($superiorArr[1]) == false){
-                $inData['pid_b'] = $superiorArr[1];
+            if (empty($superiorArr[2]) == false){
+                $inData['pid_b'] = $superiorArr[2];
             }
-            if (empty($superiorArr[2]) == false) {
-                $inData['pid_c'] = $superiorArr[2];
+            if (empty($superiorArr[3]) == false) {
+                $inData['pid_c'] = $superiorArr[3];
             }
             $inData['superior'] = $superior;
             $res = $this->save($inData);

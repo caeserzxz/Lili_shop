@@ -21,6 +21,7 @@
                      <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
                      <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
                      <li><a href="#share" data-toggle="tab">商品分享设置</a></li>
+                     <li><a href="#show_ordermessage" data-toggle="tab">首页订单信息轮播配置</a></li>
                  </ul>
             </header>
             <div class="tab-content">
@@ -603,6 +604,59 @@
                         <button type="button" class="btn btn-primary" id="show_share_img" >点击预览效果</button><span class="help-inline">此项只是预览，要保存后才能生效.</span><br>
                         <a href="/upload/share_bg/test_goods_share.jpg" target="_blank"><img id="shareimg" src="/upload/share_bg/test_goods_share.jpg" style="max-height:400px;"></a>
                     </div>
+                </div>
+                <div class="tab-pane " id="show_ordermessage">
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">开启订单轮播：</label>
+                            <div class="controls">
+                                <label class="radio-inline">
+                                    <input name="show_ordermessage_switch" value="0" {$setting['show_ordermessage_switch']<1?'checked':''} type="radio">关闭
+                                </label>
+                                <label class="radio-inline">
+                                    <input name="show_ordermessage_switch" value="1" {$setting['show_ordermessage_switch']==1?'checked':''} type="radio" >开启
+                                </label>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >显示频率/s：</label>
+                            <div class="controls">
+                                <input type="text" name="show_ordermessage_frequency" value="{$setting.show_ordermessage_frequency}"> <span class="help-line"></span>
+                            </div>
+                        </div>
+
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label" >获取真订单频率/s:</label>
+                            <div class="controls">
+                                <input type="text" name="show_ordermessage_rfrequency" value="{$setting.show_ordermessage_rfrequency}"> <span class="help-line"></span>
+                            </div>
+                            <span class="help-line">秒,真订单获取频率</span>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-sm-2 control-label" >假订单命中率:</label>
+                            <div class="controls">
+                                <input type="text" name="show_ordermessage_hit" value="{$setting.show_ordermessage_hit}"> <span class="help-line"></span>
+                            </div>
+                            <span class="help-line">%,每次频率刷新显示的命中率(0~100)</span>
+                        </div>
+                         <div class="form-group">
+                            <label class="col-sm-2 control-label" >订单提示语:</label>
+                            <div class="controls">
+                                <input type="text" name="show_ordermessage_content" value="{$setting.show_ordermessage_content}"> <span class="help-line"></span>
+                            </div>
+                            <span class="help-line">xxx 刚刚下了一条订单</span>
+                        </div>
+                        <div class="form-group">
+                            注意：<br/>显示频率必须要比获取真实频率要小<br/>显示频率不能低于3秒,小于3秒会自动的转换成3秒<br/>显示频率越长，对系统越为友好
+                        </div>
+                        <!-- <div class="form-group">
+                            <label class="col-sm-2 control-label">注册优惠券背景：</label>
+                            <div class="controls col-sm-6">
+                                <span class="help-inline">建议图片尺寸：320*320像素</span><br>
+                                <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
+                                <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
+                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            </div>
+                        </div> -->
                 </div>
             </div>
           </section>

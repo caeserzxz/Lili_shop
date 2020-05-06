@@ -47,7 +47,7 @@ class FgList extends AdminController
         }
         $viewObj = $this->Model->alias('fgl')->join("fightgroup fg", 'fg.fg_id=fgl.fg_id', 'left');
         $viewObj->join("shop_goods g", 'fg.goods_id=g.goods_id', 'left');
-        $viewObj->where($where)->field('fgl.*,fg.*,g.goods_name,g.goods_sn,g.is_spec')->order('gid DESC');
+        $viewObj->where($where)->field('fg.*,fgl.*,g.goods_name,g.goods_sn,g.is_spec')->order('gid DESC');
 
         $this->data = $this->getPageList($this->Model, $viewObj);
         $OrderModel = new OrderModel();

@@ -9,6 +9,7 @@ use think\facade\Cache;
 use app\shop\model\SlideModel;
 use app\shop\model\GoodsModel;
 use app\shop\model\NavMenuModel;
+use app\shop\model\AvatarUserModel;
 class Index  extends ClientbaseController{
 	/*------------------------------------------------------ */
 	//-- 首页
@@ -227,6 +228,27 @@ class Index  extends ClientbaseController{
         $this->assign('page', $page['page']);
         return $this->fetch($tmpPath.'index');
     }
+
+   //获取真实用户数据 
+   public function getordermessage(){
+        $type = input('type','real') ;
+
+        if($type == 'real'){
+            $frequency = settings('show_ordermessage_frequency');
+            $lists = \lib\OrderMessage::select($frequency);
+        }else{
+            //获取虚拟用户
+            $lists = \think\Db::name('shop_avatar_user')->select();
+            shuffle($lists);
+        }
+       
+        return $this->ajaxReturn($lists);
+    }
+
+    public function setdata(){
+         $lists = \lib\OrderMessage::set('/upload/headimg/5/LaGeCKaSEI9C.jpg','你可'.time());
+    }
+
 
 
 }?>
