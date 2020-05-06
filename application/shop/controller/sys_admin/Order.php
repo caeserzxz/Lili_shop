@@ -193,6 +193,9 @@ class Order extends AdminController
                 case 'order_sn':
                     $where[] = ['order_sn', 'like', $search['keyword'] . '%'];
                     break;
+                case 'user_id':
+                    $where[] = ['user_id', '=', $search['keyword']];
+                    break;
                 default:
                     break;
             }
