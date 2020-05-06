@@ -85,9 +85,9 @@ class Statistics extends AdminController
 
         foreach ($rows as $row) {
             $info['all_add_num'] += 1;//全部订单
-            $info['all_order_amount'] += $row['order_amount'];//全部订单金额
             if ($row['order_status'] == 1) {
                 $info['order_pay_num'] += 1;//成交数
+                $info['all_order_amount'] += $row['order_amount'];//全部订单金额
                 $info['cmf_order_amount'] += $row['order_amount'];//全部确认订单金额
                 if ($row['shipping_status'] > 0) {
                     $info['shipping_num'] += 1;
