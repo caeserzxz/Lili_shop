@@ -121,22 +121,35 @@ class MergeImg{
             return false;
         }
         $fontfile = PATH_SEPARATOR == ';' ? app()->getRootPath().'public/static/share/msyhbd.ttc' : './static/share/msyhbd.ttc';
-        $imagecreate = $this->isjpg($data['share_goods_bg']);
+        list($width, $height) = getimagesize('.'.$data['share_goods_bg']);
+        $imagecreate = $this->isjpg('.'.$data['share_goods_bg']);
         $im_bg = $imagecreate('.'.$data['share_goods_bg']);
-        $imagesx = imagesx($im_bg);
-        $imagesy = imagesy($im_bg);
+        $per = round(750/$width,3);
+        $n_w = $width*$per;
+        $n_h = $height*$per;
         imagesavealpha($im_bg, true);
-        $im = imagecreatetruecolor($imagesx, $imagesy);
-        imagecopy($im, $im_bg, 0, 0, 0,0,$imagesx,$imagesy);
-        //头像处理
-        //缩放比例
+        $bim = imagecreatetruecolor($n_w, $n_h);
+        //为画布分配颜色
+        $color = imagecolorallocate($bim,255,255,255);
+        //填充颜色
+        imagefill($bim,0,0,$color);
+        imagecopyresampled($bim, $im_bg,0, 0,0, 0,$n_w, $n_h, $width, $height);
+
+        $im = imagecreatetruecolor($n_w, $n_h);
+        //为画布分配颜色
+        $color = imagecolorallocate($im,255,255,255);
+        //填充颜色
+        imagefill($im,0,0,$color);
+        imagecopymerge($im, $bim, 0,0,0, 0,$n_w,$n_h, 100);
+
+
         list($width, $height) = getimagesize($data['share_avatar']);
         $imagecreate = $this->isjpg($data['share_avatar']);
         $wx_himg = $imagecreate($data['share_avatar']);
         if ($data['share_goods_avatar_shape'] == 0){
             $wx_himg = $this->createRoundImg($wx_himg,$width, $height);
         }
-        $per = round($data['share_goods_avatar_width']/$width,3);
+        $per = round($data['share_goods_avatar_width']*2/$width,3);
         $n_w = $width*$per;
         $n_h = $height*$per;
         $him = imagecreatetruecolor($n_w, $n_h);
@@ -148,12 +161,14 @@ class MergeImg{
         imagecopyresampled($him, $wx_himg,0, 0,0, 0,$n_w, $n_h, $width, $height);
         //缩放比例end
         $share_avatar_xy = explode(',',$data['share_goods_avatar_xy']);
-        imagecopymerge($im, $him, $share_avatar_xy[0],$share_avatar_xy[1],0, 0,$n_w,$n_h, 100);
+        imagecopymerge($im, $him, $share_avatar_xy[0]*2,$share_avatar_xy[1]*2,0, 0,$n_w,$n_h, 100);
         imagedestroy($him);
         //头像处理end
 
         //呢称
         $share_nick_name_xy = explode(',',$data['share_goods_nickname_xy']);
+        $share_nick_name_size = $data['share_goods_nickname_size'] * 2;
+
         if($data['share_goods_nickname_center']==1){
             //相对头像居中
             $arr = imagettfbbox ($data['share_goods_nickname_size'],0,$fontfile,$data['share_nick_name']);
@@ -164,23 +179,24 @@ class MergeImg{
         }
         $rgb = $this->hex2rgb($data['share_goods_nickname_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
-        imagettftext($im, $data['share_goods_nickname_size'], 0, $share_nick_name_xy[0] , $share_nick_name_xy[1] ,$balk, $fontfile, $data['share_nick_name']);
-        //呢称
-
+        imagettftext($im, $share_nick_name_size, 0, $share_nick_name_xy[0]*2 , $share_nick_name_xy[1]*2+$share_nick_name_size+10 ,$balk, $fontfile, $data['share_nick_name']);
+        //呢称end
         //二维码处理
-        //缩放比例end
+        //缩放比例
         list($width, $height) = getimagesize($data['share_qrcode']);
         $imagecreate = $this->isjpg($data['share_qrcode']);
         $qrcode = $imagecreate($data['share_qrcode']);
-        $per = round($data['share_goods_qrcode_width']/$width,3);
+        $per = round($data['share_goods_qrcode_width']*2/$width,3);
         $n_w = $width*$per;
         $n_h = $height*$per;
         $qim = imagecreatetruecolor($n_w, $n_h);
         imagecopyresampled($qim, $qrcode,0, 0,0, 0,$n_w, $n_h, $width, $height);
         //缩放比例end
         $share_qrcode_xy = explode(',',$data['share_goods_qrcode_xy']);
-        imagecopymerge($im, $qim, $share_qrcode_xy[0],$share_qrcode_xy[1],0, 0,$n_w,$n_h, 100);
+        imagecopymerge($im, $qim, $share_qrcode_xy[0]*2,$share_qrcode_xy[1]*2,0, 0,$n_w,$n_h, 100);
         imagedestroy($qim);
+        //二维码处理end
+
 
         //商品处理
         //缩放比例end
@@ -188,37 +204,39 @@ class MergeImg{
         $imagecreate = $this->isjpg($data['share_goods_img']);
         $gimg = $imagecreate($data['share_goods_img']);
         $share_goods_wh = explode(',',$data['share_goods_wh']);
-        $wper = round($share_goods_wh[0]/$width,3);
-        $hper = round($share_goods_wh[1]/$height,3);
+        $wper = round($share_goods_wh[0]*2/$width,3);
+        $hper = round($share_goods_wh[1]*2/$height,3);
         $n_w = $width*$wper;
         $n_h = $height*$hper;
         $gim = imagecreatetruecolor($n_w, $n_h);
         imagecopyresampled($gim, $gimg,0, 0,0, 0,$n_w, $n_h, $width, $height);
         //缩放比例end
         $share_goods_xy = explode(',',$data['share_goods_xy']);
-        imagecopymerge($im, $gim, $share_goods_xy[0],$share_goods_xy[1],0, 0,$n_w,$n_h, 100);
+        imagecopymerge($im, $gim, $share_goods_xy[0]*2,$share_goods_xy[1]*2,0, 0,$n_w,$n_h, 100);
         imagedestroy($gim);
 
         //商品名称
         $share_goods_name_xy = explode(',',$data['share_goods_name_xy']);
         $rgb = $this->hex2rgb($data['share_goods_name_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
+        $font_size =  $data['share_goods_name_size'] * 1.5;
+
         if ($data['share_goods_name_br'] <= 0){
-            imagettftext($im, $data['share_goods_name_size'], 0, $share_goods_name_xy[0] , $share_goods_name_xy[1] ,$balk, $fontfile, $data['share_goods_name']);
+            imagettftext($im, $font_size, 0, $share_goods_name_xy[0] * 2 + 5, $share_goods_name_xy[1] * 2 +$font_size,$balk, $fontfile, $data['share_goods_name']);
         }else{
             $goodsNames = $this->mb_str_split($data['share_goods_name'],$data['share_goods_name_br']);
             foreach ($goodsNames as $key=>$gname){
-                $gm_y =  $share_goods_name_xy[1] + ($key * $data['share_goods_name_size'] * 2);
-                imagettftext($im, $data['share_goods_name_size'], 0, $share_goods_name_xy[0] , $gm_y ,$balk, $fontfile, $gname);
+                $gm_y =  $share_goods_name_xy[1] + ($key * $font_size + 8);
+                imagettftext($im, $font_size, 0, $share_goods_name_xy[0] * 2 + 5 , $gm_y * 2 + $font_size ,$balk, $fontfile, $gname);
             }
         }
-
         //商品名称
         //商品价格
         $share_goods_price_xy = explode(',',$data['share_goods_price_xy']);
         $rgb = $this->hex2rgb($data['share_goods_price_color']);
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
-        imagettftext($im, $data['share_goods_price_size'], 0, $share_goods_price_xy[0] , $share_goods_price_xy[1] ,$balk, $fontfile, $data['share_goods_price']);
+        $font_size =  $data['share_goods_price_size'] * 1.5;
+        imagettftext($im, $font_size,0, $share_goods_price_xy[0] * 2 , ($share_goods_price_xy[1]*2)+$font_size*2 ,$balk, $fontfile, $data['share_goods_price']);
         //商品价格
         if (empty($fileName)){
             ob_clean();

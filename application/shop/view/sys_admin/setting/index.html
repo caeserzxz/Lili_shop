@@ -1,4 +1,39 @@
 {extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link rel="stylesheet" href="__STATIC__/js/jquery/jquery_ui/jquery-ui.css">
+<script src="__STATIC__/js/jquery/jquery_ui/jquery-ui.js"></script>
+<style>
+    #share_img_box{
+        width:375px;border: 1px solid #000;
+        overflow: hidden;
+        position: relative;
+    }
+    #share_bg_img{width: 100%;}
+
+    #share_img_box .share_goods_img,#share_img_box .share_goods_name,#share_img_box .share_goods_price{position: absolute; z-index: auto; user-select: auto;}
+
+    #share_img_box .share_qrcode{ border: 1px dashed #000;position: absolute; z-index: auto; user-select: auto;}
+    #share_img_box .share_avatar{position: absolute;cursor:default;  border:1px dashed #000;position: absolute; z-index: auto; user-select: auto;}
+    #share_img_box .share_nick_name{position: absolute;cursor:default; border:1px dashed #000;position: absolute;font-weight: bold;z-index: auto; user-select: auto;}
+    .circle{border-radius: 50%;}
+    #share_img_box .share_avatar span{
+        display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -ms-flex-pack: center;
+        justify-content: center;
+        width: 100%;
+        height: 100%;
+        font-size: 12px;
+        background-color: #ddd;
+        overflow: hidden;
+    }
+</style>
+{/block}
 {block name="main" }
 <header class="header  b-b clearfix">
      <div class="page-breadcrumbs">
@@ -463,102 +498,103 @@
                         </div>
                 </div>
                 <div class="tab-pane " id="share">
+                    <div class="col-sm-6">
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">海报背景图片：</label>
+                        <label class="col-sm-1 control-label">海报背景图片：</label>
                         <div class="controls col-sm-6">
                             <img class="thumb_img" src="{$setting.share_goods_bg}" style="max-height: 100px;"/>
-                            <input class="hide" type="text" name="share_goods_bg" value="{$setting.share_goods_bg}"/>
-                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                            <input class="hide" type="text" id="share_goods_bg_input" name="share_goods_bg" value="{$setting.share_goods_bg}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg" data-fun="changeShaerGoodsBg">选择图片</button>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品图片位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">商品图片位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_xy"  class="input-small" value="{$setting.share_goods_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品图片宽度：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">商品图片宽度：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_wh"  class="input-small" value="{$setting.share_goods_wh}"  placeholder="格式：w,h"> <span class="help-line">w：宽度，h：高度(px)像素，只可输入数字</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品名称位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">商品名称位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_name_xy"  class="input-small" value="{$setting.share_goods_name_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品名称颜色：</label>
+                        <label class="col-sm-1 control-label">商品名称颜色：</label>
                         <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
                             <input type="text" name="share_goods_name_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_name_color}" size="7">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品名称字体大小：</label>
+                        <label class="col-sm-1 control-label">商品名称字体：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_name_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_name_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品名称换行：</label>
+                        <label class="col-sm-1 control-label">商品名称换行：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_name_br"  data-rule-digits="true" data-rule-required="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_name_br}" placeholder=""> <span class="help-line">个字，达到长度即换行，0不换行</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">商品价格位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">商品价格位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_price_xy"  class="input-small" value="{$setting.share_goods_price_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品价格颜色：</label>
+                        <label class="col-sm-1 control-label">商品价格颜色：</label>
                         <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
                             <input type="text" name="share_goods_price_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_price_color}" size="7">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">商品价格字体大小：</label>
+                        <label class="col-sm-1 control-label">商品价格字体：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_price_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_price_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
                     <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">头像位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">头像位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_avatar_xy"  class="input-small" value="{$setting.share_goods_avatar_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">头像宽度：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">头像宽度：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_avatar_width" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_avatar_width}" > <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">头像形状：</label>
+                        <label class="col-sm-1 control-label">头像形状：</label>
                         <div class="controls">
                             <div class="controls">
                                 <label class="radio-inline">
-                                    <input name="share_goods_avatar_shape" value="0" {$setting['share_goods_avatar_shape']<=0?'checked':''} type="radio">圆形
+                                    <input name="share_goods_avatar_shape" class="share_goods_avatar_shape" value="0" {$setting['share_goods_avatar_shape']<=0?'checked':''} type="radio">圆形
                                 </label>
                                 <label class="radio-inline">
-                                    <input name="share_goods_avatar_shape" value="1" {$setting['share_goods_avatar_shape']==1?'checked':''} type="radio" >方形
+                                    <input name="share_goods_avatar_shape" class="share_goods_avatar_shape" value="1" {$setting['share_goods_avatar_shape']==1?'checked':''} type="radio" >方形
                                 </label>
                             </div>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">呢称位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">呢称位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_nickname_xy"  class="input-small" value="{$setting.share_goods_nickname_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">呢称相对居中：</label>
+                        <label class="col-sm-1 control-label">呢称相对居中：</label>
                         <div class="controls">
                                 <label class="radio-inline">
                                     <input name="share_goods_nickname_center" value="0" {$setting['share_goods_nickname_center']<=0?'checked':''} type="radio">关闭
@@ -570,39 +606,44 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">呢称颜色：</label>
+                        <label class="col-sm-1 control-label">呢称颜色：</label>
                         <div class="controls minicolors minicolors-theme-bootstrap minicolors-position-bottom minicolors-position-left">
                             <input type="text" name="share_goods_nickname_color" class="form-control colorpicker minicolors-input" style="padding-left: 30px;" data-control="hue" value="{$setting.share_goods_nickname_color}" size="7">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-sm-2 control-label">呢称字体大小：</label>
+                        <label class="col-sm-1 control-label">呢称字体大小：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_nickname_size" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_nickname_size}" placeholder=""> <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
                     <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">二维码位置：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">二维码位置：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_qrcode_xy"  class="input-small" value="{$setting.share_goods_qrcode_xy}" placeholder="格式：x,y"> <span class="help-line">x：距离左边距离，y：距离顶部距离</span>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-sm-2 control-label">二维码宽度：</label>
+                    <div class="form-group hide">
+                        <label class="col-sm-1 control-label">二维码宽度：</label>
                         <div class="controls">
                             <input type="text" name="share_goods_qrcode_width" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_qrcode_width}" > <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
-                    <div class="line line-dashed line-lg pull-in " style="width:99%;"></div>
-                    <div class="form-group">
-                        <div class="controls col-sm-offset-1">
 
+                </div>
+
+                    <div class="col-sm-6">
+                        <button type="button" class="btn btn-primary" id="show_share_img" >点击预览效果，要保存后才能生效</button>
+                        <div id="share_img_box" >
+                            <img src="{$setting.share_goods_bg}" id="share_bg_img">
+                            <div class="share_goods_img hide"><img  src="__STATIC__/share/goods.jpg" style="width: 100%; height: 100%;"></div>
+                            <div class="share_goods_name hide" style="font-weight: bold;">【屈臣氏】新碧双重保湿水感防晒露80克*2件 隔离防晒伤小金帽</div>
+                            <div class="share_goods_price hide" style="font-weight: bold;">售价：￥99.00元</div>
+                            <div class="share_qrcode hide"><img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAkFBMVEUjIjP4+PeTk5pIRlYfHjD5+fkhIDJ8e4QhITEjIjReXWq9vL++vcGZmZ/8/P0kJDb////39/f////6+vkhIDL8/PsLCh8ZGCsfHjARDyS4uLxFRFLa2tzBwMQtKzzIyMxMS1nS0tUDAhOGhY5RUF44N0asrLLw8PDk5OZaWWZranWTkppjYm2dnKSjoqlzcn3upYuXAAAAEXRSTlP+rPLW1Nbz/q3Zytis1qyTrLFFhJEAAAYQSURBVFjDpViLlps4DHXPNId22rO7YIwhPIx5PwL8/9+tZBswJDTtrmZ6onGUWxBXV1LI398v7cftdvuxOmjy4zL2G/nmXxjPUs9lTRTyWngumpfkAXkZS8h3DUTOZgH5B6CLYB+A4DUMzhaRFagICiI9MHNFhD8FcwD6qoCyOD/91KEGovc6jqtGStlRDRTW59i8XoF4nJxthtQgkNvKJEkfWV2XHlW3FjlPwQsPDVDunU2sQBT+6OIiCpYVqHwKLncglUvqbi/svgK5lHpdFYTc2YHoFqw8zzkCbf8BtYHMFQXFcADagvGDJ6B5cbRJtgNRgafjPE2pTrYCYt2og5exY2cg+gi4tru3A7Em4EEmPMaouwN5Mi5UaBEn3jNQFKLx8AQURkhI6h6BAhUcvAZSbA/JEehEyBUoQj6T3weiaZznfSOFSOj/AnLbpOtET+qstJ7afwFSjz8/EvItkMpf6B+AMMddfiIkJtvH0JdAfRGhBdEBiMEVtWdCerLWwUUtn4DcdG60QZ1bhByWZZmaZhZ7shlt7zp4vrf0qUQoM2bXGhIyeiLkHkxf1JptFlCkCem6ByDbbKBLGdGEFDYhx1/ISCzONnLfJqQQ6UpIPpxj5bAC+SR7MiP+btsBISue+ebxkxfBiKCBfH620Ig/pIshIXlkCElI+BQbbuJ/3ddWQvobIS8MgKILC1CYdkKqK4qLq+iv5Of90oCZVPSPxzCl97uEP9q0uYr9Qf6iDH5e/TLknU1IxcPXwfRGvlgN5Mmhh97/OkY7N/KP6QWu99K5IyFN1lvUFI+5WlyOzo38TNNUYJi8a6dFBzLitgKcKa/yh9RAVJ0AMxk690SdpOm9U0DfYCwwekTCHrjc9pEfPqA6oC/64dKC6RtoD8KGtWKcGaoPgPxwEzZeIZd7kDEDFPLFKlEECrcuooHqKAxmpoCwaClVUsv7HYgegVoLiJ2B9BVxHsSYMmiQUYW3VkFB9MhDdAbTxPdpAocIZGaBMiDrICpmcHSymx5shrwJ/IiEk7nq+weeTFVfDRLFF51GpGJcnbLfnf6T/AU6JyOovdTT6qjUL4XLg6furYSkbILeXaMwjQF0amyZZaQc5jnw8a9ISE9A/WKnfq2QipBs0lJJvREc+DxFPbO7iALCsjsCQTJ8rZARDhGeNxeqZ8AVaQekGtIDQB46kQJiEiqzV3XQ6udDBeZIokKqZEHWxv7RD412qgUvZIbUqBPI0eNT15ppHlY9sb1MWYLC5hgnKJmVS1FD6mZwTNEaa91Xdhj9FI/2tywefXHf2W8DUdtc9aNdfZNU39pi3dr+lqgjHkxwciOf1YXlmP6tHYkxrmLllOAMmOwJhvUHnMgyz6sPLBGk4+kf/L59/KX1+Pm7LvIHhPx1X4MrwqkW8jOrEgFHlwg45eo4kbmiMBvOVq1LjXgM0EWgTYzozMZZ0CktZ/i8GCJSe9BC9YC+ZhwlIzVIuZaRYpWRVdiOvD6OfpXVaVep3YVtldp9qaEbf05LDfLQAb04Sy1bCYk82oDa1Y5AcCAr6AuOcbgCyjnhI5yImJNoAmcHog7sisqEPbBvG+QIjp7csQtJIWUZx3V/B8+BD30cp1puhMleIc6E3PpiWRz0yJqz1cp83kU0Iak3WcOkyihI7R8tNUqzgXWTIaR+wDhjgGYboIiHb5eadc5uRnh1pmbGgZt2OGeXyzKUHQA1+Na7XcQatMxO6ujJXxNStTxvJ+Q10K8JuXP4dlhFYX3kxw3yNIzGKGyq00LG4IqM0ivN3oAWUqNldXrY13A87n2zr/VhlpVqYCYZGcHpFJXh1WJ2Io211lLDNCET9ZUGbIFSJqPiYSITJOQDnxqc5B9v9n61QmTCnuFGOKkTRchAr1lLEKyERHpYxjYZOWzZShdQIQPV8g0hoffzjUf0bAdCAg+NzuBboJAABNOtIiQ6GyHDejobsN7+JmKaxpRBrTbglYuz4MlUOrvjKEKS6y+iTqso8hAff7cSMsnA2RTy9ddm14RkKyF3YVPD6IWFvyu12zB6YYaQrp6Tn4BgPGaq98N4jED/AnkJ0hgo7PTGAAAAAElFTkSuQmCC" style="width: 100%; height: 100%;"></div>
+                            <div class="share_avatar hide"><span class="{$setting['share_goods_avatar_shape']<=0?'circle':''}">头像</span></div>
+                            <div class="share_nick_name hide">邀请者昵称</div>
                         </div>
-                    </div>
-                    <div style="width:30%; max-width: 500px; position: absolute; top:50px; right: 5%;">
-                        <button type="button" class="btn btn-primary" id="show_share_img" >点击预览效果</button><span class="help-inline">此项只是预览，要保存后才能生效.</span><br>
-                        <a href="/upload/share_bg/test_goods_share.jpg" target="_blank"><img id="shareimg" src="/upload/share_bg/test_goods_share.jpg" style="max-height:400px;"></a>
                     </div>
                 </div>
                 <div class="tab-pane " id="show_ordermessage">
@@ -675,15 +716,156 @@
 {block name="footer" }
 <script src="__STATIC__/js/colorpicker/jquery.minicolors.js"></script>
 <script type="text/javascript">
+    function changeShaerGoodsBg(img){
+        $('#share_bg_img').attr("src",img);
+    }
     $('#show_share_img').click(function () {
         var obj = this;
         $(obj).html('预览图生成中..');
         var data = $('#_form').toJson();
         jq_ajax('{:url("mergeShareImg")}',data,function(){
             $(obj).html('点击预览效果');
-            $('#shareimg').attr('src','/upload/share_bg/test_goods_share.jpg?'+ Math.random());
+            window.open("/upload/share_bg/test_goods_share.jpg?"+ Math.random());
         })
     })
+    $(function() {
+        //商品图片处理
+        $(".share_goods_img").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_xy']").val(ui.position.left+','+ui.position.top);
+        }}).resizable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_wh']").val(ui.size.width+','+ui.size.height);
+        }})
+        var share_goods_xy = '{$setting.share_goods_xy}';
+        share_goods_xy = share_goods_xy.split(',');
+        var share_goods_wh = '{$setting.share_goods_wh}';
+        share_goods_wh = share_goods_wh.split(',');
+        $(".share_goods_img").css({
+                'left':share_goods_xy[0]+'px',
+                'top':share_goods_xy[1]+'px',
+                'width':share_goods_wh[0]+'px',
+            'height':share_goods_wh[1]+'px',
+    }).removeClass('hide');
+        //商品名称处理
+        $(".share_goods_name").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_name_xy']").val(ui.position.left+','+ui.position.top);
+        }});
+        var share_goods_name_xy = '{$setting.share_goods_name_xy}';
+        share_goods_name_xy = share_goods_name_xy.split(',');
+        $(".share_goods_name").css({
+                'left':share_goods_name_xy[0]+'px',
+                'top':share_goods_name_xy[1]+'px',
+                'font-size':{$setting.share_goods_name_size}+'px',
+            'color':'{$setting.share_goods_name_color}',
+    }).removeClass('hide');
+        //监听文本框
+        $("input[name='share_goods_name_color").on('input propertychange', function() {
+            $(".share_goods_name").css({'color':$(this).val()});
+
+        });
+        $("input[name='share_goods_name_size']").on('input propertychange', function() {
+            $(".share_goods_name").css({'font-size':$(this).val()+'px'});
+
+        });
+        //商品价格处理
+        $(".share_goods_price").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_price_xy']").val(ui.position.left+','+ui.position.top);
+        }});
+        var share_goods_price_xy = '{$setting.share_goods_price_xy}';
+        share_goods_price_xy = share_goods_price_xy.split(',');
+        $(".share_goods_price").css({
+                'left':share_goods_price_xy[0]+'px',
+                'top':share_goods_price_xy[1]+'px',
+                'font-size':{$setting.share_goods_price_size}+'px',
+            'color':'{$setting.share_goods_price_color}',
+    }).removeClass('hide');
+        //监听文本框
+        $("input[name='share_goodsprice_color").on('input propertychange', function() {
+            $(".share_goods_price").css({'color':$(this).val()});
+
+        });
+        $("input[name='share_goods_price_size']").on('input propertychange', function() {
+            $(".share_goods_price").css({'font-size':$(this).val()+'px'});
+
+        });
+
+
+        //二维码处理
+        $(".share_qrcode").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_qrcode_xy']").val(ui.position.left+','+ui.position.top);
+        }}).resizable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_qrcode_width']").val(ui.size.width);
+            $(".share_qrcode").css({'height':ui.size.width+'px'});
+        }})
+        var share_goods_qrcode_xy = '{$setting.share_goods_qrcode_xy}';
+        share_goods_qrcode_xy = share_goods_qrcode_xy.split(',');
+        $(".share_qrcode").css({
+                'left':share_goods_qrcode_xy[0]+'px',
+                'top':share_goods_qrcode_xy[1]+'px',
+                'width':{$setting.share_goods_qrcode_width}+'px',
+                'height':{$setting.share_goods_qrcode_width}+'px',
+        }).removeClass('hide');
+//头像处理
+        $(".share_avatar").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_avatar_xy']").val(ui.position.left+','+ui.position.top);
+        }}).resizable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_avatar_width").val(ui.size.width);
+            $(".share_avatar").css({'height':ui.size.width+'px'});
+        }});
+        var share_goods_avatar_xy = '{$setting.share_goods_avatar_xy}';
+        share_goods_avatar_xy = share_goods_avatar_xy.split(',');
+        $(".share_avatar").css({
+                'left':share_goods_avatar_xy[0]+'px',
+                'top':share_goods_avatar_xy[1]+'px',
+                'width':{$setting.share_goods_avatar_width}+'px',
+            'height':{$setting.share_goods_avatar_width}+'px',
+    }).removeClass('hide');
+        $('.share_goods_avatar_shape').click(function () {
+            if ($(this).val() == 0){
+                if ($(".share_avatar span").hasClass('circle')){
+                    return false;
+                }
+                $(".share_avatar span").addClass('circle');
+            }else{
+                $(".share_avatar span").removeClass('circle');
+            }
+        })
+
+        //呢称处理
+        $(".share_nick_name").draggable({containment:'#share_img_box',stop: function( event, ui ) {
+            //console.log(ui);
+            $("input[name='share_goods_nickname_xy").val(ui.position.left+','+ui.position.top);
+        }});
+        var share_goods_nickname_xy = '{$setting.share_goods_nickname_xy}';
+        share_goods_nickname_xy = share_goods_nickname_xy.split(',');
+        $(".share_nick_name").css({
+                'left':share_goods_nickname_xy[0]+'px',
+                'top':share_goods_nickname_xy[1]+'px',
+                'font-size':{$setting.share_goods_nickname_size}+'px',
+            'color':'{$setting.share_goods_nickname_color}',
+    }).removeClass('hide');
+        //监听文本框
+        $("input[name='share_goods_nickname_color']").on('input propertychange', function() {
+            $(".share_nick_name").css({'color':$(this).val()});
+
+        });
+        $("input[name='share_goods_nickname_size']").on('input propertychange', function() {
+            $(".share_nick_name").css({'font-size':$(this).val()+'px'});
+
+        });
+    })
+
+
+
+
+
     //--jQuery MiniColors--
     $('.colorpicker').each(function () {
         $(this).minicolors({

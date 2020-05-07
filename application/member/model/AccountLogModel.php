@@ -28,8 +28,8 @@ class AccountLogModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 创建帐号数据
 	/*------------------------------------------------------ */ 
-	public function createData($data = array()){	
-		return (new AccountModel)->save($data);	
+	public function createData($data = array()){
+		return (new AccountModel)->save($data);
 	}
 	/*------------------------------------------------------ */
 	//-- 记录明细,更新用户帐户，更新用户信息

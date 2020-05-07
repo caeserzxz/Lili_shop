@@ -544,6 +544,8 @@ class CartModel extends BaseModel
     {
         if ($rec_id > 0) {
             $map['rec_id'] = $rec_id;
+        }else{
+            $map['is_select'] = 1;
         }
         $map['user_id'] = $this->userInfo['user_id'] * 1;
         if ($map['user_id'] == 0) $map['session_id'] = session_id();
