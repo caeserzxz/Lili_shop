@@ -27,6 +27,7 @@ function(a, b) {
                 f = d.closest("div.input-group").find("input[type=text]"),
                 g = d.data("insert"),
                 h = d.data("input"),
+                fun = d.data("fun"),
                 i = e.val();
                 h && (i = f.val()),
                 a.loadPlugin("smimage",
@@ -41,10 +42,13 @@ function(a, b) {
                                 else {
                                     var i = '<img class="thumb_img" src="{0}" style="max-height: 100px;">';
                                     e.before(i.format(b))
+
                                 }
                             } else d.trigger("insert", b);
                             h && f.val(b),
-                            a.hideDialog()
+                            a.hideDialog();
+                            if (typeof(fun) == 'function') return fun(b);
+                            if (typeof(fun) != 'undefined') return eval(fun+'(b)');
                         }
                     })
                 })

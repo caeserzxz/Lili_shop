@@ -407,7 +407,7 @@
         var data = $('#_form').toJson();
         jq_ajax('{:url("mergeShareImg")}',data,function(){
             $(obj).html('点击预览效果');
-            window.open("/upload/share_bg/test_share.jpg");
+            window.open("/upload/share_bg/test_share.jpg?"+ Math.random());
         })
     })
 </script>

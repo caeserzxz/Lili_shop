@@ -413,7 +413,7 @@ class UsersModel extends BaseModel
             $account = $AccountModel->where('user_id', $val)->find();
             if (empty($account) == true) {
                 //创建会员帐户信息
-                $AccountModel->createData(['user_id' => $val, 'update_time' => time()]);
+                $AccountModel->save(['user_id' => $val, 'update_time' => time()]);
                 $account = $AccountModel->where('user_id', $val)->find();
             }
             $info['account'] = $account->toArray();

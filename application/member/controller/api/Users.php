@@ -335,7 +335,20 @@ class Users extends ApiController
                 $headimgurl = strstr($headimgurl,'https')?str_replace("https","http",$headimgurl):$headimgurl;
                 $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
                 makeDir($file_path);
-                $file_name = $file_path.random_str(12).'.jpg';
+                //图片文件
+                $pathInfo = get_headers($headimgurl,true);
+                $file_name = $file_path.random_str(12);
+                switch (strtolower($pathInfo['Content-Type'])) {
+                    case 'image/png':
+                        $file_name .= '.png';
+                        break;
+                    case 'image/gif':
+                        $file_name .= '.gif';
+                        break;
+                    default:
+                        $file_name .= '.jpg';
+                        break;
+                }
                 downloadImage($headimgurl,$file_name);
                 $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
                 (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
