@@ -42,7 +42,9 @@
     </td>
     <td>{$vo.pay_name}</td>
     <td >{$vo.consignee}</td>
-    <td >未打单</td>
+    <td >{eq name="vo.print_state" value="1" }已打单{/eq}
+        {eq name="vo.print_state" value="0" }未打单{/eq}
+    </td>
     <td >{$vo.user_id} - {$vo.user_id|userInfo}</td>
     <td style="text-align: center;">
         <a href="{:url('info',array('order_id'=>$vo['order_id']))}" title="查看详情">

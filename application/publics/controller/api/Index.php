@@ -69,4 +69,12 @@ class Index extends ApiController
         $result['code'] = 1;
         return $this->ajaxReturn($result);
     }
+
+    public function test(){
+        $url = 'http://wx.qlogo.cn/mmopen/vi_32/Q0j4TwGTfTKb4rcOFlwmPdUrlkdMcS96YTjfVkkSpusBdic0vO1CfMM5nne66RYYhOZiby6dLudKbb72myicjibvpA/132';
+        $file_path = config('config._upload_').'headimg/10006' .'/';
+        makeDir($file_path);
+        $file_name = $file_path.random_str(12).'.jpg';
+        downloadImage($url,$file_name);
+    }
 }
