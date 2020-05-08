@@ -12,9 +12,9 @@
             </ul>
             <select name="time_type"  style="width: 130px;" data-toggle="select2">
                     <option value="">选择时间类型</option>
-                    <option value="reg_time">注册时间</option>
-                    <option value="login_time">登陆时间</option>
-                    <option value="buy_time">购买时间</option>
+                    <option value="reg_time" {$search['time_type']=='reg_time'?'selected':''}>注册时间</option>
+                    <option value="login_time" {$search['time_type']=='login_time'?'selected':''}>登陆时间</option>
+                    <option value="buy_time" {$search['time_type']=='buy_time'?'selected':''}>购买时间</option>
               </select>
             <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
                     <i class="fa fa-calendar fa-lg"></i>                      

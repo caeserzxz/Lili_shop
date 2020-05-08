@@ -312,33 +312,34 @@ window.goods_setting = {
 	specifications_path: '{:url("sys_admin.skuCustom/skuByCategory",["supplyer_id"=>$row["supplyer_id"]])}'
 }
 
-$(document).on('click',".goods_sku input", function () {
-    uploader_pick = $(this).parents('.goods_sku');
-    if (uploadering == 1) return false;
-    uploader.options.server = '{:url("mainAdmin/Attachment/goodsUpload")}';
-    uploader.options.formData.sku = uploader_pick.data('sku');
-    uploader.options.formData.gid = '{$row.goods_id|intval}';
-});
+$(function () {
+    $(document).on('click', ".goods_sku input", function () {
+        uploader_pick = $(this).parents('.goods_sku');
+        if (uploadering == 1) return false;
+        uploader.options.server = '{:url("mainAdmin/Attachment/goodsUpload")}';
+        uploader.options.formData.sku = uploader_pick.data('sku');
+        uploader.options.formData.gid = '{$row.goods_id|intval}';
+    });
 
-$(document).on('click',".delete_sku_img", function () {
-	var _this = $(this);
-	if (_this.data('id') < 1) return false;
-	jq_ajax('{:url("mainAdmin/attachment/removeImg")}','id='+_this.data('id'),function(res){
-		if (res.code==0){
-			_alert(res.msg);
-			return false;
-		}
-		var obj = _this.parents('.file-item');
-		obj.find('input').val('');
-		var dimg = obj.find('.upload-file').data('dimg');
-		obj.find('.upload-file').css("background-image","url("+dimg+")");
-		obj.find('.info').html('点击上传');
+    $(document).on('click', ".delete_sku_img", function () {
+        var _this = $(this);
+        if (_this.data('id') < 1) return false;
+        jq_ajax('{:url("mainAdmin/attachment/removeImg")}', 'id=' + _this.data('id'), function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            var obj = _this.parents('.file-item');
+            obj.find('input').val('');
+            var dimg = obj.find('.upload-file').data('dimg');
+            obj.find('.upload-file').css("background-image", "url(" + dimg + ")");
+            obj.find('.info').html('点击上传');
 
-	});
+        });
 
+
+    })
 
 })
-
-
 </script>
 

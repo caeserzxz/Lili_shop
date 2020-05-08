@@ -140,7 +140,9 @@ $(function () {
     WebUploaderDiy();
     $(document).on('click',".upload-file input", function () {
         uploader_pick = $(this).parents('.upload-file');
-        uploader.options.server = uploader_pick.data('server');
+        if (typeof (uploader_pick.data('server')) != 'undefined' ){
+            uploader.options.server = uploader_pick.data('server');
+        }
     });
     $(document).on('click',".el-upload-delete", function () {
         var _this = $(this).parents('.el-upload');

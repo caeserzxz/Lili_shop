@@ -75,36 +75,29 @@ class Users extends AdminController
         $this->levelList = $UsersLevelModel->getRows();
         $this->assign("levelList", $this->levelList);
         $where[] = ' is_ban = ' . $this->is_ban;
-
-        $time_type = input('time_type', '', 'trim');
-        if (empty($time_type) == false) {
-            $search['start_time'] = input('start_time', '', 'trim');
-            $search['end_time'] = input('end_time', '', 'trim');
-            $search['start_time'] = str_replace('_', '-', $search['start_time']);
-            $search['end_time'] = str_replace('_', '-', $search['end_time']);
-            $start_time = $search['start_time'] ? strtotime($search['start_time']) : strtotime("-1 months");
-            $end_time = $search['end_time'] ? strtotime($search['end_time']) : time();
-            if ($start_time == $end_time) $end_time += 86399;
-            $where[] =  ' u.'.$time_type.' between ' . ($start_time) . ' AND ' . ($end_time);
-
-        } else {
-            $reportrange = input('reportrange');
-            if (empty($reportrange) == false) {
+        $reportrange = input('reportrange');
+        $search['start_time'] = input('start_time', '', 'trim');
+        $search['end_time'] = input('end_time', '', 'trim');
+        if (empty($search['start_time']) == false) {
+            $dtime[0] = str_replace('_', '-', $search['start_time']);
+            $dtime[1] = str_replace('_', '-', $search['end_time']);
+        } elseif (empty($reportrange) == false) {
                 $dtime = explode('-', $reportrange);
-            }
-            switch ($this->search['time_type']) {
-                case 'reg_time':
-                    $where[] = ' u.reg_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                    break;
-                case 'login_time':
-                    $where[] = ' u.login_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                    break;
-                case 'buy_time':
-                    $where[] = ' u.last_buy_time between ' . strtotime($dtime[0]) . ' AND ' . (strtotime($dtime[1]) + 86399);
-                    break;
-                default:
-                    break;
-            }
+        }
+        $dtime[0] = strtotime($dtime[0]);
+        $dtime[1] = strtotime($dtime[1]) + 86399;
+        switch ($this->search['time_type']) {
+            case 'reg_time':
+                $where[] = ' u.reg_time between ' . $dtime[0]  . ' AND ' . $dtime[1];
+                break;
+            case 'login_time':
+                $where[] = ' u.login_time between ' . $dtime[0]  . ' AND ' .$dtime[1];
+                break;
+            case 'buy_time':
+                $where[] = ' u.last_buy_time between ' . $dtime[0]  . ' AND ' .$dtime[1];
+                break;
+            default:
+                break;
         }
 
         if ($this->search['roleId'] == 'all_role'){
