@@ -530,7 +530,12 @@ class UsersModel extends BaseModel
             $DividendSatus = settings('DividendSatus');
             if ($DividendSatus == 0) return true;//不开启推荐，不执行
             $is_bind = $this->where('user_id', $user_id)->value('is_bind');
-            if ($is_bind > 0) return false;//已执行绑定不再执行
+            if ($is_bind > 0) return true;//已执行绑定不再执行
+            $bingKey = 'regUserBindIng' . $user_id;
+            if (empty(Cache::get($bingKey)) == false){
+                return true;
+            };
+            Cache::set($bingKey,1,60);
         }
         if ($pid == -1){
             $pid = $this->returnPid($user_id);

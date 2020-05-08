@@ -43,7 +43,7 @@ class UserAddressModel extends BaseModel
             $row['_merger_name'] = str_replace(',',' ',$row['merger_name']);
             $list[$row['address_id']] = $row;
         }
-        Cache::set($this->mkey, $list, 300);
+        Cache::set($this->mkey. $uid, $list, 300);
         return $list;
     }
 
