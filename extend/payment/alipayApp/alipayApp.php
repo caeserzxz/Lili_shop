@@ -51,6 +51,11 @@ class alipayApp
         $aop->charset = "UTF-8";
         $aop->signType = "RSA2";
         $this->aopClient = $aop;
+        $this->alipay_config['partner'] = $config_value['alipay_partner'];//合作身份者id，以2088开头的16位纯数字
+        $this->alipay_config['key'] = $config_value['alipay_key'];//安全检验码，以数字和字母组成的32位字符
+        $this->alipay_config['transfer_partner'] = $config_value['alipay_partner'];
+        $this->alipay_config['developer_private_key'] = $config_value['alipay_private_key'];//秘钥
+        $this->alipay_config['alipay_public_Key'] = $config_value['alipay_rsa_public_key'];//查看支付宝公钥
         /**APP支付**/
     }
     /**
@@ -202,6 +207,45 @@ EOF;
             }
         } else {
             echo "fail"; //验证失败
+        }
+    }
+
+    /**
+     * 退款
+     */
+    public function refund($orderInfo = [])
+    {
+        require_once("aop/AopClient.php");
+        require_once("aop/request/AlipayTradeRefundRequest.php");
+        $aop = new \AopClient ();
+        $aop->gatewayUrl = 'https://openapi.alipay.com/gateway.do';
+        $aop->appId = $this->alipay_config['transfer_partner'];//'your app_id';
+        $aop->rsaPrivateKey = $this->alipay_config['developer_private_key'];// '请填写开发者私钥去头去尾去回车，一行字符串';
+        $aop->alipayrsaPublicKey = $this->alipay_config['alipay_public_Key'];//'请填写支付宝公钥，一行字符串';
+        $aop->apiVersion = '1.0';
+        $aop->signType = 'RSA2';
+        $aop->postCharset = 'UTF-8';
+        $aop->format = 'json';
+        $request = new \AlipayTradeRefundRequest();
+        $array = array(
+            'out_trade_no' => $orderInfo['order_sn'],//订单支付时传入的商户订单号,不能和 trade_no同时为空。
+            'trade_no' => $orderInfo['transaction_id'],//支付宝交易号，和商户订单号不能同时为空
+            'refund_amount' => $orderInfo['refund_amount'],//需要退款的金额，该金额不能大于订单金额,单位为元，支持两位小数
+            'refund_reason' => '退款',//退款的原因说明
+            'out_request_no' => $orderInfo['order_sn'],//标识一次退款请求，同一笔交易多次退款需要保证唯一，如需部分退款，则此参数必传。
+            'operator_id' => AUID,//商户的操作员编号
+
+        );
+        $list = json_encode($array);
+        $request->setBizContent($list);
+        $result = $aop->execute($request);
+        $responseNode = str_replace(".", "_", $request->getApiMethodName()) . "_response";
+        $resultCode = $result->$responseNode->code;
+
+        if (!empty($resultCode) && $resultCode == 10000) {
+            return true;
+        } else {
+            return false;
         }
     }
 }
