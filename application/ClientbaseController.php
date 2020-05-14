@@ -143,9 +143,7 @@ class ClientbaseController extends BaseController{
                     $wxlog['share_token'] = $share_token;
                     $wxlog['add_time'] = time();
                     $res = (new \app\weixin\model\WeiXinInviteLogModel)->save($wxlog);
-                    if ($res > 0) {
-                        session('share_token', null);
-                    }
+
                 }
 
             }

@@ -55,15 +55,14 @@
                   </td>
                   <td>
                     <input type="hidden" value="{$vo.pid}" name="ps[{$vo.id}][parent_id]"/>
-                    <input name="ps[{$vo.id}][keyword]" id="keyword_{$vo.id}" class="input-text {$vo['keyword_value']==''?'hide':''}" style="width:50px;" value="{$vo.keyword}" type="hidden" >
                       <a href="javascript:;" data-remote="{:url('publics/sys_admin.links/index',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='view'?'':'hide'}" id="Url_btn_{$vo.id}" >绑定URL</a>
 
                       <a href="javascript:;" data-remote="{:url('sys_admin.replyText/searchBox',array('searchType'=>'ps','_menu_index'=>$vo['id']))}" data-toggle="ajaxModal" class="bding_btn_{$vo.id} btn btn-sm btn-default {$vo['type']=='click'?'':'hide'}" id="ReplyText_btn_{$vo.id}">绑定关键字</a>
                   </td>
-                  <td><input name="ps[{$vo.id}][keyword_value]" id="keyword_value_{$vo.id}"  style="width:100%" value="{$vo.keyword_value}" type="text" class="input-text {$vo['keyword_value']==''?'hide':''}" ></td>
+                  <td><input name="ps[{$vo.id}][keyword_value]" id="keyword_value_{$vo.id}"  style="width:100%" value="{$vo.keyword_value}" type="text" class="input-text " ></td>
                   <td>
                   <label class="m-t">
-                  <input class="checkbox-slider colored-blue" name="ps[{$vo.id}][is_show]" type="checkbox" value="1" { {$vo['is_show']==1?'checked':''}>
+                  <input class="checkbox-slider colored-blue" name="ps[{$vo.id}][is_show]" type="checkbox" value="1"  {$vo['is_show']==1?'checked':''}>
                   <span class="text"></span>
                   </label>
                   </td>
@@ -106,12 +105,11 @@
                 </select>
             </td>
         <td>
-            <a href="javascript:;" data-url="{:_url("publics/sys_admin.links/index",array("searchType"=>"new","_menu_index"=>"[[id]]"))}"  data-toggle="iframeModal" class="bding_btn_{{id}} btn btn-sm btn-default hide " id="Url_btn_{{id}}">绑定URL</a>
+            <a href="javascript:;" data-remote="{:_url("publics/sys_admin.links/index",array("searchType"=>"new","_menu_index"=>"[[id]]"))}"  data-toggle="ajaxModal" class="bding_btn_{{id}} btn btn-sm btn-default hide " id="Url_btn_{{id}}">绑定URL</a>
             <a href="javascript:;" data-remote="{:_url("weixin/sys_admin.replyText/searchBox",array("searchType"=>"new","_menu_index"=>"[[id]]"))}" data-toggle="ajaxModal" class="bding_btn_{{id}} btn btn-sm btn-default hide" id="ReplyText_btn_{{id}}">绑定关键字</a>
         </td>
         <td>
             <input name="new[parent_id][{{id}}]" value="{{pid}}" type="hidden"/>
-            <input name="new[keyword][{{id}}]" id="keyword_{{id}}" type="hidden" >
             <input name="new[keyword_value][{{id}}]" id="keyword_value_{{id}}" class="hide" type="text" style="width:100%">
             </td>
         <td><label class="m-t"><input class="checkbox-slider colored-blue" name="new[is_show][{{id}}]" type="checkbox" value="1" checked ><span class="text"></span></label></td>
@@ -200,23 +198,23 @@
 	  });
 
  function getKeywordSelect(obj,id){
-	 $("#keyword_"+id).val('');
 	 $("#keyword_value_"+id).val('');
 	 $(".bding_btn_"+id).addClass('hide');
-	 $("#keyword_value_"+id).addClass('hide');
 	 if(obj.value == 'view'){
-	   $("#keyword_value_"+id).removeClass('hide');
 	   $("#keyword_value_"+id).val('http://');
        $("#Url_btn_"+id).removeClass('hide');
 	 }else if(obj.value == 'click'){
-	   $("#keyword_value_"+id).removeClass('hide');
 	   $("#ReplyText_btn_"+id).removeClass('hide');
 	 }
 	 $(".modal-dialog .close").trigger("click");
  }
-
+  function assigBack(type,type_id,id,title){
+       $("#keyword_value_"+type_id).val(title);
+       $("#keyword_"+type_id).val(id);
+       $(".modal-dialog .close").trigger("click");
+  }
 var McMore = {
-    selectUrlCallback: function (url,type,type_id) {
+    selectUrlCallback: function assigBack(url,type,type_id) {
        $("#keyword_value_"+type_id).val(url);
        $(".modal-dialog .close").trigger("click");
    }
@@ -224,7 +222,5 @@ var McMore = {
 </script>
 {/block}
 {block name="footer" }
-<script type="text/javascript">
-     seajs.use(["dist/plupload/init.js"])
-</script>
+
 {/block}
