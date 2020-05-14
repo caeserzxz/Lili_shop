@@ -194,7 +194,8 @@ top:2px;}
 	display: block;
 }
 
-.specificationstable td{position:relative;}
+.specificationstable td, .table td{position:relative;}
+.table td .help-block{position:absolute; top:-15px; min-width: 10px;}
 .specificationstable td .help-block{position:absolute; top:0px; min-width: 10px;}
 
 .specificationstable .file-item,.specificationstable .file-item .upload-file {

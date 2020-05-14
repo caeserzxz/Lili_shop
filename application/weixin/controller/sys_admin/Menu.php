@@ -26,11 +26,11 @@ class Menu extends AdminController
 
 		$WeixinEventType = $this->getDict('WeixinEventType');		
 		$this->assign("WeixinEventType_opt", arrToSel($WeixinEventType));
-		$rows = $this->Model->field('id,pid,sort,name,keyword,keyword_value,is_show,type')->order('sort,id asc')->select();
+		$rows = $this->Model->field('id,pid,sort,name,keyword_value,is_show,type')->order('sort,id asc')->select();
 		foreach ($rows as $key=>$row){
 			$rows[$key]['event_select'] = arrToSel($WeixinEventType,$row['type']);
-		}	
-		$this->assign("rows", returnRows($rows));	
+		}
+		$this->assign("rows", returnRows($rows));
 		return $this->fetch();
 	}
     /*------------------------------------------------------ */
@@ -41,6 +41,7 @@ class Menu extends AdminController
         $save_menu = input('ps','', 'trim');
 		$res = $this->Model->saveMenu($add_menu,$save_menu);
 		if($res !== true) return $this->error($res);
+        $this->_log(0,'保存微信菜单');
 		return $this->success('保存成功！');
 	}
 	/*------------------------------------------------------ */
@@ -52,7 +53,8 @@ class Menu extends AdminController
 	   if($map['id'] < 1) return $this->error('非法操作！');
 	   $res = $this->Model->where($map)->delete();
        if ($res < 1) return $this->error();
-	   $res = $this->Model->where($mapb)->delete();
+	   $this->Model->where($mapb)->delete();
+       $this->_log($map['id'],'删除微信菜单');
        return $this->success('删除成功！');
     }
 	/*------------------------------------------------------ */
@@ -73,20 +75,12 @@ class Menu extends AdminController
 				foreach ($rowsb as $rowb){
 					$_row['type'] = $rowb['type'];
 					if ($rowb['type'] == 'click'){
-						$_row['key'] =  urlencode($rowb['keyword_value']);					
-					}else{
-						if ($rowb['keyword'] >= 1){							
-							$_row['url'] = _url('shop/article/info',array('id'=>$rowb['keyword']),false,true);
-						}else{
-						    if ($_row['type'] == 'view'){
-                                if (strstr($rowb['keyword_value'],'http://') == false && strstr($rowb['keyword_value'],'https://') == false) {
-                                    $rowb['keyword_value'] = config('config.host_path').$rowb['keyword_value'];
-                                }
-                                $_row['url'] = $rowb['keyword_value'];
-                            }else{
-                                $_row['url'] = urlencode($rowb['keyword_value']);
-                            }
-						}
+						$_row['key'] =  urlencode($rowb['keyword_value']);
+					}elseif ($_row['type'] == 'view'){
+                        if (strstr($rowb['keyword_value'],'http://') == false && strstr($rowb['keyword_value'],'https://') == false) {
+                             $rowb['keyword_value'] = config('config.host_path').$rowb['keyword_value'];
+                        }
+                        $_row['url'] = $rowb['keyword_value'];
 					}
 					$_row['name'] = urlencode($rowb['name']);
 					$p_row['sub_button'][] = $_row;
@@ -95,30 +89,21 @@ class Menu extends AdminController
 			    $p_row['type'] = $row['type'];
 				if ($row['type'] == 'click'){
 					$p_row['key'] = urlencode($row['keyword_value']);			
-				}else{
-					if ($row['keyword'] >= 1){
-						$p_row['url'] = _url('shop/article/info',array('id'=>$row['keyword']),false,true);
-					}else{
-                        if ($p_row['type'] == 'view'){
-                            if (strstr($row['keyword_value'],'http://') == false && strstr($row['keyword_value'],'https://') == false) {
+				}elseif ($p_row['type'] == 'view'){
+                      if (strstr($row['keyword_value'],'http://') == false && strstr($row['keyword_value'],'https://') == false) {
                                 $row['keyword_value'] = config('config.host_path').$row['keyword_value'];
-                            }
-                            $p_row['url'] = $row['keyword_value'];
-                        }else{
-                            $p_row['url'] = urlencode($row['keyword_value']);
-                        }
-					}
+                      }
+                      $p_row['url'] = $row['keyword_value'];
 				}
-			}			
+			}
 			$bntarr['button'][] = $p_row;			
 		}
-		
-		if (empty($bntarr)) return $this->error('没有可推送的菜单定义');				
+		if (empty($bntarr)) return $this->error('没有可推送的菜单定义');
 		$bntarr = urldecode(json_encode($bntarr,JSON_UNESCAPED_UNICODE));
 		$res = (new WeiXinModel)->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/create?',$bntarr);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
-		
+		$this->_log(0,'推送微信菜单');
 		return $this->success('推送微信菜单成功.');
 	}
 	/*------------------------------------------------------ */
@@ -129,7 +114,7 @@ class Menu extends AdminController
 		$res = (new WeiXinModel)->weiXinCurl('https://api.weixin.qq.com/cgi-bin/menu/delete?',[]);
 		if ($res['errmsg'] != 'ok') return $this->error('操作失败，返回结果：'.$res['errcode'].'-'.$res['errmsg']);
 		//记录日志
-		
+        $this->_log(0,'撤销微信菜单');
 		return $this->success();
 	}
 }
