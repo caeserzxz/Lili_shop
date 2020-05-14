@@ -40,25 +40,17 @@
 	}
 </style>
 <div style="display: none;" id="show_ordermessage">
-	{volist name="users" id="vo"}
-	<span class="msg_show" data-type="not-real">
-		<div class="msg_show_div">
-			<img src="{$vo.headimgurl}" class="msg_show_img" style="display: inline-block;">
-		</div>
-		<div name="user_name" class="msg_show_name">	
-			{$vo.user_name} {$data.content}
-		</div>
-	</span>
-	{/volist}
-
 </div>
 <script type="text/javascript">
 	<!-- 刷新频率必须要比获取真实频率要低 -->
 	$(function(){
-		var hit = "{$data['hit']}"
-		var frequency = "{$data['frequency']}"
-		var rfrequency =  "{$data['rfrequency']}"
-		var content = "{$data['content']}"
+		var hit = "{:settings('show_ordermessage_hit')}"
+		var frequency ="{:settings('show_ordermessage_frequency')}"
+		frequency = frequency*1000
+		var rfrequency ="{:settings('show_ordermessage_rfrequency')}"
+
+		rfrequency= rfrequency * 1000
+		var content = "{:settings('show_ordermessage_content')}"
 		var num = height = 0 ;
 
 		height = $('.selectBox').height() +  $('.header').height() + $(document).height()/50 + $('.fui-header').height()
@@ -76,12 +68,10 @@
 		   	 $('.showmessage').append($('.msg_show:eq(0)').html())
 		   	 a.remove()
 		   }
-
 		   //要实时查看有没有数据,没有就要加载
 		   if(a.length <= 0){
 		   	ajaxget('not-real')
 		   }
-
 
 		},frequency)	
 
