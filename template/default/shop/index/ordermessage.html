@@ -1,4 +1,4 @@
-
+{if condition="settings('show_ordermessage_switch') == 1"}
 <style type="text/css">
 	.showmessage{
 	    position: absolute;
@@ -46,7 +46,12 @@
 	$(function(){
 		var hit = "{:settings('show_ordermessage_hit')}"
 		var frequency ="{:settings('show_ordermessage_frequency')}"
-		frequency = frequency*1000
+		if(frequency == null){
+			frequency=10000000000000000;
+		}else{
+			frequency = frequency*1000
+		}
+		
 		var rfrequency ="{:settings('show_ordermessage_rfrequency')}"
 
 		rfrequency= rfrequency * 1000
@@ -102,4 +107,4 @@
 	
 
 </script>
-	
+{/if}	
