@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>导出10万数据</title>
+</head>
+<body>
+  <div>总数:<span id="total_num"></span></div>
+  <div>已处理:<span id="end_num"></span></div>
+  <div>剩余:<span id="residue_num"></span></div>
+  <div class="data" style="display: none">
+    <table id="root">
+      <tbody id="tbd">
+      <tr>
+        <th>key</th>
+        <th>订单编号</th>
+        <th>会员ID</th>
+        <th>订单状态</th>
+        <th>物流状态</th>
+        <th>支付状态</th>
+        <th>收货人</th>
+        <th>省</th>
+        <th>城市</th>
+        <th>区域</th>
+        <th>省市区</th>
+        <th>地址</th>
+        <th>手机号码</th>
+        <th>送货时间</th>
+        <th>买家留言</th>
+        <th>快递名称</th>
+        <th>发货单号</th>
+        <th>支付名称</th>
+        <th>商品总金额</th>
+        <th>运费</th>
+        <th>折扣金额</th>
+        <th>额外折扣</th>
+        <th>分成总金额</th>
+        <th>订单金额</th>
+        <th>添加时间</th>
+        <th>确定时间</th>
+        <th>取消时间</th>
+        <th>支付时间</th>
+        <th>发货时间</th>
+        <th>签收时间</th>
+        <th>退货时间</th>
+        <th>商品明细</th>
+      </tr>
+      </tbody>
+    </table>
+  </div>
+    <script>
+        //跑10万条数据
+        var total_num = 100000;
+        //每次多少条
+        var one_num = 500;
+        var limit = one_num/100;
+        function createOneHundredThousandData(){
+            let arr = [];
+            for(let i=0;i<total_num;i++){
+              trr = [i,
+                "2020040479329",
+                "29889",
+                "已确认",
+                "未发货",
+                "已付款",
+                "李206",
+                "北京",
+                "北京市",
+                "东城区",
+                "北京,北京市,东城区",
+                "测试测试",
+                "13800138000",
+                "没有记录",
+                "",
+                "",
+                "",
+                "余额支付",
+                "1000",
+                "120",
+                "0",
+                "0",
+                "92",
+                "1120",
+                "2020/4/1  10:15:00",
+                "2020/4/2  10:15:00",
+                "没有记录",
+                "2020/4/2  10:15:00",
+                "没有记录",
+                "没有记录",
+                "没有记录",
+                "肽CC隔离乳_(B2) * 1 || "];
+                arr.push({
+                  key:i,
+                  trr:trr
+                })
+            }
+            return arr;
+        }
+        var beginTime = performance.now();
+        console.log('beginTime',beginTime);
+        let h = [];
+        let data = createOneHundredThousandData();
+        let total_num_node = document.getElementById('total_num')
+        total_num_node.innerHTML = total_num;
+        let end_num_node = document.getElementById('end_num')
+        let residue_num_node = document.getElementById('residue_num')
+        // 先渲染500条数据
+        let firstScreenData = data.splice(0,one_num); // 用数组的splice方法，截取后并修改原数组
+        for(let i=0;i<one_num;i++){
+          let tr = document.createElement('tr');
+          let td = '';
+          for(let j=0;j<32;j++){
+            td += "<td style=\"mso-number-format:'\@';\">"+firstScreenData[i].trr[j]+"</td>";
+          }
+          tr.innerHTML = td;
+          document.getElementById('tbd').appendChild(tr);
+          get_num()
+        }  
+        // setTimeout 中的回调会在主线程空闲时被执行
+        setTimeout(()=>{
+          function renderHundred(n){
+            // console.log('n=',n);
+            // 每次渲染100条
+            let partialData = data.splice(0,one_num);
+            var end = false;
+            for(let i=0;i<one_num && partialData.length>0;i++){
+              let tr = document.createElement('tr');
+              let td = '';
+              for(let j=0;j<32;j++){
+                td += "<td style=\"mso-number-format:'\@';\">"+partialData[i].trr[j]+"</td>";
+                if(partialData[i].key == (total_num-1) && j==31){
+                  end = true;
+                }
+              }
+              tr.innerHTML = td;
+              document.getElementById('tbd').appendChild(tr);
+              get_num()
+            }
+            if(end){
+              toDownload()
+            }          
+            if(n){
+              setTimeout(()=>{
+                renderHundred(n-limit);
+              },50)
+            }    
+          }
+          renderHundred(total_num-one_num);// 渲染除了首屏数据外的数据
+        },1000); 
+        document.addEventListener('DOMContentLoaded',function(){
+          // var endTime = performance.now();
+          // console.log('DOMContentLoaded endTime',endTime);
+          // var total = ((endTime - beginTime)/1000).toFixed(5);        
+          // console.log('DOMContentLoaded render 100000 items takes ' + total + ' 秒');
+        });
+        window.onload = function(){
+          var endTime = performance.now();
+          console.log('window.onload endTime',endTime);
+          var total = ((endTime - beginTime)/1000).toFixed(5);        
+          console.log('window.onload render 100000 items takes ' + total + ' 秒');  
+        }
+
+        function isIE() {
+          if (!!window.ActiveXObject || "ActiveXObject" in window) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+
+        function get_num(){
+          let residue_num = data.length;
+          let end_num = total_num - residue_num;
+          end_num_node.innerHTML = end_num;
+          residue_num_node.innerHTML = residue_num;
+        }
+
+        var isdown = true;
+        function toDownload(){
+          if(isdown){
+            isdown = false
+            let tableHtml = document.getElementById('root').outerHTML;
+            var html2 = "<html><head><meta charset='utf-8' /></head><body>" + tableHtml + "</body></html>"
+            var excelBlob = new Blob([html2], {type: 'application/vnd.ms-excel'});
+             var fileName = "导出10万数据.xls";
+             if(isIE()){
+              window.navigator.msSaveOrOpenBlob(excelBlob,fileName);
+             }else{
+              var oa = document.createElement('a');
+              oa.href = URL.createObjectURL(excelBlob);
+              oa.download = fileName;
+              document.body.appendChild(oa);
+              oa.click();
+             }
+             var endTime = performance.now();
+            console.log('DOMContentLoaded endTime',endTime);
+            var total = ((endTime - beginTime)/1000).toFixed(5);        
+            console.log('DOMContentLoaded render 100000 items takes ' + total + ' 秒');
+          }
+        }
+    </script>
+</body>
+</html>
