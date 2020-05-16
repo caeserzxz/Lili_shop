@@ -398,7 +398,7 @@ class Users extends AdminController
         $oWhere[] = ['o.user_id','in',$user_ids];
         $oWhere[] = ['o.order_status','=',1];
         $oWhere[] = ['o.add_time','between',[strtotime($dtime[0]),strtotime($dtime[1]) + 86399]];
-        $viewObj = (new \app\shop\model\OrderModel)->alias('o')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price');
+        $viewObj = (new \app\shop\model\OrderModel)->alias('o')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price,og.sale_price');
         $viewObj->join("shop_order_goods og", 'og.order_id=o.order_id', 'left');
         $rows = $viewObj->where($oWhere)->select()->toArray();
         $result['buyGoods'] = [];
@@ -414,12 +414,12 @@ class Users extends AdminController
             $buy_ser_ids[$row['user_id']] = 1;
             $result['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $result['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
-            $result['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
+            $result['buyGoods'][$row['goods_id']]['price'] += ($row['sale_price']*$row['goods_number']);
             $team_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
             $team_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
         }
 
-        $viewObj = $this->Model->alias('u')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price');
+        $viewObj = $this->Model->alias('u')->field('o.user_id,o.order_id,o.user_id,o.order_amount,o.dividend_amount,og.goods_name,og.goods_id,og.goods_name,og.goods_number,og.shop_price,og.sale_price');
         $viewObj->join("shop_order_info o", 'u.user_id=o.user_id AND o.order_status = 1 AND o.add_time between ' . strtotime($dtime[0]) . ' and ' . (strtotime($dtime[1]) + 86399), 'left');
         $viewObj->join("shop_order_goods og", 'og.order_id=o.order_id', 'left');
         $rows = $viewObj->where('u.user_id', $user_id)->select()->toArray();
@@ -429,13 +429,13 @@ class Users extends AdminController
             $buy_ser_ids[$row['user_id']] = 1;
             $result['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $result['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
-            $result['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
+            $result['buyGoods'][$row['goods_id']]['price'] += ($row['sale_price']*$row['goods_number']);
             $team_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
             $team_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
 
             $nowUser['buyGoods'][$row['goods_id']]['goods_name'] = $row['goods_name'];
             $nowUser['buyGoods'][$row['goods_id']]['num'] += $row['goods_number'];
-            $nowUser['buyGoods'][$row['goods_id']]['price'] += $row['shop_price'];
+            $nowUser['buyGoods'][$row['goods_id']]['price'] += ($row['sale_price']*$row['goods_number']);
             $user_order_ids[$row['order_id']] = 1;
             $user_amount[$row['order_id']]['dividend_amount'] = $row['dividend_amount'];
             $user_amount[$row['order_id']]['order_amount'] = $row['order_amount'];
