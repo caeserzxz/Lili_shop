@@ -502,8 +502,8 @@ class Order extends AdminController
             $data['shipping_fee'] = input('fee', 0, 'intval');
             $order_amount = input('amount', 0, 'floatval');
             $data['order_amount'] = $order_amount + $data['shipping_fee'];
-            $data['diy_discount'] = $orderInfo['goods_amount'] - $order_amount - $orderInfo['discount'] - $orderInfo['integral_money'] - $orderInfo['buy_again_discount'] - $orderInfo['use_bonus'];
-            $data['is_dividend'] = 0;
+            $data['diy_discount'] = $orderInfo['goods_amount'] - $order_amount - $orderInfo['discount'] - $orderInfo['integral_money'] - $orderInfo['use_bonus'];
+            $data['is_dividend'] = 2;
             $data['money_paid'] = 0;
             $data['order_id'] = $order_id;
             $res = $this->Model->upInfo($data, 'changePrice');
@@ -584,8 +584,8 @@ class Order extends AdminController
             if ($res !== true) return $this->error($res);
             $orderInfo['order_status'] = $upData['order_status'];
             $orderInfo['pay_status'] = $upData['pay_status'];
-            $this->Model->_log($orderInfo, '线下支付收款确认：' . input('pay_no', '', 'trim'));
-            $this->Model->paySuccessEval($orderInfo);
+            $this->Model->_log($orderInfo, '线下支付收款确认：' . input('transaction_id', '', 'trim'));
+
             return $this->success('线下支付收款确认成功！', url('info', array('order_id' => $order_id)));
         }
         $this->assign('orderInfo', $orderInfo);
@@ -815,7 +815,7 @@ class Order extends AdminController
             return $this->error('已取消订单不能操作！');
         }
         if ($orderInfo['shipping_status'] == $config['SS_SIGN']) return $this->error('订单已签收后不能操作！');
-        $data['is_dividend'] = 0;
+        $data['is_dividend'] = 2;
         $data['order_id'] = $order_id;
         $res = $this->Model->upInfo($data);
         if ($res !== true) return $this->error($res);

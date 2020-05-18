@@ -125,16 +125,11 @@ class CartModel extends BaseModel
             $update['is_select'] = 1;
             $update['settle_price'] = $goods['settle_price'];
             $update['shop_price'] = $goods['shop_price'];
-            $update['buy_again_discount'] = 0;
+            $update['settle_price'] = $goods['settle_price'];
+            $update['buy_brokerage'] = $goods['buy_brokerage'];
             $update['prom_type'] = $prom_type;
             $update['prom_id'] = $prom_id;
-            if ($goods['is_dividend'] == 1) {//分销商品处理，计算分销复购优惠
-                $Dividend = json_decode(settings('Dividend'), true);
-                if ($Dividend['buy_again_lower'] == 1) {
-                    $DividendLevel = $Dividend['LevelRow'];
-                    $update['buy_again_discount'] = $DividendLevel[1]['money'];
-                }
-            }
+
             $update['is_dividend'] = $goods['is_dividend'];
             $res = $this->where('rec_id', $row['rec_id'])->update($update);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
@@ -165,6 +160,7 @@ class CartModel extends BaseModel
                 'pic' => $goods['goods_thumb'],
                 'use_integral' => $use_integral,
                 'add_time' => time(),
+                'buy_brokerage'=>$goods['buy_brokerage'],
             );
 
             $discont = 0;
@@ -202,15 +198,7 @@ class CartModel extends BaseModel
 
             }
             $parent['discount'] = $discont;
-            //计算复购
-            $parent['buy_again_discount'] = 0;
-            if ($this->is_integral == 0 && $goods['is_dividend'] == 1 && $this->userInfo['dividend_role_id'] > 0) {
-                $Dividend = json_decode(settings('Dividend'), true);
-                if ($Dividend['buy_again_lower'] == 1) {
-                    $DividendLevel = $Dividend['LevelRow'];
-                    $parent['buy_again_discount'] = $DividendLevel[1]['money'];
-                }
-            }
+
             $res = $this->save($parent);
             if ($res < 1) return '未知错误，操作失败，请尝试重新提交';
             $rec_id = $this->rec_id;
@@ -383,7 +371,6 @@ class CartModel extends BaseModel
             $data['allGoodsNum'] = 0;
             $data['totalDiscount'] = 0;
             $data['totalGoodsPrice'] = 0;
-            $data['buyAgainDiscount'] = 0;
             $rows = $this->where($where)->order('rec_id ASC')->select();
             foreach ($rows as $key => $row) {
                 if ($row['is_invalid'] == 1) {//无效记录到无效列表
@@ -393,7 +380,6 @@ class CartModel extends BaseModel
                 if ($row['is_select'] == 0) {
                     $data['isAllSel'] = 0;
                 }
-                $data['buyAgainDiscount'] += $row['buy_again_discount'] * $row['goods_number'];
                 $gid_list[$row['goods_id']] = 1;
                 $data['allGoodsNum'] += $row['goods_number'];
                 if ($row['is_select'] == 1) {
@@ -435,7 +421,7 @@ class CartModel extends BaseModel
 
             $data['totalDiscount'] = sprintf("%.2f", $data['totalDiscount']);
             $data['totalGoodsPrice'] = sprintf("%.2f", $data['totalGoodsPrice']);
-            $data['orderTotal'] = sprintf("%.2f", $data['orderTotal'] - $data['buyAgainDiscount']);
+            $data['orderTotal'] = sprintf("%.2f", $data['orderTotal'] );
             $data['exp_total'] = explode('.', $data['orderTotal']);
 
             Cache::set($mkey, $data, 60);
@@ -529,12 +515,7 @@ class CartModel extends BaseModel
         }else{
             $arr['market_price'] = $goods['market_price'];
         }
-        $arr['buy_again_discount'] = 0;
-        if ($this->is_integral == 0 && $goods['is_dividend'] == 1 && $this->userInfo['dividend_role_id'] > 0) {
-            $Dividend = json_decode(settings('Dividend'), true);
-            $DividendLevel = $Dividend['LevelRow'];
-            $arr['buy_again_discount'] = $DividendLevel[1]['money'];
-        }
+
         return $this->updateCart($rec_id, $arr, $this->is_integral);
     }
     /*------------------------------------------------------ */

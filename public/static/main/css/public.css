@@ -237,10 +237,10 @@ min-height:90px !important;
 	background: #f7f7f7;
 }
 .table .border_top{
-	border-top: solid 40px #e2e2e2;
+	border-top: solid 40px #f3f3f3;
 }
 .table .border_top .top{
-	position: absolute; margin-top: -40px; width: 95%;
+	position: absolute; margin-top: -40px; display: table-cell ; width: 900px;
 }
 .table .border_top .top a{
 	position: absolute; right: 0px;

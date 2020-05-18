@@ -155,7 +155,7 @@ class UsersModel extends BaseModel
      */
     public function register($inArr = array(), $wxuid = 0, $is_admin = false, &$obj = '')
     {
-
+        $inArr['pid'] = 0;
         if ($wxuid == 0) {
             if (empty($inArr)) {
                 return '获取注册数据失败.';
@@ -189,10 +189,16 @@ class UsersModel extends BaseModel
                     if ($register_invite_code == 1) {//邀请码
                         $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
                     } elseif ($register_invite_code == 2) {//会员ID
-                        $share_user_id = $this->where('user_id', $inArr['invite_code'])->value('user_id');
+                        $invite_code = $inArr['invite_code'] * 1;
+                        $share_user_id = $this->where('user_id', $invite_code)->value('user_id');
                     } elseif ($register_invite_code == 3) {//会员手机号
                         $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
                     }
+                    //查不到信息，可能用户通过分享二维码进来
+                    if ($share_user_id < 1){
+                        $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
+                    }
+
                     if ($share_user_id < 1 && $register_must_invite == 1) {
                         return '邀请帐号不存在.';
                     }
@@ -204,8 +210,7 @@ class UsersModel extends BaseModel
         $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
-        $inArr['pid'] = 0;
-        if ($is_admin == false){
+        if ($inArr['pid'] < 1 && $is_admin == false){
             $inArr['pid'] = $this->returnPid(0);
         }
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
@@ -227,14 +232,47 @@ class UsersModel extends BaseModel
                 return '未知错误-2，请尝试重新提交.';
             }
         }
+        //捆绑微信会员信息
+        if ($wxuid > 0) {
+            $res = (new WeiXinUsersModel)->bindUserId($wxuid, $user_id);
+            if ($res < 1) {
+                Db::rollback();
+                return '捆绑微信会员信息失败.';
+            }
+        } //end
+        Db::commit();
+        //后台添加的用户，加日志
+        if ($is_admin && !empty($obj)) {
+            $obj->_log($user_id, '后台手动新增会员-用户id:' . $user_id, 'member');
+        }
+        //注册会员成功后异步执行
+        asynRun('member/UsersModel/asynRunRegister',['user_id'=>$user_id,'pid'=>$inArr['pid']]);
+        return true;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 注册异步处理
+    /*------------------------------------------------------ */
+    public function asynRunRegister($data)
+    {
+        $user_id = $data['user_id'];
+        $pid = $data['pid'];
+        $mkey = 'asynRunRegisterIng'.$user_id;
+        $asynRunRegisterIng = Cache::get($mkey);
+        if (empty($asynRunRegisterIng) == false){
+            return true;
+        }
+        Cache::set($mkey,1,60);
         //创建会员帐户信息
         $AccountLogModel = new AccountLogModel();
-        $res = $AccountLogModel->createData(['user_id' => $user_id, 'update_time' => $time]);
-        if ($res < 1) {
-            Db::rollback();
-            return '未知错误-2，请尝试重新提交.';
+        $count = $AccountLogModel->where('user_id',$user_id)->count();
+        if ($count < 1){
+            $res = $AccountLogModel->createData(['user_id' => $user_id, 'update_time' => time()]);
+            if ($res < 1) {
+                return '创建会员帐户信息失败.';
+            }
         }
-        //edn
+        //end
         //注册赠送积分
         $register_integral = settings('register_integral') * 1;
         if ($register_integral > 0) {
@@ -245,38 +283,24 @@ class UsersModel extends BaseModel
             $changedata['total_integral'] = $register_integral;
             $res = $AccountLogModel->change($changedata, $user_id, false);
             if ($res < 1) {
-                Db::rollback();
-                return '未知错误-3，请尝试重新提交.';
+                return '注册赠送积分失败.';
             }
         }
         //edn
-        //捆绑微信会员信息
-        if ($wxuid > 0) {
-            $WeiXinUsersModel = new WeiXinUsersModel();
-            $res = $WeiXinUsersModel->bindUserId($wxuid, $user_id);
-            if ($res < 1) {
-                Db::rollback();
-                return '未知错误-4，请尝试重新提交.';
-            }
-        } //end
-        Db::commit();
+
         $bind_pid_time = settings('bind_pid_time');
-        if ($inArr['pid'] > 0 && $bind_pid_time < 1) {
-            //写入九级关系链
-            $this->regUserBind($user_id, $inArr['pid']);
+        if ($pid > 0 && $bind_pid_time < 1) {
+            //写入关系链
+            $this->regUserBind($user_id, $pid);
         }
         //红包模块存在执行
         if (class_exists('app\shop\model\BonusModel')) {
             //注册送红包
             (new \app\shop\model\BonusModel)->sendByReg($user_id);
         }
-
-        //后台添加的用户，加日志
-        if ($is_admin && !empty($obj)) {
-            $obj->_log($user_id, '后台手动新增会员-用户id:' . $user_id, 'member');
-        }
         return true;
     }
+
     /*------------------------------------------------------ */
     //-- 返上绑定上级ID
     /*------------------------------------------------------ */
@@ -534,7 +558,7 @@ class UsersModel extends BaseModel
             $bingKey = 'regUserBindIng' . $user_id;
             if (empty(Cache::get($bingKey)) == false){
                 return true;
-            };
+            }
             Cache::set($bingKey,1,60);
         }
         if ($pid == -1){
@@ -542,7 +566,7 @@ class UsersModel extends BaseModel
         }
         $UsersBindSuperiorModel = new UsersBindSuperiorModel();
         //会员上级汇总处理
-        $res = $UsersBindSuperiorModel->treat($user_id, $pid);
+        $res = $UsersBindSuperiorModel->treat($user_id, $pid,$is_edit);
         if ($res == false) {
             return false;
         }

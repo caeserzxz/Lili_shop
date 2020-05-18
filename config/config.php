@@ -30,8 +30,8 @@ return [
     'register_invite_code'=>['1'=>'邀请码 ','2'=>'会员ID','3'=>'会员手机号码'],
     'withdraw_account_type'=>['bank'=>'银行卡 ','wxpay'=>'微信','alipay'=>'支付宝'],
     //使用的分销模式
-    'dividend_type' => 'sdtydw',
-    //使用的分销模式
+    'dividend_type' => 'base',
+    //订单类型
     'order_type'=>['0'=>'普通订单','1'=>'积分订单','2'=>'拼团订单','3'=>'秒杀订单','9'=>'售后订单'],
     /* 订单状态 */
     'OS_UNCONFIRMED' => 0,// 未确认

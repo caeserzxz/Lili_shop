@@ -57,26 +57,28 @@ class RoleOrderModel extends BaseModel
             }
         }
         Db::commit();// 提交事务
-        //如果设置支付再绑定关系时执行,须优先于分佣计算前执行
-        $bind_pid_time = settings('bind_pid_time');
-        if ($bind_pid_time == 1){
-            $UsersModel =  new \app\member\model\UsersModel();
-            $UsersModel->regUserBind($orderInfo['user_id'],-1);
-        }//end
-
-        $this->distribution($orderInfo,'pay');
+        asynRun('shop/RoleOrderModel/asynRunPaySuccessEval',['order_id'=>$order_id]);//异步执行
         //升级，分佣处理
         return true;
     }
-
     /*------------------------------------------------------ */
-    //-- 提成处理&升级处理
+    //-- 支付成功后执行(异步执行)
+    //-- $param array 必须带有order_id
     /*------------------------------------------------------ */
-    public function distribution(&$orderInfo,$type)
+    function asynRunPaySuccessEval($param)
     {
-        if (empty($orderInfo)) return false;
+        $order_id = $param['order_id'] * 1;
+        $orderInfo =  $this->where('order_id',$order_id)->find()->toArray();
+        if (empty($orderInfo)) return '没有找到相关订单';
+        $user_id = $orderInfo['user_id'];
+        //如果设置支付再绑定关系时执行,须优先于分佣计算前执行
+        if (settings('bind_pid_time') == 1){
+            $res = (new \app\member\model\UsersModel)->regUserBind($user_id,-1);
+            if ($res == false) return '绑定关系链失败.';
+        }//end
+
         $orderInfo['d_type'] = 'role_order';//身份订单
-        $data = (new \app\distribution\model\DividendModel)->_eval($orderInfo,$type);
+        $data = (new \app\distribution\model\DividendModel)->_eval($orderInfo,'pay');
         if (is_array($data) == false){
             return false;
         }

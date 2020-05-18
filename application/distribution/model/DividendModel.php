@@ -37,7 +37,7 @@ class DividendModel extends BaseModel
     public function sendMsg($type,$order_id,$order_operating='',$order_type = 'order'){
         $where[] = ['order_id','=',$order_id];
         if ($order_type == 'order'){
-            $where[] = ['order_type', 'in', ['order','up_back']];
+            $where[] = ['order_type', 'in', ['order','buy_back']];
         }else{
             $where[] = ['order_type','=',$order_type];
         }
@@ -86,7 +86,7 @@ class DividendModel extends BaseModel
             }else{
                 $where[] = ['d.order_id', '=', $order_id];
                 $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
-                $where[] = ['d.order_type', 'in', ['order','up_back']];
+                $where[] = ['d.order_type', 'in', ['order','buy_back']];
                 $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
             }
         } else {
@@ -96,13 +96,13 @@ class DividendModel extends BaseModel
                 $rows = $this->where($where)->select()->toArray();
             }else{
                 if ($shop_after_sale_limit > 0 ){
-                    $where[] = ['d.order_type', 'in', ['order','up_back']];
+                    $where[] = ['d.order_type', 'in', ['order','buy_back']];
                     $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
                     $limit_time = $shop_after_sale_limit * 86400;
                     $where[] = ['d.update_time', '<', $time - $limit_time];
                     $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
                 }else{
-                    $where[] = ['order_type', 'in', ['order','up_back']];
+                    $where[] = ['order_type', 'in', ['order','buy_back']];
                     $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
                     $rows = $this->where($where)->select()->toArray();
                 }

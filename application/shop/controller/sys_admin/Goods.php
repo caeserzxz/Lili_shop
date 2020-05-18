@@ -169,7 +169,7 @@ class Goods extends AdminController
                     $gsarr['Price'] = $arr['shop_price'];
                     $gsarr['PromotePrice'] = $arr['promote_price'];
                     $gsarr['SettlePrice'] = $arr['settle_price'];
-                    $gsarr['MarketPrice'] = $arr['market_price'];
+                    $gsarr['MarketPrice'] = $arr['market_price'] * 1;
                     $gsarr['Store'] = $arr['goods_number'];
                     $gsarr['Weight'] = $arr['goods_weight'];
                     $gsarr['ProductCode'] = $arr['bar_code'];
@@ -315,7 +315,7 @@ class Goods extends AdminController
                 if ($row['market_price'] > 0) {
                     if ($row['market_price'] < $row['shop_price']) return $this->error('操作失败:市场价不能少于销售价.');
                 } else {
-                    $row['market_price'] = $row['shop_price'];//不填写市场价，默认与售价一致
+                    $row['market_price'] = $row['shop_price'] * 1;//不填写市场价，默认与售价一致
                 }
             }
 
@@ -331,6 +331,9 @@ class Goods extends AdminController
                 if ($row['promote_price'] < 0) {
                     return $this->error('操作失败:促销价必须大于0.');
                 }
+            }
+            if ($row['buy_brokerage'] >= $row['shop_price']){
+                return $this->error('购买返还金额不能大于或等于销售价.');
             }
         } else {//多规格处理
             $Products = input('post.Products');
@@ -352,7 +355,7 @@ class Goods extends AdminController
                 } else {
                     $prices[] = $prow['Price'];
                 }
-                $market_price[] = $prow['MarketPrice'];
+                $market_price[] = $prow['MarketPrice'] * 1;
                 //促销处理
                 if ($row['is_promote'] == 1) {
                     if ($prow['PromotePrice'] < 0) {
@@ -376,7 +379,9 @@ class Goods extends AdminController
                 $row['min_price'] = $row['shop_price'];
                 $row['max_price'] = max($prices);
             }
-
+            if ($row['buy_brokerage'] >= $row['min_price']){
+                return $this->error('购买返还金额不能大于或等于最低销售价.');
+            }
             $row['market_price'] = max($market_price);
             $GoodsSkuModel = new GoodsSkuModel();
             $where[] = ['store_id', '=', $this->store_id];
@@ -502,7 +507,7 @@ class Goods extends AdminController
                 $inData['supplyer_id'] = $this->supplyer_id * 1;
                 $inData['store_id'] = $this->store_id * 1;
                 $inData['goods_id'] = $row['goods_id'];
-                $inData['market_price'] = $prow['MarketPrice'];
+                $inData['market_price'] = $prow['MarketPrice'] * 1;
                 $inData['sku_model'] = $sku_model;
                 if ($this->supplyer_id > 0) {//供应商操作此字段
                     $inData['settle_price'] = $prow['SettlePrice'];
@@ -717,7 +722,7 @@ class Goods extends AdminController
                     if (empty($_arr)) continue;//空值跳过,不执行生成sku
                     $upData['sku'] = $sku;
                     $upData['sku_name'] = join(',', $prow['SpecVal']['val']);
-                    $upData['market_price'] = $prow['MarketPrice'];
+                    $upData['market_price'] = $prow['MarketPrice'] * 1;
                     if ($this->supplyer_id > 0) {//供应商操作此字段
                         $upData['settle_price'] = $prow['SettlePrice'];
                     } else {

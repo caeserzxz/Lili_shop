@@ -52,7 +52,12 @@ class RoleGoods extends AdminController
 		if ($data['id'] < 1){
 			$data['add_time'] =  time();	
 		}
-		if(empty($data['goods_img'])) return $this->error('请上传商品图片.');
+		if(empty($data['goods_img'])){
+            return $this->error('请上传商品图片.');
+        }
+		if ($data['buy_brokerage'] >= $data['sale_price']){
+            return $this->error('购买返还金额不能大于或等于销售价.');
+        }
 		return $data;
 	}
 	//-- 添加后调用
@@ -65,7 +70,7 @@ class RoleGoods extends AdminController
 	/*------------------------------------------------------ */
 	//-- 修改前调用
 	/*------------------------------------------------------ */
-	public function beforeEdit($data){		
+	public function beforeEdit($data){
 		return $this->beforeAdd($data);
 	}
 	//-- 修改后调用

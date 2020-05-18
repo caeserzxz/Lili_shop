@@ -31,8 +31,10 @@ class ReplyText extends AdminController
     //-- 获取列表
 	//-- $runData boolean 是否返回模板
     /*------------------------------------------------------ */
-    public function getList($runData = false) {		    
-		$where[] = ['type','=','text'];	
+    public function getList($runData = false,$isAll = false) {
+        if ($isAll == false){
+            $where[] = ['type','=','text'];
+        }
 		$search['keyword'] =  input('keyword','','trim');
 		if (empty($search['keyword']) == false) $where[] = ['keyword','like','%'.$search['keyword'].'%'];	
 		
@@ -136,7 +138,7 @@ class ReplyText extends AdminController
 	public function searchBox(){
 		$this->_pagesize = 10;
 		$this->_field = 'id,keyword';
-		$this->getList(true);
+		$this->getList(true,true);
 		$result['data'] = $this->data;
 		if ($this->request->isPost()) return $this->ajaxReturn($result);
 		$this->assign("cgOpt", arrToSel($this->cg_list,input('cid',0,'intval')));

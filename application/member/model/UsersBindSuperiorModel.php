@@ -14,8 +14,9 @@ class UsersBindSuperiorModel extends BaseModel
      * 处理会员上级汇总
      * @param $user_id 操作会员ID
      * @param $pid 上级ID
+     * @param $is_edit 是否修改
      */
-	public function treat($user_id = 0,$pid = 0){
+	public function treat($user_id = 0,$pid = 0,$is_edit = false){
         $data = $this->where('user_id',$user_id)->find();
 
         if ($pid > 0){
@@ -62,6 +63,7 @@ class UsersBindSuperiorModel extends BaseModel
         if ($res < 1){
             return false;
         }
+        if ($is_edit == false) return true;//非修改不执行以下操作
 
         $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
         $where[] = ['user_id','<>',$user_id];

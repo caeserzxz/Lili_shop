@@ -1,10 +1,10 @@
 <?php
 /*------------------------------------------------------ */
-//-- 天亿项目提成处理
+//-- 提成处理
 //-- Author: iqgmy
 /*------------------------------------------------------ */
 
-namespace distribution\sdtydw;
+namespace distribution\base;
 
 use app\BaseModel;
 use think\Db;
@@ -61,41 +61,16 @@ class Dividend extends BaseModel
         $send_msg = false;
         //先计算佣金再执行升级处理
         if ($type == 'add') {//写入分佣，普通订单下单时执行
-            $back_dividend_amount = 0;
-            $goodsList = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select();
-            if ($orderInfo['back_dividend_amount'] == 0){//已支付，并且下单立返为0时操作
-                $upRole = $this->evalLevelUp($orderInfo, $orderInfo['user_id'],$goodsList,false);//只判断是否升级和是否立减
-                if ($upRole['isBackDividend'] == 1){
-                    $back_dividend_amount = $this->backDividend($orderInfo, $goodsList, $upRole);
-                    if ($back_dividend_amount === false) return false;//如果返回false,停止处理
-                    $orderInfo['back_dividend_amount'] = $back_dividend_amount;
-                }
-            }
-            //获取订单中的分销商品
-            $d_goodsList = [];
-            foreach ($goodsList as $og){
-                if ($og['is_dividend'] == 1){
-                    $d_goodsList[] = $og;
-                }
-            }
-            if (empty($d_goodsList) == false) {
-                $upData = $this->saveLog($orderInfo, $d_goodsList, $status);//佣金计算
-                if (is_array($upData) == false) return false;
-            }
-
+            $upData = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
+            if (is_array($upData) == false) return false;
             if ($orderInfo['pid'] == 0 && $orderInfo['pay_status'] == $OrderModel->config['DD_PAYED']) {
-                $this->Model->sendMsg('pay', $orderInfo['order_id']);//支付模板消息
+                if ($orderInfo['is_dividend'] == 0){//第一次生成时才发送模板消息
+                    $this->Model->sendMsg('pay', $orderInfo['order_id']);//支付模板消息
+                }
             }
-            if ($back_dividend_amount > 0){
-                $upData['back_dividend_amount'] = $back_dividend_amount;
-            }
-            return $upData;
+            return $upData;//返回数组
         } elseif ($type == 'pay') {//订单支付成功
-            $bind_pid_time = settings('bind_pid_time');
-            if ($bind_pid_time == 1){//支付成功时绑定关系
-                $this->UsersModel->regUserBind($orderInfo['user_id']);
-            }
-            $goodsList = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select();
+            $goodsList = (new OrderGoodsModel)->where('order_id',$orderInfo['order_id'])->select();
             $res = $this->evalLevelUp($orderInfo, $orderInfo['user_id'],$goodsList);//升级处理
             if ($res == false) return false;
             $upData['status'] = $OrderModel->config['DD_PAYED'];
@@ -160,7 +135,6 @@ class Dividend extends BaseModel
         $assignAwardNum = [];//记录已分出去的管理奖金额
         $assignAwardUser = [];//记录已领管理奖的用户
 
-
         $delWhere[] = ['order_id', '=', $orderInfo['order_id']];
         $delWhere[] = ['order_type', '=', $orderInfo['d_type']];
         $this->Model->where($delWhere)->delete();//清理旧的提成记录，重新计算
@@ -170,7 +144,7 @@ class Dividend extends BaseModel
         if ($orderInfo['d_type'] == 'role_order') {
             foreach ($awardList as $key => $award) {
                 $parentId = $buyUserInfo['pid'];//获取购买会员直属上级ID
-                if ($award['goods_limit'] != 4 || $award['award_type'] != 4) {//非指定身份商品的奖项跳出
+                if ($award['goods_limit'] != 3 ) {//非指定身份商品的奖项跳出
                     continue;
                 }
                 if (isset($nowLevelOrdinary[$key]) == false) {
@@ -186,34 +160,7 @@ class Dividend extends BaseModel
                 if ($award['role_goods'] != $orderInfo['rg_id']) {
                     continue;
                 }
-                if ($award['buy_user_award'] > 0) {//购买者自返
-                    if ($award['buy_user_award_type'] == 'money') {//固定金额
-                        $inArr['dividend_amount'] = $award['buy_user_award'];
-                    } else {//订单百分比，扣除运费后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
-                        $inArr['dividend_amount'] = $amount / 100 * $award['buy_user_award'];
-                    }
-                    if ($inArr['dividend_amount'] > 0) {
-                        $inArr['status'] = $status;
-                        $inArr['order_type'] = $orderInfo['d_type'];
-                        $inArr['order_id'] = $orderInfo['order_id'];
-                        $inArr['order_sn'] = $orderInfo['order_sn'];
-                        $inArr['buy_uid'] = $orderInfo['user_id'];
-                        $inArr['order_amount'] = $orderInfo['order_amount'];
-                        $inArr['dividend_uid'] = $buyUserInfo['user_id'];
-                        $inArr['role_id'] = $buyUserInfo['role_id'] * 1;
-                        $inArr['role_name'] = $buyUserInfo['role_id'] > 0 ? $buyUserInfo['role']['role_name'] : '粉丝';
-                        $inArr['level'] = $nowLevel;
-                        $inArr['award_id'] = $award['award_id'];
-                        $inArr['award_name'] = $award['award_name'];
-                        $inArr['level_award_name'] = '自购返佣';
 
-                        $dividend_amount += $inArr['dividend_amount'];
-                        $inArr['add_time'] = $inArr['update_time'] = time();
-                        $res = $this->Model->create($inArr);
-                        if ($res->log_id < 1) return false;
-                    }
-                }
                 if ($parentId > 0) {
                     $awardValue = json_decode($award['award_value'], true);//奖项内容
                     foreach ($awardValue as $value) {
@@ -242,7 +189,7 @@ class Dividend extends BaseModel
                         $inArr['order_amount'] = $orderInfo['order_amount'];
                         $inArr['dividend_uid'] = $userInfo['user_id'];
                         $inArr['role_id'] = $role_id;
-                        $inArr['role_name'] = $userInfo['role_id'] > 0 ? $userInfo['role']['role_name'] : '粉丝';
+                        $inArr['role_name'] = $userInfo['role']['role_name'] ;
                         $inArr['level'] = $value['level'];
                         $inArr['award_id'] = $award['award_id'];
                         $inArr['award_name'] = $award['award_name'];
@@ -276,6 +223,8 @@ class Dividend extends BaseModel
             $goods_buy_num[$goods['goods_id']] = $goods['goods_number'];
             $buy_goods_name[] = $goods['goods_name'];
         }
+        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'] - $orderInfo['back_dividend_amount'];
+
         do {
             $nowLevel += 1;
             $userInfo = $this->UsersModel->info($parentId);//获取会员信息
@@ -330,7 +279,7 @@ class Dividend extends BaseModel
                     }
                     continue;
                 }
-                if ($award['award_type'] == 3) {//判断管理奖是否享受
+                if ($award['award_type'] == 2) {//判断管理奖是否享受
                     if ($userInfo['role']['level'] <= $lastRole) {//上级身份低于下级身份或平级时跳出
                         continue;
                     }
@@ -374,16 +323,14 @@ class Dividend extends BaseModel
                     if ($awardVal['num_type'] == 'money') {//固定金额
                         $inArr['dividend_amount'] = $awardVal['num'];
                     } else {//订单百分比，扣除运费和退款后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'] - $orderInfo['back_dividend_amount'] - $orderInfo['tuikuan_money'];
                         $inArr['dividend_amount'] = $amount / 100 * $awardVal['num'];
                     }
-                } elseif ($award['award_type'] == 3) {//管理奖
+                } elseif ($award['award_type'] == 2) {//管理奖
                     $assignAwardUser[] = $userInfo['user_id'];
                     $assignAwardNum[$award['award_id']] += $award_num;
                     if ($awardVal['num_type'] == 'money') {//固定金额
                         $inArr['dividend_amount'] = $award_num;
                     } else {//订单百分比，扣除运费和退款后计算
-                        $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'] - $orderInfo['back_dividend_amount'] - $orderInfo['tuikuan_money'];
                         $inArr['dividend_amount'] = $amount / 100 * $awardVal['num'];
                     }
                 }
@@ -420,7 +367,7 @@ class Dividend extends BaseModel
     //-- $user_id int 用户ID
     //-- $isup bool 是否更新会员信息
     /*------------------------------------------------------ */
-    public function evalLevelUp(&$orderInfo, $user_id = 0,$goodsList = [],$isup = true)
+    public function evalLevelUp(&$orderInfo, $user_id = 0,$goodsList = [])
     {
         //执行分销身份升级处理
         $roleList = (new DividendRoleModel)->getRows();
@@ -434,7 +381,6 @@ class Dividend extends BaseModel
             $userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
         }
         $upRole = [];
-        $isBackDividend = 0;//是否计算下单返佣
         foreach ($roleList as $role) {
             if ($DividendInfo['level_up_type'] == 0) {//逐级升时调用
                 if ($role['level'] != $userRoleLevel + 1) {//身份层级不等于下级级别时，跳过
@@ -443,7 +389,7 @@ class Dividend extends BaseModel
             } elseif ($role['level'] <= $userRoleLevel) {//当前分销身份低于等于用户现身份，跳过
                 continue;
             }
-            $fun = str_replace('/', '\\', '/distribution/sdtydw/' . $role['upleve_function']);
+            $fun = $role['upleve_function'];
             if ($oldFun != $fun) {
                 $oldFun = $fun;
                 $Class = new $fun();
@@ -451,9 +397,6 @@ class Dividend extends BaseModel
             $res = $Class->judgeIsUp($user_id, $role, $orderInfo, $goodsList);//判断是否能升级
             if ($res == false) {//当前会员不执行升级，终止
                 continue;//可跨级升级时调用
-            }
-            if ($res == 2) {//满足一次性购买升级后处理
-                $isBackDividend = 1;
             }
             $upRole = $role;
             if ($DividendInfo['level_up_type'] == 0) {//逐级升时调用
@@ -464,10 +407,7 @@ class Dividend extends BaseModel
         if (empty($upRole) == true) {
             return true;//没有找到可升级的身份终止
         }
-        if ($isup == false){//不更新，只返回是否升级和是否下单返佣
-            $upRole['isBackDividend'] = $isBackDividend;
-            return $upRole;
-        }
+
         $upData['last_up_role_time'] = time();
         $upData['role_id'] = $upRole['role_id'];
         $res = $this->UsersModel->upInfo($user_id, $upData);
@@ -487,40 +427,6 @@ class Dividend extends BaseModel
         $LogSysModel->save($inData);
 
         return true;
-    }
-    /*------------------------------------------------------ */
-    //-- 下单立返处理
-    /*------------------------------------------------------ */
-    public function backDividend(&$orderInfo, &$goodsList, $upRole)
-    {
-        $GoodsModel = new \app\shop\model\GoodsModel();
-        $back_dividend_amount = 0;
-        foreach ($goodsList as $og) {
-            $goods = $GoodsModel->info($og['goods_id']);
-            $prices = $GoodsModel->evalPrice($goods, $og['goods_number'], $og['sku_val'], $upRole['role_id']);
-            $back_dividend_amount += ($og['sale_price'] - $prices['min_price']) * $og['goods_number'];//计算差价
-        }
-        if ($back_dividend_amount <= 0) return $back_dividend_amount;
-        $inArr['order_type'] = 'up_back';
-        $inArr['dividend_amount'] = $back_dividend_amount;
-        $inArr['status'] = 1;
-        $inArr['order_id'] = $orderInfo['order_id'];
-        $inArr['order_sn'] = $orderInfo['order_sn'];
-        $inArr['buy_uid'] = $orderInfo['user_id'];
-        $inArr['order_amount'] = $orderInfo['order_amount'];
-        $inArr['dividend_uid'] = $orderInfo['user_id'];
-        $inArr['role_id'] = $upRole['role_id'];
-        $inArr['role_name'] = $upRole['role_name'];
-        $inArr['level'] = 0;
-        $inArr['award_id'] = 0;
-        $inArr['award_name'] = '下单升级';
-        $inArr['level_award_name'] = '返还差价';
-        $inArr['add_time'] = $inArr['update_time'] = time();
-        $res = $this->Model->save($inArr);
-        if ($res < 1){
-            return false;
-        }
-        return $back_dividend_amount;
     }
 
 }

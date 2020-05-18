@@ -2,9 +2,22 @@
 <div class="fui-goods-group {$diyInfo.style.liststyle}" style="background: {$diyInfo.style.background};">
     {volist name="$diyInfo.data" id="vo"}
     <a class="fui-goods-item" data-goodsid="{$vo.gid}" href="{$vo.linkurl|default='javascript:;'}" data-nocache="true" style="position: relative;">
+
+
+        {if condition="$diyInfo.params.showicon == 1 "}
         <div class="image auto  {$diyInfo.style.iconstyle}" data-text="{$goodsicon[$diyInfo['style']['goodsicon']]}" style="background:none; min-height: 50px;">
-            <img class="exclude" src="__STATIC__/customize/images/loading.png" data-lazy="{$vo.thumb}" />
+            <img class="exclude" src="{$vo.thumb}" />
         </div>
+        {/if}
+        {if condition="$diyInfo.params.showicon == 2 "}
+        <div class="image auto  " data-text="{$goodsicon[$diyInfo['style']['goodsicon']]}" style="background:none; min-height: 50px;">
+            <div class="goodsicon {$diyInfo.params.iconposition}" style="top: {$diyInfo.style.iconpaddingtop}px; right: {$diyInfo.style.iconpaddingleft}px; text-align: {$diyInfo.params.iconposition_text};">
+                <img src="{$diyInfo.params.goodsiconsrc}" style="width: {$diyInfo.style.iconzoom}%;">
+            </div>
+            <img class="exclude" src="{$vo.thumb}" />
+        </div>
+        {/if}
+
         <div class="detail">
             <div class="name" style="color: {$diyInfo.style.titlecolor};">{$vo.title}</div>
             {if condition="$diyInfo.params.showproductprice == 1 || $diyInfo.params.showsales == 1"}

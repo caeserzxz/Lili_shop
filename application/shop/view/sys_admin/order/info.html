@@ -259,7 +259,7 @@
                                     <td colspan="4" align="right">
                                         <p>商品价格：{$orderInfo.goods_amount|priceFormat}</p>
                                         <p class="red">折扣：{$orderInfo.discount|priceFormat}</p>
-                                        <p class="red">调整折扣：- {$orderInfo.diy_discount|priceFormat}</p>
+                                        <p class="red">调整折扣：{:priceFormat($orderInfo.diy_discount) * -1}</p>
                                         <p class="red">优惠券：- {$orderInfo.use_bonus|priceFormat}</p>
                                         <p class="red">扣减积分：- {$orderInfo.use_integral}</p>
                                         <p>+ 运费：{$orderInfo.shipping_fee|priceFormat}</p>

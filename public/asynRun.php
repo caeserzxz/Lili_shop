@@ -9,20 +9,15 @@
 // | Author: liu21st <liu21st@gmail.com>
 // +----------------------------------------------------------------------
 
-// // [ 应用入口文件 ]
+// [ 应用入口文件 ]
 namespace think;
 
 // 加载基础文件
 require __DIR__ . '/../thinkphp/base.php';
 
 // 支持事先使用静态方法设置Request对象和Config对象
-define('INDEX', true);
-define('VIEWPATH', '../template/default/');
-define('EXTEND_PATH', '../extend/');
-if (strstr($_SERVER['REQUEST_URI'],'sys_admin.')){
-    Header("HTTP/1.1 404 Not Found");
-    exit;
-}
-// 执行应用并响应
-Container::get('app')->run()->send();
+/* 数据目录*/
+define('DATA_PATH', '../Data/');
 
+// 执行应用并响应
+Container::get('app')->bind('mainadmin/asynRun/run')->run()->send();
