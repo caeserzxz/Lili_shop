@@ -871,14 +871,18 @@ class OrderModel extends BaseModel
         }//end
 
         $UsersModel =  new \app\member\model\UsersModel();
+        $usersInfo = $UsersModel->info($orderInfo['user_id']);//获取会员信息
+        //更新会员最后购买时间&累计消费
+        if ($usersInfo['last_buy_time'] < $orderInfo['add_time']){
+            $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>$orderInfo['add_time'],'total_consume'=>['INC',$orderInfo['order_amount']]]);
+        }
         //如果设置支付再绑定关系时执行
-        if (settings('bind_pid_time') == 1){//支付成功时绑定关系
+        if (settings('bind_pid_time') == 1 && $usersInfo['is_bind'] == 0){//支付成功时绑定关系
             $UsersModel->regUserBind($orderInfo['user_id'],-1);
         }//end
-        $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
 
         Db::startTrans();//启动事务
-        $res = $this->distribution($orderInfo, 'add');//提成处理
+        $res = $this->distribution($orderInfo, 'pay');//提成处理
         if ($res != true) {
             Db::rollback();// 回滚事务
             $this->_log($orderInfo,'佣金处理失败.');
