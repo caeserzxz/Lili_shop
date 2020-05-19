@@ -750,3 +750,32 @@ function miniPathReplace($json){
 	}
     return str_replace($urla,$urlb,$json);
 }
+/**
+ * 异步执行
+ * $rule string 路由规则 application/model/fun
+ * $param array 其它参数
+ */
+function asynRun($rule,$param){
+    $url = config('config.host_path').'/asynRun.php';
+    $urlinfo = parse_url($url);
+    $host = $urlinfo['host'];
+    $path = $urlinfo['path'];
+    $param['rule'] = $rule;
+    $param['postsigntime'] = time();
+    $query = isset($param)? http_build_query($param) : '';
+    $sign = md5($query.config('config.apikey'));
+    $query .= '&sign='.$sign;
+    $port = 80;
+    $errno = 0;
+    $errstr = '';
+    $timeout = 10;
+    $fp = fsockopen($host, $port, $errno, $errstr, $timeout);
+    $out = "POST ".$path." HTTP/1.1\r\n";
+    $out .= "host:".$host."\r\n";
+    $out .= "content-length:".strlen($query)."\r\n";
+    $out .= "content-type:application/x-www-form-urlencoded\r\n";
+    $out .= "connection:close\r\n\r\n";
+    $out .= $query;
+    fputs($fp, $out);
+    fclose($fp);
+}

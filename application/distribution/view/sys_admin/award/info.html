@@ -39,11 +39,10 @@
                     <label class=" control-label">购买商品：</label>
                     <div class="col-sm-9" >
                     <label><input type="radio" name="goods_limit" value="1" class="js_radio_undertake" {$row['goods_limit']<=1?'checked':''} > 购买任意分销商品（不包含身份商品）</label>
-                    <label><input type="radio" name="goods_limit" value="2" class="js_radio_undertake" data-class="buy_goods" {$row['goods_limit']==2?'checked':''}> 购买全部指定分销商品</label>
-                        <label><input type="radio" name="goods_limit" value="3" class="js_radio_undertake" data-class="buy_goods" {$row['goods_limit']==3?'checked':''}> 购买任意指定分销商品</label>
-                        <label><input type="radio" name="goods_limit" value="4" class="js_radio_undertake" data-class="role_goods|buy_user_award" {$row['goods_limit']==4?'checked':''}> 购买指定身份商品</label>
-                       <div class="radio_undertake_goods_limit buy_goods  {:in_array($row['goods_limit'],[2,3])?'':'hide'}" ></div>
-                        <div class="radio_undertake_goods_limit role_goods  {$row['goods_limit']==4?'':'hide'}" >
+                        <label><input type="radio" name="goods_limit" value="2" class="js_radio_undertake" data-class="buy_goods" {$row['goods_limit']==2?'checked':''}> 购买指定分销商品（不包含身份商品）</label>
+                        <label><input type="radio" name="goods_limit" value="3" class="js_radio_undertake" data-class="role_goods|buy_user_award" {$row['goods_limit']==3?'checked':''}> 购买指定身份商品</label>
+                       <div class="radio_undertake_goods_limit buy_goods  {$row['goods_limit']==2?'':'hide'}" ></div>
+                        <div class="radio_undertake_goods_limit role_goods  {$row['goods_limit']==3?'':'hide'}" >
                             <select name="role_goods" >
                                 <option value="0" >选择身份商品</option>
                                 {volist name="roleGoods" id="rg" }
@@ -51,42 +50,41 @@
                                {/volist}
                             </select>
                         </div>
-                        <div class="m-t" style="position: relative;">
-                          单次须购买商品数量：<input type="text" class="input-ssmall" min=1 data-rule-integer="true" name="goods_limit_num" value="{$row['goods_limit_num']}"  />件，注：选择【购买全部指定商品时，即每件指定商品都必须购买指定数量】
-                       </div>
+
                   </div>
             	</div>
-                    <div class="form-group buy_user_award radio_undertake_goods_limit {$row['goods_limit']==4?'':'hide'}">
-                        <label class="control-label">购买者返现：</label>
-                        <div class="col-sm-6">
-                            <input type="text" class="input-ssmall"   data-rule-ismoney="true" name="buy_user_award" value="{$row.buy_user_award}" ><select name="buy_user_award_type"><option value="money" {$row['buy_user_award_type']=='money'?'selected':''}>固定金额</option><option value="per" {$row['buy_user_award_type']=='per'?'selected':''}>%百分比</option></select><span class="maroon">* 为0则不返</span>
-                        </div>
-                    </div>
+
                 <div class="form-group">
                     <label class=" control-label">奖项类型：</label>
                     <div class="col-sm-9" >
                     <label><input type="radio"  name="award_type" value="1" class="js_radio_undertake" data-class="award_setting|ordinary_type" {$row['award_type']<=1?'checked':''}> 普通分销</label>
-                    <label class="hide"><input type="radio" name="award_type" value="2"  class="js_radio_undertake " data-class="repeat_limit_val|award_setting" {$row['award_type']==2?'checked':''}> 平推奖</label>
-                    <label ><input type="radio" name="award_type" value="3" class="js_radio_undertake " data-class="repeat_limit_val|assigned_manage_val|award_manage_setting" {$row['award_type']==3?'checked':''}> 业绩返点奖</label>
-                    <label class="radio_undertake_award_type assigned_manage_val  {$row['award_type']==3?'':'hide'}">
-            			最高奖励数量为最高级别的奖励设置的数量，每级递减.
-        			</label>
-                        <label><input type="radio"  name="award_type" value="4" class="js_radio_undertake" data-class="role_award_setting" {$row['award_type']==4?'checked':''}> 身份分销</label>
-                  </div>
+                    <label ><input type="radio" name="award_type" value="2" class="js_radio_undertake " data-class="repeat_limit_val|assigned_manage_tip|award_manage_setting" {$row['award_type']==2?'checked':''} onclick="evelLimitRole()"> 业绩返点奖</label>
+                    <label><input type="radio"  name="award_type" value="3" class="js_radio_undertake" data-class="role_award_setting" {$row['award_type']==3?'checked':''}> 身份分销</label>
+                    <div>
+                        <label class="radio_undertake_award_type assigned_manage_tip  {$row['award_type']==2?'':'hide'}">
+                            一、根据上级是【粉丝】则拿【粉丝】的奖励，再续续往找上级<br>
+                            二、直属上级身份跟购买会员身份一致，如果设置平级奖则拿平级（不扣减上级奖励），不设置则拿对应身份奖励，直接跳过设置-1<br>
+                            三、最高奖励数量为最高级别的奖励设置的数量，每级递减.<br>
+                            四、算法：低级身份10元，次级身份20元，高级身份30元<br>
+                            1、低级身份分佣10元，则次级身份佣金也是10元<br>
+                            2、直属上级为次级身份则直接拿20元<br>
+                        </label>
+                    </div>
+                    </div>
             	</div>
                     <div class="form-group radio_undertake_award_type ordinary_type {$row['award_type']==1?'':'hide'}">
                         <label class=" control-label">普通分销模式：</label>
                         <div class="col-sm-9" >
                             <label><input type="radio"  name="ordinary_type" value="0" {$row['ordinary_type']==0?'checked':''}> 逐级计算（一级奖项对应第一级上级会员，不满足条件奖项不分配，逐级判断）</label>
                             <br>
-                            <label class="hide"><input type="radio" name="ordinary_type" value="1"   {$row['ordinary_type']==1?'checked':''}> 无限级计算（不满足条件，跳过，一直向上找直到奖项分完或没有上级终止）</label>
+                            <label><input type="radio" name="ordinary_type" value="1"   {$row['ordinary_type']==1?'checked':''}> 无限级计算（不满足条件，跳过，一直向上找直到奖项分完或没有上级终止）</label>
 
                         </div>
                     </div>
 
 
                 <div class="line line-dashed line-lg pull-in"></div>
-                <div class="form-group radio_undertake_award_type award_setting {$row['award_type']<=2?'':'hide'}">
+                <div class="form-group radio_undertake_award_type award_setting {$row['award_type']==1?'':'hide'}">
                      <label class="control-label">奖项设置：</label>
                       <div class="col-sm-8">
                        <table class="table table-hover  table-bordered">
@@ -94,7 +92,7 @@
                                 <tr>
                                    <th class="txt_center">级别</th>
                                    <th class="txt_center" width="180">奖励名称</th>
-                                   <th class="txt_center">奖励</th>
+                                   <th class="txt_center">上级奖励</th>
                                    <th class="txt_center" width="70">操作</th>
                                 </tr>
                             </thead>
@@ -107,7 +105,7 @@
                         </table>                          
                       </div>   
             	</div>
-                    <div class="form-group radio_undertake_award_type role_award_setting {$row['award_type']== 4?'':'hide'}">
+                    <div class="form-group radio_undertake_award_type role_award_setting {$row['award_type']== 3?'':'hide'}">
                         <label class="control-label">奖项设置：</label>
                         <div class="col-sm-8">
                             <table class="table table-hover  table-bordered ">
@@ -128,15 +126,16 @@
                             </table>
                         </div>
                     </div>
-                        <div class="form-group radio_undertake_award_type award_manage_setting {$row['award_type']==3?'':'hide'}">
+                        <div class="form-group radio_undertake_award_type award_manage_setting {$row['award_type']==2?'':'hide'}">
                      <label class="control-label">管理奖项：</label>
                       <div class="col-sm-7">
                        <table class="table table-hover  table-bordered" >
                             <thead>
                                 <tr>
-                                   <th  class="txt_center">分销身份</th>
-                                   <th  class="txt_center">奖励名称</th>
-                                   <th class="txt_center">奖励</th>
+                                   <th class="txt_center">分销身份</th>
+                                   <th class="txt_center">奖励名称</th>
+                                   <th class="txt_center">上级奖励</th>
+                                   <th class="txt_center">平级奖励</th>
                                 </tr>
                             </thead>
                             <tbody id="d_role_box">
@@ -159,6 +158,7 @@
     </div>
 </footer>
 </form>
+{assign name="is_dividend" value="1"}
 {include file="shop@/sys_admin/goods/sel_goods" /}
 {literal}
 <script type="text/html" id="d_level_tr">
@@ -193,6 +193,8 @@
 	<td align="center">{{role_name}}<input name="role_award_value[{{role_id}}][role_id]" type="hidden" value="{{role_id}}" /></td>
 	<td ><input type="text" name="role_award_value[{{role_id}}][name]" class="input-max" data-rule-required="true" value="{{name}}"></td>
 	<td ><input type="text" name="role_award_value[{{role_id}}][num]" class="input-ssmall" min="0.01" data-rule-ismoney="true"   value="{{num}}"><select name="role_award_value[{{role_id}}][num_type]"><option value="money" {{num_type=='money'?'selected':''}}>固定金额</option><option value="per" {{num_type=='per'?'selected':''}}>%百分比</option></select></td>
+    <td ><input type="text" name="role_award_value[{{role_id}}][same_num]" class="input-ssmall" min="-1"  value="{{same_num}}"><select name="role_award_value[{{role_id}}][same_num_type]"><option value="money" {{same_num_type=='money'?'selected':''}}>固定金额</option><option value="per" {{num_type=='per'?'selected':''}}>%百分比</option></select></td>
+
 </tr>
 </script>
 {/literal}
@@ -226,14 +228,14 @@ function evelLimitRole(){
 	})	
 }
 //优先加载
-if (award_type == 3) {
+if (award_type == 2) {
     var d_userRole = {$UsersRole|json_encode|raw};
     $.each(award_value,function(i,v){
         v.role_name = d_userRole[i].role_name;
         v.role_id = i;
         $('#d_role_box').append(template('d_role_tr',v));
     })
-}else if (award_type == 4){
+}else if (award_type == 3){
         $.each(award_value,function(i,v){
             v.val = d_level[i];
             v.key = i;
@@ -264,7 +266,7 @@ $('.selectRole').click(function(){
 
 function addLevel(){
     var _award_type = $("input[name='award_type']:checked").val();
-    if (_award_type == 4){
+    if (_award_type == 3){
         var length = $('.d_role_goods_tr').length;
         if (length >= 9) return _alert("级别不能超过九级！");
         var _level = new Object;
@@ -292,7 +294,7 @@ function addLevel(){
 }
 function delLevel(key){
     var _award_type = $("input[name='award_type']:checked").val();
-    if (_award_type == 4) {
+    if (_award_type == 3) {
         var length = $('.d_role_goods_tr').length;
         if (key < length) return _alert("不允许跨级删除！");
         $('.d_role_goods_tr').eq(key - 1).remove();

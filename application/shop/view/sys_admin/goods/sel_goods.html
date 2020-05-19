@@ -15,14 +15,24 @@
 	<table class="table table-bordered  " style="width:800px;">
         <thead>
             <tr>
-                <th width="150">商品SN</th>
+                <th width="150">商品SN{$limitBuyNum}</th>
                 <th>商品名称</th>
+                {notempty name="limitBuyNum"}
+                <th width="120">购买数量</th>
+                {/notempty}
                 <th width="70">操作</th>
             </tr>
         </thead>
         <tbody id="{{select_type}}_box">
 		{{each goodsList as item index}}
-         <tr id="{{select_type}}_tr_{{item.goods_id}}"><td><input name="{{select_type}}_id[]" type="hidden" value="{{item.goods_id}}" />{{item.goods_sn}}</td><td>{{item.goods_name}}</td><td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('{{select_type}}',{{item.goods_id}})" ></a></td></tr>
+         <tr id="{{select_type}}_tr_{{item.goods_id}}">
+             <td><input name="{{select_type}}_id[]" type="hidden" value="{{item.goods_id}}" />{{item.goods_sn}}</td>
+             <td>{{item.goods_name}}</td>
+             {notempty name="limitBuyNum"}
+             <td><input name="{{select_type}}_limit_num[]" class="input-max" value="{{item.limit_num}}"></td>
+             {/notempty}
+             <td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods('{{select_type}}',{{item.goods_id}})" ></a></td>
+         </tr>
 		 {{/each}}
         </tbody>
     </table>
@@ -33,6 +43,7 @@ function searchGoods(select_type){
 	var arr = new Object();
 	arr.keyword = $('#'+select_type+'_keyword').val();
 	arr.min_search = 1;
+	arr.is_dividend = {$is_dividend|intval};
 	$('#'+select_type+'_select').html('<option value="">选择商品</option>');
 	var res = jq_ajax('{:url("shop/sys_admin.goods/pubSearch")}',arr);
 	$.each(res.list, function(i,value){
@@ -51,6 +62,9 @@ function selLinkGoods(select_type){
 	var goods_sn = $('#'+select_type+'_select').find("option:selected").data('goods_sn');
 	$('#'+select_type+'_box').append('<tr id="'+select_type+'_tr_'+goods_id+'"><td><input name="'+select_type+'_id[]" type="hidden" value="'+goods_id+'" />'
 						+goods_sn+'</td><td>'+goods_name+'</td>'
+                    {notempty name="$limitBuyNum"}
+                        +'<td><input name="'+select_type+'_limit_num[]" class="input-max" value="1"></td>'
+                    {/notempty}
 						+'<td><a href="javascript:;" title="删除" class="fa fa-remove m-xs" onclick="delLinkGoods(\''+select_type+'\','+goods_id+')" ></a>'
 						+'</td></tr>');
 }

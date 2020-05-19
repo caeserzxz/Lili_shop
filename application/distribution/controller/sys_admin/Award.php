@@ -92,14 +92,14 @@ class Award extends AdminController
 		if (empty($data['limit_role']) == true){
 			return $this->error('请设置可参与的分销身份.');	
 		}
-		if ($data['award_type'] == 3){
+		if ($data['award_type'] == 2){
             $data['award_value'] = input('role_award_value');
         }
 		if (empty($data['award_value']) == true){
 			return $this->error('请设置奖项设置.');
 		}
         $data['buy_goods_id'] = '';
-		if ($data['goods_limit'] == 4){
+		if ($data['goods_limit'] == 3){
             if ($data['role_goods'] < 1){
                 return $this->error('请指定需要购买的身份商品.');
             }
@@ -148,11 +148,11 @@ class Award extends AdminController
 		
 		$data['update_time'] = time();
 		$data['buy_goods_id'] = '';
-        if ($data['goods_limit'] == 4){
+        if ($data['goods_limit'] == 3){
             if ($data['role_goods'] < 1){
                 return $this->error('请指定需要购买的身份商品.');
             }
-        }elseif (in_array($data['goods_limit'],[2,3])){
+        }elseif ($data['goods_limit'] == 2){
             $buy_goods_id = input('buy_goods_id');
             if (empty($buy_goods_id) == true){
                 return $this->error('请指定需要购买的商品.');
@@ -160,7 +160,7 @@ class Award extends AdminController
             $data['buy_goods_id'] = join(',',$buy_goods_id);
         }
 		
-		if ($data['award_type'] == 3){//管理奖
+		if ($data['award_type'] == 2){//管理奖
 			$data['award_value'] = input('role_award_value');
 			if (empty($data['award_value']) == false){
 				$award_type = [];

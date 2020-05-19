@@ -552,7 +552,6 @@ class Flow extends ApiController
                 'give_integral' => $og['give_integral'],
                 'use_integral' => $og['use_integral'],
                 'is_dividend' => $og['is_dividend'],
-                'buy_again_discount' => $og['buy_again_discount'],
                 'bonus_ids' => $bonus_ids,
                 'bonus_after_price' => $bonus_after_price,
                 'usd_bonus_price' => $usd_bonus_price

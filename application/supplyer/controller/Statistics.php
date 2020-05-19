@@ -125,7 +125,7 @@ class Statistics extends Controller
         $mkey = 'main_order_stat_' . $this->supplyer_id . '_' . md5(json_encode($owhere));
         $orders = Cache::get($mkey);
         if (empty($orders) == true){
-            $orders = (new OrderModel)->alias('o')->join("shop_order_goods og", 'o.order_id=og.order_id', 'left')->where($owhere)->field('o.order_status,o.pay_status,o.shipping_status,og.goods_id,og.goods_number,og.return_goods_munber')->select();
+            $orders = (new OrderModel)->alias('o')->join("shop_order_goods og", 'o.order_id=og.order_id', 'left')->where($owhere)->field('o.order_status,o.pay_status,o.shipping_status,og.goods_id,og.goods_number,og.return_goods_number')->select();
             Cache::set($mkey,$orders,60);
         }
         foreach ($goodsRows as $goods_id => $goods_name) {
@@ -143,7 +143,7 @@ class Statistics extends Controller
                         if ($order['shipping_status'] == 2) {
                             $sign_num += $order['goods_number'];
                         }
-                        $return_num += $order['return_goods_munber'];
+                        $return_num += $order['return_goods_number'];
 
                     }
                     unset($orders[$key]);

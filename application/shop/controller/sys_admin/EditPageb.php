@@ -92,7 +92,8 @@ class EditPageb extends AdminController
     public function save()
     {
         $id = input('id',0,'intval');
-        $data = input('data');
+        $data = input('data','','trim');
+        $data = json_decode($data,true);
         if (empty($data['items'])){
            return $this->_error('请设置排版内容后再操作.');
         }
@@ -124,6 +125,7 @@ class EditPageb extends AdminController
         $result['status'] = 1;
         $result['result']['id'] = $id;
         $result['result']['jump'] = url('edit',['id'=>$id]);
+        $this->_log($id, '保存装修页面');
         return $this->ajaxReturn($result);
     }
 
@@ -155,13 +157,6 @@ class EditPageb extends AdminController
         $this->assign('links', (new LinksModel)->links());
         $CategoryModel = new \app\shop\model\CategoryModel();
         $this->assign('CategoryList', $CategoryModel->getRows());
-
-        //判断活动模块是否存在
-        if(class_exists('app\activity\model\ActivityListModel')) {
-            $ActivityList =  (new \app\activity\model\ActivityListModel)->order('id DESC')->limit(20)->select()->toArray();
-            $this->assign('ActivityList', $ActivityList);
-            $this->assign('is_activity', 1);
-        }
 
         return $this->fetch('sys_admin/edit_pageb/links');
     }

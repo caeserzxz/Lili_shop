@@ -61,6 +61,7 @@ class Role extends AdminController
     public function asInfo($data) {
 		$this->assign('upLevel',  $this->getFunction());
 		$roleList = $this->Model->getRows();
+        $this->assign('allroleList', $roleList);
 		if ($data['role_id'] > 0){
 			foreach ($roleList as $key=>$role){
 				if ($role['level'] > $data['level']){
@@ -76,9 +77,17 @@ class Role extends AdminController
 			$upleve_value = json_decode($data['upleve_value'],true);
 			$data['function'][$data['upleve_function']] = $upleve_value;
 			if (empty($upleve_value['buy_goods']) == false){
-				$where[] = ['goods_id','in',$upleve_value['buy_goods']];
-				$list = (new \app\shop\model\GoodsModel)->where($where)->field('goods_id,goods_sn,goods_name')->select();
-				if (empty($list) == false) $data['function'][$data['upleve_function']]['buy_goods'] = $list->toArray(); 
+                $buy_goods_ids = array_keys($upleve_value['buy_goods']);
+				$where[] = ['goods_id','in',$buy_goods_ids];
+				$glist = (new \app\shop\model\GoodsModel)->where($where)->field('goods_id,goods_sn,goods_name')->select();
+				$buy_goods = [];
+                if (empty($glist) == false){
+                    foreach ($glist as $g){
+                        $g['limit_num'] = $upleve_value['buy_goods'][$g['goods_id']];
+                        $buy_goods[] = $g;
+                    }
+                }
+                $data['function'][$data['upleve_function']]['buy_goods'] = $buy_goods;
 			}
 		}
 		
@@ -88,14 +97,20 @@ class Role extends AdminController
 	//-- 添加前处理
 	/*------------------------------------------------------ */
     public function beforeAdd($data) {
-		$count = $this->Model->where('role_name',$data['role_name'])->whereOr('level',$data['level'])->count('role_id');
-		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');		
+		$count = $this->Model->where('role_name',$data['role_name'])->count('role_id');
+		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称，不允许重复添加！');
+		$byLevel = input('byLevel',0,'intval');
+
+        $data['level'] = $byLevel + 1;
 		$data['add_time'] = $data['update_time'] = time();
 		$upleve_value = input('function_val');
         $buy_goods_id = input('buy_goods_id');
-		if (empty($buy_goods_id) == false){
-            $upleve_value['buy_goods'] = $buy_goods_id;
+        $buy_goods_limit_num = input('buy_goods_limit_num');
+        $buy_goods = [];
+        foreach ($buy_goods_id as $key=>$bgid){
+            $buy_goods[$bgid] = $buy_goods_limit_num[$key];
         }
+        $upleve_value['buy_goods'] = $buy_goods;
 		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;
 	}
@@ -103,24 +118,40 @@ class Role extends AdminController
 	//-- 添加后处理
 	/*------------------------------------------------------ */
     public function afterAdd($data) {
+        $where[] = ['level','>=',$data['level']];
+        $where[] = ['role_id','<>',$data['role_id']];
+        $this->Model->where($where)->setInc('level');
 		$this->_Log($data['role_id'],'添加分销身份:'.$data['role_name']);
 	}
 	/*------------------------------------------------------ */
 	//-- 修改前处理
 	/*------------------------------------------------------ */
     public function beforeEdit($data){	
-		$info = $this->Model->find($data['role_id'])->toArray();		
-		$this->checkUpData($info,$data);
-		$where[] = ' role_id <> '.$data['role_id'];
-		$where[] = " (role_name = '".$data['role_name']."' OR level = '".$data['level']."' )";		
-		$count = $this->Model->where(join(' AND ',$where))->count('role_id');
-		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称或已存在相同级别，不允许重复添加！');	
+		$where[] = ['role_id','<>',$data['role_id']];
+		$where[] = ['role_name','=',$data['role_name']];
+		$count = $this->Model->where($where)->count('role_id');
+		if ($count > 0) return $this->error('操作失败:已存在相同的身份名称，不允许重复添加！');
+
+        $info = $this->Model->find($data['role_id']);
+        $byLevel = input('byLevel',0,'intval');
+        if ($info['level'] > $byLevel){
+            $data['level'] = $byLevel + 1;
+        }else{
+            $data['level'] = $byLevel;
+        }
+        $this->eidtLevel = false;
+        if ($info['level'] != $data['level']){
+            $this->eidtLevel = true;
+        }
 		$data['update_time'] = time();
 		$upleve_value = input('function_val');
 		$buy_goods_id = input('buy_goods_id');
-        if (empty($buy_goods_id) == false){
-            $upleve_value['buy_goods'] = $buy_goods_id;
+        $buy_goods_limit_num = input('buy_goods_limit_num');
+        $buy_goods = [];
+        foreach ($buy_goods_id as $key=>$bgid){
+            $buy_goods[$bgid] = $buy_goods_limit_num[$key];
         }
+        $upleve_value['buy_goods'] = $buy_goods;
 		$data['upleve_value'] = json_encode($upleve_value);
 		return $data;		
 	}
@@ -128,6 +159,16 @@ class Role extends AdminController
 	//-- 修改后处理
 	/*------------------------------------------------------ */
     public function afterEdit($data) {
+        if ($this->eidtLevel == true){
+            $byLevel = input('byLevel',0,'intval');
+            $where[] = ['level','>=',$data['level']];
+            $where[] = ['role_id','<>',$data['role_id']];
+            if ($byLevel == $data['level']){
+                $this->Model->where($where)->setDec('level');
+            }else{
+                $this->Model->where($where)->setInc('level');
+            }
+        }
 		$this->_Log($data['role_id'],'修改分销身份:'.$data['role_name'].'，级别：'.$data['level']);
 	}
 	/*------------------------------------------------------ */

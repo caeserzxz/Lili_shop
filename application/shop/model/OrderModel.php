@@ -100,16 +100,11 @@ class OrderModel extends BaseModel
             if (empty($info)) return array();
             $info = $info->toArray();
             try {
-                //未记录提成，并且不需要拆单
-                if ($info['is_dividend'] == 0 && $info['is_split'] == 0) {
+                if ($info['is_pay_eval'] == 1){
+                    asynRun('shop/orderModel/asynRunPaySuccessEval',['order_id'=>$info['order_id']]);//异步执行
+                }elseif ($info['is_dividend'] != 1 && $info['is_split'] == 0) {//未记录提成，并且不需要拆单
                     Db::startTrans();//启动事务
-                    $status = 0;
-                    if ($info['shipping_status'] == 2){//订单已签收，重新计算时直接设为已签收待分佣金
-                        $status = $this->config['DD_SIGN'];
-                    }elseif($info['pay_status'] == 1){//订单已支付
-                        $status = $this->config['DD_PAYED'];
-                    }
-                    $upData = $this->distribution($info, 'add',$status);
+                    $upData = $this->distribution($info, 'add');
                     $res = 0;
                     if (is_array($upData) == true) {
                         $upData['is_dividend'] = 1;
@@ -123,7 +118,7 @@ class OrderModel extends BaseModel
                     }
                 }//end
 
-            } catch (Exception $e) {
+            } catch (\Exception $e) {
             }
 
             $orderGoods = $this->orderGoods($order_id);
@@ -189,7 +184,7 @@ class OrderModel extends BaseModel
             } elseif ($info['shipping_status'] == $this->config['SS_SIGN']) {
                 $info['ostatus'] = '已完成';
                 $shop_after_sale_limit = settings('shop_after_sale_limit');
-                if ($shop_after_sale_limit > 0 && $info['back_dividend_amount'] == 0){//开启售后,back_dividend_amount>0时不能售后
+                if ($shop_after_sale_limit > 0){//开启售后
                     if ($info['sign_time'] > time() - $shop_after_sale_limit * 86400){
                         $info['isAfterSale'] = 1;//可操作：申请售后
                     }
@@ -299,10 +294,7 @@ class OrderModel extends BaseModel
                     $changedata['change_type'] = 3;
                     $changedata['by_id'] = $order_id;
                     $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-                    /*if ($orderInfo['use_integral'] > 0) {//如果额外使用积分，同时处理扣减
-                        $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
-                        $changedata['change_desc'] .= '&积分抵扣';
-                    }*/
+
                     $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
                     if ($res !== true) {
                         Db::rollback();// 回滚事务
@@ -313,22 +305,27 @@ class OrderModel extends BaseModel
                         Db::rollback();// 回滚事务
                         return '支付失败，扣减余额失败.';
                     }
-                }elseif($upData['pay_code'] == 'balance') {//使用余额支付扣减用户余额
-                    $upData['money_paid'] = $orderInfo['order_amount'];
+                }
+
+                if($orderInfo['use_integral'] > 0) {//积分支付/积分抵扣
                     $upData['pay_time'] = time();
-                    $changedata['change_desc'] = '订单余额支付';
-                    $changedata['change_type'] = 3;
+                    if ($upData['pay_code'] == 'use_integral'){
+                        $changedata['change_desc'] = '订单积分支付';
+                    }else{
+                        $changedata['change_desc'] = '订单积分抵扣';
+                    }
+                    $changedata['change_type'] = 8;
                     $changedata['by_id'] = $order_id;
-                    $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
+                    $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
                     $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
                     if ($res !== true) {
                         Db::rollback();// 回滚事务
-                        return '支付失败，扣减余额失败.';
+                        return '支付失败，扣减积分失败.';
                     }
-                    $balance_money = (new AccountModel)->where('user_id',$orderInfo['user_id'])->value('balance_money');
-                    if ($balance_money < 0){
+                    $use_integral = (new AccountModel)->where('user_id',$orderInfo['user_id'])->value('use_integral');
+                    if ($use_integral < 0){
                         Db::rollback();// 回滚事务
-                        return '支付失败，扣减余额失败.';
+                        return '支付失败，扣减积分失败.';
                     }
                 }
                 //未支付状态的订单才进行支付成功的操作,否则失败回滚
@@ -668,7 +665,7 @@ class OrderModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 提成处理&升级处理
     /*------------------------------------------------------ */
-    public function distribution(&$orderInfo, $type = '',$status=0)
+    public function distribution(&$orderInfo, $type = '')
     {
         if (empty($orderInfo)) return false;
         if ($orderInfo['order_type'] == 1) {//积分商品不返利
@@ -676,6 +673,12 @@ class OrderModel extends BaseModel
         }
         if ($orderInfo['is_split'] > 0){//拆分的主订单不执行
             return true;
+        }
+        $status = 0;
+        if ($orderInfo['shipping_status'] == 2){//订单已签收，重新计算时直接设为已签收待分佣金
+            $status = $this->config['DD_SIGN'];
+        }elseif($orderInfo['pay_status'] == 1){//订单已支付
+            $status = $this->config['DD_PAYED'];
         }
         $orderInfo['d_type'] = 'order';//普通订单
         return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
@@ -804,14 +807,26 @@ class OrderModel extends BaseModel
         }
         $orderInfo = $this->find($upData['order_id'])->toArray();
         $this->_log($orderInfo,$_log);
-        $this->paySuccessEval($orderInfo);
+        asynRun('shop/orderModel/asynRunPaySuccessEval',['order_id'=>$upData['order_id']]);//异步执行
         return true;
     }
     /*------------------------------------------------------ */
-    //-- 支付成功后执行
+    //-- 支付成功后执行(异步执行)
+    //-- $param array 必须带有order_id
     /*------------------------------------------------------ */
-    function paySuccessEval(&$orderInfo)
+    public function asynRunPaySuccessEval($param)
     {
+        if ($param['order_id'] < 1){
+            return '缺少订单ID';
+        }
+        $mkey = 'paySuccessEvalIng'.$param['order_id'];
+        $paySuccessEvalIng = Cache::get($mkey);
+        if (empty($paySuccessEvalIng) == false){
+            return true;
+        }
+        Cache::set($mkey,1,60);
+        $param['order_id'] = $param['order_id'] * 1;//异步执行传入必须强制类型
+        $orderInfo = $this->find($param['order_id'])->toArray();
 
         //执行库存扣除，下单时未扣库存，则支付成功后扣除
         //先扣库存才能拆分订单，拆分订单时不扣库存
@@ -825,13 +840,15 @@ class OrderModel extends BaseModel
             }
             if ($res !== true) {//扣库存失败，终止
                 Db::rollback();// 回滚事务
-                return false;
+                $this->_log($orderInfo,'扣库存失败');
+                return '扣库存失败';
             }
             $upData['is_stock'] = 1;
             $res = $this->where('order_id',$orderInfo['order_id'])->update($upData);
             if ($res < 1){
                 Db::rollback();// 回滚事务
-                return false;
+                $this->_log($orderInfo,'扣库存失败');
+                return '扣库存更新订单状态失败';
             }
             Db::commit();// 提交事务
             $orderInfo['is_stock'] = 1;
@@ -847,22 +864,24 @@ class OrderModel extends BaseModel
                 if ($res > 0){
                     $this->_log($orderInfo,'拆分订单');
                     Db::commit();// 提交事务
-                    return false;//订单被拆分后，终止，不执行下面的处理
+                    return true;//订单被拆分后，终止，不执行下面的处理
                 }
             }
             Db::rollback();// 回滚事务
         }//end
+
         $UsersModel =  new \app\member\model\UsersModel();
         //如果设置支付再绑定关系时执行
-        $bind_pid_time = settings('bind_pid_time');
-        if ($bind_pid_time == 1){//支付成功时绑定关系
+        if (settings('bind_pid_time') == 1){//支付成功时绑定关系
             $UsersModel->regUserBind($orderInfo['user_id'],-1);
         }//end
         $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>time()]);//更新会员最后购买时间
+
         Db::startTrans();//启动事务
-        $res = $this->distribution($orderInfo, 'pay');//提成处理
+        $res = $this->distribution($orderInfo, 'add');//提成处理
         if ($res != true) {
             Db::rollback();// 回滚事务
+            $this->_log($orderInfo,'佣金处理失败.');
             return '佣金处理失败.';
         }
         Db::commit();// 提交事务

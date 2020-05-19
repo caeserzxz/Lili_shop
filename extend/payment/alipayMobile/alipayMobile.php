@@ -107,12 +107,13 @@ class alipayMobile
     function response()
     {
         require_once("lib/alipay_notify.class.php");  // 请求返回
-
-        /*$fp = fopen(Env::get('runtime_path') . "/alipay/" . date('Y-m-d') . '.txt', "a");
+        $path = Env::get('runtime_path') . "/alipay/";
+        makeDir($path);
+        $fp = fopen($path. date('Y-m-d') . '.txt', "a");
         flock($fp, LOCK_EX);
         fwrite($fp, "记录时间：" . strftime("%Y-%m-%d %H:%M:%S", time()) . "\n" . json_encode($_POST) . "\n\n");
         flock($fp, LOCK_UN);
-        fclose($fp);*/
+        fclose($fp);
 
         //计算得出通知验证结果
         $alipayNotify = new \AlipayNotify($this->alipay_config); // 使用支付宝原生自带的累 和方法 这里只是引用了一下 而已

@@ -225,7 +225,7 @@ class AfterSale extends AdminController
         //修改订单
         if ($upData['status'] == 2) {//通过时执行
             $oupData['tuikuan_money'] = ['INC', $asInfo['return_money']];
-            $oupData['is_dividend'] = 0;//重新计算佣金
+            $oupData['is_dividend'] = 2;//重新计算佣金
         }
         $res = $OrderModel->where('order_id',$asInfo['order_id'])->update($oupData);
         if ($res < 1){
@@ -235,7 +235,7 @@ class AfterSale extends AdminController
         $OrderModel->cleanMemcache($asInfo['order_id']);
         //end
         if ($asInfo['status'] == 2) {//通过售后才执行订单商品处理
-            $ogupData['return_goods_munber'] = ['INC', $asInfo['goods_number']];
+            $ogupData['return_goods_number'] = ['INC', $asInfo['goods_number']];
             $res = (new OrderGoodsModel)->where('rec_id', $asInfo['rec_id'])->update($ogupData);
             if ($res < 1){
                 Db::rollback();// 回滚事务
