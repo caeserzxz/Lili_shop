@@ -13,9 +13,10 @@ use think\facade\Request;
 use app\AdminController;
 use app\shop\model\GoodsCommentModel;
 use app\shop\model\GoodsModel;
-use app\shop\model\AvatarUserModel;
 use app\shop\model\GoodsCommentImagesModel;
 use app\member\model\UsersModel;
+use app\member\model\AvatarUserModel;
+
 
 class GoodsComment extends AdminController {
 
@@ -139,6 +140,7 @@ class GoodsComment extends AdminController {
 			$data['user_name'] = $avatarUser['user_name'];
 			$data['headimgurl'] = $avatarUser['headimgurl'];
 		}else{
+		    echo 1;
 			$avatarUser = $AvatarUserModel->find($data['avatar_user']);
 			$data['user_name'] = $avatarUser['user_name'];
 			$data['headimgurl'] = $avatarUser['headimgurl'];

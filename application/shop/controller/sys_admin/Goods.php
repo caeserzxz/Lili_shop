@@ -409,7 +409,7 @@ class Goods extends AdminController
                 if (empty($row['added_time']) || empty($row['shelf_time'])) return $this->error('操作失败:请选择上下架的时间.');
                 if (!checkDateIsValid($row['added_time'])) return $this->error('操作失败:上下架的开始时间格式不合法.');
                 if (!checkDateIsValid($row['shelf_time'])) return $this->error('操作失败:上下架的结束时间格式不合法.');
-                $row['added_time'] = strtotimetotime($row['added_time']);
+                $row['added_time'] = strtotime($row['added_time']);
                 $row['shelf_time'] = strtotime($row['shelf_time']);
                 if ($row['added_time'] >= $row['shelf_time']) return $this->error('操作失败:下架时间必须大于上架时间.');
             }else{
