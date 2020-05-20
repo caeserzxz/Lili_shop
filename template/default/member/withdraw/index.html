@@ -46,9 +46,9 @@
 
                     <div class="Box" id="upload_qrcode_box">
                         <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
-                        <input type="file" class="uploadInput" onchange="uploadFile(this,event)">
+                        <input type="file" class="uploadInput" >
                     </div>
-                    <div c></div>
+                    <div></div>
                 </div>
             </div>
         </div>
@@ -97,7 +97,7 @@
 	{{/if}}	
 	{{if item.type == 'alipay'}}
 		<div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""></label></div>
-		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>		
+		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>
 	{{/if}}
 
 	<div class="cell_ft">
@@ -117,20 +117,7 @@
 {block name="footer"}
 <script>
 var fd = new FormData();
-//删除上传图片
-$('.uploadBox').on('click','.closeImg',function(){
-    $(this).parent().remove();
-    fd.delete("qrcodefile");
-    $('#upload_qrcode_box').show();
-})
-//选择上传图片
-function uploadFile(_this,e){
-   compress(e, function(base64Img){
-       fd.append("qrcodefile", base64Img);
-       $(_this).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg"></div>');
-       $('#upload_qrcode_box').hide();
-   })
-}
+
 $(function() {
    /* $('.add_type').on('click',function(){
         $('.model').show();
@@ -238,5 +225,20 @@ $(function() {
         })
 	})
 })
+</script>
+<script src="__STATIC__/mobile/default/js/uploadsimage.js?v=1"></script>
+<script>
+    //处理点击改变的调用函数-做IOS兼容
+    $(_listenSelector).click(function(){
+            var that = $(this);
+            _uplocalfunction=function(base64Img){
+                   fd.append("qrcodefile", base64Img);
+                   $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg" data-type="one"></div>');
+                   $('#upload_qrcode_box').css('visibility','hidden');
+                   //$(_listenSelector).hide();
+            } 
+    })
+
+    
 </script>
 {/block}

@@ -779,3 +779,19 @@ function asynRun($rule,$param){
     fputs($fp, $out);
     fclose($fp);
 }
+
+//上传BASE64基础函数
+function uploadBase64Images($path,$base64image){
+	$file_path = str_replace('//','/',config('config._upload_') . $path);
+	if(empty(file_exists($file_path))){
+		makeDir($file_path);
+	}
+  
+    $extend = trim(substr($base64image,11,4),';');
+    $file_name = $file_path.random_str(12).'.'.$extend;
+    if ($extend == 'jpeg'){
+        $file_name = $file_path.random_str(12).'.jpg';
+    }
+    file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$base64image)));
+    return trim($file_name, '.');
+}

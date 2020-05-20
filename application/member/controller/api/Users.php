@@ -288,15 +288,15 @@ class Users extends ApiController
     {
         $imgfile = input('imgfile');
         if (empty($imgfile) == false) {
-            $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
-            makeDir($file_path);
-            $extend = trim(substr($imgfile,11,4),';');
-            $file_name = $file_path.random_str(12).'.'.$extend;
-            if ($extend == 'jpeg'){
-                $file_name = $file_path.random_str(12).'.jpg';
-            }
-            file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$imgfile)));
-
+            // $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
+            // makeDir($file_path);
+            // $extend = trim(substr($imgfile,11,4),';');
+            // $file_name = $file_path.random_str(12).'.'.$extend;
+            // if ($extend == 'jpeg'){
+            //     $file_name = $file_path.random_str(12).'.jpg';
+            // }
+            // file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$imgfile)));
+            $file_name = uploadBase64Images('headimg/' . substr($this->userInfo['user_id'], -1) . '/',$imgfile);//上传文件
             $upArr['headimgurl'] = trim($file_name, '.');
         }
         $upArr['nick_name'] = input('nick_name', '', 'trim');

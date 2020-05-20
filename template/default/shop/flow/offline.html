@@ -93,7 +93,18 @@
                 <div class="fs28 color_3"><span>{$settings.bank_address}</span></div>
             </div>
         </div>
-        <div class="uploading" style="display: block; " >
+         <div class="uploading" style="display: block; ">
+                <div class="title fs32 fw_b color_3">上传收款二维码（必须)</div>
+                <div class="uploadBox" >
+
+                    <div class="Box" id="upload_qrcode_box">
+                        <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                        <input type="file" class="uploadInput" >
+                    </div>
+                    <div></div>
+                </div>
+            </div>
+        <!-- <div class="uploading" style="display: block; " >
             <div class="title fs28 fw_b color_3">上传打款凭证（必须)</div>
             <div class="uploadBox" style="flex-wrap: wrap;overflow: initial;">
                 <ul class="weui-uploader__files uploaderFiles" id="uploaderFiles1">
@@ -108,7 +119,7 @@
                 </form>
                 <div ></div>
             </div>
-        </div>
+        </div> -->
         <div class="button fs32 fw_b color_w BGcolor_r buttBox payBtn"><span>提交</span></div>
     </div>
     <!-- 弹出提示 -->
@@ -165,4 +176,19 @@
         $('.offlinepage').css('left','100%');
         offlineChoose = false;
     }
+</script>
+<script src="__STATIC__/mobile/default/js/uploadsimage.js?v=1"></script>
+<script>
+    //处理点击改变的调用函数-做IOS兼容
+    $(_listenSelector).click(function(){
+            var that = $(this);
+     
+            _uplocalfunction=function(base64Img){
+                   fd.append("qrcodefile", base64Img);
+                   $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox payimg"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg" data-type="one"></div>');
+                   $('#upload_qrcode_box').css('visibility','hidden');
+                   //$(_listenSelector).hide();
+            } 
+           
+    })
 </script>

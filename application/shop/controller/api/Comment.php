@@ -134,21 +134,22 @@ class Comment extends ApiController
 		$comment_id = $GoodsCommentModel->id;
 		//处理图片		
 		if (empty($imgfile) == false){
-			$GoodsCommentImagesModel = new GoodsCommentImagesModel();
-			$file_path = config('config._upload_').'comment/'.date('Ymd').'/';
-			makeDir($file_path);
+			//$file_path = config('config._upload_').'comment/'.date('Ymd').'/';
+			//makeDir($file_path);
 			foreach ($imgfile as $file){
-                $extend = trim(substr($file,11,4),';');
-                $file_name = $file_path.random_str(12).'.'.$extend;
-                if ($extend == 'jpeg'){
-                    $file_name = $file_path.random_str(12).'.jpg';
-                }
-                file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$file)));
-
+                //$extend = trim(substr($file,11,4),';');
+                //$file_name = $file_path.random_str(12).'.'.$extend;
+                //if ($extend == 'jpeg'){
+                //    $file_name = $file_path.random_str(12).'.jpg';
+                //}
+                //file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$file)));
+				$GoodsCommentImagesModel = new GoodsCommentImagesModel();
+				$file_name = uploadBase64Images('comment/'.date('Ymd').'/',$file);
                 $imgInArr['comment_id'] = $comment_id;
 				$imgInArr['image'] = trim($file_name,'.');
 				$imgInArr['thumbnail'] = trim($file_name,'.');
 				$res = $GoodsCommentImagesModel->save($imgInArr);
+				unset($GoodsCommentImagesModel);
 				if ($res < 1){
 					@unlink($file_name);
 					Db::rollback();// 回滚事务
