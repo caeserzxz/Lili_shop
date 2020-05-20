@@ -73,8 +73,11 @@
         	<label class="col-sm-2 control-label">虚拟会员：</label>
          	<select id="avatar_user" name="avatar_user" style="width: 200px; " >
                 <option value="0">随机分配虚拟会员</option>
+                {if condition="$row['avatar_user'] > 0"}
+                    <option value="{$row['avatar_user']}" selected>{$row['user_name']}</option>
+                {/if}
             </select>    
-            <a href="javascript:;" class="m-xs" title="查看"  onclick="searchAvatarUser();"><i class="fa fa-refresh text-muted"></i></a>           
+            <a href="javascript:;" class="m-xs" title="查看"  onclick="searchAvatarUser();"><i class="fa fa-refresh text-muted"></i> 点击获取虚拟会员</a>
         </div>
        {/if}
 
@@ -163,6 +166,5 @@
 		}); 
 		   
 	}
-	searchAvatarUser();
 </script>
 {/block}

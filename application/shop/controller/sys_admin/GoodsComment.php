@@ -140,7 +140,6 @@ class GoodsComment extends AdminController {
 			$data['user_name'] = $avatarUser['user_name'];
 			$data['headimgurl'] = $avatarUser['headimgurl'];
 		}else{
-		    echo 1;
 			$avatarUser = $AvatarUserModel->find($data['avatar_user']);
 			$data['user_name'] = $avatarUser['user_name'];
 			$data['headimgurl'] = $avatarUser['headimgurl'];
@@ -179,6 +178,17 @@ class GoodsComment extends AdminController {
 			$data['review_time'] = time();
 			$data['review_admin_id'] = AUID;
 		}
+        $AvatarUserModel = new AvatarUserModel();
+        if ($data['avatar_user'] == 0){
+            $avatarUser = $AvatarUserModel->orderRaw('RAND()')->find();
+            $data['avatar_user'] = $avatarUser['id'];
+            $data['user_name'] = $avatarUser['user_name'];
+            $data['headimgurl'] = $avatarUser['headimgurl'];
+        }else{
+            $avatarUser = $AvatarUserModel->find($data['avatar_user']);
+            $data['user_name'] = $avatarUser['user_name'];
+            $data['headimgurl'] = $avatarUser['headimgurl'];
+        }
 		return $data;
 	}
 	/*------------------------------------------------------ */
