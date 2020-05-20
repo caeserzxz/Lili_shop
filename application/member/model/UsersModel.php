@@ -60,7 +60,7 @@ class UsersModel extends BaseModel
         }
         session('userId', $userInfo['user_id']);
         $wxInfo = session('wxInfo');
-        if (empty($wxInfo) == false && $wxInfo['user_id'] < 1){
+        if (empty($wxInfo) == false && $wxInfo['user_id'] < 1) {
             (new WeiXinUsersModel)->bindUserId($wxInfo['wxuid'], $userInfo['user_id']);
         }
         return $this->doLogin($userInfo['user_id'], 'H5');
@@ -72,9 +72,9 @@ class UsersModel extends BaseModel
     {
         if ($user_id < 1) return false;
         $share_token = session('share_token');
-        if (empty($share_token) == false){
+        if (empty($share_token) == false) {
             $userInfo = $this->info($user_id);
-            if ($userInfo['is_bind'] == 0){
+            if ($userInfo['is_bind'] == 0) {
                 $upData['pid'] = $this->getShareUser($share_token);
             }
         }
@@ -100,7 +100,7 @@ class UsersModel extends BaseModel
         $data['source'] = $source;
         if ($data['source']) {
             if ($data['source'] == 'developers') {//小程序
-                $devtoken = session_id(). date('dhi');
+                $devtoken = session_id() . date('dhi');
                 Cache::set('devlogin_' . $devtoken, $user_id, 3600);
                 return [$data['source'], $devtoken, $user_id];
             }
@@ -195,7 +195,7 @@ class UsersModel extends BaseModel
                         $share_user_id = $this->where('mobile', $inArr['invite_code'])->value('user_id');
                     }
                     //查不到信息，可能用户通过分享二维码进来
-                    if ($share_user_id < 1){
+                    if ($share_user_id < 1) {
                         $share_user_id = $this->where('token', $inArr['invite_code'])->value('user_id');
                     }
 
@@ -210,7 +210,7 @@ class UsersModel extends BaseModel
         $time = time();
         $inArr['token'] = $this->getToken();
         $inArr['reg_time'] = $time;
-        if ($inArr['pid'] < 1 && $is_admin == false){
+        if ($inArr['pid'] < 1 && $is_admin == false) {
             $inArr['pid'] = $this->returnPid(0);
         }
         if ($wxuid == 0) {//如果微信UID为0，启用事务，不为0时，外部已启用
@@ -246,7 +246,7 @@ class UsersModel extends BaseModel
             $obj->_log($user_id, '后台手动新增会员-用户id:' . $user_id, 'member');
         }
         //注册会员成功后异步执行
-        asynRun('member/UsersModel/asynRunRegister',['user_id'=>$user_id,'pid'=>$inArr['pid']]);
+        asynRun('member/UsersModel/asynRunRegister', ['user_id' => $user_id, 'pid' => $inArr['pid']]);
         return true;
     }
 
@@ -257,16 +257,16 @@ class UsersModel extends BaseModel
     {
         $user_id = $data['user_id'];
         $pid = $data['pid'];
-        $mkey = 'asynRunRegisterIng'.$user_id;
+        $mkey = 'asynRunRegisterIng' . $user_id;
         $asynRunRegisterIng = Cache::get($mkey);
-        if (empty($asynRunRegisterIng) == false){
+        if (empty($asynRunRegisterIng) == false) {
             return true;
         }
-        Cache::set($mkey,1,60);
+        Cache::set($mkey, 1, 60);
         //创建会员帐户信息
         $AccountLogModel = new AccountLogModel();
-        $count = $AccountLogModel->where('user_id',$user_id)->count();
-        if ($count < 1){
+        $count = $AccountLogModel->where('user_id', $user_id)->count();
+        if ($count < 1) {
             $res = $AccountLogModel->createData(['user_id' => $user_id, 'update_time' => time()]);
             if ($res < 1) {
                 return '创建会员帐户信息失败.';
@@ -306,8 +306,8 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     private function returnPid($user_id = 0)
     {
-        if($user_id > 0){
-            return $this->where('user_id',$user_id)->value('pid');
+        if ($user_id > 0) {
+            return $this->where('user_id', $user_id)->value('pid');
         }
         $wxInfo = session('wxInfo');
         if (empty($wxInfo)) {
@@ -323,7 +323,7 @@ class UsersModel extends BaseModel
                 $sort = 'id DESC';
             }
             $pid = (new \app\weixin\model\WeiXinInviteLogModel)->where('wxuid', $wxInfo['wxuid'])->order($sort)->value('user_id');
-        }elseif (empty($share_token) == false) {
+        } elseif (empty($share_token) == false) {
             $pid = $this->getShareUser($share_token);
         }
         return $pid;
@@ -528,14 +528,14 @@ class UsersModel extends BaseModel
         $info = Cache::get($this->mkey . '_us_' . $user_id);
         if ($isCache == true && empty($info) == false) return $info;
         $user_id = $user_id * 1;
-        $UsersBindSuperiorModel= new UsersBindSuperiorModel();
-        $levelField = ['pid','pid_b','pid_c'];
+        $UsersBindSuperiorModel = new UsersBindSuperiorModel();
+        $levelField = ['pid', 'pid_b', 'pid_c'];
         $info['all'] = 0;
-        foreach ($levelField as $key=>$field){
+        foreach ($levelField as $key => $field) {
             $where = [];
             $where[$field] = $user_id;
             $count = $UsersBindSuperiorModel->where($where)->count();
-            $info[$key+1] = $count;
+            $info[$key + 1] = $count;
             $info['all'] += $count;
         }
         Cache::set($this->mkey . '_us_' . $user_id, $info, 30);
@@ -556,17 +556,17 @@ class UsersModel extends BaseModel
             $is_bind = $this->where('user_id', $user_id)->value('is_bind');
             if ($is_bind > 0) return true;//已执行绑定不再执行
             $bingKey = 'regUserBindIng' . $user_id;
-            if (empty(Cache::get($bingKey)) == false){
+            if (empty(Cache::get($bingKey)) == false) {
                 return true;
             }
-            Cache::set($bingKey,1,60);
+            Cache::set($bingKey, 1, 60);
         }
-        if ($pid == -1){
+        if ($pid == -1) {
             $pid = $this->returnPid($user_id);
         }
         $UsersBindSuperiorModel = new UsersBindSuperiorModel();
         //会员上级汇总处理
-        $res = $UsersBindSuperiorModel->treat($user_id, $pid,$is_edit);
+        $res = $UsersBindSuperiorModel->treat($user_id, $pid, $is_edit);
         if ($res == false) {
             return false;
         }
@@ -586,8 +586,8 @@ class UsersModel extends BaseModel
             unset($wxInfo);
 
             $sendUids[$pid] = 1;
-            $usersBind = $UsersBindSuperiorModel->where('user_id',$user_id)->find();
-            if ($usersBind['pid_b'] > 0){
+            $usersBind = $UsersBindSuperiorModel->where('user_id', $user_id)->find();
+            if ($usersBind['pid_b'] > 0) {
                 $sendUids[$usersBind['pid_b']] = 2;
             }
             foreach ($sendUids as $uid => $val) {
@@ -773,8 +773,26 @@ class UsersModel extends BaseModel
     public function teamCount($user_id = 0)
     {
         if ($user_id < 1) return 0;
-        $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+        $where[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $user_id . "',superior)")];
         return (new UsersBindSuperiorModel)->where($where)->count() - 1;
     }
-
+    /*------------------------------------------------------ */
+    //-- 获取远程会员头像到本地
+    /*------------------------------------------------------ */
+    public function getHeadImg($headimgurl = '')
+    {
+        if (empty($headimgurl) == false && strstr($headimgurl, 'http')) {
+            $headimgurl = strstr($headimgurl, 'https') ? str_replace("https", "http", $headimgurl) : $headimgurl;
+            $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
+            makeDir($file_path);
+            //图片文件
+            $file_name = $file_path . random_str(12);
+            $extend = getFileExtend($headimgurl);
+            $file_name .= '.' . $extend[1];
+            downloadImage($headimgurl, $file_name);
+            $upArr['headimgurl'] = $headimgurl = trim($file_name, '.');
+            $this->upInfo($this->userInfo['user_id'], $upArr);
+        }
+        return '.' . $headimgurl;
+    }
 }

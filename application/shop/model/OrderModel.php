@@ -643,6 +643,7 @@ class OrderModel extends BaseModel
     {
         $where = [];
         $sign_limit = settings('shop_auto_sign_limit');
+        $where[] = ['order_status', '=', $this->config['OS_CONFIRMED']];
         $where[] = ['shipping_status', '=', $this->config['SS_SHIPPED']];
         $where[] = ['shipping_time', '<', time() - ($sign_limit * 86400)];
         if ($uid > 0) {

@@ -134,23 +134,21 @@ class Comment extends ApiController
 		$comment_id = $GoodsCommentModel->id;
 		//处理图片		
 		if (empty($imgfile) == false){
-			//$file_path = config('config._upload_').'comment/'.date('Ymd').'/';
-			//makeDir($file_path);
-			foreach ($imgfile as $file){
-                //$extend = trim(substr($file,11,4),';');
-                //$file_name = $file_path.random_str(12).'.'.$extend;
-                //if ($extend == 'jpeg'){
-                //    $file_name = $file_path.random_str(12).'.jpg';
-                //}
-                //file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$file)));
-				$GoodsCommentImagesModel = new GoodsCommentImagesModel();
-				$file_name = uploadBase64Images('comment/'.date('Ymd').'/',$file);
+			$file_path = config('config._upload_').'comment/'.date('Ymd').'/';
+			makeDir($file_path);
+            $GoodsCommentImagesModel = new GoodsCommentImagesModel();
+            foreach ($imgfile as $file){
+                $extend = getFileExtend($file);
+                if ($extend == false){
+                    return $this->error('未能识别图片，请尝试更换图片上传.');
+                }
+                $file_name = $file_path.random_str(12).'.'.$extend[1];
+                file_put_contents($file_name,$extend[0]);
                 $imgInArr['comment_id'] = $comment_id;
 				$imgInArr['image'] = trim($file_name,'.');
 				$imgInArr['thumbnail'] = trim($file_name,'.');
-				$res = $GoodsCommentImagesModel->save($imgInArr);
-				unset($GoodsCommentImagesModel);
-				if ($res < 1){
+				$res = $GoodsCommentImagesModel->create($imgInArr);
+                if ($res->id < 1){
 					@unlink($file_name);
 					Db::rollback();// 回滚事务
 					return $this->error('未知原因，写入失败-3.');

@@ -291,16 +291,14 @@ class Withdraw extends ApiController
             if (empty($qrcodefile)){
                 return $this->error('请上传收款二给码.');
             }
-            // $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
-            // makeDir($file_path);
-            // $extend = trim(substr($qrcodefile,11,4),';');
-            // $file_name = $file_path.random_str(12).'.'.$extend;
-            // if ($extend == 'jpeg'){
-            //     $file_name = $file_path.random_str(12).'.jpg';
-            // }
-            // file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$qrcodefile)));
-
-            $file_name = uploadBase64Images('withdraw/'.date('Ymd').'/',$qrcodefile);
+            $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
+            makeDir($file_path);
+            $extend = getFileExtend($qrcodefile);
+            if ($extend == false){
+                return $this->error('未能识别图片，请尝试更换图片上传.');
+            }
+            $file_name = $file_path.random_str(12).'.'.$extend[1];
+            file_put_contents($file_name,$extend[0]);
             $inArr['qrcode_file'] = trim($file_name,'.');
         }else{//银行卡提现
             $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();

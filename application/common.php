@@ -637,7 +637,37 @@ function getArrColumn($arr, $key_name)
     }
     return $arr2;
 }
-
+/*------------------------------------------------------ */
+//-- 获取文件格式
+//-- @param string $file 网络地址/base64/本地文件
+/*------------------------------------------------------ */
+function getFileExtend($file){
+    if (strstr($file,'http') == true){//网络图片
+        $pathInfo = get_headers($file,true);
+        $extend = strtolower($pathInfo['Content-Type']);
+    }elseif (strstr($file,'base64,') == true) {//base64图片
+        $extend = trim(substr($file,5,10),';');
+        $file = base64_decode(str_replace('data:'.$extend.';base64,','',$file));
+        $extend = strtolower($extend);
+    }else {
+        $extend = strtolower(end(explode('.', $file)));
+    }
+    if (strstr($extend,'image')){//识别为图片处理
+        if ($extend == 'image/png'){
+            $extend = 'png';
+        }elseif ($extend == 'image/gif'){
+            $extend = 'git';
+        }elseif ($extend == 'image/php'){
+            return false;
+        }else{
+            $extend = 'jpg';
+        }
+    }
+    if ($extend == 'php'){
+        return false;
+    }
+    return [$file,$extend];
+}
 /*------------------------------------------------------ */
 //-- 保存网络图片到本地
 //-- @param string $url 网络图片地址

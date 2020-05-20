@@ -288,15 +288,14 @@ class Users extends ApiController
     {
         $imgfile = input('imgfile');
         if (empty($imgfile) == false) {
-            // $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
-            // makeDir($file_path);
-            // $extend = trim(substr($imgfile,11,4),';');
-            // $file_name = $file_path.random_str(12).'.'.$extend;
-            // if ($extend == 'jpeg'){
-            //     $file_name = $file_path.random_str(12).'.jpg';
-            // }
-            // file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$imgfile)));
-            $file_name = uploadBase64Images('headimg/' . substr($this->userInfo['user_id'], -1) . '/',$imgfile);//上传文件
+            $file_path = config('config._upload_') . 'headimg/' . substr($this->userInfo['user_id'], -1) . '/';
+            makeDir($file_path);
+            $extend = getFileExtend($imgfile);
+            if ($extend == false){
+                return $this->error('未能识别头像图片，请尝试更换图片上传.');
+            }
+            $file_name = $file_path.random_str(12).'.'.$extend[1];
+            file_put_contents($file_name,$extend[0]);
             $upArr['headimgurl'] = trim($file_name, '.');
         }
         $upArr['nick_name'] = input('nick_name', '', 'trim');
@@ -324,42 +323,7 @@ class Users extends ApiController
         }
         return $this->success('修改成功.');
     }
-    /*------------------------------------------------------ */
-    //-- 获取远程会员头像到本地
-    /*------------------------------------------------------ */
-    public function getHeadImg($return = false)
-    {
-        $headimgurl = $this->userInfo['headimgurl'];
-        if (empty($headimgurl) == false){
-            if (strstr($headimgurl,'http')){
-                $headimgurl = strstr($headimgurl,'https')?str_replace("https","http",$headimgurl):$headimgurl;
-                $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
-                makeDir($file_path);
-                //图片文件
-                $pathInfo = get_headers($headimgurl,true);
-                $file_name = $file_path.random_str(12);
-                switch (strtolower($pathInfo['Content-Type'])) {
-                    case 'image/png':
-                        $file_name .= '.png';
-                        break;
-                    case 'image/gif':
-                        $file_name .= '.gif';
-                        break;
-                    default:
-                        $file_name .= '.jpg';
-                        break;
-                }
-                downloadImage($headimgurl,$file_name);
-                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
-                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
 
-            }
-        }
-        if ($return == true) return '.'.$headimgurl;
-        $return['headimgurl'] = $headimgurl;
-        $return['code'] = 1;
-        return $this->ajaxReturn($return);
-    }
     /*------------------------------------------------------ */
     //-- 获取会员充值日志
     /*------------------------------------------------------ */
@@ -738,15 +702,13 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function getMyCode()
     {
-        $file_path = config('config._upload_') . 'qrcode/' . substr($this->userInfo['user_id'], -1) . '/';
-        $file = $file_path . $this->userInfo['token'] . '.png';
-        if (file_exists($file) == false) {
-            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
-            $QRcode = new \phpqrcode\QRcode();
-            $value = config('config.host_path') . '/?share_token=' . $this->userInfo['token'];
-            makeDir($file_path);
-            $png = $QRcode::png($value, $file, "L", 10, 1, 2, true);
-        }
+        include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
+        $QRcode = new \phpqrcode\QRcode();
+        $file_path = config('config._upload_') . 'qrcode/';
+        makeDir($file_path);
+        $file = $file_path .'_'.$this->userInfo['token'] . '.png';
+        $value = url('',['share_token'=>$this->userInfo['token']],true,true);
+        $QRcode::png($value, $file, "L", 10, 1, 2, true);
         return $file;
     }
 
@@ -757,7 +719,7 @@ class Users extends ApiController
         $MergeImg = new \lib\MergeImg();
         $mun = input('num',0,'intval');
         $is_xcx = input('is_xcx',0,'intval');
-        $data['share_avatar'] = $this->getHeadImg(true);
+        $data['share_avatar'] = $this->Model->getHeadImg($this->userInfo['headimgurl']);
         $data['share_nick_name'] = $this->userInfo['nick_name'];
         $data['share_qrcode'] = $is_xcx == 0 ? $this->getMyCode() : $this->get_user_mini_qrcode();
 

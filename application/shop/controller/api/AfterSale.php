@@ -56,16 +56,15 @@ class AfterSale extends ApiController
         $imgfile = input('imgfile');
         if (empty($imgfile) == false){
             $imgs = array();
-            //$file_path = config('config._upload_').'aftersale/'.date('Ymd').'/';
-            //makeDir($file_path);
+            $file_path = config('config._upload_').'aftersale/'.date('Ymd').'/';
+            makeDir($file_path);
             foreach ($imgfile as $file){
-                //$extend = trim(substr($file,11,4),';');
-                //$file_name = $file_path.random_str(12).'.'.$extend;
-                //if ($extend == 'jpeg'){
-                //    $file_name = $file_path.random_str(12).'.jpg';
-                //}
-                //file_put_contents($file_name,base64_decode(str_replace('data:image/'.$extend.';base64,','',$file)));
-                $file_name = uploadBase64Images('aftersale/'.date('Ymd').'/',$file);
+                $extend = getFileExtend($file);
+                if ($extend == false){
+                    return $this->error('未能识别图片，请尝试更换图片上传.');
+                }
+                $file_name = $file_path.random_str(12).'.'.$extend[1];
+                file_put_contents($file_name,$extend[0]);
                 $imgs[] = trim($file_name,'.');
             }
             $inArr['imgs'] = join(',',$imgs);

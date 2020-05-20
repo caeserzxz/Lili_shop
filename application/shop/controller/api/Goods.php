@@ -411,14 +411,13 @@ class Goods extends ApiController
     /*------------------------------------------------------ */
     public function getShareImg(){
         $MergeImg = new \lib\MergeImg();
-        $post = input('post.');
         $goods_id = input('goods_id',0,'intval');
         $goods = $this->Model->info($goods_id);
         $settings = settings();
         $data['share_goods_bg'] = $settings['share_goods_bg'];
-        $data['share_avatar'] = $this->getHeadImg(true);
+        $data['share_avatar'] = (new UsersModel)->getHeadImg($this->userInfo['headimgurl']);
         $data['share_nick_name'] = $this->userInfo['nick_name'];
-        $data['share_qrcode'] = $this->getMyCode();
+        $data['share_qrcode'] = $this->getMyCode($goods_id);
 
         $data['share_goods_name'] = $goods['goods_name'];
         $data['share_goods_price'] = '￥'.$goods['shop_price'];
@@ -446,44 +445,20 @@ class Goods extends ApiController
         return $this->success('请求成功.','',$res);
     }
 
-    /*------------------------------------------------------ */
-    //-- 获取远程会员头像到本地
-    /*------------------------------------------------------ */
-    public function getHeadImg($return = false)
-    {
-        $headimgurl = $this->userInfo['headimgurl'];
-        if (empty($headimgurl) == false){
-            if (strstr($headimgurl,'http')){
-                $headimgurl = strstr($headimgurl,'https')?str_replace("https","http",$headimgurl):$headimgurl;
-                $file_path = config('config._upload_').'headimg/'.substr($this->userInfo['user_id'], -1) .'/';
-                makeDir($file_path);
-                $file_name = $file_path.random_str(12).'.jpg';
-                downloadImage($headimgurl,$file_name);
-                $upArr['headimgurl'] = $headimgurl = trim($file_name,'.');
-                (new UsersModel)->upInfo($this->userInfo['user_id'],$upArr);
 
-            }
-        }
-        if ($return == true) return '.'.$headimgurl;
-        $return['headimgurl'] = $headimgurl;
-        $return['code'] = 1;
-        return $this->ajaxReturn($return);
-    }
 
     /*------------------------------------------------------ */
     //-- 获取分享二维码
     /*------------------------------------------------------ */
-    public function getMyCode()
+    public function getMyCode($goods_id)
     {
-        $file_path = config('config._upload_') . 'qrcode/' . substr($this->userInfo['user_id'], -1) . '/';
-        $file = $file_path . $this->userInfo['token'] . '.png';
-        if (file_exists($file) == false) {
-            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
-            $QRcode = new \phpqrcode\QRcode();
-            $value = config('config.host_path') . '/?share_token=' . $this->userInfo['token'];
-            makeDir($file_path);
-            $png = $QRcode::png($value, $file, "L", 10, 1, 2, true);
-        }
+        include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
+        $QRcode = new \phpqrcode\QRcode();
+        $file_path = config('config._upload_') . 'qrcode/';
+        makeDir($file_path);
+        $file = $file_path .$goods_id.'_'.$this->userInfo['token'] . '.png';
+        $value = url('shop/goods/info',['id'=>$goods_id,'share_token'=>$this->userInfo['token']],true,true);
+        $QRcode::png($value, $file, "L", 10, 1, 2, true);
         return $file;
     }
 }
