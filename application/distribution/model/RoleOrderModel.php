@@ -76,13 +76,38 @@ class RoleOrderModel extends BaseModel
             $res = (new \app\member\model\UsersModel)->regUserBind($user_id,-1);
             if ($res == false) return '绑定关系链失败.';
         }//end
-
+        $DividendModel = new \app\distribution\model\DividendModel();
         $orderInfo['d_type'] = 'role_order';//身份订单
-        $data = (new \app\distribution\model\DividendModel)->_eval($orderInfo,'pay');
-        if (is_array($data) == false){
-            return false;
+        Db::startTrans();//启动事务，身份订单独立事务，其它订单在订单主模块里使用事务
+
+        $UsersModel =  new \app\member\model\UsersModel();
+        $usersInfo = $UsersModel->info($orderInfo['user_id']);//获取会员信息
+
+        //更新会员最后购买时间&累计消费
+        if ($usersInfo['last_buy_time'] < $orderInfo['add_time']){
+            $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>$orderInfo['add_time'],'total_consume'=>['INC',$orderInfo['order_amount']]]);
         }
-        $this->where('order_id',$orderInfo['order_id'])->update($data);
+        //如果设置支付再绑定关系时执行
+        if (settings('bind_pid_time') == 1 && $usersInfo['is_bind'] == 0){//支付成功时绑定关系
+            $UsersModel->regUserBind($orderInfo['user_id'],-1);
+        }//end
+
+
+        if ($orderInfo['is_dividend'] == 0){
+            $upData = $DividendModel->_eval($orderInfo,'pay');
+            if (is_array($upData) == false){
+                Db::rollback();// 回滚事务
+                return $res;
+            }
+        }
+        if ($orderInfo['is_up_role'] == 0){
+            $res = $DividendModel->evalLevelUp($orderInfo);//升级处理
+            if ($res == true) {
+                $upData['is_up_role'] = 1;
+            }
+        }
+        $this->where('order_id',$orderInfo['order_id'])->update($upData);
+        Db::commit();// 提交事务
         return true;
     }
 

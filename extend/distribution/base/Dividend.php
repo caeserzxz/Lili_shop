@@ -31,6 +31,7 @@ class Dividend extends BaseModel
     //-- $orderInfo array 订单数据
     //-- $type string 操作类型
     //-- $status int 分佣状态，操作类型为add时，根据传值设置默认状态
+    //-- return bool 如果$type为add或订单为身份订单则返回数组
     /*------------------------------------------------------ */
     public function _eval(&$orderInfo, $type = '', $status = 0)
     {
@@ -38,21 +39,14 @@ class Dividend extends BaseModel
         $goodsList = [];
         //身份订单处理
         if ($orderInfo['d_type'] == 'role_order') {
-            $status = 3;
-            Db::startTrans();//启动事务，身份订单独立事务，其它订单在订单主模块里使用事务
-            $logArr = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
-            if (is_array($logArr) == false) {
-                Db::rollback();// 回滚事务
-                return false;
+            $status = 3;//待分成
+            $upData = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
+            if (is_array($upData) == false) {
+                return '佣金计算失败.';
             }
-            Db::commit();// 提交事务
-            $logArr['is_dividend'] = 1;
+            $upData['is_dividend'] = 1;
             $this->Model->evalArrival($orderInfo['order_id'], 'role_order');//身份订单直接执行分佣
-            $res = $this->evalLevelUp($orderInfo, $orderInfo['user_id']);//会员升级
-            if ($res == true) {
-                $logArr['is_up_role'] = 1;
-            }
-            return $logArr;
+            return $upData;//返回数组
         }//end
 
         $upData = [];//更新分佣记录状态
@@ -64,14 +58,13 @@ class Dividend extends BaseModel
             $upData = $this->saveLog($orderInfo, $goodsList, $status);//佣金计算
             if (is_array($upData) == false) return false;
             if ($orderInfo['pid'] == 0 && $orderInfo['pay_status'] == $OrderModel->config['DD_PAYED']) {
-                if ($orderInfo['is_dividend'] == 0){//第一次生成时才发送模板消息
+                if ($orderInfo['is_dividend'] == 0) {//第一次生成时才发送模板消息
                     $this->Model->sendMsg('pay', $orderInfo['order_id']);//支付模板消息
                 }
             }
             return $upData;//返回数组
         } elseif ($type == 'pay') {//订单支付成功
-            $goodsList = (new OrderGoodsModel)->where('order_id',$orderInfo['order_id'])->select();
-            $res = $this->evalLevelUp($orderInfo, $orderInfo['user_id'],$goodsList);//升级处理
+            $res = $this->evalLevelUp($orderInfo);//升级处理
             if ($res == false) return false;
             $upData['status'] = $OrderModel->config['DD_PAYED'];
             $send_msg = true;
@@ -100,8 +93,8 @@ class Dividend extends BaseModel
         }
 
         if (empty($upData) == false) {//更新分佣状态
-            $upWhere[] = ['order_id','=',$orderInfo['order_id']];
-            $upWhere[] = ['order_type','=','order'];
+            $upWhere[] = ['order_id', '=', $orderInfo['order_id']];
+            $upWhere[] = ['order_type', '=', 'order'];
             $count = $this->Model->where($upWhere)->count();
             if ($count < 1) return true;//如果没有佣金记录不执行
             $upData['update_time'] = time();
@@ -144,7 +137,7 @@ class Dividend extends BaseModel
         if ($orderInfo['d_type'] == 'role_order') {
             foreach ($awardList as $key => $award) {
                 $parentId = $buyUserInfo['pid'];//获取购买会员直属上级ID
-                if ($award['goods_limit'] != 3 ) {//非指定身份商品的奖项跳出
+                if ($award['goods_limit'] != 3) {//非指定身份商品的奖项跳出
                     continue;
                 }
                 if (isset($nowLevelOrdinary[$key]) == false) {
@@ -177,7 +170,7 @@ class Dividend extends BaseModel
                         } else {//订单百分比，扣除运费后计算
                             $amount = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
                             $inArr['dividend_amount'] = $amount / 100 * $num;
-                            if ($inArr['dividend_amount'] <= 0){//佣金小于等于0，跳过
+                            if ($inArr['dividend_amount'] <= 0) {//佣金小于等于0，跳过
                                 continue;
                             }
                         }
@@ -189,7 +182,7 @@ class Dividend extends BaseModel
                         $inArr['order_amount'] = $orderInfo['order_amount'];
                         $inArr['dividend_uid'] = $userInfo['user_id'];
                         $inArr['role_id'] = $role_id;
-                        $inArr['role_name'] = $userInfo['role']['role_name'] ;
+                        $inArr['role_name'] = $userInfo['role']['role_name'];
                         $inArr['level'] = $value['level'];
                         $inArr['award_id'] = $award['award_id'];
                         $inArr['award_name'] = $award['award_name'];
@@ -334,7 +327,7 @@ class Dividend extends BaseModel
                         $inArr['dividend_amount'] = $amount / 100 * $awardVal['num'];
                     }
                 }
-                if ($inArr['dividend_amount'] > 0){//佣金大于0执行
+                if ($inArr['dividend_amount'] > 0) {//佣金大于0执行
                     $dividend_amount += $inArr['dividend_amount'];//计算总佣金
                     $inArr['order_type'] = $orderInfo['d_type'];
                     $inArr['status'] = $status;
@@ -364,68 +357,135 @@ class Dividend extends BaseModel
     /*------------------------------------------------------ */
     //-- 执行升级方案
     //-- $orderInfo array 订单信息
-    //-- $user_id int 用户ID
     //-- $isup bool 是否更新会员信息
     /*------------------------------------------------------ */
-    public function evalLevelUp(&$orderInfo, $user_id = 0,$goodsList = [])
+    public function evalLevelUp(&$orderInfo)
     {
         //执行分销身份升级处理
         $roleList = (new DividendRoleModel)->getRows();
         $LogSysModel = new \app\member\model\LogSysModel();
         $oldFun = '';
         $DividendInfo = settings('DividendInfo');
-        $userRoleLevel = 0;//初始会员身份等级
+        $_roleList = array_merge(['role_name' => '粉丝', 'role_id' => 0, 'level' => 0], $roleList);
+        $UsersBindSuperiorModel = new \app\member\model\UsersBindSuperiorModel();
+        $user_id = $orderInfo['user_id'];
+        $goodsList = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select();
+        do {
+            unset($stats);
+            $usersInfo = $this->UsersModel->info($user_id);//获取会员信息
+            $userRoleLevel = 0;
+            if ($usersInfo['role_id'] > 0) {
+                $userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
+            }
+            $stats['subRoleCount'] = [];
+            //汇总直推身份的会员数
+            foreach ($_roleList as $role) {
+                $where = [];
+                $where['pid'] = $user_id;
+                $where['role_id'] = $role['role_id'];
+                $stats['subRoleCount'][$role['role_id']] = $this->UsersModel->where($where)->count();
+            }
+            //汇总直推身份的会员数end
+            $stats['teamRoleCount'] = [];
+            //汇总团队身份的会员数
+            foreach ($_roleList as $role) {
+                $where = [];
+                $where[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $user_id . "',ub.superior)")];
+                $where[] = ['ub.user_id', '<>', $user_id];
+                $where[] = ['u.role_id', '=', $role['role_id']];
+                $stats['teamRoleCount'][$role['role_id']] = $UsersBindSuperiorModel->alias('ub')->join("users u", 'ub.user_id=u.user_id', 'left')->where($where)->count();
+            }
+            //汇总团队身份的会员数end
+            //团队总人数（包含自己）
+            $where = [];
+            $where[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $user_id . "',superior)")];
+            $stats['teamCount'] = $UsersBindSuperiorModel->where($where)->count();
+            //团队总人数（包含自己）end
 
-        $usersInfo = $this->UsersModel->info($user_id);//获取会员信息
-        if ($usersInfo['role_id'] > 0) {
-            $userRoleLevel = $roleList[$usersInfo['role_id']]['level'];//获取当前会员身份等级
-        }
-        $upRole = [];
-        foreach ($roleList as $role) {
-            if ($DividendInfo['level_up_type'] == 0) {//逐级升时调用
-                if ($role['level'] != $userRoleLevel + 1) {//身份层级不等于下级级别时，跳过
+            //团队总业绩（包含自己）
+            $where = [];
+            $where[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $user_id . "',ub.superior)")];
+            $stats['teamIncome'] = $UsersBindSuperiorModel->alias('ub')->join("users_account ua", 'ub.user_id=ua.user_id', 'left')->where($where)->Sum('total_dividend');
+            //团队总业绩（包含自己）end
+
+            $upRole = [];
+            foreach ($roleList as $role) {
+                if ($role['level'] <= $userRoleLevel) {//当前分销身份低于等于用户现身份，跳过
                     continue;
                 }
-            } elseif ($role['level'] <= $userRoleLevel) {//当前分销身份低于等于用户现身份，跳过
-                continue;
-            }
-            $fun = $role['upleve_function'];
-            if ($oldFun != $fun) {
-                $oldFun = $fun;
-                $Class = new $fun();
-            }
-            $res = $Class->judgeIsUp($user_id, $role, $orderInfo, $goodsList);//判断是否能升级
-            if ($res == false) {//当前会员不执行升级，终止
-                continue;//可跨级升级时调用
-            }
-            $upRole = $role;
-            if ($DividendInfo['level_up_type'] == 0) {//逐级升时调用
-                break;//跳出循环进行升级操作
+                if ($role['is_auto'] == 9) {//手动调整,跳过
+                    continue;
+                }
+
+                $upLeveValue = $role['upleve_value'];
+
+                //购买会员额外处理
+                if ($user_id == $orderInfo['user_id']) {
+                    //购买身份商品直接升级
+                    if ($orderInfo['d_type'] == 'role_order') {
+                        if ($role['role_id'] == $orderInfo['role_id']) {
+                            $upRole = $role;
+                            break;
+                        }
+                    }
+                    //指定购买商品
+                    if (empty($upLeveValue['buy_goods']) == false) {
+                        $is_up = false;
+                        foreach ($goodsList as $goods) {
+                            if (empty($upLeveValue['buy_goods'][$goods['goods_id']]) == false) {
+                                if ($goods['goods_number'] >= $upLeveValue['buy_goods'][$goods['goods_id']]) {
+                                    $is_up = true;//返回可升级
+                                    break;
+                                }
+                            }
+                        }
+                        if ($is_up == true) {
+                            $upRole = $role;
+                            break;
+                        }
+                    }
+                }
+                //购买会员额外处理end
+
+
+                $fun = $role['upleve_function'];
+                if ($oldFun != $fun) {
+                    $oldFun = $fun;
+                    $Class = new $fun();
+                }
+
+                $res = $Class->judgeIsUp($usersInfo,$orderInfo, $stats, $role);//判断是否能升级
+                if ($res == false && $DividendInfo['level_up_type'] == 1) {//当前会员不执行升级，终止
+                    continue;//可跨级升级时调用
+                }
+                $upRole = $role;
+                if ($DividendInfo['level_up_type'] == 0) {//逐级升时调用
+                    break;//跳出循环进行升级操作
+                }
+
             }
 
-        }
-        if (empty($upRole) == true) {
-            return true;//没有找到可升级的身份终止
-        }
-
-        $upData['last_up_role_time'] = time();
-        $upData['role_id'] = $upRole['role_id'];
-        $res = $this->UsersModel->upInfo($user_id, $upData);
-        if ($res < 1) {
-            return false;
-        }
-        $inData['edit_id'] = $user_id;
-        $inData['log_info'] = '';
-        if ($orderInfo['d_type'] == 'role_order') {
-            $inData['log_info'] = '购买身份商品，';
-        }
-        $inData['log_info'] .= '【' . ($usersInfo['role_id'] == 0 ? '粉丝' : $roleList[$usersInfo['role_id']]['role_name']) . '】升级为【' . $upRole['role_name'] . '】';
-        $inData['module'] = request()->path();
-        $inData['log_ip'] = request()->ip();
-        $inData['log_time'] = time();
-        $inData['user_id'] = 0;
-        $LogSysModel->save($inData);
-
+            if (empty($upRole) == false) {
+                $upData['last_up_role_time'] = time();
+                $upData['role_id'] = $upRole['role_id'];
+                $res = $this->UsersModel->upInfo($user_id, $upData);
+                if ($res < 1) {
+                    return false;
+                }
+                $inData['edit_id'] = $user_id;
+                $inData['log_info'] = '';
+                if ($orderInfo['d_type'] == 'role_order' && $user_id == $orderInfo['user_id']) {
+                    $inData['log_info'] = '购买身份商品，';
+                }
+                $inData['log_info'] .= '【' . ($usersInfo['role_id'] == 0 ? '粉丝' : $roleList[$usersInfo['role_id']]['role_name']) . '】升级为【' . $upRole['role_name'] . '】';
+                $inData['module'] = request()->path();
+                $inData['log_ip'] = request()->ip();
+                $inData['log_time'] = time();
+                $inData['user_id'] = 0;
+                $LogSysModel->save($inData);
+            }
+            $user_id = $usersInfo['pid'];//继续处理上级id
+        } while ($user_id > 0);
         return true;
     }
 
