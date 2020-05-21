@@ -103,10 +103,12 @@ class AdminUserModel extends BaseModel
 		 if ($res == true){
 		     $logData['log_ip'] = request()->ip();
              $logData['log_time'] = time();
+             $logData['user_id'] = $data['user_id'];
 			 if ($type == 'login'){//登陆处理
 				$logModel = new LogLoginModel();
 			 }elseif($type == 'editPwd'){//修改密码处理
 				 $logModel = new LogSysModel();
+                 $logData['edit_id'] = $data['user_id'];
                  $logData['log_info'] = '修改自己的管理员帐号密码';
 		 	}
              $logModel->save($logData);
