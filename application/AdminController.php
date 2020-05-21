@@ -60,7 +60,9 @@ class AdminController extends BaseController
         $this->admin = Session::get('main_admin');
         // 验证登录
         $this->checkLogin();
-        define('AUID', $this->admin['info']['user_id']);
+        if (defined('AUID') == false) {
+            define('AUID', $this->admin['info']['user_id']);
+        }
         if ($this->isCheckPriv == true) {
             //自动验证权限
             $this->_priv($this->module, $this->controller, $this->action);

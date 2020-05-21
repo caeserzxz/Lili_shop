@@ -11,7 +11,14 @@ use app\mainadmin\model\AdminUserModel;
  */
 class Passport extends AdminController
 {
-
+    //*------------------------------------------------------ */
+    //-- 初始化
+    /*------------------------------------------------------ */
+    public function initialize()
+    {
+        $this->isCheckPriv = false;
+        parent::initialize();
+    }
     /**
      * 后台登录
      * @return array|mixed
@@ -21,6 +28,7 @@ class Passport extends AdminController
      */
     public function login()
     {
+
         if ($this->request->isAjax()) {
             $model = new AdminUserModel;
             if ($model->login(input('post.User'))) {

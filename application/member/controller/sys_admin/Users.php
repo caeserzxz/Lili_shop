@@ -82,10 +82,12 @@ class Users extends AdminController
             $dtime[0] = str_replace('_', '-', $search['start_time']);
             $dtime[1] = str_replace('_', '-', $search['end_time']);
         } elseif (empty($reportrange) == false) {
-                $dtime = explode('-', $reportrange);
+            $dtime = explode('-', $reportrange);
         }
-        $dtime[0] = strtotime($dtime[0]);
-        $dtime[1] = strtotime($dtime[1]) + 86399;
+        if (empty($dtime) == false){
+            $dtime[0] = strtotime($dtime[0]);
+            $dtime[1] = strtotime($dtime[1]) + 86399;
+        }
         switch ($this->search['time_type']) {
             case 'reg_time':
                 $where[] = ' u.reg_time between ' . $dtime[0]  . ' AND ' . $dtime[1];

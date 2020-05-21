@@ -48,8 +48,10 @@ class BaseController extends Controller
                 $langPre = $lang.'_';
             }
         }
-        define('LANG_PRE',$langPre);
-        define('LANG',$lang);
+        if (defined('LANG_PRE') == false){
+            define('LANG_PRE',$langPre);
+            define('LANG',$lang);
+        }
         //多语言end
     }
 

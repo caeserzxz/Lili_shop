@@ -125,7 +125,7 @@ class ClientbaseController extends BaseController{
         }
 
         if (empty($this->userInfo) == true) {
-            if ($this->is_wx == 1) {//微信网页访问执行
+            if ($this->is_wx == 1 && empty(settings('weixin_appid')) == false) {//微信网页访问执行
                 $wxInfo = session('wxInfo');
                 $WeiXinModel = new \app\weixin\model\WeiXinModel();
                 if (empty($wxInfo) == true) {
