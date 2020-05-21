@@ -477,21 +477,26 @@ class Users extends AdminController
                 return $this->error('当前正在有人操作调整，请稍后再操作.');
             }
             Cache::get($mkey,true,60);
-            $select_user_id = input('select_user', 0, 'intval');
-            if ($select_user_id < 1){
-                return $this->error('请选择需要修改的上级.');
-            }
-            if ($select_user_id == $userInfo['pid']){
-                return $this->error('当前选择与当前会员上级一致，请核实.');
-            }
-            if ($select_user_id == $userInfo['user_id']){
-                return $this->error('不能选择自己作为自己的上级.');
-            }
-            $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
-            $where[] = ['user_id','<>',$user_id];
-            $count = (new UsersBindSuperiorModel)->where($where)->count();
-            if ($count > 0){
-                return $this->error('不能选择自己的下级作为上级.');
+            $setTopUser = input('setTopUser', 0, 'intval');
+            if ($setTopUser == 1){
+                $select_user_id = 0;
+            }else{
+                $select_user_id = input('select_user', 0, 'intval');
+                if ($select_user_id < 1){
+                    return $this->error('请选择需要修改的上级.');
+                }
+                if ($select_user_id == $userInfo['pid']){
+                    return $this->error('当前选择与当前会员上级一致，请核实.');
+                }
+                if ($select_user_id == $userInfo['user_id']){
+                    return $this->error('不能选择自己作为自己的上级.');
+                }
+                $where[] = ['','exp',Db::raw("FIND_IN_SET('".$user_id."',superior)")];
+                $where[] = ['user_id','=',$select_user_id];
+                $count = (new UsersBindSuperiorModel)->where($where)->count();
+                if ($count > 0){
+                    return $this->error('不能选择自己的下级作为上级.');
+                }
             }
             Db::startTrans();//启动事务
 

@@ -27,7 +27,11 @@
                 <div class="form-group">
                     <label class="col-sm-3 control-label">当前所属上级：</label>
                     <div class="col-sm-6 m-t-md">
+                        {if condition="$row.pid >0"}
                         {$row.puser.user_id} - {$row.puser.mobile} - {$row.puser.role.role_name}
+                        {else/}
+                        顶级（上级为平台）
+                        {/if}
                     </div>
                 </div>
                 <div class="form-group">
@@ -35,8 +39,9 @@
                     <div class="col-sm-9 " >
                         <input type="text" class="input-small"  id="user_keyword" value="" style="width:120px;" /> <a href="javascript:;" class="m-xs" title="查看"  onclick="searchuser('user_keyword','select_user');"><i class="fa fa-search text-muted"></i></a>
                         <select id="select_user" name="select_user"  style="width: 180px; " >
-                            <option value="">选择用户</option>
+                            <option value="0">选择用户</option>
                         </select>
+                        <label><input type="checkbox" name="setTopUser" value="1"> 设为顶级（上级为平台）</label>
                     </div>
                 </div>
             </div>
