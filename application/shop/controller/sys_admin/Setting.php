@@ -71,7 +71,7 @@ class Setting extends AdminController
         $data['share_qrcode'] = './static/share/qrcode.png';
 
         $data['share_goods_name'] = '【屈臣氏】新碧双重保湿水感防晒露80克*2件 隔离防晒伤小金帽';
-        $data['share_goods_price'] = '售价：￥99.00元';
+        $data['share_goods_price'] = '￥99.00元';
         $data['share_goods_img'] = './static/share/goods.jpg';
         $data['share_goods_xy'] =  $post['share_goods_xy'];
         $data['share_goods_wh'] =  $post['share_goods_wh'];

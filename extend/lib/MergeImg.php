@@ -181,21 +181,7 @@ class MergeImg{
         $balk = imagecolorallocate($im, $rgb['red'],  $rgb['green'], $rgb['blue']);
         imagettftext($im, $share_nick_name_size, 0, $share_nick_name_xy[0]*2 , $share_nick_name_xy[1]*2+$share_nick_name_size+10 ,$balk, $fontfile, $data['share_nick_name']);
         //呢称end
-        //二维码处理
-        //缩放比例
-        list($width, $height) = getimagesize($data['share_qrcode']);
-        $imagecreate = $this->isjpg($data['share_qrcode']);
-        $qrcode = $imagecreate($data['share_qrcode']);
-        $per = round($data['share_goods_qrcode_width']*2/$width,3);
-        $n_w = $width*$per;
-        $n_h = $height*$per;
-        $qim = imagecreatetruecolor($n_w, $n_h);
-        imagecopyresampled($qim, $qrcode,0, 0,0, 0,$n_w, $n_h, $width, $height);
-        //缩放比例end
-        $share_qrcode_xy = explode(',',$data['share_goods_qrcode_xy']);
-        imagecopymerge($im, $qim, $share_qrcode_xy[0]*2,$share_qrcode_xy[1]*2,0, 0,$n_w,$n_h, 100);
-        imagedestroy($qim);
-        //二维码处理end
+
 
 
         //商品处理
@@ -238,6 +224,25 @@ class MergeImg{
         $font_size =  $data['share_goods_price_size'] * 1.5;
         imagettftext($im, $font_size,0, $share_goods_price_xy[0] * 2 , ($share_goods_price_xy[1]*2)+$font_size*2 ,$balk, $fontfile, $data['share_goods_price']);
         //商品价格
+
+
+        //二维码处理
+        //缩放比例
+        list($width, $height) = getimagesize($data['share_qrcode']);
+        $imagecreate = $this->isjpg($data['share_qrcode']);
+        $qrcode = $imagecreate($data['share_qrcode']);
+        $per = round($data['share_goods_qrcode_width']*2/$width,3);
+        $n_w = $width*$per;
+        $n_h = $height*$per;
+        $qim = imagecreatetruecolor($n_w, $n_h);
+        imagecopyresampled($qim, $qrcode,0, 0,0, 0,$n_w, $n_h, $width, $height);
+        //缩放比例end
+        $share_qrcode_xy = explode(',',$data['share_goods_qrcode_xy']);
+        imagecopymerge($im, $qim, $share_qrcode_xy[0]*2,$share_qrcode_xy[1]*2,0, 0,$n_w,$n_h, 100);
+        imagedestroy($qim);
+        //二维码处理end
+
+
         if (empty($fileName)){
             ob_clean();
             //二维码处理
