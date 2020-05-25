@@ -66,7 +66,7 @@ class Flow extends ApiController
             $return['goods_img'] = $goods['goods_thumb'];
         }
         $cartList['buyGoodsNum'] = $number;
-        $cartList['goodsList'][] = ['goods_id'=>$fgInfo['goods_id']];
+        $cartList['goodsList'][] = ['supplyer_id'=>$goods['supplyer_id'],'goods_id'=>$fgInfo['goods_id'],'sale_price'=>$return['buyGoods']['sale_price'],'goods_number'=>$number];
         $return['shippingFee'] = $this->evalShippingFee($address_id,$cartList);
         return $this->ajaxReturn($return);
     }
@@ -184,7 +184,7 @@ class Flow extends ApiController
 
 
 
-        if ($fgInfo['limit_num'] < $number){
+        if ($fgInfo['limit_num'] > 0 && $fgInfo['limit_num'] < $number){
             return $this->error('单次限购' . $fgInfo['limit_num'] . '件');
         }
         $stock = $buyGoods['fg_number'] - $buyGoods['sale_num'];//计算剩余可销售的拼团数量
@@ -269,8 +269,7 @@ class Flow extends ApiController
         $cartList['buyGoodsNum'] = $number;
         $cartList['totalGoodsPrice'] = $buyGoods['sale_price'] * $number;
         $cartList['orderTotal'] = $cartList['totalGoodsPrice'];
-        $cartList['goodsList'][] = $buyGoods;
-
+        $cartList['goodsList'][] = ['supplyer_id'=>$buyGoods['supplyer_id'],'goods_id'=>$buyGoods['goods_id'],'sale_price'=>$buyGoods['sale_price'],'goods_number'=>$number];
 
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证

@@ -481,6 +481,7 @@ class Flow extends ApiController
         //end
         $this->addOrderGoods($order_id, $cartList, $bonus);//写入商品
         Db::commit();// 提交事务
+        //订单下单消息提示
         \lib\OrderMessage::set($this->userInfo['headimgurl'],$this->userInfo['nick_name']);
         $return['order_id'] = $order_id;
         $return['code'] = 1;
