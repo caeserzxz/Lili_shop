@@ -271,22 +271,6 @@ class Flow extends ApiController
         $cartList['orderTotal'] = $cartList['totalGoodsPrice'];
         $cartList['goodsList'][] = $buyGoods;
 
-        $inArr['use_bonus'] = 0;
-        if ($used_bonus_id > 0) {//优惠券验证
-            $BonusModel = new BonusModel();
-            $bonus = $BonusModel->binfo($used_bonus_id);
-            if ($bonus['user_id'] != $this->userInfo['user_id']) {
-                return $this->error('优惠券出错，请核实.');
-            }
-            if ($bonus['info']['stauts'] != 1) {
-                return $this->error('优惠券无法使用：' . $bonus['info']['stauts_info']);
-            }
-            if ($cartList['totalGoodsPrice'] < $bonus['info']['min_amount']) {
-                return $this->error('选择的优惠券满￥' . $bonus['info']['min_amount'] . '才可以使用，请核实.');
-            }
-            $inArr['use_bonus'] = $bonus['info']['type_money'];
-        }
-
 
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证

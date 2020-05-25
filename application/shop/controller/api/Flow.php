@@ -481,6 +481,7 @@ class Flow extends ApiController
         //end
         $this->addOrderGoods($order_id, $cartList, $bonus);//写入商品
         Db::commit();// 提交事务
+        \lib\OrderMessage::set($this->userInfo['headimgurl'],$this->userInfo['nick_name']);
         $return['order_id'] = $order_id;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
@@ -564,8 +565,6 @@ class Flow extends ApiController
             return $this->error('未知原因，订单商品写入失败.');
         }
 
-
-        \lib\OrderMessage::set($this->userInfo['headimgurl'],$this->userInfo['nick_name']);
         $where[] = ['rec_id', 'in', $cart_ids];
         $this->Model->where($where)->delete();// 清理购物车的商品
         $this->Model->cleanMemcache();

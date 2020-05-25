@@ -682,6 +682,7 @@ class OrderModel extends BaseModel
             $status = $this->config['DD_PAYED'];
         }
         $orderInfo['d_type'] = 'order';//普通订单
+
         return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
     }
 
@@ -768,7 +769,7 @@ class OrderModel extends BaseModel
                 }
             }
             $inArr['settle_goods_price'] = $sogl['settle_price'];
-            $inArr['settle_price'] = $sogl['settle_price'] + $inArr['shipping_fee'];
+            $inArr['settle_price'] = $sogl['settle_price'];
             $inArr['diy_discount'] = 0;
             if ($orderInfo['diy_discount'] > 0) {
                 $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;

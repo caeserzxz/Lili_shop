@@ -1,4 +1,5 @@
 <?php
+//订单下单消息提示
 namespace lib;
 
 class OrderMessage{

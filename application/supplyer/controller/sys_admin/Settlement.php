@@ -101,13 +101,14 @@ class Settlement extends AdminController
         return true;
     }
     /*------------------------------------------------------ */
-    //-- 已完成
+    //-- 生成月结单
     /*------------------------------------------------------ */
     public function evalSettlement(){
         $date = input('selmonth','','trim');
         if (empty($date)){
             return $this->error('请选择月份.');
         }
+        set_time_limit(0);
         $startTime = strtotime($date);
         $endDate = date('Y-m-t 23:59:59', $startTime);
         $endTime = strtotime($endDate);
