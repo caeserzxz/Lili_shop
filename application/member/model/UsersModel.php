@@ -451,6 +451,7 @@ class UsersModel extends BaseModel
             $info['role']['role_id'] = 0;
             $info['role']['role_name'] = '粉丝';
         }
+
         //还没有执行绑定关系执行
         if ($info['is_bind'] == 0) {
             $bind_pid_time = settings('bind_pid_time');

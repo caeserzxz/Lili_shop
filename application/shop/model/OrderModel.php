@@ -95,7 +95,7 @@ class OrderModel extends BaseModel
         if ($iscache == true) {
             $info = Cache::get($this->mkey . $order_id);
         }
-        if ($info['order_id'] < 1) {
+        if (empty($info['order_id']) == true) {
             $info = $this->where('order_id', $order_id)->find();
             if (empty($info)) return array();
             $info = $info->toArray();
@@ -103,30 +103,18 @@ class OrderModel extends BaseModel
                 if ($info['is_pay_eval'] == 1){
                     asynRun('shop/orderModel/asynRunPaySuccessEval',['order_id'=>$info['order_id']]);//异步执行
                 }elseif ($info['is_dividend'] != 1 && $info['is_split'] == 0) {//未记录提成，并且不需要拆单
-                    Db::startTrans();//启动事务
-                    $upData = $this->distribution($info, 'add');
-                    $res = 0;
-                    if (is_array($upData) == true) {
-                        $upData['is_dividend'] = 1;
-                        $res = $this->where('order_id', $order_id)->update($upData);
-                    }
-                    if ($res > 0) {
-                        Db::commit();// 提交事务
+                    $res = $this->runDistribution($info);
+                    if ($res == true){
                         $info = $this->where('order_id', $order_id)->find()->toArray();
-                    } else {
-                        Db::rollback();// 回滚事务
                     }
-                }//end
-
+                }
             } catch (\Exception $e) {
             }
-
             $orderGoods = $this->orderGoods($order_id);
             $info['goodsList'] = $orderGoods['goodsList'];
             $info['allNum'] = $orderGoods['allNum'];
             $info['isReview'] = $orderGoods['isReview'];
-            //end
-            Cache::set($this->mkey . $order_id, $info, 30);
+            Cache::set($this->mkey . $order_id, $info, 20);
         }
 
         $info['exp_price'] = explode('.', $info['order_amount']);
@@ -682,10 +670,30 @@ class OrderModel extends BaseModel
             $status = $this->config['DD_PAYED'];
         }
         $orderInfo['d_type'] = 'order';//普通订单
-
-        return (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
+        $res = (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
+        return $res;
     }
-
+    /*------------------------------------------------------ */
+    //-- 提成处理&升级处理
+    //-- $orderInfo array
+    /*------------------------------------------------------ */
+    public function runDistribution(&$orderInfo)
+    {
+        Db::startTrans();//启动事务
+        $upData = $this->distribution($orderInfo, 'add');
+        if (is_array($upData) == false) {//扣库存失败，终止
+            Db::rollback();// 回滚事务
+            return false;
+        }
+        $upData['is_dividend'] = 1;
+        $res = $this->where('order_id',$orderInfo['order_id'])->update($upData);
+        if ($res < 1){
+            Db::rollback();// 回滚事务
+            return false;
+        }
+        Db::commit();// 提交事务
+        return true;
+    }
 
     /*------------------------------------------------------ */
     //-- 订单支付时, 获取订单商品名称
@@ -769,7 +777,7 @@ class OrderModel extends BaseModel
                 }
             }
             $inArr['settle_goods_price'] = $sogl['settle_price'];
-            $inArr['settle_price'] = $sogl['settle_price'];
+            $inArr['settle_price'] = $sogl['settle_price'] + $inArr['shipping_fee'];
             $inArr['diy_discount'] = 0;
             if ($orderInfo['diy_discount'] > 0) {
                 $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;
@@ -856,6 +864,18 @@ class OrderModel extends BaseModel
             $orderInfo['is_stock'] = 1;
         }//end
 
+
+        $UsersModel =  new \app\member\model\UsersModel();
+        $usersInfo = $UsersModel->info($orderInfo['user_id']);//获取会员信息
+        //更新会员最后购买时间&累计消费
+        if ($usersInfo['last_buy_time'] < $orderInfo['add_time']){
+            $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>$orderInfo['add_time'],'total_consume'=>['INC',$orderInfo['order_amount']]]);
+        }
+        //如果设置支付再绑定关系时执行
+        if (settings('bind_pid_time') == 1 && $usersInfo['is_bind'] == 0){//支付成功时绑定关系
+            $UsersModel->regUserBind($orderInfo['user_id'],-1);
+        }//end
+
         //确认订单，执行拆单处理，独立出来并外部使用事务
         if ($orderInfo['is_split'] == 1) {
             Db::startTrans();//启动事务
@@ -872,28 +892,26 @@ class OrderModel extends BaseModel
             Db::rollback();// 回滚事务
         }//end
 
-        $UsersModel =  new \app\member\model\UsersModel();
-        $usersInfo = $UsersModel->info($orderInfo['user_id']);//获取会员信息
-        //更新会员最后购买时间&累计消费
-        if ($usersInfo['last_buy_time'] < $orderInfo['add_time']){
-            $UsersModel->upInfo($orderInfo['user_id'],['last_buy_time'=>$orderInfo['add_time'],'total_consume'=>['INC',$orderInfo['order_amount']]]);
-        }
-        //如果设置支付再绑定关系时执行
-        if (settings('bind_pid_time') == 1 && $usersInfo['is_bind'] == 0){//支付成功时绑定关系
-            $UsersModel->regUserBind($orderInfo['user_id'],-1);
-        }//end
-
         Db::startTrans();//启动事务
-        $res = $this->distribution($orderInfo, 'pay');//提成处理
-        if ($res != true) {
-            Db::rollback();// 回滚事务
-            $this->_log($orderInfo,'佣金处理失败.');
-            return '佣金处理失败.';
+        if ($orderInfo['is_dividend'] == 0){
+            $upData = $this->distribution($orderInfo, 'add',$this->config['DD_PAYED']);//提成处理
+            if (is_array($upData) == false) {
+                Db::rollback();// 回滚事务
+                $this->_log($orderInfo,'佣金处理失败-1.');
+                return '佣金处理失败-1.';
+            }
+        }else{
+            $res = $this->distribution($orderInfo, 'pay');//提成处理
+            if ($res == false) {
+                Db::rollback();// 回滚事务
+                $this->_log($orderInfo,'佣金处理失败-2.');
+                return '佣金处理失败-2.';
+            }
         }
         Db::commit();// 提交事务
-
         $upData['is_pay_eval'] = 2;
         $this->where('order_id',$orderInfo['order_id'])->update($upData);
+        $this->cleanMemcache($orderInfo['order_id']);
         return true;
     }
 }

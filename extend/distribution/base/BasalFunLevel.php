@@ -1,6 +1,5 @@
 <?php
 namespace distribution\base;
-use app\member\model\UsersModel;
 
 /*------------------------------------------------------ */
 //-- 基础升级方案
