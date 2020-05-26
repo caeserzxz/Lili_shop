@@ -118,7 +118,10 @@
 <script>
     var rec_id = '';
     $('#buy_num').val({$number});
-
+    //计算运费,主要用于复盖不执行
+    function evalShippingFee(){
+        evalCart();
+    }
     //购物车统一请求
     function evalCart() {
         var arr = new Object();
