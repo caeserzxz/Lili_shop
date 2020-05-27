@@ -2,6 +2,11 @@
 {block name="head" }
 <link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet"/>
 <link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet"/>
+{if condition="$row.isputaway == 1 || $row.isputaway == 10"}
+<style>
+    .js_file_upload,.item_new_close,.delete_sku_img,.specificationstable .file-item .info{display: none !important;}
+</style>
+{/if}
 {/block}
 {block name="main" }
 <header>

@@ -261,8 +261,6 @@ class Goods extends AdminController
             return $this->error('请选择商品分类.');
         }
 
-
-
         $GoodsImgsModel = new GoodsImgsModel();
         if ($row['goods_id'] < 1) {
             $imgwhere[] = ['goods_id', '=', 0];
@@ -332,7 +330,7 @@ class Goods extends AdminController
                     return $this->error('操作失败:促销价必须大于0.');
                 }
             }
-            if ($row['buy_brokerage'] >= $row['shop_price']){
+            if ($row['buy_brokerage'] > 0 && $row['buy_brokerage'] >= $row['shop_price']){
                 return $this->error('购买返还金额不能大于或等于销售价.');
             }
         } else {//多规格处理
@@ -379,7 +377,7 @@ class Goods extends AdminController
                 $row['min_price'] = $row['shop_price'];
                 $row['max_price'] = max($prices);
             }
-            if ($row['buy_brokerage'] >= $row['min_price']){
+            if ($row['buy_brokerage'] > 0 && $row['buy_brokerage'] >= $row['min_price']){
                 return $this->error('购买返还金额不能大于或等于最低销售价.');
             }
             $row['market_price'] = max($market_price);

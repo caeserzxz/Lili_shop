@@ -252,13 +252,15 @@ class Flow extends ApiController
         $supplyer_ids = [];//供应商ID
 
         $inArr['give_integral'] = 0;
-        $inArr['settle_price'] = 0;
+        $inArr['settle_price'] =  0;
+        $inArr['settle_goods_price'] =  0;
         $use_integral = 0;
         $rec_ids = [];
         $allGoodsSn = [];
         $allGoodsId = [];
         $allFavourId = [];
         $cartList['use_bonus_goods_amount'] = 0;//使用了优惠券的商品总额
+
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $key => $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
@@ -278,7 +280,7 @@ class Flow extends ApiController
             }
             $supplyer_ids[$grow['supplyer_id']] = 1;
             if ($grow['supplyer_id'] > 0) {//供应商商品计算供货总价
-                $inArr['settle_price'] += $grow['settle_price'] * $grow['goods_number'];
+                $inArr['settle_goods_price'] += $grow['settle_price'] * $grow['goods_number'];
             }
             if ($grow['give_integral'] > 0) {//赠送积分总计
                 $inArr['give_integral'] += $grow['give_integral'] * $grow['goods_number'];
@@ -323,14 +325,7 @@ class Flow extends ApiController
             }
         }
 
-        if (empty($supplyer_ids) == false){
-            $supplyer_ids = array_keys($supplyer_ids);
-            if (count($supplyer_ids) > 1){
-                $inArr['is_split'] = 1;//供应商两个以上，需要进行拆单
-            }else{
-                $inArr['supplyer_id'] = reset($supplyer_ids);//获取唯一的供应商id
-            }
-        }
+
 
         $inArr['use_bonus'] = 0;
         if ($used_bonus_id > 0) {//优惠券验证
@@ -357,6 +352,16 @@ class Flow extends ApiController
         $shippingFee = $this->_evalShippingFee($address, $cartList);
         $inArr['shipping_fee'] = $shippingFee['shipping_fee'] * 1;
         $inArr['shipping_fee_detail'] = json_encode($shippingFee['supplyerShippingFee']);
+
+        if (empty($supplyer_ids) == false){
+            $supplyer_ids = array_keys($supplyer_ids);
+            if (count($supplyer_ids) > 1){
+                $inArr['is_split'] = 1;//供应商两个以上，需要进行拆单
+            }else{
+                $inArr['supplyer_id'] = reset($supplyer_ids);//获取唯一的供应商id
+            }
+        }
+        $inArr['settle_price'] = $inArr['settle_goods_price'] + $inArr['shipping_fee'];
 
         //优惠金额处理
         if ($inArr['use_bonus'] > $cartList['use_bonus_goods_amount']) {

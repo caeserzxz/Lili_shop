@@ -324,7 +324,7 @@ $(function () {
     $(document).on('click', ".delete_sku_img", function () {
         var _this = $(this);
         if (_this.data('id') < 1) return false;
-        jq_ajax('{:url("mainAdmin/attachment/removeImg")}', 'id=' + _this.data('id'), function (res) {
+        jq_ajax('{:url("mainAdmin/Attachment/removeImg")}', 'id=' + _this.data('id'), function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
                 return false;
