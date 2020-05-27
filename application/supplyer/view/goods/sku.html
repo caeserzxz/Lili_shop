@@ -252,7 +252,9 @@
 
 </script>
 {/literal}
+{if condition="$row.isputaway != 1 && $row.isputaway != 10"}
 {include file="mainadmin@layouts/web_upload" /}
+{/if}
 <script type="text/javascript">
 
 
