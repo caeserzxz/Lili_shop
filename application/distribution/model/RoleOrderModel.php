@@ -31,32 +31,14 @@ class RoleOrderModel extends BaseModel
     /*------------------------------------------------------ */
     public function updatePay($upData = [])
     {
-        Db::startTrans();
         $order_id = $upData['order_id'];
         unset($upData['order_id']);
         $upData['pay_status'] = 1;
         $upData['pay_time'] = time();
         $res = $this->where('order_id',$order_id)->update($upData);
         if ($res < 1) {
-            Db::rollback();// 回滚事务
             return false;
         }
-        $orderInfo = $this->where('order_id',$order_id)->find()->toArray();
-        if ($orderInfo['pay_code'] == 'balance') {//使用余额支付扣减用户余额
-            $AccountLogModel = new AccountLogModel();
-            $upData['money_paid'] = $orderInfo['order_amount'];
-            $upData['pay_time'] = time();
-            $changedata['change_desc'] = '订单余额支付';
-            $changedata['change_type'] = 3;
-            $changedata['by_id'] = $order_id;
-            $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-            $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
-            if ($res !== true) {
-                Db::rollback();// 回滚事务
-                return false;
-            }
-        }
-        Db::commit();// 提交事务
         asynRun('shop/RoleOrderModel/asynRunPaySuccessEval',['order_id'=>$order_id]);//异步执行
         //升级，分佣处理
         return true;
@@ -92,20 +74,18 @@ class RoleOrderModel extends BaseModel
             $UsersModel->regUserBind($orderInfo['user_id'],-1);
         }//end
 
-
         if ($orderInfo['is_dividend'] == 0){
+            $buy_brokerage_amount = $DividendModel->buyBrokerageByRoleOrder($orderInfo);//自购返还
             $upData = $DividendModel->_eval($orderInfo,'pay');
             if (is_array($upData) == false){
                 Db::rollback();// 回滚事务
                 return $res;
             }
-        }
-        if ($orderInfo['is_up_role'] == 0){
-            $res = $DividendModel->evalLevelUp($orderInfo);//升级处理
-            if ($res == true) {
-                $upData['is_up_role'] = 1;
+            if ($buy_brokerage_amount > 0){
+                $upData['buy_brokerage_amount'] = $buy_brokerage_amount;
             }
         }
+
         $this->where('order_id',$orderInfo['order_id'])->update($upData);
         Db::commit();// 提交事务
         return true;

@@ -31,9 +31,9 @@ return [
 			$config['SS_SIGN']=>'已签收',
 		],
 		'ds'=>[
-			$config['DD_UNCONFIRMED']=>'待确定',
-            $config['DD_PAYED']=>'已支付',
-			$config['DD_SHIPPED']=>'已发货',
+			$config['DD_UNCONFIRMED']=>'订单待确定',
+            $config['DD_PAYED']=>'订单已支付',
+			$config['DD_SHIPPED']=>'订单已发货',
 			$config['DD_SIGN']=>'已签收,待分成',
             $config['DD_DIVVIDEND']=>'已到帐',
 			$config['DD_RETURNED']=>'已退货',

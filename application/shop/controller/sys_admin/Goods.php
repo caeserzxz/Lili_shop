@@ -221,6 +221,7 @@ class Goods extends AdminController
         if ($data['shelf_time'] > time()){
             $data['isputaway'] = 2;
         }
+        $data['buy_brokerage_type'] = explode(',',$data['buy_brokerage_type']);
         return $data;
     }
     /*------------------------------------------------------ */
@@ -436,6 +437,7 @@ class Goods extends AdminController
                 $row['freight_template'] = 0;
             }
 
+            $row['buy_brokerage_type'] = empty($row['buy_brokerage_type']) ? '' : join(',', $row['buy_brokerage_type']);
             //会员购买限制
             $row['limit_user_level'] = empty($row['limit_user_level']) ? '' : join(',', $row['limit_user_level']);
             //身份购买限制

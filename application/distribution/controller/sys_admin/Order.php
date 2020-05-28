@@ -69,10 +69,13 @@ class Order extends AdminController
     {
         $order_id = input('order_id', 0, 'intval');
         $orderInfo = $this->Model->find($order_id)->toArray();
-
+        if ($orderInfo['is_dividend'] == 0){
+            $this->Model->asynRunPaySuccessEval(['order_id'=>$order_id]);
+            $orderInfo = $this->Model->find($order_id)->toArray();
+        }
         $orderInfo['buy_role_name'] =  (new DividendRoleModel)->info($orderInfo['last_role_id'],true);
         $this->assign('orderInfo', $orderInfo);
-        $logWhere[] = ['order_type','=','role_order'];
+        $logWhere[] = ['order_type','in',['role_order','role_order_buy_back']];
         $logWhere[] = ['order_id','=',$order_id];
         $dividend_log = (new DividendModel)->where($logWhere)->order('award_id,level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);

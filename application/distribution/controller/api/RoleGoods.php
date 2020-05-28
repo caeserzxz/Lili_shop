@@ -99,6 +99,7 @@ class RoleGoods extends ApiController
         $inArr['pay_code'] = $payment['pay_code'];
         $inArr['pay_name'] = $payment['pay_name'];
         $inArr['last_role_id'] = $this->userInfo['role_id'];
+        $inArr['buy_brokerage_amount'] = $rgoods['buy_brokerage_amount'];
         $inArr['order_sn'] = $RoleOrderModel->getOrderSn();
         $res = $RoleOrderModel->save($inArr);
         if ($res < 1) {

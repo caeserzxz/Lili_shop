@@ -295,7 +295,7 @@ class Order extends AdminController
         $this->assign("operating", $operating);
         $orderInfo['dividend_role_name'] = (new DividendRoleModel)->info($orderInfo['dividend_role_id'], true);
         $this->assign('orderInfo', $orderInfo);
-        $logWhere[] = ['order_type', 'in', ['order','up_back']];
+        $logWhere[] = ['order_type', 'in', ['order','order_buy_back']];
         $logWhere[] = ['order_id', '=', $order_id];
         $dividend_log = (new DividendModel)->where($logWhere)->order('award_id,level ASC')->select()->toArray();
         $this->assign('dividend_log', $dividend_log);

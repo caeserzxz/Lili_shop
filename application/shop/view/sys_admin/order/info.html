@@ -286,7 +286,7 @@
 
                         </div>
                         <div class="col-sm-12 table-responsive">
-                            {eq name="row.is_pay" value="0"}
+                            {eq name="$orderInfo.is_pay" value="0"}
                             <table class="table table-bordered ">
                                 <thead>
                                 <tr>
@@ -357,7 +357,7 @@
                             <label class="col-sm-1 control-label">快递费用：</label>
                             <div class="col-sm-8 form-control-static">
 
-                                {eq name="row.shipping_fee" value="0"}
+                                {eq name="$orderInfo.shipping_fee" value="0"}
                                 免运费
                                 {else/}
                                 {$orderInfo.shipping_fee|priceFormat}
@@ -411,8 +411,8 @@
                         <div class="form-group">
                             <div class="col-sm-12">
 
-                                订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">佣金总额：{$orderInfo.dividend_amount|priceFormat=true}</span>
-                                <span class="m-l-lg hide">实收：{$orderInfo.real_amount|priceFormat}</span>
+                                订单金额：￥{$orderInfo.order_amount|priceFormat} <span class="m-l-lg">佣金总额：{$orderInfo.dividend_amount+$orderInfo.buy_brokerage_amount|priceFormat=true}</span>
+
                                 <span class="m-l-lg ">会员下单时身份：{$orderInfo.dividend_role_name}</span>
                                 <a href="javascript:;"
                                    data-remote="{:url('upDividend',array('id'=>$orderInfo['order_id']))}"

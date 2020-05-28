@@ -55,7 +55,7 @@ class RoleGoods extends AdminController
 		if(empty($data['goods_img'])){
             return $this->error('请上传商品图片.');
         }
-		if ($data['buy_brokerage'] >= $data['sale_price']){
+		if ($data['buy_brokerage_amount'] >= $data['sale_price']){
             return $this->error('购买返还金额不能大于或等于销售价.');
         }
 		return $data;

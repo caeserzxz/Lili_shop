@@ -4,11 +4,15 @@
 /*------------------------------------------------------ */
 
 namespace app\publics\controller;
+use think\Db;
 
 use app\ClientbaseController;
 use app\mainadmin\model\PaymentModel;
 
 use app\member\model\RechargeLogModel;
+use app\member\model\AccountLogModel;
+use app\member\model\AccountModel;
+
 use app\shop\model\OrderModel;
 use app\distribution\model\RoleOrderModel;
 use app\weixin\model\WeiXinUsersModel;
@@ -73,11 +77,28 @@ class Payment extends ClientbaseController
 
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
         if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
+            Db::startTrans();//启动事务
             if ($order['user_id'] != $this->userInfo['user_id']){
                 return $this->error('此订单你无权操作.');
             }
             if ($order['order_amount'] > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['order_id' => $order_id]));
+            }
+            $upData['money_paid'] = $order['order_amount'];
+            $upData['pay_time'] = time();
+            $changedata['change_desc'] = '订单余额支付';
+            $changedata['change_type'] = 3;
+            $changedata['by_id'] = $order_id;
+            $changedata['balance_money'] = $order['order_amount'] * -1;
+            $res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
+            if ($res !== true) {
+                Db::rollback();// 回滚事务
+                return $this->error('支付失败，扣减余额失败.');
+            }
+            $balance_money = (new AccountModel)->where('user_id',$order['user_id'])->value('balance_money');
+            if ($balance_money < 0){
+                Db::rollback();// 回滚事务
+                return $this->error('支付失败，扣减余额失败.');
             }
             //余额完成支付
             $upArr['order_id'] = $order_id;
@@ -87,8 +108,10 @@ class Payment extends ClientbaseController
             $upArr['money_paid'] = $order['order_amount'];
             $res = $OrderModel->updatePay($upArr, '余额支付成功.');
             if ($res !== true) {
+                Db::rollback();// 回滚事务
                 return $this->error($res);
             }
+            Db::commit();// 提交事务
             return $this->redirect($returnDoneUrl, ['order_id' => $order_id]);
         }
         if ($order['use_integral'] > 0 && $order['order_amount'] == 0) {//积分支付，订单金额为零时直接支付成功
@@ -264,6 +287,19 @@ EOF;
             if ($order['order_amount'] > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.', url('distribution/role_goods/done', ['order_id' => $order_id]));
             }
+            Db::startTrans();
+            $AccountLogModel = new AccountLogModel();
+            $upData['money_paid'] = $order['order_amount'];
+            $upData['pay_time'] = time();
+            $changedata['change_desc'] = '订单余额支付';
+            $changedata['change_type'] = 3;
+            $changedata['by_id'] = $order_id;
+            $changedata['balance_money'] = $order['order_amount'] * -1;
+            $res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
+            if ($res !== true) {
+                Db::rollback();// 回滚事务
+                return false;
+            }
             //余额完成支付
             $upArr['order_id'] = $order_id;
             $upArr['pay_code'] = $this->pay_code;
@@ -271,8 +307,10 @@ EOF;
             $upArr['pay_name'] = $payment['pay_name'];
             $res = $RoleOrderModel->updatePay($upArr, '余额支付成功.');
             if ($res !== true) {
+                Db::rollback();// 回滚事务
                 return $this->error($res);
             }
+            Db::commit();// 提交事务
             return $this->redirect('distribution/role_goods/done', ['order_id' => $order_id]);
         }
 

@@ -83,7 +83,7 @@ class BasalFunLevel
         //团队总人数end
 
         //团队总业绩
-        if ($upLeveValue['team_income'] > 0){
+        if (empty($upLeveValue['team_income']) == false){
             if ($upLeveValue['team_income'] > $stats['teamIncome']){
                 if ($role['up_condition'] == 2) {//不满足，失败
                     return false;
@@ -95,7 +95,7 @@ class BasalFunLevel
         //团队总业绩end
 
         //个人总业绩
-        if ($upLeveValue['total_income'] > 0){
+        if (empty($upLeveValue['total_income']) == false){
             if ($upLeveValue['total_income'] > $usersInfo['account']['total_dividend']){
                 if ($role['up_condition'] == 2) {//不满足，失败
                     return false;
@@ -107,7 +107,7 @@ class BasalFunLevel
         //个人总业绩end
 
         //累计消费
-        if ($upLeveValue['total_consume'] > 0) {
+        if (empty($upLeveValue['total_consume']) == false) {
             if ($upLeveValue['total_consume'] > $usersInfo['total_consume']) {
                 if ($role['up_condition'] == 2) {//不满足，失败
                     return false;
@@ -119,7 +119,7 @@ class BasalFunLevel
         //累计消费end
 
         //单次消费(针对购买者)
-        if ($usersInfo['user_id'] == $orderInfo['user_id'] && $upLeveValue['one_consume'] > 0) {
+        if ($usersInfo['user_id'] == $orderInfo['user_id'] && empty($upLeveValue['one_consume']) == false) {
             if ($upLeveValue['one_consume'] > $orderInfo['order_amount']) {
                 if ($role['up_condition'] == 2) {//不满足，失败
                     return false;

@@ -11,6 +11,7 @@ use app\member\model\UserAddressModel;
 use app\member\model\AccountLogModel;
 use app\shop\model\BonusModel;
 use app\shop\model\OrderModel;
+use app\shop\model\OrderGoodsModel;
 use app\shop\model\GoodsModel;
 use app\shop\model\CategoryModel;
 use app\shop\model\BonusListModel;
@@ -260,14 +261,14 @@ class Flow extends ApiController
         $allGoodsId = [];
         $allFavourId = [];
         $cartList['use_bonus_goods_amount'] = 0;//使用了优惠券的商品总额
-
+        $FavourGoodsModel = new \app\favour\model\FavourGoodsModel();
         // 验证购物车中的商品能否下单
         foreach ($cartList['goodsList'] as $key => $grow) {
             $goods = $GoodsModel->info($grow['goods_id']);
             //活动信息相关：1-限时优惠
             $promInfo = [];
             if ($grow['prom_type'] == 1) {
-                $promInfo = (new \app\favour\model\FavourGoodsModel)->getFavourInfo($grow['prom_id'], $grow['sku_id']);
+                $promInfo = $FavourGoodsModel->getFavourInfo($grow['prom_id'], $grow['sku_id']);
             }
 
             // 判断是商品能否购买或修改
@@ -323,6 +324,9 @@ class Flow extends ApiController
             if (empty($promInfo) == false) {
                 $allFavourId[$promInfo['data']['goods']['fa_id']] = $promInfo['data']['goods']['fa_id'];
             }
+            //购买返还调用
+            $cartList['goodsList'][$key]['buy_brokerage_type'] = $goods['buy_brokerage_type'];
+            $cartList['goodsList'][$key]['buy_brokerage_amount'] = $goods['buy_brokerage_amount'];
         }
 
 
@@ -533,6 +537,7 @@ class Flow extends ApiController
                     }
                 }
             }
+
             $goods = array(
                 'order_id' => $order_id,
                 'brand_id' => $og['brand_id'],
@@ -561,11 +566,13 @@ class Flow extends ApiController
                 'is_dividend' => $og['is_dividend'],
                 'bonus_ids' => $bonus_ids,
                 'bonus_after_price' => $bonus_after_price,
-                'usd_bonus_price' => $usd_bonus_price
+                'usd_bonus_price' => $usd_bonus_price,
+                'buy_brokerage_type' => $og['buy_brokerage_type'],
+                'buy_brokerage_amount' => $og['buy_brokerage_amount']
             );
             $orderGoods[] = $goods;
         }
-        $res = (new \app\shop\model\OrderGoodsModel)->insertAll($orderGoods);
+        $res = (new OrderGoodsModel)->insertAll($orderGoods);
         if ($res < 1) {
             Db::rollback();// 回滚事务
             return $this->error('未知原因，订单商品写入失败.');

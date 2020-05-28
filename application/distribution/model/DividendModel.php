@@ -5,11 +5,14 @@
 /*------------------------------------------------------ */
 namespace app\distribution\model;
 use app\BaseModel;
+use think\Db;
 use app\member\model\AccountLogModel;
 use app\shop\model\OrderModel;
+use app\shop\model\OrderGoodsModel;
 use app\weixin\model\WeiXinMsgTplModel;
 use app\weixin\model\WeiXinUsersModel;
 use app\member\model\UsersModel;
+
 class DividendModel extends BaseModel
 {
     protected $table = 'distribution_dividend_log';
@@ -21,10 +24,11 @@ class DividendModel extends BaseModel
     //-- $type string 订单操作
     //-- $status int 额外订单状态
     /*------------------------------------------------------ */
-    public function _eval(&$orderInfo, $type = '',$status=0){
-        $fun = str_replace('/', '\\', '/distribution/'.config('config.dividend_type').'/Dividend');
+    public function _eval(&$orderInfo, $type = '', $status = 0)
+    {
+        $fun = str_replace('/', '\\', '/distribution/' . config('config.dividend_type') . '/Dividend');
         $Model = new $fun($this);
-        $res = $Model->_eval($orderInfo, $type,$status);
+        $res = $Model->_eval($orderInfo, $type, $status);
         return $res;
     }
     /*------------------------------------------------------ */
@@ -34,12 +38,13 @@ class DividendModel extends BaseModel
     //-- $order_operating string 订单操作
     //-- $order_type string 订单类型
     /*------------------------------------------------------ */
-    public function sendMsg($type,$order_id,$order_operating='',$order_type = 'order'){
-        $where[] = ['order_id','=',$order_id];
-        if ($order_type == 'order'){
-            $where[] = ['order_type', 'in', ['order','buy_back']];
-        }else{
-            $where[] = ['order_type','=',$order_type];
+    public function sendMsg($type, $order_id, $order_operating = '', $order_type = 'order')
+    {
+        $where[] = ['order_id', '=', $order_id];
+        if ($order_type == 'order') {
+            $where[] = ['order_type', 'in', ['order', 'buy_back']];
+        } else {
+            $where[] = ['order_type', '=', $order_type];
         }
         $rows = $this->where($where)->select()->toArray();
         if (empty($rows)) return false;
@@ -54,7 +59,7 @@ class DividendModel extends BaseModel
                 $row['send_scene'] = 'dividend_add_msg';//佣金产生通知
             } elseif ($type == 'cancel') {
                 $row['send_scene'] = 'dividend_cancel_msg';
-            }elseif($type == 'sign'){
+            } elseif ($type == 'sign') {
                 $row['send_scene'] = 'dividend_arrival_msg';
             }
             $row['buy_nick_name'] = $buy_nick_name;
@@ -72,37 +77,37 @@ class DividendModel extends BaseModel
     //-- $order_type string 订单类型
     //-- $limit_id int 指定时间分佣的ID,暂时无用
     /*------------------------------------------------------ */
-    public function evalArrival($order_id = 0, $order_type = 'order',$limit_id=0)
+    public function evalArrival($order_id = 0, $order_type = 'order', $limit_id = 0)
     {
         $time = time();
         $OrderModel = new OrderModel();
         $shop_after_sale_limit = settings('shop_after_sale_limit');//售后时间
         if ($order_id > 0) {
-            if ($order_type == 'role_order'){
+            if ($order_type == 'role_order') {
                 $where[] = ['order_id', '=', $order_id];
                 $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-                $where[] = ['order_type', '=', $order_type];
+                $where[] = ['order_type', 'in', ['role_order','role_order_buy_back']];
                 $rows = $this->where($where)->select()->toArray();
-            }else{
+            } else {
                 $where[] = ['d.order_id', '=', $order_id];
                 $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
-                $where[] = ['d.order_type', 'in', ['order','buy_back']];
-                $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
+                $where[] = ['d.order_type', 'in', ['order', 'order_buy_back']];
+                $rows = $this->alias('d')->join('shop_order_info o', 'd.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
             }
         } else {
-            if ($order_type == 'role_order'){
+            if ($order_type == 'role_order') {
                 $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
-                $where[] = ['order_type', '=', $order_type];
+                $where[] = ['order_type', 'in', ['role_order','role_order_buy_back']];
                 $rows = $this->where($where)->select()->toArray();
-            }else{
-                if ($shop_after_sale_limit > 0 ){
-                    $where[] = ['d.order_type', 'in', ['order','buy_back']];
+            } else {
+                if ($shop_after_sale_limit > 0) {
+                    $where[] = ['d.order_type', 'in', ['order', 'order_buy_back']];
                     $where[] = ['d.status', '=', $OrderModel->config['DD_SIGN']];
                     $limit_time = $shop_after_sale_limit * 86400;
                     $where[] = ['d.update_time', '<', $time - $limit_time];
-                    $rows = $this->alias('d')->join('shop_order_info o','d.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
-                }else{
-                    $where[] = ['order_type', 'in', ['order','buy_back']];
+                    $rows = $this->alias('d')->join('shop_order_info o', 'd.order_id = o.order_id')->field('d.*,o.is_after_sale')->where($where)->select()->toArray();
+                } else {
+                    $where[] = ['order_type', 'in', ['order', 'order_buy_back']];
                     $where[] = ['status', '=', $OrderModel->config['DD_SIGN']];
                     $rows = $this->where($where)->select()->toArray();
                 }
@@ -114,12 +119,12 @@ class DividendModel extends BaseModel
         $AccountLogModel = new AccountLogModel();
         $log_id = [];
         foreach ($rows as $row) {
-            if ($row['order_type'] == 'role_order'){
+            if ($row['order_type'] == 'role_order') {
                 $changedata['change_desc'] = '身份单佣金到帐';
                 $changedata['change_type'] = 10;
-            }else{
-                if ($shop_after_sale_limit > 0 ){
-                    if (isset($row['is_after_sale']) && $row['is_after_sale'] == 1){
+            } else {
+                if ($shop_after_sale_limit > 0) {
+                    if (isset($row['is_after_sale']) && $row['is_after_sale'] == 1) {
                         continue;//有售后，暂不能分佣
                     }
                 }
@@ -144,8 +149,8 @@ class DividendModel extends BaseModel
             }
             $log_id[] = $row['log_id'];
         }
-        if ($order_id > 0){
-            $this->sendMsg('sign',$order_id,'',$order_type);
+        if ($order_id > 0) {
+            $this->sendMsg('sign', $order_id, '', $order_type);
         }
         return $log_id;
     }
@@ -159,7 +164,7 @@ class DividendModel extends BaseModel
         $time = time();
         $OrderModel = new OrderModel();
         $where[] = ['order_id', '=', $order_id];
-        $where[] = ['order_type','=','order'];
+        $where[] = ['order_type', '=', 'order'];
         $rows = $this->where($where)->select()->toArray();
         if (empty($rows)) return true;//没有找到相关佣金记录
 
@@ -188,7 +193,7 @@ class DividendModel extends BaseModel
                 }
                 //执行模板消息通知
                 $wxInfo = $WeiXinUsersModel->where('user_id', $row['dividend_uid'])->field('wx_openid,wx_nickname')->find();
-                if (empty($wxInfo) == false){
+                if (empty($wxInfo) == false) {
                     $row['buy_user_id'] = $row['buy_uid'];
                     $row['buy_nick_name'] = $buy_nick_name;
                     $row['order_operating'] = $type == 'unsign' ? '撤销签收' : '订单退货';
@@ -200,6 +205,87 @@ class DividendModel extends BaseModel
             }
         }
         return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 购买返还(普通订单)
+    /*------------------------------------------------------ */
+    public function buyBrokerageByOrder(&$orderInfo, $status)
+    {
+        $where[] = ['order_id', '=', $orderInfo['order_id']];
+        $where[] = ['order_type', '=', 'order_buy_back'];
+        $log_id = $this->where($where)->value('log_id');
+        $buy_brokerage_amount = 0;
+        $OrderModel = new OrderModel();
+        $ogrows = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select()->toArray();
+        foreach ($ogrows as $ogrow) {
+            if ($ogrow['buy_brokerage_amount'] <= 0) {
+                continue;
+            }
+            $buyWhere = [];
+            $buyWhere[] = ['user_id', '=', $orderInfo['user_id']];
+            $buyWhere[] = ['order_status', '=', 1];
+            $buyWhere[] = ['pay_status', '=', 1];
+            $buyWhere[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $ogrow['goods_id'] . "',buy_goods_id)")];
+            $buy_order_id = $OrderModel->where($buyWhere)->value('order_id');
+            if ($buy_order_id < 1 && strstr($ogrow['buy_brokerage_type'], 'first_buy')) {//首购复购
+                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                continue;
+            }
+            if ($buy_order_id > 0 && strstr($ogrow['buy_brokerage_type'], 'repeat_buy')) {//限制复购
+                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                continue;
+            }
+        }
+        if ($buy_brokerage_amount > 0) {
+            if ($log_id > 0) {
+                $upArr['dividend_amount'] = $buy_brokerage_amount;
+                $upArr['update_time'] = time();
+                $res = $this->where('log_id', $log_id)->update($upArr);
+                if ($res < 1) {
+                    return false;
+                }
+            } else {
+                $inArr['dividend_amount'] = $buy_brokerage_amount;
+                $inArr['order_type'] = 'order_buy_back';
+                $inArr['order_id'] = $orderInfo['order_id'];
+                $inArr['order_sn'] = $orderInfo['order_sn'];
+                $inArr['buy_uid'] = $orderInfo['user_id'];
+                $inArr['order_amount'] = $orderInfo['order_amount'];
+                $inArr['dividend_uid'] = $orderInfo['user_id'];
+                $inArr['award_name'] = '自购返还';
+                $inArr['status'] = $status;
+                $inArr['add_time'] = time();
+                $res = $this->save($inArr);
+                if ($res < 1) {
+                    return false;
+                }
+            }
+        }
+        return $buy_brokerage_amount;
+    }
+    /*------------------------------------------------------ */
+    //-- 购买返还(身份订单)
+    /*------------------------------------------------------ */
+    public function buyBrokerageByRoleOrder(&$orderInfo)
+    {
+
+        if ($orderInfo['buy_brokerage_amount'] > 0) {
+            $inArr['dividend_amount'] = $orderInfo['buy_brokerage_amount'];
+            $inArr['order_type'] = 'role_order_buy_back';
+            $inArr['order_id'] = $orderInfo['order_id'];
+            $inArr['order_sn'] = $orderInfo['order_sn'];
+            $inArr['buy_uid'] = $orderInfo['user_id'];
+            $inArr['order_amount'] = $orderInfo['order_amount'];
+            $inArr['dividend_uid'] = $orderInfo['user_id'];
+            $inArr['award_name'] = '自购返还';
+            $inArr['status'] = 3;//待分成
+            $inArr['add_time'] = time();
+            $res = $this->save($inArr);
+            if ($res < 1) {
+                return false;
+            }
+        }
+        return $orderInfo['buy_brokerage_amount'];
     }
 }
 

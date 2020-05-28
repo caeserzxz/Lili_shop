@@ -35,7 +35,6 @@ class Dividend extends BaseModel
     /*------------------------------------------------------ */
     public function _eval(&$orderInfo, $type = '', $status = 0)
     {
-        if ($orderInfo['is_split'] > 0) return true;//需要拆单的不执行
         //身份订单处理
         if ($orderInfo['d_type'] == 'role_order') {
             $status = 3;//待分成
@@ -46,9 +45,14 @@ class Dividend extends BaseModel
             }
             $upData['is_dividend'] = 1;
             $this->Model->evalArrival($orderInfo['order_id'], 'role_order');//身份订单直接执行分佣
+            $res = $this->evalLevelUp($orderInfo);//升级处理
+            if ($res == false) {
+                return false;
+            }
+            $upData['is_up_role'] = 1;
             return $upData;//返回数组
         }//end
-
+        if ($orderInfo['is_split'] > 0) return true;//需要拆单的不执行
         $upData = [];//更新分佣记录状态
         $OrderModel = new OrderModel();
         $order_operating = '';
@@ -384,7 +388,7 @@ class Dividend extends BaseModel
         $LogSysModel = new \app\member\model\LogSysModel();
         $oldFun = '';
         $DividendInfo = settings('DividendInfo');
-        $_roleList = array_merge(['role_name' => '粉丝', 'role_id' => 0, 'level' => 0], $roleList);
+        $_roleList = array_merge([['role_name' => '粉丝', 'role_id' => 0, 'level' => 0]], $roleList);
         $UsersBindSuperiorModel = new \app\member\model\UsersBindSuperiorModel();
         $user_id = $orderInfo['user_id'];
         $goodsList = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select();

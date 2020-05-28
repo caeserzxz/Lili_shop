@@ -93,7 +93,7 @@ class OrderModel extends BaseModel
     function info($order_id, $iscache = true)
     {
         if ($iscache == true) {
-            $info = Cache::get($this->mkey . $order_id);
+           // $info = Cache::get($this->mkey . $order_id);
         }
         if (empty($info['order_id']) == true) {
             $info = $this->where('order_id', $order_id)->find();
@@ -245,6 +245,7 @@ class OrderModel extends BaseModel
     function upInfo($upData, $extType = '')
     {
         $order_id = $upData['order_id'];
+        $sendMsg = false;
         unset($upData['order_id']);
         $orderInfo = $this->where('order_id', $order_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
@@ -259,7 +260,7 @@ class OrderModel extends BaseModel
                 return '无权操作';
             }
         }
-        if ($upData['is_del'] == 1 && $orderInfo['order_status'] != $this->config['OS_CANCELED']) {
+        if (empty($upData['is_del']) == false && $orderInfo['order_status'] != $this->config['OS_CANCELED']) {
             return '订单未取消不能删除.';
         }
         if ($orderInfo['is_split'] == 2) {
@@ -271,56 +272,23 @@ class OrderModel extends BaseModel
         $GoodsModel = new GoodsModel();
         $OrderGoodsModel = new OrderGoodsModel();
         $AccountLogModel = new AccountLogModel();
-
         $time = time();
+
+        if (isset($upData['order_status']) == false){
+            $upData['order_status'] = -1;
+        }
+        if (isset($upData['pay_status']) == false){
+            $upData['pay_status'] = -1;
+        }
+        if (isset($upData['shipping_status']) == false){
+            $upData['shipping_status'] = -1;
+        }
+
+
         if ($upData['order_status'] == $this->config['OS_CONFIRMED']) {//确认订单
-            if ($upData['pay_status'] == $this->config['PS_PAYED']) {//订单支付成功
-                if ($orderInfo['pay_code'] == 'balance') {//使用余额支付扣减用户余额
-                    $upData['money_paid'] = $orderInfo['order_amount'];
-                    $upData['pay_time'] = time();
-                    $changedata['change_desc'] = '订单余额支付';
-                    $changedata['change_type'] = 3;
-                    $changedata['by_id'] = $order_id;
-                    $changedata['balance_money'] = $orderInfo['order_amount'] * -1;
-
-                    $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
-                    if ($res !== true) {
-                        Db::rollback();// 回滚事务
-                        return '支付失败，扣减余额失败.';
-                    }
-                    $balance_money = (new AccountModel)->where('user_id',$orderInfo['user_id'])->value('balance_money');
-                    if ($balance_money < 0){
-                        Db::rollback();// 回滚事务
-                        return '支付失败，扣减余额失败.';
-                    }
-                }
-
-                if($orderInfo['use_integral'] > 0) {//积分支付/积分抵扣
-                    $upData['pay_time'] = time();
-                    if ($upData['pay_code'] == 'use_integral'){
-                        $changedata['change_desc'] = '订单积分支付';
-                    }else{
-                        $changedata['change_desc'] = '订单积分抵扣';
-                    }
-                    $changedata['change_type'] = 8;
-                    $changedata['by_id'] = $order_id;
-                    $changedata['use_integral'] = $orderInfo['use_integral'] * -1;
-                    $res = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
-                    if ($res !== true) {
-                        Db::rollback();// 回滚事务
-                        return '支付失败，扣减积分失败.';
-                    }
-                    $use_integral = (new AccountModel)->where('user_id',$orderInfo['user_id'])->value('use_integral');
-                    if ($use_integral < 0){
-                        Db::rollback();// 回滚事务
-                        return '支付失败，扣减积分失败.';
-                    }
-                }
-                //未支付状态的订单才进行支付成功的操作,否则失败回滚
-                $lockWhere['pay_status'] = $this->config['PS_UNPAYED'];
-            }
             $upData['confirm_time'] = $time;
         } elseif ($upData['order_status'] == $this->config['OS_CANCELED']) {//取消订单
+            $sendMsg = true;
             //非后台操作的订单，只有未取消过的才能取消
             if(!$is_admin){
                 $lockWhere[] = ['cancel_time','eq',0];
@@ -405,6 +373,7 @@ class OrderModel extends BaseModel
             }
 
         } elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {//发货
+            $sendMsg = true;
             $res = $this->distribution($orderInfo, 'shipping');//提成处理
             if ($res != true) {
                 Db::rollback();// 回滚事务
@@ -514,6 +483,19 @@ class OrderModel extends BaseModel
                 $upData['is_stock'] = 1;
             }
         }
+        //清理未附值定义
+        if ($upData['order_status'] == -1){
+            unset($upData['order_status']);
+        }
+        if ($upData['pay_status'] == -1){
+            unset($upData['pay_status']);
+        }
+        if ($upData['shipping_status'] == -1){
+            unset($upData['shipping_status']);
+        }
+        //end
+
+
         $upData['update_time'] = $time;
         if(!empty($lockWhere)){
             $res = $this->where('order_id', $order_id)->where($lockWhere)->update($upData);
@@ -526,7 +508,7 @@ class OrderModel extends BaseModel
         }
         Db::commit();// 提交事务
 
-        if ($upData['order_status'] == $this->config['OS_CANCELED'] || $upData['shipping_status'] == $this->config['SS_SHIPPED']) {
+        if ($sendMsg == true){
                 //发送模板消息，给买家
                 $WeiXinMsgTplModel = new \app\weixin\model\WeiXinMsgTplModel();
                 $WeiXinUsersModel = new \app\weixin\model\WeiXinUsersModel();
@@ -651,6 +633,7 @@ class OrderModel extends BaseModel
         }
         return true;
     }
+
     /*------------------------------------------------------ */
     //-- 提成处理&升级处理
     /*------------------------------------------------------ */
@@ -664,13 +647,23 @@ class OrderModel extends BaseModel
             return true;
         }
         $status = 0;
-        if ($orderInfo['shipping_status'] == 2){//订单已签收，重新计算时直接设为已签收待分佣金
+        if ($orderInfo['shipping_status'] == 1) {//订单已发货
+            $status = $this->config['DD_SHIPPED'];
+        }elseif ($orderInfo['shipping_status'] == 2){//订单已签收，重新计算时直接设为已签收待分佣金
             $status = $this->config['DD_SIGN'];
         }elseif($orderInfo['pay_status'] == 1){//订单已支付
             $status = $this->config['DD_PAYED'];
         }
         $orderInfo['d_type'] = 'order';//普通订单
-        $res = (new \app\distribution\model\DividendModel)->_eval($orderInfo, $type,$status);
+        $DividendModel = new \app\distribution\model\DividendModel();
+        $res = $DividendModel->_eval($orderInfo, $type, $status);
+        if ($res !== false && $type == 'add'){
+            $buyRes = $DividendModel->buyBrokerageByOrder($orderInfo,$status);
+            if ($buyRes === false){
+               return false;
+            }
+            $res['buy_brokerage_amount'] = $buyRes;
+        }
         return $res;
     }
     /*------------------------------------------------------ */

@@ -148,7 +148,7 @@ $(function () {
                     <?php foreach ($second as $item) :  ?>
                         <?php if (!isset($item['submenu'])): ?>
                             <!-- 二级菜单-->
-                            <a href="<?= url($item['group'].'/'.$item['controller'].'/'.$item['action']) ?>" class="<?= $item['active'] ? 'active' : '' ?>">
+                            <a href="<?= url($item['group'].'/'.$item['controller'].'/'.$item['action']) ?>" class="<?= empty($item['active'])==false ? 'active' : '' ?>">
                                 <?= $item['name']; ?>
                             </a>
                         <?php else: ?>
