@@ -114,6 +114,7 @@ class ClientbaseController extends BaseController{
         //获取邀请码
         $share_token = input('share_token', '', 'trim');
         $se_share_token = session('share_token');
+        $isSaveLog = false;
         if (empty($share_token) == false) {
             $isSaveLog = true;
             session('share_token', $share_token);
