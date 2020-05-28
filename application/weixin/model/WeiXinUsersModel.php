@@ -78,7 +78,7 @@ class WeiXinUsersModel extends BaseModel
 			Db::startTrans();
 			$res = $this->save($inarr);
 			if ($res < 1) return false;
-            $wxuid = $res->wxuid;
+            $wxuid = $this->wxuid;
 			$userInArr['sex'] = $wx_arr['sex'] == '男' ? 1 : 2;
 			$userInArr['nick_name'] = $wx_arr['nickname'];
 			$userInArr['headimgurl'] = $wx_arr['headimgurl'];
@@ -87,7 +87,7 @@ class WeiXinUsersModel extends BaseModel
 		}else{
             $res = $this->save($inarr);
             if ($res < 1) return false;
-            $wxuid = $res->wxuid;
+            $wxuid = $this->wxuid;
         }
         $wx_info = $this->info($wxuid,'wx');
         $UsersModel->doLogin($wx_info['user_id'],'wxH5');

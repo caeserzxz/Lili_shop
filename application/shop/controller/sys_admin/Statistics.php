@@ -44,6 +44,11 @@ class Statistics extends AdminController
         $i = 0;
         $dt_start = strtotime($dtime[0]);
         $end_day = strtotime($dtime[1]);
+        $stats['total_order_amount'] = 0;
+        $stats['total_shpping_num'] = 0;
+        $stats['total_pay_num'] = 0;
+        $stats['total_add_num'] = 0;
+        $stats['total_sign_num'] = 0;
         while ($dt_start <= $end_day) {
             $riqi[] = date('Y-m-d', $dt_start);
             $searchtime = $dt_start . ',' . ($dt_start + 86399);
