@@ -114,8 +114,7 @@ class ClientbaseController extends BaseController{
         //获取邀请码
         $share_token = input('share_token', '', 'trim');
         $se_share_token = session('share_token');
-        $isSaveLog = false;//是否记录微信分享日志
-        if (empty($share_token) == false && $se_share_token != $share_token) {
+        if (empty($share_token) == false) {
             $isSaveLog = true;
             session('share_token', $share_token);
         }
@@ -137,12 +136,12 @@ class ClientbaseController extends BaseController{
                     $wxInfo = $this->wxAutologin($access_token);
                 }
 
-                if ($isSaveLog == true && empty($wxInfo['user_id']) == true) {//未注册，判断是否来自分享,记录分享来源
+                if ($isSaveLog == true && $se_share_token != $share_token && empty($wxInfo['user_id']) == true) {//未注册，判断是否来自分享,记录分享来源
                     $wxlog['wxuid'] = $wxInfo['wxuid'];
                     $wxlog['user_id'] =  (new \app\member\model\UsersModel)->getShareUser($share_token);
                     $wxlog['share_token'] = $share_token;
                     $wxlog['add_time'] = time();
-                    $res = (new \app\weixin\model\WeiXinInviteLogModel)->save($wxlog);
+                    (new \app\weixin\model\WeiXinInviteLogModel)->save($wxlog);
 
                 }
 
