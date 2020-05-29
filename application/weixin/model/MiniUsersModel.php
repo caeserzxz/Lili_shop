@@ -22,11 +22,15 @@ class MiniUsersModel extends WeiXinUsersModel
 		if(!$minidata['openid']){
 			return 'openid获取失败，请联系管理员';
 		}
+        $UsersModel = new UsersModel();
         $where['wx_openid'] = $minidata['openid'];
         $where['is_xcx'] = 1;
         $wx_info = $this->where($where)->find();
-		if(empty($wx_info)){
-			return $this->doLogin($wx_info['user_id'],$data['source']);
+		if(empty($wx_info) == false){
+		    if ($wx_info['user_id'] > 0 ){
+                $UsersModel->doLogin($wx_info['user_id'],$data['source']);
+            }
+            return $wx_info->toArray();
 		}
 
 		//过滤微信名里面的表情特殊符号
@@ -50,7 +54,6 @@ class MiniUsersModel extends WeiXinUsersModel
             $wxuid = $res->wxuid;
             $userInArr['sex'] = $data['gender'];
             $userInArr['nick_name'] = $data['nickName'];
-            $UsersModel = new UsersModel();
             $res = $UsersModel->register($userInArr, $wxuid);//注册会员
             if ($res != true) return $res;
         }else{
@@ -60,7 +63,8 @@ class MiniUsersModel extends WeiXinUsersModel
         }
 		//缓存微信账户数据 
         $wx_info = $this->info($wxuid,'wx');
-		return $UsersModel->doLogin($wx_info['user_id'],$data['source']);
+        $UsersModel->doLogin($wx_info['user_id'],$data['source']);
+		return $wx_info;
 	}
 
 
