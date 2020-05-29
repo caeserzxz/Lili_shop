@@ -929,8 +929,9 @@ class Goods extends AdminController
     {
         $where[] = ['is_delete', '=', 0];//过滤已删除-Lu
         $keyword = input('keyword', '', 'trim');
+        $andWhere = '';
         if (!empty($keyword)) {
-            $where = "( goods_name LIKE '%" . $keyword . "%' OR goods_sn LIKE '%" . $keyword . "%' )";
+            $andWhere = "( goods_name LIKE '%" . $keyword . "%' OR goods_sn LIKE '%" . $keyword . "%' )";
         }
         $search['cid'] = input('cid', 0, 'intval');
         if ($search['cid'] > 0) {
@@ -938,7 +939,7 @@ class Goods extends AdminController
             $where[] = ['cid', 'in', $this->classList[$search['cid']]['children']];
         }
 
-        $_list = $this->Model->where($where)->field("goods_id,goods_name,shop_price,is_spec,goods_sn,goods_thumb")->limit(20)->select();
+        $_list = $this->Model->where($where)->where($andWhere)->field("goods_id,goods_name,shop_price,is_spec,goods_sn,goods_thumb")->limit(20)->select();
         foreach ($_list as $key => $row) {
             $_list[$key] = $row;
         }
