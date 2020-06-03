@@ -655,11 +655,11 @@ class UsersModel extends BaseModel
         $redis_name = "signTime_" . $user_id . "_" . date('Ymd');
         $info = Cache::get($redis_name);
         if (empty($info)) {
-            $info = (new UsersSignModel)->where(['user_id' => $user_id])->field('time')->limit(7)->order('time desc')->select();
+            $info = (new UsersSignModel)->where(['user_id' => $user_id])->field('last_time')->limit(7)->order('last_time desc')->select();
             Cache::set($redis_name, $info, 86400);
         }
         foreach ($info as $key => $value) {
-            $data[] = date('n.d', $value['time']);;
+            $data[] = date('n.d', $value['last_time']);;
         }
         if ($type == 0) {
             $demo = implode("','", $data);
