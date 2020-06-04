@@ -1,0 +1,150 @@
+#swiper01 .swiper-slide img {
+  width: 100%;
+  height: 1.866667rem;
+}
+
+#swiper01 .swiper-pagination {
+  width: 0.56rem;
+  height: 0.24rem;
+  color: #fff;
+  right: 0.133333rem;
+  bottom: 0.066667rem;
+  left: inherit;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.12rem;
+}
+
+.bannerBox {
+  background-color: #fff;
+  padding: 0 0.133333rem 0.066667rem;
+}
+
+.bannerBox .bannerSwiper {
+  margin-top: 0.133333rem;
+  padding-left: 0.133333rem;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #fff5f7;
+  width: 100%;
+}
+
+.bannerBox .bannerSwiper img {
+  width: 0.213333rem;
+  height: 0.213333rem;
+  margin-right: 0.066667rem;
+}
+
+.bannerBox .bannerSwiper span {
+  margin-right: 0.133333rem;
+  width: 0.866667rem;
+}
+
+.bannerBox .bannerSwiper .swiper-container {
+  height: 0.333333rem;
+}
+
+.bannerBox .bannerSwiper .swiper-container .swiper-slide {
+  font-size: 0.16rem;
+  color: #fd4265;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 0.373333rem;
+}
+
+.nearShop {
+  background-color: #ffffff;
+}
+
+.nearShop .shop-list {
+  margin-bottom: 40rpx;
+}
+
+.nearShop .shop-list .list-item {
+  padding: 0.206667rem 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border-bottom: 0.013333rem solid #e5e5e5;
+}
+
+.nearShop .shop-list .list-item .shop-img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info {
+  margin: 0 0.133333rem;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  line-height: 0.293333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-decs {
+  line-height: 0.2rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 2;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-label {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-label span {
+  padding: 0.013333rem 0.066667rem;
+  color: #efb026;
+  border: 0.013333rem solid #ffc23d;
+  border-radius: 0.133333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-enc span {
+  margin-top: 0.066667rem;
+  padding: 0.013333rem 0.066667rem;
+  font-size: 0.133333rem;
+  color: #fff;
+  background-color: #fd0035;
+  border: none;
+  border-radius: 0.133333rem;
+}
+
+.nearShop .shop-list .list-item .shop-distance .red-env {
+  margin-top: 0.066667rem;
+  width: 0.513333rem;
+  height: 0.433333rem;
+}
+
+.weui-cells {
+  margin-top: 0;
+}
+
+.weui-cell__hd img {
+  width: 0.213333rem;
+  height: 0.213333rem;
+}
+
+.weui-cell__ft img {
+  width: 0.333333rem;
+  height: 0.333333rem;
+}
