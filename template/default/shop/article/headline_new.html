@@ -1,0 +1,136 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/bulletinList.css" />
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="nearbulletin">
+                <div class="bulletin-list listbox">
+
+                </div>
+            </div>
+
+        </div>
+
+<script type="text/html" id="TabTpl">
+    {{each list as item index}}
+    <a href="{:_url('info',['id'=>'[[item.id]]'])}" class="list-item">
+        <img class="bulletin-img" src="{{item.img_url}}" alt="" />
+        <div class="bulletin-info">
+            <div class="bulletin-name fs28 fw_b col_3">{{item.title}}</div>
+            <div class="bulletin-addr fs23 color_9">阅读{{item.click}}</div>
+
+            <div class="bulletin-enc color_3">{{item.change_time}}</div>
+        </div>
+    </a>
+    {{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            $('.inputBox input').focus();
+            $('.top span').on('click', function () {
+                $('.inputBox input').val('');
+                $('.inputBox input').focus();
+            });
+
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".bulletin-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+
+    </script>
+<script>
+    var nowPage = 1, getAgain = false, isLoadend = false;
+    $(function () {
+        //切换列表
+        $('.navBox .nav').on('click', function () {
+            var _index = $(this).index()
+            $(this).siblings().removeClass('navActive')
+            $(this).addClass('navActive')
+            console.log(_index);
+            isLoadend = false;
+            getList(1);
+        })
+
+        var loading = false;  //状态标记
+        $('.page-bd').scroll(function () {
+            if ($(this).children('div').height() - $(this).height() - $(this).scrollTop() < 50 && !loading) {
+                loading = true;
+                getList(nowPage);
+            }
+        })
+    })
+
+    //请求列表数据
+    function getList(page, isagain) {
+        if (page == 1) {
+            $('.listbox').html('');
+        }
+        if (isLoadend == true) return false;
+        if (isagain == true) {
+            if (getAgain == false) return false;
+            getAgain = false;
+        } else {
+            $('.nearbulletin').append('<div class="text_c color_9">加载数据中...</div>');
+        }
+        isLoadend = true;
+        $.ajax({
+            url: '{:_url("shop/api.article/getHeadlineList",["p"=>"【page】"])}',// 跳转到 action
+            data: '',
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (res) {
+                isLoadend = false;
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    getAgain = true;
+                    $('.text_c color_9').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                nowPage = page;
+                nowPage++;
+                $('.text_c color_9').remove();
+                if (res.list.length>0) {
+                    $('.listbox').append(template('TabTpl', res));
+                    if (res.page_count == page) {
+                        $('.text_c').html('—— 没有更多啦，我是有底线的 ——');
+                        isLoadend = true;
+                    }
+                } else {
+                    console.log(22)
+                    $('.text_c').html('—— 没有更多啦，我是有底线的 ——');
+                }
+
+            }, error: function () {
+                isLoadend = false;
+                getAgain = true;
+                $('.text_c color_9').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+    //重新请求数据
+    $(document).on('click', '.get_list_tip', function () {
+        getList(nowPage, true);
+    })
+    getList(nowPage);//执行列表加载
+</script>
+</body>
+
+</html>
+{/block}

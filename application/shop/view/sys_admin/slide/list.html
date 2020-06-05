@@ -5,6 +5,7 @@
             <th width="80">ID</th>
             <th>图片</th>
             <th width="80">排序</th>
+            <th width="200">所属页面</th>
             <th width="100">是否启用</th>
             <th width="140">添加时间</th>
             <th width="80">操作</th>
@@ -16,6 +17,14 @@
        	  	<td>{$g.id}</td>
        	  	<td><img src="{$g.imgurl}" style="max-width:100px;max-width:80px;"/></td>
             <td>{$g.sort_order}</td>
+            <td>
+                {if condition="$g.type eq 1"}
+                    商城首页幻灯片
+                {elseif condition="$g.type eq 2" /}
+                    APP首页幻灯片
+                {/if}
+            </td>
+
             <td>
                 <a href="#" data-remote="{:url('ajaxEdit',array('id'=>$g['id'],'field'=>'status'))}" class="{$g.status|tplckval='=1','active'}"  data-toggle="class" data-ajax="true"><i class="fa fa-check text-success text-active"></i><i class="fa fa-times text-danger text"></i></a>
             </td>

@@ -1,0 +1,36 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/article.css" />
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="article">
+                <div class="article-title fw_b color_3">
+                    {$info['title']}
+                </div>
+                <div class="fs26 color_9 mt10">
+                    <!--<span>阿迪达斯旗舰店</span>-->
+                    <!--<span>|</span>-->
+                    <span>{$info['update_time']|date='Y-m-d'}</span>
+                </div>
+                
+                <div class="article-content fs28">
+                    {$info['content']|raw}
+                </div>
+            </div>
+
+        </div>
+
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+    </script>
+</body>
+
+</html>
+{/block}

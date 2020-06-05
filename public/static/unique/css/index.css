@@ -1,0 +1,286 @@
+.selectBox {
+  box-sizing: border-box;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 0.133333rem 0.2rem;
+  width: 100%;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #f5f5f5;
+  z-index: 33;
+}
+
+.selectBox .addr::after {
+  content: " ";
+  margin: 0.04rem 0.093333rem;
+  display: inline-block;
+  height: 0.1rem;
+  width: 0.1rem;
+  border-bottom: 0.013333rem solid #000000;
+  border-right: 0.013333rem solid #000000;
+  -webkit-transform: rotate(45deg);
+          transform: rotate(45deg);
+}
+
+.selectBox .headimg {
+  margin-right: 0.066667rem;
+  width: 0.38rem;
+  height: 0.38rem;
+  border-radius: 50%;
+}
+
+.selectBox .sao_icon {
+  width: 0.32rem;
+  height: 0.24rem;
+  padding-left: 0.066667rem;
+}
+
+.selectBox .sao_icon img {
+  width: 100%;
+  height: 100%;
+}
+
+.listBox {
+  display: none;
+}
+
+.selech {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  margin-right: 0.106667rem;
+  padding-left: 0.166667rem;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background: #f7f7f7;
+  background-color: #ffffff;
+  z-index: 99;
+  border-radius: 0.066667rem;
+}
+
+.selech img {
+  width: 0.226667rem;
+  height: 0.226667rem;
+  margin-right: 0.12rem;
+}
+
+.swiperGird {
+  overflow: hidden;
+}
+
+#swiper01 {
+  margin: 0 0.133333rem 0.066667rem;
+  border-radius: 0.133333rem;
+}
+
+#swiper01 .swiper-slide img {
+  width: 100%;
+  height: 1.866667rem;
+  border-radius: 0.133333rem;
+}
+
+#swiper01 .swiper-pagination {
+  width: 0.56rem;
+  height: 0.24rem;
+  color: #fff;
+  right: 0.133333rem;
+  bottom: 0.066667rem;
+  left: inherit;
+  background-color: rgba(0, 0, 0, 0.2);
+  border-radius: 0.12rem;
+}
+
+.swiperGird {
+  padding-top: 0.666667rem;
+  padding-bottom: 0.133333rem;
+  background-position: center bottom;
+  background-size: 100% 0.653333rem;
+  background-repeat: no-repeat;
+}
+
+.gird {
+  margin: 0 auto 0;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.05);
+  position: relative;
+  z-index: 9;
+  background-color: #fff;
+  border-radius: 0.133333rem;
+  overflow-y: scroll;
+}
+
+.gird .scrllBox {
+  box-sizing: border-box;
+  padding: 0 0.133333rem;
+  display: -webkit-inline-box;
+  display: -webkit-inline-flex;
+  display: inline-flex;
+  width: 100%;
+}
+
+.gird .box {
+  width: 20%;
+  height: 1.466667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.gird .box div {
+  width: 0.666667rem;
+  height: 0.666667rem;
+}
+
+.gird .box div img {
+  width: 100%;
+  height: 100%;
+  border-radius: 100%;
+}
+
+.gird .box span {
+  margin-top: 0.08rem;
+}
+
+.girdBox {
+  background-color: #ffffff;
+  border-radius: 0.133333rem 0.133333rem 0 0;
+  overflow: hidden;
+}
+
+.bannerBox {
+  background-color: #fff;
+  padding: 0 0.133333rem 0.066667rem;
+}
+
+.bannerBox .bannerSwiper {
+  margin-top: 0.133333rem;
+  padding-left: 0.133333rem;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #fff5f7;
+  border-radius: 0.033333rem;
+  width: 100%;
+}
+
+.bannerBox .bannerSwiper img {
+  width: 0.213333rem;
+  height: 0.213333rem;
+  margin-right: 0.066667rem;
+}
+
+.bannerBox .bannerSwiper span {
+  margin-right: 0.133333rem;
+  width: 0.866667rem;
+}
+
+.bannerBox .bannerSwiper .swiper-container {
+  height: 0.333333rem;
+}
+
+.bannerBox .bannerSwiper .swiper-container .swiper-slide {
+  font-size: 0.16rem;
+  color: #fd4265;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-height: 0.373333rem;
+}
+
+.nearShop {
+  background-color: #ffffff;
+}
+
+.nearShop .title {
+  padding: 0.266667rem 0.2rem;
+  line-height: 1;
+  font-size: 0.2rem;
+  color: #333333;
+  font-weight: bold;
+}
+
+.nearShop .shop-list {
+  margin-bottom: 40rpx;
+}
+
+.nearShop .shop-list .list-item {
+  padding: 0.206667rem 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border-bottom: 0.013333rem solid #e5e5e5;
+}
+
+.nearShop .shop-list .list-item .shop-img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info {
+  margin: 0 0.133333rem;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  line-height: 0.293333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-label span {
+  padding: 0.013333rem 0.066667rem;
+  color: #efb026;
+  border: 0.013333rem solid #ffc23d;
+  border-radius: 0.133333rem;
+}
+
+.nearShop .shop-list .list-item .shop-info .shop-enc span {
+  margin-top: 0.066667rem;
+  padding: 0.013333rem 0.066667rem;
+  font-size: 0.133333rem;
+  color: #fff;
+  background-color: #fd0035;
+  border-radius: 0.133333rem;
+}
+
+.nearShop .shop-list .list-item .shop-distance .red-env {
+  margin-top: 0.066667rem;
+  width: 0.513333rem;
+  height: 0.433333rem;
+}
+
+.nearShop .shop-list .list-item:first-child {
+  padding-top: 0;
+}

@@ -1,0 +1,12 @@
+.article {
+  padding: 0.266667rem;
+  background-color: #ffffff;
+}
+
+.article .article-title {
+  font-size: 0.226667rem;
+}
+
+.article .article-content {
+  padding: 0.266667rem 0;
+}
