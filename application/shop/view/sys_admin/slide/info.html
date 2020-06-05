@@ -40,6 +40,18 @@
                 <div class="line line-dashed line-lg pull-in"></div>
 
                 <div class="form-group">
+                    <label class="col-sm-2 control-label">所属页面</label>
+                    <div class="col-sm-2 must">
+                        <select id="type" name="type" class="input-medium"
+                                style="width:200px;">
+                            <option value="0">请选择</option>
+                            <option value="1" <?php if($row['type']==1) echo 'selected'?>>商城首页幻灯片</option>
+                            <option value="2" <?php if($row['type']==2) echo 'selected'?>>APP首页幻灯片</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
                     <label class="col-sm-2 control-label">链接类型</label>
                     <div class="col-sm-2 must">
                         <select id="bind_type" name="bind_type" onChange="showUrlType(this,0);" class="input-medium"
