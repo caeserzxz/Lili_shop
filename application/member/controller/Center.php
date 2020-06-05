@@ -14,6 +14,8 @@ class Center  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index(){
+        $this->redirect('unique/member/index');
+
         $this->assign('title', '会员中心');
         $this->assign('isUserIndex', 1);
         $this->assign('not_top_nav', true);

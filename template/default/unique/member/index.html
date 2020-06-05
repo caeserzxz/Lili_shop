@@ -4,29 +4,28 @@
         <div class="page-bd my">
           <!-- 页面内容-->
             <div class="top">
-                <div class="title fs34 fw_b color_w">个人中心</div>
+                <div class="title fs34 fw_b color_w">{$title}</div>
                     <div class="right">
-                        <a href="系统消息.html" class="systemInfo">
+                        <a href="{:url('member/message/index')}" class="systemInfo un_see_num">
                             <img src="__STATIC__/unique/images/myIcon01.png" alt="">
-                            <em>3</em>
                         </a>
                         <a href="设置.html"><img src="__STATIC__/unique/images/myIcon02.png" alt=""></a>
                     </div>
                     <div class="info">
-                        <img class="userimg"  src="__STATIC__/unique/images/seckillimg.png" alt="">
-                        <a href="个人资料.html" class="userInfo">
+                        <img class="userimg"  src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                        <a href="{:url('member/center/userInfo')}" class="userInfo">
                             <div>
-                              <p class="fs32 color_w fw_b">汤姆克鲁斯</p>
+                              <p class="fs32 color_w fw_b">{$userInfo.nick_name}</p>
                             </div>
                             <span class="fs22 color_9">
-                                <img src="__STATIC__/unique/images/myIconvip.png" alt="">超级会员
+                                <img src="__STATIC__/unique/images/myIconvip.png" alt="">{$userInfo.role.role_name}
                             </span>
                         </a>
                     </div>
                 </div>
                 <div class="moneyInfo">
-                    <a href="我的钱包.htnl">
-                        <p class="num fs40 color_3">2059</p><span class="fs26 color_9">收藏</span>
+                    <a href="{:url('shop/collect/index')}">
+                        <p class="num fs40 color_3 collect_num">0</p><span class="fs26 color_9">收藏</span>
                     </a>
                     <a href="我的钱包.htnl">
                         <p class="num fs40 color_3">371</p><span class="fs26 color_9">足迹</span>
@@ -41,25 +40,30 @@
                 <div class="myOrder">
                     <div class="title bor_b">
                         <span class="fs28 fw_b">我的订单</span>
-                        <a href="我的订单.html">
+                        <a href="{:url('shop/order/index')}">
                             <p class="fs24">查看全部</p>
                             <img src="__STATIC__/unique/images/rightIcon.png" alt="">
                         </a>
                     </div>
                     <div class="list">
-                        <a href=""><img src="__STATIC__/unique/images/myIcon03.png" alt="">
-                            <p class="fs26 color_3">待付款</p><em>2</em>
+                        <a href="{:url('shop/order/index',['type'=>'waitPay'])}" class="wait_pay_num">
+                            <img src="__STATIC__/unique/images/myIcon03.png" alt="">
+                            <p class="fs26 color_3">待付款</p>
                         </a>
-                        <a href=""><img src="__STATIC__/unique/images/myIcon04.png" alt="">
+                        <a href="{:url('shop/order/index',['type'=>'waitShipping'])}" class="wait_shipping_num">
+                            <img src="__STATIC__/unique/images/myIcon04.png" alt="">
                             <p class="fs26 color_3">待发货</p>
                         </a>
-                        <a href=""><img src="__STATIC__/unique/images/myIcon05.png" alt="">
+                        <a href="{:url('shop/order/index',['type'=>'waitSign'])}" class="wait_sign_num">
+                            <img src="__STATIC__/unique/images/myIcon05.png" alt="">
                             <p class="fs26 color_3">待收货</p>
                         </a>
-                        <a href=""><img src="__STATIC__/unique/images/myIcon06.png" alt="">
+                        <a href="{:url('shop/order/index',['type'=>'sign'])}">
+                            <img src="__STATIC__/unique/images/myIcon06.png" alt="">
                             <p class="fs26 color_3">已完成</p>
                         </a>
-                        <a href="退货售后.html"><img src="__STATIC__/unique/images/myIcon07.png" alt="">
+                        <a href="{:url('shop/after_sale/index')}" class="after_sale_num">
+                            <img src="__STATIC__/unique/images/myIcon07.png" alt="">
                             <p class="fs22 color_3">退换货</p>
                         </a>
                     </div>
@@ -69,7 +73,7 @@
                         <span class="fs28 fw_b">我的工具</span>
                     </div>
                 <div>
-                <a href="我的拼团.html">
+                <a href="{:url('member/center/address')}">
                     <img src="__STATIC__/unique/images/myIcon08.png" alt="">
                     <span class="fs24 fw_b color_3">收货地址</span>
                 </a>
@@ -85,7 +89,7 @@
                     <img src="__STATIC__/unique/images/myIcon11.png" alt="">
                     <span class="fs24 fw_b color_3">提现管理</span>
                 </a>
-                <a href="评价中心.html">
+                <a href="{:url('shop/comment/index')}">
                     <img src="__STATIC__/unique/images/myIcon12.png" alt="">
                     <span class="fs24 fw_b color_3">我的评价</span>
                 </a>
@@ -93,7 +97,7 @@
                     <img src="__STATIC__/unique/images/myIcon13.png" alt="">
                     <span class="fs24 fw_b color_3">客服中心</span>
                 </a>
-                <a href="提现管理.html">
+                <a href="{:url('member/center/setting')}">
                     <img src="__STATIC__/unique/images/myIcon14.png" alt="">
                     <span class="fs24 fw_b color_3">设置</span>
                 </a>
@@ -141,6 +145,31 @@
     });
 </script>
 <script>
+    $(function () {
+        //加载会员数据
+        jq_ajax('{:url("member/api.users/getCenterInfo")}', '', function (res) {
+            if (res.code == 0) {
+                _alert(res.msg);
+                return false;
+            }
+            $('.signature').html(res.userInfo.signature);
+            $('.balance_money').html(res.userInfo.account.balance_money);
+            $('.use_integral').html(res.userInfo.account.use_integral);
+            $('.bouns_num').html(res.unusedNum);
+            $('.collect_num').html(res.collectNum);
+            $('.unusedNum').html(res.unusedNum);
+            if (res.orderStats.wait_pay_num > 0) {
+                $('.wait_pay_num').append('<em>' + res.orderStats.wait_pay_num + '</em>');
+            }
+            if (res.orderStats.wait_shipping_num > 0) {
+                $('.wait_shipping_num').append('<em>' + res.orderStats.wait_shipping_num + '</em>');
+            }
+            if (res.orderStats.wait_sign_num > 0) {
+                $('.wait_sign_num').append('<em>' + res.orderStats.wait_sign_num + '</em>');
+            }
+            if (res.unSeeNum > 0) $('.un_see_num').append('<em>'+res.unSeeNum+'</em>');
+        })
+    })
 </script>
 </body>
 </html>
