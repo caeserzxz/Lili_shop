@@ -149,7 +149,7 @@ class Order extends AdminController
         }
         $search['favour_id'] = input('favour_id', 0, 'intval');
         if ($search['favour_id']) {
-            $where['and'][] = "find_in_set(".$search['favour_id'].",favour_id)";
+            $where[] = ['','EXP',Db::raw("FIND_IN_SET('".$search['favour_id']."',favour_id)")];
         }
 
         //省市区
@@ -185,7 +185,7 @@ class Order extends AdminController
                     $where[] = ['consignee', 'like', $search['keyword'] . '%'];
                     break;
                 case 'goods_sn':
-                    $where['and'][] = "FIND_IN_SET('" . $search['keyword'] . "', buy_goods_sn)";
+                    $where[] = ['','EXP',Db::raw("FIND_IN_SET('".$search['keyword']."',buy_goods_sn)")];
                     break;
                 case 'mobile':
                     $where[] = ['mobile', 'like', $search['keyword'] . '%'];

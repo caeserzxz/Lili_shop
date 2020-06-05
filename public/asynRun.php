@@ -20,4 +20,4 @@ require __DIR__ . '/../thinkphp/base.php';
 define('DATA_PATH', '../Data/');
 
 // 执行应用并响应
-Container::get('app')->bind('mainadmin/asynRun/run')->run()->send();
+Container::get('app')->bind('mainadmin/Asyn_run/run')->run()->send();

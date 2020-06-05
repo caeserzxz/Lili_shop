@@ -93,7 +93,7 @@ class OrderModel extends BaseModel
     function info($order_id, $iscache = true)
     {
         if ($iscache == true) {
-           // $info = Cache::get($this->mkey . $order_id);
+           $info = Cache::get($this->mkey . $order_id);
         }
         if (empty($info['order_id']) == true) {
             $info = $this->where('order_id', $order_id)->find();
@@ -101,7 +101,7 @@ class OrderModel extends BaseModel
             $info = $info->toArray();
             try {
                 if ($info['is_pay_eval'] == 1){
-                    asynRun('shop/orderModel/asynRunPaySuccessEval',['order_id'=>$info['order_id']]);//异步执行
+                    asynRun('shop/OrderModel/asynRunPaySuccessEval',['order_id'=>$info['order_id']]);//异步执行
                 }elseif ($info['is_dividend'] != 1 && $info['is_split'] == 0) {//未记录提成，并且不需要拆单
                     $res = $this->runDistribution($info);
                     if ($res == true){
@@ -364,6 +364,12 @@ class OrderModel extends BaseModel
                     $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
                     $orderInfo['refund_amount'] = $refund_amount;//实付金额减去已退金额
+                    if ($orderInfo['pid'] > 0){
+                        $poWhere[] = ['order_id','=',$orderInfo['pid']];
+                        $poWhere[] = ['is_split','=',2];
+                        $orderInfo['money_paid'] = $this->where($poWhere)->value('money_paid');
+                        $orderInfo['money_paid'] = $orderInfo['money_paid'] * 1;
+                    }
                     $res = $payment->refund($orderInfo);
                     if ($res !== true) {
                         Db::rollback();//回滚
@@ -810,7 +816,7 @@ class OrderModel extends BaseModel
         }
         $orderInfo = $this->find($upData['order_id'])->toArray();
         $this->_log($orderInfo,$_log);
-        asynRun('shop/orderModel/asynRunPaySuccessEval',['order_id'=>$upData['order_id']]);//异步执行
+        asynRun('shop/OrderModel/asynRunPaySuccessEval',['order_id'=>$upData['order_id']]);//异步执行
         return true;
     }
     /*------------------------------------------------------ */

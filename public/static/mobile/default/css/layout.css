@@ -397,9 +397,7 @@ li {
   font-family: "PingFang SC", "Hiragino Sans GB", "Microsoft YaHei", sans-serif, "Helvetica Neue";
 }
 
-span {
-  touch-action: none;
-}
+
 
 input {
   outline: none;
