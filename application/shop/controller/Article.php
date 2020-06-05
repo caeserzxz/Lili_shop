@@ -38,7 +38,7 @@ class Article extends ClientbaseController
         $this->Model->upInfo($upData, $where);
         $this->assign('title', '文章详情');
         $this->assign('info', $info);
-        return $this->fetch('info');
+        return $this->fetch('info_new');
     }
     /*------------------------------------------------------ */
     //-- 注册协议
@@ -116,9 +116,9 @@ class Article extends ClientbaseController
                 continue;
             }
         }
-        $this->assign('title', '新闻头条');
+        $this->assign('title', '公告列表');
         $this->assign('catList', $catList);
-        return $this->fetch('headline');
+        return $this->fetch('headline_new');
     }
     /*------------------------------------------------------ */
     //-- 头条详情

@@ -55,7 +55,7 @@ class Index  extends ClientbaseController{
         $this->assign('adList', $adList);
 
 		$this->assign('title', '首页');
-		$this->assign('slideList', SlideModel::getRows());//获取幻灯片
+		$this->assign('slideList', SlideModel::getRows(1));//获取幻灯片
 		$this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单
 		$GoodsModel = new GoodsModel();
         $GoodsModel->autoSale();//自动上下架处理

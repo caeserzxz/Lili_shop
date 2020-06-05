@@ -19,10 +19,14 @@ class SlideModel extends BaseModel
 	/*------------------------------------------------------ */
 	//-- 获取列表
 	/*------------------------------------------------------ */
-    public static function getRows(){	
+    public static function getRows($type){
 		$rows = Cache::get(self::$mkey);	
 		if (empty($rows) == false) return $rows;
-		$rows = self::where('status',1)->order('sort_order DESC')->select()->toArray();
+		$where[] = ['status','=',1];
+		if($type>0){
+            $where[] = ['type','=',$type];
+        }
+		$rows = self::where($where)->order('sort_order DESC')->select()->toArray();
 		foreach ($rows as $key=>$row){			
 			if($row['bind_type'] == 'article') $row['url'] = url('article/info',array('id'=>$row['ext_id']));
 			else if($row['bind_type'] == 'goods') $row['url'] = url('goods/info',array('id'=>$row['ext_id']));

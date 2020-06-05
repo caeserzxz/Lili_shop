@@ -27,7 +27,7 @@ class Article extends ApiController
         $where[] = ['type', '=', 1];//类型-头条
         $where[] = ['is_show', '=', 1];
         $this->sqlOrder = "sort_order ASC,id DESC";
-        $data = $this->getPageList($this->Model, $where, '*', 10);
+        $data = $this->getPageList($this->Model, $where, "*,FROM_UNIXTIME(update_time, '%Y-%m-%d %H:%i:%s' ) as change_time", 10);
         $return['list'] = $data['list'];
         $return['page_count'] = $data['page_count'];
         $return['code'] = 1;

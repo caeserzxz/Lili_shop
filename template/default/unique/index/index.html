@@ -21,24 +21,35 @@
                 </a>
             </div>
             <div class="swiperGird" style="">
+                <!--<div class="swiper-container swiper1" id="swiper01">-->
+                    <!--<div class="swiper-wrapper">-->
+                        <!--<a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"-->
+                                <!--class="swiper-lazy" />-->
+                            <!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+                        <!--</a>-->
+                        <!--<a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"-->
+                                <!--class="swiper-lazy" />-->
+                            <!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+                        <!--</a>-->
+                        <!--<a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"-->
+                                <!--class="swiper-lazy" />-->
+                            <!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+                        <!--</a>-->
+                        <!--<a href="#" class="swiper-slide">-->
+                            <!--<img data-src="__STATIC__/unique/images/swiperimg01.png" class="swiper-lazy" />-->
+                            <!--<div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>-->
+                        <!--</a>-->
+                    <!--</div>-->
+                    <!--<div class="swiper-pagination pagination1"></div>-->
+                <!--</div>-->
                 <div class="swiper-container swiper1" id="swiper01">
                     <div class="swiper-wrapper">
-                        <a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"
-                                class="swiper-lazy" />
+                        {volist name="slideList" id="slide" }
+                        <a href="{$slide.url}" class="swiper-slide" data-bg_color="{$slide.bg_color}">
+                            <img data-src="{$slide.imgurl}" class="swiper-lazy">
                             <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
                         </a>
-                        <a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"
-                                class="swiper-lazy" />
-                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                        </a>
-                        <a href="#" class="swiper-slide"><img data-src="__STATIC__/unique/images/swiperimg01.png"
-                                class="swiper-lazy" />
-                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                        </a>
-                        <a href="#" class="swiper-slide">
-                            <img data-src="__STATIC__/unique/images/swiperimg01.png" class="swiper-lazy" />
-                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                        </a>
+                        {/volist}
                     </div>
                     <div class="swiper-pagination pagination1"></div>
                 </div>
@@ -49,12 +60,9 @@
                             <img src="__STATIC__/unique/images/index_icon09.png" alt="" />
                             <div class="swiper-container swiper2" id="swiper02">
                                 <div class="swiper-wrapper">
-                                    <a href="新闻头条.html" class="swiper-slide">雅诗兰黛的促销活动正火热进行中，越早拍越优惠越早拍越优惠
-                                    </a>
-                                    <a href="新闻头条.html" class="swiper-slide">雅诗兰黛的促销活动正火热进行中，越早拍越优惠越早拍越优惠
-                                    </a>
-                                    <a href="新闻头条.html" class="swiper-slide">雅诗兰黛的促销活动正火热进行中，越早拍越优惠越早拍越优惠
-                                    </a>
+                                    {volist name="headline" id="hl" }
+                                     <a href="{:url('shop/article/headline')}" class="swiper-slide">{$hl.title}</a>
+                                    {/volist}
                                 </div>
                             </div>
                         </div>
@@ -169,24 +177,51 @@
         {include file="layouts@bottom_unique" /}
     </div>
 {/block}
+{block name="footer"}
 
 <script>
     $(function() {
         FastClick.attach(document.body);
     });
 </script>
-    <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
+<script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
+        console.log(222);
         $(function () {
+
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
             var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
         });
 
+        // function createSwiper(index, _direction, time, type) {
+        //     var swiper = new Swiper(".swiper" + index, {
+        //         pagination: {
+        //             el: ".pagination" + index,
+        //             type: type,
+        //         },
+        //         lazy: {
+        //             loadPrevNext: true,
+        //         },
+        //         direction: _direction,
+        //         preloadImages: false,
+        //         paginationClickable: true,
+        //         loop: true,
+        //         autoplay: {
+        //             delay: time,
+        //             disableOnInteraction: false,
+        //         },
+        //         onSlideChangeEnd: function (swiper) {
+        //             swiper.update(); //swiper更新
+        //         },
+        //     });
+        //     return swiper;
+        // }
         function createSwiper(index, _direction, time, type) {
+            console.log(111);
             var swiper = new Swiper(".swiper" + index, {
                 pagination: {
                     el: ".pagination" + index,
-                    type: type,
+                    type: type
                 },
                 lazy: {
                     loadPrevNext: true,
@@ -197,10 +232,18 @@
                 loop: true,
                 autoplay: {
                     delay: time,
-                    disableOnInteraction: false,
+                    disableOnInteraction: false
                 },
                 onSlideChangeEnd: function (swiper) {
                     swiper.update(); //swiper更新
+                },
+                on: {
+                    slideChangeTransitionStart: function(){
+                        if(index==1){
+                            var bg_color = $('#swiper01').find('a').eq(this.activeIndex).data('bg_color');
+                            $('.swiperGird').css('background-color',bg_color);
+                        }
+                    },
                 },
             });
             return swiper;
@@ -221,3 +264,4 @@
 </body>
 
 </html>
+{/block}
