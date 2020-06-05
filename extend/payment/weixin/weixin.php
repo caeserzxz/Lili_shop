@@ -217,7 +217,7 @@ class weixin
         if(!empty($data["transaction_id"])){
             $input = new \WxPayRefund();
             $input->SetTransaction_id($data["transaction_id"]);
-            $input->SetTotal_fee($data["order_amount"]*100);
+            $input->SetTotal_fee($data["money_paid"]*100);
             $input->SetRefund_fee($data["refund_amount"]*100);
             $input->SetOut_refund_no(\WxPayConfig::$mchid.date("YmdHis"));
             $input->SetOp_user_id(\WxPayConfig::$mchid);

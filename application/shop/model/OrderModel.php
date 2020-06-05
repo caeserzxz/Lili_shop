@@ -364,6 +364,12 @@ class OrderModel extends BaseModel
                     $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
                     $orderInfo['refund_amount'] = $refund_amount;//实付金额减去已退金额
+                    if ($orderInfo['pid'] > 0){
+                        $poWhere[] = ['order_id','=',$orderInfo['pid']];
+                        $poWhere[] = ['is_split','=',2];
+                        $orderInfo['money_paid'] = $this->where($poWhere)->value('money_paid');
+                        $orderInfo['money_paid'] = $orderInfo['money_paid'] * 1;
+                    }
                     $res = $payment->refund($orderInfo);
                     if ($res !== true) {
                         Db::rollback();//回滚
