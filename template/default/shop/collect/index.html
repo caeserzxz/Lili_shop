@@ -1,20 +1,40 @@
-{extend name="layouts@base" /}
-{block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/myCollection.css" />
-{/block}
-{block name="main" }
-<div class="page-bd">
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+<head>
+<meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="__STATIC__/unique/css/all.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/layout.css"/>
+<script src="__STATIC__/unique/js/page.js"></script>
+    <title>我的收藏</title>
+    <link rel="stylesheet" href="__STATIC__/unique/css/collect.css" />
+</head>
+<body>
+    <div class="page collectpage">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+                <div class="header-left">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">我的收藏 <span class="fs22 color_9">(共<em class="collectNum">0</em>件商品)</span></div>
+            </div>
+        </div>
+		<div class="page-bd">
         <!-- 页面内容-->
-        <div class="top"><span class="fs32 color_3">当前收藏夹共<em>0</em>件商品</span><p class="fs28 color_r" data-type='0'>编辑</p></div>
+        <!-- <div class="top">
+        	<span class="fs32 color_3">当前收藏夹共<em>0</em>件商品</span>
+        	<p class="fs28 color_r" data-type='0'>编辑</p>
+        </div> -->
         <!-- 购物车 -->
-        <div class="goodslist">
-           <ul>
-              
-          </ul>
-          </div>
-      </div>
+        	<div class="collect">
+        		<div class="goodslist collect-list">
+	           		<!-- <ul></ul> -->
+        		</div>
+        	</div>
+      	</div>
       <!-- 编辑 -->
-      <div class="edit">
+      <!-- <div class="edit">
         <div class="totalBox">
             <div class="left">      
                 <label for="s02">
@@ -27,7 +47,31 @@
             </div>
             <div class="button fs30 color_w fw_b batch_cancel"><span class="BGcolor_r">取消收藏</span></div>
         </div>
-      </div>
+      </div> -->
+<script type="text/html" id="goodsTpl">
+{{each list as item index}}
+	<a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}">
+	    <div class="list-item" id="gid{{item.goods_id}}">
+	        <img class="collect-img" src="{{item.goods_thumb}}" alt="" />
+	        <div class="collect-info">
+	            <div class="collect-name fs28 fw_b color_3">{{item.goods_name}}</div>
+	            <div class="collect-enc color_3">
+	                <div class="price">
+	                    <p class="now-price">
+	                        <span class="fw_b">￥</span>
+	                        <span class="fs30 fw_b">{{item.exp_price[0]}}</span>
+	                        <span class="fw_b">.{{item.exp_price[1]}}</span>
+	                    </p>
+	                    <span class="old-price">￥{{item.market_price}}</span>
+	                </div>
+	                <div class="cancel delect" data-goods_id="{{item.goods_id}}">取消收藏</div>
+	            </div>
+	        </div>
+	    </div>
+	</a>
+{{/each}}
+</script>
+<!-- 
 <script type="text/html" id="goodsTpl">
 {{each list as item index}}
 <li id="gid{{item.goods_id}}">
@@ -60,15 +104,15 @@
 		<div class="delect" data-goods_id="{{item.goods_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
 	  </div>   
 	</div>
-  
   </object> 
 </li>
 {{/each}}
-</script>
-
-{/block}
-
-{block name="footer"}
+</script> -->
+<script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/unique/js/lib/fastclick.js"></script>
+<script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/unique/js/art-template.js"></script>
+<script src="__STATIC__/mobile/default/js/page.js?v=1"></script>
 <script>
       $(function(){
 		   jq_ajax('{:_url("shop/api.goods/getCollectlist")}','',function(res){
@@ -76,9 +120,9 @@
                     _alert(res.msg)
 					return false;
                }
-			    $('.goodslist ul').html(template('goodsTpl',res));
-				$('.top em').html(res.count);
-				touchmove();
+			    $('.goodslist').html(template('goodsTpl',res));
+				$('.collectNum').html(res.count);
+				// touchmove();
 				$('.top p').on('click',function(){
 					  if($(this).attr('data-type')==0){
 					  $(this).text('完成')
@@ -97,16 +141,18 @@
 					
 				 })
 				 
-				 $('.delect').on('click',function(){
+				 $('.delect').on('click',function(event){
 					var gid = $(this).data('goods_id');
 					jq_ajax('{:_url("shop/api.goods/cancelCollect")}','gids='+gid,function(res){
 						if(res.code  == 0 ){
 							_alert(res.msg)
 							return false;
 						 }
-						 $('.top em').html($('.top em').html() - 1);
+						 $('.collectNum').html($('.collectNum').html() - 1);
 						 $('#gid'+gid).remove();
 					}); 
+					event.stopPropagation();//阻止事件冒泡
+					event.preventDefault();
 				 })				
 			});
 		  	//取消收藏
@@ -198,6 +244,6 @@ function touchmove(){
 	}
 }
 </script>
+</body>
 
-
-{/block}
+</html>
