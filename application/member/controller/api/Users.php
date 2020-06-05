@@ -99,6 +99,7 @@ class Users extends ApiController
         $unSeeMessageNum = $MessageModel->userMessageStats($this->userInfo['user_id']);//未读消息数量
         $return['unSeeNum'] = $unSeeMessageNum;
         $where[]=['user_id','=',$this->userInfo['user_id']];
+        $where[]=['status','=',1];
         $collectNum = (new \app\shop\model\GoodsCollectModel)->where($where)->cache(true,60)->count('collect_id');
         $return['collectNum'] = $collectNum;
 
