@@ -1,12 +1,13 @@
-{extend name="layouts@base" /}
-{block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
+{extend name="layouts@base_unique" /}
+{block name='head'}
+    <link rel="stylesheet" href="__STATIC__/unique/css/bulletinList.css" />
 {/block}
 {block name='pageType'}news{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
-    <div class="blocklist listbox">
+    <div class="systemNews">
+        <div class="news-list blocklist listbox"> </div>
     </div>
 </div>
 <!-- 没有消息 -->
@@ -21,7 +22,14 @@
     {{each list as item index}}
     {{set message_type=item.message_type}}
     {{if message_type=='0'}}
-    <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}" class="block">
+    <a href="javascript:;" class="list-item block" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}">
+        <div class="news-info">
+            <div class="news-name fs28 fw_b col_3 {{if item.is_see==0}} news {{/if}}">{{item.message_title}}</div>
+            <div class="news-addr fs23 color_9">{{item.message_content}}</div>
+            <div class="news-enc color_9">{{item._add_time}}</div>
+        </div>
+    </a>
+    <!-- <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}" class="block">
         <div class="top fs28"><p class="fw_b color_3">{{item.message_title}}</p><span class="color_9">{{item._add_time}}</span>
         </div>
         <div class="imgBox fs28 color_9">
@@ -31,7 +39,7 @@
         {{if item.is_see==0}}
         <i class="unread"></i>
         {{/if}}
-    </a>
+    </a> -->
         {{else}}
         <a href="javascript:;" data-url="{{item.url}}" data-rec_id="{{item.rec_id}}" data-is_see="{{item.is_see}}"
            class="block">
@@ -46,14 +54,16 @@
         {{/each}}
         {/literal}
 </script>
+
+
 <script>
     var nowPage = 1, getAgain = false, isLoadend = false;
     $(function () {
         //点击跳转
         $('.listbox').on('click','.block',function (e) {
-            var rec_id =$(this).data('rec_id');
-            var is_see =$(this).data('is_see');
-            var url =$(this).data('url');
+            var rec_id = $(this).data('rec_id');
+            var is_see = $(this).data('is_see');
+            var url = $(this).data('url');
             if(is_see<1){
                 jq_ajax('{:url("member/api.message/setIsSee")}', 'rec_id=' + rec_id,function (res){
                 })
@@ -103,13 +113,12 @@
                 if (res.list) {
                     $('.listbox').append(template('TabTpl', res));
                     if (res.page_count == page) {
-                        $('.listbox').append('<div class="loadEnd">—— 没有更多啦，我是有底线的 ——</div>');
+                        $('.listbox').append('<div class="text_c color_9">已经到底啦~</div>');
                         isLoadend = true;
                     }
                 } else {
                     $('.blocklist').append(template('emptyTpl', res));
                 }
-
             }, error: function () {
                 isLoadend = false;
                 getAgain = true;
