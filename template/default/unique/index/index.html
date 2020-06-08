@@ -11,7 +11,7 @@
             <!-- 页面内容-->
             <div class="selectBox">
                 <img class="headimg" src="__STATIC__/unique/images/shareCircle07.png" alt="" />
-                <a href="地区选择.html" class="fs28 fw_b addr">广州</a>
+                <a href="{:url('unique/index/region')}" class="fs28 fw_b addr">{$city_info.short_name}</a>
                 <a href="搜索.html" class="selech">
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />
                     <span class="fs30 color_9">搜索店铺</span>
@@ -186,7 +186,6 @@
 </script>
 <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
-        console.log(222);
         $(function () {
 
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
