@@ -1,0 +1,124 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/nearShopList.css" />
+  <div class="page sousuo">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">搜索结果</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="nearShop">
+        <div class="shop-list">
+            <div class="list-item">
+                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
+                <div class="shop-info">
+                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
+                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
+                    <div class="shop-label">
+                        <span>便利店</span>
+                        <span>优惠多</span>
+                        <span>种类齐全</span>
+                    </div>
+                    <div class="shop-enc">
+                        <span>鼓励金:8%</span>
+                    </div>
+                </div>
+                <div class="shop-distance">
+                    <div class="text_c color_9">613m</div>
+                    <div>
+                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="list-item">
+                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
+                <div class="shop-info">
+                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
+                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
+                    <div class="shop-label">
+                        <span>便利店</span>
+                        <span>优惠多</span>
+                        <span>种类齐全</span>
+                    </div>
+                    <div class="shop-enc">
+                        <span>鼓励金:8%</span>
+                    </div>
+                </div>
+                <div class="shop-distance">
+                    <div class="text_c color_9">613m</div>
+                    <div>
+                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="list-item">
+                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
+                <div class="shop-info">
+                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
+                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
+                    <div class="shop-label">
+                        <span>便利店</span>
+                        <span>优惠多</span>
+                        <span>种类齐全</span>
+                    </div>
+                    <div class="shop-enc">
+                        <span>鼓励金:8%</span>
+                    </div>
+                </div>
+                <div class="shop-distance">
+                    <div class="text_c color_9">613m</div>
+                    <div>
+                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="text_c color_9">已经到底啦~</div>
+    </div>
+
+    </div>
+
+  </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $('.inputBox input').focus();
+      $('.top span').on('click', function () {
+        $('.inputBox input').val('');
+        $('.inputBox input').focus();
+      });
+
+      // 当用户滚动到页面底部的时候加载更多内容。
+      $('.page-bd').infinite(100);
+        var loading = false;  //状态标记
+        $('.page-bd').infinite().on("infinite", function() {
+            if(loading) return;
+            loading = true;
+            // 请求数据
+            setTimeout(function() {
+                $(".shop-list").append("<p> 我是新加载的内容 </p>");
+                loading = false;
+            }, 1500);   //模拟延迟
+        })
+    })
+  </script>
+</body>
+
+</html>
+{/block}
