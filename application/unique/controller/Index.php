@@ -42,4 +42,24 @@ class Index extends ClientbaseController{
         $this->assign('list', $list);
         return $this->fetch('region');
     }
+
+    /*------------------------------------------------------ */
+    //-- 搜索
+    /*------------------------------------------------------ */
+    public function search(){
+        $this->assign('title', '搜索');
+
+        return $this->fetch('search');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 搜索结果
+    /*------------------------------------------------------ */
+    public function search_result(){
+        $this->assign('title', '搜索结果');
+
+        return $this->fetch('search_result');
+    }
+
+
 }?>

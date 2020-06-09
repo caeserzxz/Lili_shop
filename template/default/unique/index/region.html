@@ -19,7 +19,7 @@
             <div class="top">
                 <div class="inputBox"><img src="__STATIC__/unique/images/selech01.png" alt=""><input class="fs30 color_3"
                         type="text" placeholder="请输入城市名称查询"></div>
-                <a class="search fs30" href="./搜索结果.html">搜索</a>
+                <a class="search fs30" href="search_result.html">搜索</a>
             </div>
 
             <!-- 热门城市 -->
@@ -131,7 +131,6 @@
                 window.location.href = '{:url("unique/index/index")}?city='+$(this).text();
             });
             $('.city-name-list').on('click', function() {
-                console.log($(this).text());
                 $('.current-city span').text($(this).text())
                 $('.page-bd').animate({
                     scrollTop: '0px'

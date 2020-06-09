@@ -12,7 +12,7 @@
             <div class="selectBox">
                 <img class="headimg" src="__STATIC__/unique/images/shareCircle07.png" alt="" />
                 <a href="{:url('unique/index/region')}" class="fs28 fw_b addr">{$city_info.short_name}</a>
-                <a href="搜索.html" class="selech">
+                <a href="{:url('unique/index/search')}" class="selech">
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />
                     <span class="fs30 color_9">搜索店铺</span>
                 </a>
@@ -68,32 +68,19 @@
                         </div>
                     </div>
                     <div class="gird">
-                        <div class="scrllBox">
-                            <a href="#news" class="box">
-                                <div>
-                                    <img src="__STATIC__/unique/images/index_icon01.png" alt="" />
-                                </div>
-                                <span class="fs26 color_3">便利店商超</span>
-                            </a>
-                            <a href="限时秒杀.html" class="box">
-                                <div>
-                                    <img src="__STATIC__/unique/images/index_icon02.png" alt="" />
-                                </div>
-                                <span class="fs26 color_3">烟酒店</span>
-                            </a>
-                            <a href="#" class="box">
-                                <div>
-                                    <img src="__STATIC__/unique/images/index_icon03.png" alt="" />
-                                </div>
-                                <span class="fs26 color_3">餐厅</span>
-                            </a>
-                            <a href="#" class="box">
-                                <div>
-                                    <img src="__STATIC__/unique/images/index_icon04.png" alt="" />
-                                </div>
-                                <span class="fs26 color_3">休闲饮品</span>
-                            </a>
-                            <a href="#" class="box">
+                        <div class="scrllBox" id="tab1">
+                            <script type="text/html" id="listTpl1">
+                                {{each list as item index}}
+                                <a href="#" class="box">
+                                    <div>
+                                        <img src="{{item.pic}}" alt="" />
+                                    </div>
+                                    <span class="fs26 color_3">{{item.name}}</span>
+                                </a>
+                                {{/each}}
+                            </script>
+
+                            <a href="#" class="box" onclick="showCategory('show')">
                                 <div>
                                     <img src="__STATIC__/unique/images/index_icon05.png" alt="" />
                                 </div>
@@ -103,7 +90,94 @@
                     </div>
                 </div>
             </div>
+            <!-- 更多分类 弹窗 -->
+            <div class="modal-category">
+                <div class="more-main">
 
+                    <div class="cate-list" id="tab2">
+                        <script type="text/html" id="listTpl2">
+                            {{each list as item index}}
+                                <div class="list-item">
+                                    <div class="title fs30 fw_b">{{item.name}}</div>
+                                    <div class="sub-list">
+                                        {{each item.list as v k}}
+                                        <a class="sub-item">
+                                            <img src="{{v.pic}}" alt="">
+                                            <p class="fs26">{{v.name}}</p>
+                                        </a>
+                                        {{/each}}
+                                    </div>
+                                </div>
+                            {{/each}}
+                        </script>
+
+                        <!--<div class="list-item">-->
+                            <!--<div class="title fs30 fw_b">休闲生活</div>-->
+                            <!--<div class="sub-list">-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon01.png" alt="">-->
+                                    <!--<p class="fs26">便利店</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon02.png" alt="">-->
+                                    <!--<p class="fs26">烟酒店</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon03.png" alt="">-->
+                                    <!--<p class="fs26">餐厅</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon04.png" alt="">-->
+                                    <!--<p class="fs26">休闲饮品</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon04.png" alt="">-->
+                                    <!--<p class="fs26">休闲饮品</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon03.png" alt="">-->
+                                    <!--<p class="fs26">餐厅</p>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                        <!--<div class="list-item">-->
+                            <!--<div class="title fs30 fw_b">生活便利</div>-->
+                            <!--<div class="sub-list">-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon01.png" alt="">-->
+                                    <!--<p class="fs26">便利店</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon02.png" alt="">-->
+                                    <!--<p class="fs26">烟酒店</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon03.png" alt="">-->
+                                    <!--<p class="fs26">餐厅</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon04.png" alt="">-->
+                                    <!--<p class="fs26">休闲饮品</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon04.png" alt="">-->
+                                    <!--<p class="fs26">休闲饮品</p>-->
+                                <!--</a>-->
+                                <!--<a class="sub-item">-->
+                                    <!--<img src="__STATIC__/unique/images/index_icon03.png" alt="">-->
+                                    <!--<p class="fs26">餐厅</p>-->
+                                <!--</a>-->
+                            <!--</div>-->
+                        <!--</div>-->
+                    </div>
+
+                    <div class="footer-btn">
+                        <span onclick="showCategory('hide')">点击收起</span>
+                    </div>
+
+                </div>
+
+            </div>
             <!-- 附近商家 -->
             <div class="nearShop">
                 <div class="title">附近商家</div>
@@ -187,7 +261,8 @@
 <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
         $(function () {
-
+            get_recommend_class();
+            get_class();
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
             var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
         });
@@ -216,7 +291,6 @@
         //     return swiper;
         // }
         function createSwiper(index, _direction, time, type) {
-            console.log(111);
             var swiper = new Swiper(".swiper" + index, {
                 pagination: {
                     el: ".pagination" + index,
@@ -259,6 +333,54 @@
                 loading = false;
             }, 1500);   //模拟延迟
         })
+
+        // 显示隐藏  分类弹窗
+        function showCategory(type) {
+
+            if (type === 'show') {
+                $('.modal-category').fadeToggle(200, function () {
+                    $('.modal-category .more-main').slideToggle(300)
+                })
+            } else if (type === 'hide') {
+                $('.modal-category .more-main').slideToggle(300, function() {
+                    $('.modal-category').fadeToggle(200)
+                })
+            }
+        }
+
+        //获取推荐分类
+        function get_recommend_class(){
+            $.ajax({
+                'url':'{:url("unique/api.index/get_recommend_class")}',
+                'type':'post',
+                'data':'',
+                'dataType':'json',
+                'success':function(res){
+                    console.log(res);
+                    if (res.list.length > 0) {
+                        $('#tab1').prepend(template('listTpl1',res));
+                    }else{
+                        $.toast('加载完成',"text");
+                    }
+                }
+            });
+        }
+        //获取所有分类
+        function get_class(){
+            $.ajax({
+                'url':'{:url("unique/api.index/get_class")}',
+                'type':'post',
+                'data':'',
+                'dataType':'json',
+                'success':function(res){
+                    if (res.list.length > 0) {
+                        $('#tab2').prepend(template('listTpl2',res));
+                    }else{
+                        $.toast('加载完成',"text");
+                    }
+                }
+            });
+        }
     </script>
 </body>
 

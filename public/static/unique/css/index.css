@@ -11,10 +11,10 @@
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   background-color: #f5f5f5;
   z-index: 33;
 }
@@ -28,7 +28,7 @@
   border-bottom: 0.013333rem solid #000000;
   border-right: 0.013333rem solid #000000;
   -webkit-transform: rotate(45deg);
-          transform: rotate(45deg);
+  transform: rotate(45deg);
 }
 
 .selectBox .headimg {
@@ -56,7 +56,7 @@
 .selech {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   margin-right: 0.106667rem;
   padding-left: 0.166667rem;
   height: 0.4rem;
@@ -65,7 +65,7 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   background: #f7f7f7;
   background-color: #ffffff;
   z-index: 99;
@@ -140,13 +140,13 @@
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .gird .box div {
@@ -184,7 +184,7 @@
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   background-color: #fff5f7;
   border-radius: 0.033333rem;
   width: 100%;
@@ -239,10 +239,10 @@
   display: flex;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
-          justify-content: space-between;
+  justify-content: space-between;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   border-bottom: 0.013333rem solid #e5e5e5;
 }
 
@@ -255,7 +255,7 @@
   margin: 0 0.133333rem;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   line-height: 0.293333rem;
 }
 
@@ -283,4 +283,145 @@
 
 .nearShop .shop-list .list-item:first-child {
   padding-top: 0;
+}
+
+.my-business .business .shop-list {
+  padding: 0 20;
+  margin-bottom: 0.266667rem;
+}
+
+.my-business .business .shop-list .list-item {
+  margin: 0.133333rem;
+  padding: 0.206667rem 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+  background-color: #fff;
+  border-radius: 0.133333rem;
+}
+
+.my-business .business .shop-list .list-item .shop-img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+}
+
+.my-business .business .shop-list .list-item .shop-info {
+  margin: 0 0.133333rem;
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+  flex: 1;
+  line-height: 0.293333rem;
+}
+
+.my-business .business .shop-list .list-item .shop-info .shop-name {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+  justify-content: space-between;
+}
+
+.my-business .business .shop-list .list-item .shop-info .arrowright::after {
+  display: inline-block;
+  content: " ";
+  width: 0.1rem;
+  height: 0.1rem;
+  border-right: 0.013333rem solid #333333;
+  border-bottom: 0.013333rem solid #333333;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.my-business .business .shop-list .list-item .shop-info .shop-label span {
+  padding: 0.013333rem 0.066667rem;
+  color: #efb026;
+  border: 0.013333rem solid #ffc23d;
+  border-radius: 0.133333rem;
+}
+
+.my-business .business .shop-list .list-item .shop-info span.shop-enc {
+  margin-top: 0.066667rem;
+  padding: 0.013333rem 0.093333rem;
+  font-size: 0.133333rem;
+  color: #fff;
+  background-color: #fd0035;
+  border-radius: 0.133333rem;
+}
+
+.my-business .business .shop-list .list-item .shop-distance .red-env {
+  margin-top: 0.066667rem;
+  width: 0.513333rem;
+  height: 0.433333rem;
+}
+
+.modal-category {
+  display: none;
+  position: absolute;
+  top: 0.666667rem;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 10;
+}
+
+.modal-category .more-main {
+  display: none;
+  padding: 0.266667rem;
+  width: 100%;
+  height: 80%;
+  background-color: #fff;
+}
+
+.modal-category .more-main .cate-list {
+  height: 90%;
+  overflow-y: scroll;
+}
+
+.modal-category .more-main .cate-list .sub-list {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-flex-wrap: wrap;
+  flex-wrap: wrap;
+}
+
+.modal-category .more-main .cate-list .sub-list .sub-item {
+  padding: 0.133333rem 0;
+  text-align: center;
+  width: 20%;
+}
+
+.modal-category .more-main .cate-list .sub-list .sub-item img {
+  display: inline-block;
+  width: 0.666667rem;
+  height: 0.666667rem;
+}
+
+.modal-category .more-main .footer-btn {
+  height: 10%;
+  margin: 0.2rem auto 0;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-justify-content: space-around;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  align-items: center;
+}
+
+.modal-category .more-main .footer-btn span {
+  padding: 0.04rem 0.2rem;
+  color: #999999;
+  border-radius: 0.066667rem;
+  border: 0.013333rem solid #eeeeee;
+  box-shadow: 0 0 0.013333rem 0.013333rem rgba(0, 0, 0, 0.1);
 }
