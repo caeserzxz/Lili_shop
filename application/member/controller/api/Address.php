@@ -65,8 +65,15 @@ class Address extends ApiController
         $inarr = $this->checkData();
         $inarr['user_id'] = $this->userInfo['user_id'];
         unset($inarr['address_id']);
-        $res = $this->Model->save($inarr);
-        if ($res < 1) return $this->error('添加失败，请重试..');
+        $res = $this->Model->create($inarr);
+
+        //判断是否设置默认地址
+        $is_default = input('is_default', '0', 'intval');
+        if($is_default) {
+            $default = $this->editDefault($res['address_id']);
+            if (empty($default['code'])) return $this->error('添加失败，请重试..');
+        }
+        if ($res['address_id'] < 1) return $this->error('添加失败，请重试..');
         $this->Model->cleanMemcache();
         return $this->getList();
     }
@@ -86,14 +93,12 @@ class Address extends ApiController
         //验证数据是否出现变化
         $dbarr = $this->Model->field(join(',',array_keys($uparr)))->where($where)->find()->toArray();
         $this->checkUpData($dbarr,$uparr,true);
-        unset($uparr['is_default']);
+        if ($is_default) unset($uparr['is_default']);
 
         $res = $this->Model->where($where)->update($uparr);
 
         //判断是否设置默认地址
-        if($is_default){
-           $default = $this->editDefault($where['address_id']);
-        }
+        if($is_default) $default = $this->editDefault($where['address_id']);
 
         //修改错误
         if ($res < 1 && empty($default['code'])) return $this->error('修改失败，请重试..');

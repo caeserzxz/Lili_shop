@@ -1,6 +1,8 @@
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css?v=2">
+<link rel="stylesheet" href="__STATIC__/unique/css/myaddress.css?v=2">
+<!-- <link rel="stylesheet" href="__STATIC__/mobile/default/css/myaddress.css?v=2"> -->
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/cityPicker.css">
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/userData.css" />
 
 <script type="text/html" id="addressListTpl">
 <div class="{$isAddOrder==1?'wrapper':''} addressesList ">
@@ -38,45 +40,85 @@
 <script type="text/html" id="addressLiTpl">
     {{each list as item index}}
     <li>
-        {{if index == '0' }}
-            <div class="top block" data-index="{{index}}">
+        {{if index == '0' && item.is_default == 1}}
+            <div class="top" data-index="{{index}}">
+                <div class="address" data-index="{{index}}">
+                    <div class="info">
+                        <div>
+                            <p class="fs30 fw_b color_3">
+                                {{item.consignee}} {{item.mobile}}
+                                {{if item.is_default==1 }}
+                                <span class="default fs22 color_w BGcolor_r">默认</span>
+                                {{/if}}
+                            </p>
+                            <img class="edit-icon edit" data-index="{{index}}" src="__STATIC__/unique/images/edit.png" alt="">
+                        </div> 
+                        <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span>
+                    </div>
+                </div>
+            </div>
+            <!-- <div class="top block" data-index="{{index}}">
                 <div class="address" data-index="{{index}}">
                     <div class="info">
                         <div>
                             <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
                             <div class="radioBox">
-
-                                <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt=""><em>编辑</em></a>
+                                <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt=""></a>
                             </div>
                         </div>
-                        <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
-
+                        <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span>
+                    </div>
                 </div>
-            </div>
+            </div> -->
         {{else}}
             <object>
+                <div class="block" data-index="{{index}}">
+                    <div class="address" data-index="{{index}}">
+                        <div class="info">
+                            <div class="info-top fs30 fw_b color_3">
+                                {{item.consignee}} {{item.mobile}}
+                                <a href="javascript:;" class="edit" data-index="{{index}}">
+                                    <img class="edit-icon" src="__STATIC__/unique/images/edit.png" alt="">
+                                </a>
+                            </div>
+                            <div class="fs28 color_9">{{item.merger_name}}{{item.address}}</div>
+                        </div>
+                    </div>
+                    <div class="radioBox">
+                        <label style="width: auto;">
+                            <div class="iconBox">
+                                <input type="radio" class="check editDefault" value="{{item.address_id}}" name="set_default">
+                                <i class="icon_checked"></i>
+                            </div>
+                            <span class="fs26 color_9">设为默认地址</span>
+                        </label>
+                    </div>
+                </div>
+                <div class="swiped BGcolor_3">
+                    <div class="delect">
+                        <img src="__STATIC__/unique/images/delectIcon.png" alt="">
+                    </div>
+                </div>
+            </object>
+            <!-- <object>
                 <div class="block" data-index="{{index}}">
                     <div class="address" data-index={{index}}">
                         <div class="info">
                             <div>
                                 <p class="fs30 fw_b color_3">{{item.consignee}} {{item.mobile}}</p>{{if item.is_default==1 }} <span class="fs22 color_w BGcolor_r">默认</span>{{/if}}
                                 <div class="radioBox">
-
                                     <a href="javascript:;" class="edit fs26 color_9" data-index="{{index}}"><img src="__STATIC__/mobile/default/images/edit.png" alt="">编辑</a>
                                 </div>
                             </div>
-                            <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span></div>
-
+                            <span class="fs28 color_9">{{item.merger_name}}{{item.address}}</span>
+                        </div>
                     </div>
-
-
                 </div>
                 <div class="swiped BGcolor_3">
                     <div class="delect" data-address_id="{{item.address_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
                 </div>
-            </object>
+            </object> -->
         {{/if}}
-
     </li>
     {{/each}}
 </script>
@@ -84,7 +126,6 @@
 <!--编缉或添加地址-->
 {literal}
 <script type="text/html" id="addressInfoTpl">
-
     <div class="page-hd">
         <div class="header bor-1px-b">
             <div class="header-left">
@@ -94,61 +135,71 @@
             <div class="header-right" onclick="evalPost();">保存</div>
         </div>
     </div>
-	<form action="" id="formAddress">
-    <div class="page-bd ">
-        <!-- 页面内容-->
-        <div class="cells">
-          <div class="cell">
-            <div class="cell_bd"><span class="fs28 color_9">收货人</span></div>
-            
-            <div class="cell_ft">
-                 <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名" name="consignee" value="{{consignee}}">
-            </div>
-          </div>
-          <div class="cell">
-              <div class="cell_bd">
-            <span class="fs28 color_9">手机号码</span></div>
-            <div class="cell_ft">
-              <input type="text" class="fs28  color_3" placeholder="请输入收货人电话" name="mobile" value="{{mobile}}">
-            </div>
-          </div>
-          <div class="cell bankType cell_access">
-              <div class="cell_bd">
-              <span class="fs28 color_9">所在地区</span></div>
-              <div class="cell_ft">
-                <input type="text" value="{{_merger_name}}"  placeholder="请选择所在区域" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
-              </div>
-          </div>
-          <div class="cell">
-            <div class="cell_bd">
-            <span class="fs28 color_9">详细地址</span></div>
-            <div class="cell_ft">
-             <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
-            </div>
-          </div>
-            <div class="cell">
-                <div class="cell_bd">
-                    <span class="fs28 color_9">是否设置为默认地址</span></div>
-                <div class="cell_ft">
-                    {{if is_default==1}}
-                    <input type="checkbox" name="is_default" id="male" value="1" checked class="chooseBtn" />
-                    {{else}}
-                    <input type="checkbox" name="is_default" id="male" value="1" class="chooseBtn" />
-                    {{/if}}
-                    <label for="male" class="choose-label"></label>
+	<form action="" id="formAddress" style="height: 8.3rem;">
+        <div class="page-bd" style="height: 8.3rem;">
+            <div class="cells">
+                <div class="cell">
+                    <div class="cell_bd">
+                        <span class="fs28 color_9">收货人</span>
+                    </div>
+                    <div class="cell_ft">
+                        <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名" name="consignee" value="{{consignee}}">
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="cell_bd">
+                        <span class="fs28 color_9">手机号码</span>
+                    </div>
+                    <div class="cell_ft">
+                        <input type="text" class="fs28  color_3" placeholder="请输入收货人电话" name="mobile" value="{{mobile}}">
+                    </div>
+                </div>
+                <div class="cell bankType cell_access">
+                    <div class="cell_bd">
+                        <span class="fs28 color_9">所在地区</span>
+                    </div>
+                    <div class="cell_ft">
+                        <input type="text" value="{{_merger_name}}"  placeholder="请选择所在区域" class="fs28 fw_b color_3 bankBox" readonly="" id="city-picker" data-code="{{district}}" data-codes="{{province}},{{city}},{{district}}">
+                    </div>
+                </div>
+                <div class="cell">
+                    <div class="cell_bd">
+                        <span class="fs28 color_9">详细地址</span>
+                    </div>
+                    <div class="cell_ft">
+                        <input type="text" class="fs28  color_3" placeholder="请输入详细地址" name="address" value="{{address}}">
+                    </div>
+                </div>
+            </div> 
+            <div class="cells">
+                <div class="cell">
+                    <div class="cell_bd">
+                        <span class="fs28 color_9">是否设置为默认地址</span>
+                    </div>
+                    <div class="cell_ft">
+                        {{if is_default==1}}
+                        <input type="checkbox" name="is_default" id="male" value="1" checked class="chooseBtn" />
+                        {{else}}
+                        <input type="checkbox" name="is_default" id="male" value="1" class="chooseBtn" />
+                        {{/if}}
+                        <label for="male" class="choose-label"></label>
+                    </div>
                 </div>
             </div>
-        </div> 
-		<input type="hidden" name="address_id" value="{{address_id}}">
-		
-        <div class="page-ft userData">
-            <!--<a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}确认修改{{else}}确认添加{{/if}}</a>-->
-            {{if address_id }}
-            <a class="fs32 color_w fw_b BGcolor_r delect" data-address_id="{{address_id}}">删除地址</a>
-            {{/if}}
+    		<input type="hidden" name="address_id" value="{{address_id}}">
+            <div class="userData">
+                {{if address_id }}
+                <div class="del-btn delect" data-address_id="{{address_id}}">删除地址</div>
+                {{/if}}
+            </div>
+            <div class="page-ft userData" style="position: absolute;background-color:transparent">
+                <a class="fs32 color_w fw_b BGcolor_r postAddress" onclick="evalPost();">{{if address_id }}保存{{else}}确认添加{{/if}}</a>
+                {{if address_id }}
+                <!-- <a class="fs32 color_w fw_b BGcolor_r delect" data-address_id="{{address_id}}">删除地址</a> -->
+                {{/if}}
+            </div>
         </div>
-      </div>
-    </div>
+        </div>
 	</from>
  </script>
 {/literal}
@@ -171,22 +222,19 @@
             }
             addressList = res.list;
             if (isAddOrder == 1) {
-
                 if (typeof(res.list) == 'undefined') {
                     $('.addressBox .tips').show();
                     $('.addressBox .address').hide();
                     return false;
                 }
-
-
                 if(address_id == 0){
                     showAddress(addressList[0]);
                     evalShippingFee();//计算运费
                 }
-
+            }
+            if (addressList[0]['address_id']['is_default'] == 1) {
                 defAddressId = addressList[0]['address_id'];
             }
-
             $('.addresslist').html(template('addressLiTpl', res));
             container('.addresslist object')
         })
@@ -282,9 +330,8 @@
                     return false;
                 }
                 defAddressId = obj.val();
+                getAddressList();
             })
         }
-
     })
-
 </script>
