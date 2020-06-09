@@ -1,0 +1,149 @@
+.top {
+  height: 2.666667rem;
+  background-color: #eb0031;
+  overflow: hidden;
+}
+
+.user {
+  margin-top: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.user .user-info {
+  margin-left: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  color: #ffffff;
+}
+
+.user .user-info .head-img {
+  margin-right: 0.133333rem;
+  width: 0.666667rem;
+  height: 0.666667rem;
+  background-color: #ffffff;
+  border: solid 0.02rem #ffffff;
+  border-radius: 50%;
+  overflow: hidden;
+}
+
+.user .user-info .head-img img {
+  width: 100%;
+  height: 100%;
+}
+
+.user .user-info .proxy {
+  display: inline-block;
+  padding: 0.04rem 0.08rem;
+  line-height: 1;
+  background-color: #da002b;
+  border-radius: 0.133333rem;
+}
+
+.user .user-info .proxy img {
+  display: inline-block;
+  width: 0.2rem;
+  height: 0.2rem;
+  vertical-align: middle;
+}
+
+.user .user-info .iphone-num {
+  font-style: 0.16rem;
+  opacity: 0.8;
+}
+
+.user .proxy-label {
+  display: inline-block;
+  padding: 0.066667rem 0.093333rem;
+  font-size: 0.146667rem;
+  color: #ffffff;
+  line-height: 1;
+  background-color: #f5b300;
+  border-radius: 0.133333rem 0 0 0.133333rem;
+}
+
+.money {
+  margin: -1.333333rem 0.133333rem 0;
+  padding: 0.4rem 0 0.333333rem 0.393333rem;
+  padding-left: 0.333333rem;
+  padding-top: 0.4rem;
+  padding-bottom: 0.333333rem;
+  color: #ffffff;
+  background-color: #fd0035;
+  box-shadow: 0 0.066667rem 0.126667rem 0.006667rem rgba(215, 12, 55, 0.34);
+  border-radius: 0.133333rem;
+}
+
+.money .money-info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.money .money-info .money-month,
+.money .money-info .money-day {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+}
+
+.money .more {
+  font-size: 0.146667rem;
+  color: #fec90b;
+}
+
+.flex-grids {
+  padding: 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-flex-wrap: wrap;
+          flex-wrap: wrap;
+}
+
+.flex-grids .grids-item {
+  margin-bottom: 0.133333rem;
+  padding: 0.313333rem 0;
+  width: 48.5%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  line-height: 1;
+  background-color: #ffffff;
+  border-radius: 0.133333rem;
+}
+
+.flex-grids .grids-item .icon {
+  width: 0.666667rem;
+  height: 0.666667rem;
+  border-radius: 50%;
+  background-color: #FDF4F4;
+}
+
+.opacity08 {
+  opacity: 0.8;
+}

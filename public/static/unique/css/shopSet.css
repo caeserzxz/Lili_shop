@@ -1,0 +1,86 @@
+.cells {
+  margin: 0.133333rem;
+  background-color: #ffffff;
+  border-radius: 0.133333rem;
+}
+
+.cells .cell {
+  height: 0.733333rem;
+  background-color: transparent;
+}
+
+.cells .cell .cell_hd {
+  vertical-align: middle;
+}
+
+.cells .cell .cell_hd img {
+  display: inline-block;
+  margin-right: 0.133333rem;
+  width: 0.333333rem;
+  height: 0.333333rem;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.cells .cell .arrowright {
+  padding: 0.2rem 0.133333rem;
+}
+
+.cells .cell .arrowright::after {
+  content: " ";
+  width: 0.1rem;
+  height: 0.1rem;
+  border-right: 0.013333rem solid #333333;
+  border-bottom: 0.013333rem solid #333333;
+  -webkit-transform: rotate(-45deg);
+          transform: rotate(-45deg);
+}
+
+.cell_hd .label {
+  display: inline-block;
+  width: 1.133333rem;
+}
+
+.cell_hd .required::before {
+  content: "*";
+  margin: 0.033333rem;
+  font-weight: bold;
+  color: #fd0035;
+  font-size: 0.16rem;
+}
+
+.shopSet {
+  padding-bottom: 0.8rem;
+}
+
+.shopSet .introduc {
+  padding: 0.26rem 0.133333rem;
+  font-size: 0.213333rem;
+  font-weight: bold;
+  line-height: 1;
+  color: #333333;
+}
+
+.shopSet .weui-textarea {
+  box-sizing: boolean();
+  height: 1.333333rem;
+  padding: 0 0.133333rem;
+}
+
+.shopSet .save-btn {
+  position: fixed;
+  left: 0.2rem;
+  right: 0.2rem;
+  bottom: 0.133333rem;
+  height: 0.533333rem;
+  text-align: center;
+  line-height: 0.533333rem;
+  font-size: 0.186667rem;
+  color: #ffffff;
+  background-color: #fd0035;
+  border-radius: 0.266667rem;
+}
+
+.pdb10 {
+  padding-bottom: 0.066667rem;
+}
