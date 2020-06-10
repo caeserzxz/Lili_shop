@@ -73,6 +73,9 @@ class Index  extends ClientbaseController{
 		$GoodsModel = new GoodsModel();
 		$this->assign('allSort',$GoodsModel->getClassToAllSort());//获取分层分类
 		$this->assign('classList',$GoodsModel->getClassList());//获取分类
+        $this->assign('not_top_nav',true);
+        $slide = SlideModel::where(['status' => 1,'type' => 3])->order('sort_order DESC')->find();
+        $this->assign('slide',$slide);//获取banner图
 		return $this->fetch('all_sort');
 	}
 	/*------------------------------------------------------ */
