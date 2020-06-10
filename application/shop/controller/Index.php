@@ -84,6 +84,7 @@ class Index  extends ClientbaseController{
 	public function search(){
 		$this->assign('title', '搜索');
 		$this->assign('hotSearch', explode(' ',settings('hot_search')));
+        $this->assign('hotRedSearch', explode(' ',settings('hot_red_search')));
         $GoodsModel = new GoodsModel();
         $this->assign('searchKeys', $GoodsModel->searchKeys());
 		return $this->fetch('search');
