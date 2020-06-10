@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>我的收藏</title>
+    <link rel="stylesheet" href="../assets/css/collect.css" />
+</head>
+
+<body>
+    <div class="page collectpage">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+                <div class="header-left">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">我的收藏 <span class="fs22 color_9">(共12件商品)</span></div>
+            </div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="collect">
+                <div class="collect-list">
+                    <div href="" class="list-item">
+                        <img class="collect-img" src="../assets/images/seckillimg.png" alt="" />
+                        <div class="collect-info">
+                            <div class="collect-name fs28 fw_b color_3">
+                                盼盼特浓花生牛奶250ml*12盒复合蛋
+                                白饮料整箱子加钙易吸收早加钙易吸收早</div>
+                            <div class="collect-enc color_3">
+                                <div class="price">
+                                    <p class="now-price">
+                                        <span class="fw_b">￥</span>
+                                        <span class="fs30 fw_b">39</span>
+                                        <span class="fw_b">.99</span>
+                                    </p>
+                                    <span class="old-price">￥120.00</span>
+                                </div>
+                                <div class="cancel">取消收藏</div>
+                            </div>
+                        </div>
+                    </div>
+                    <div href="" class="list-item">
+                        <img class="collect-img" src="../assets/images/seckillimg.png" alt="" />
+                        <div class="collect-info">
+                            <div class="collect-name fs28 fw_b color_3">
+                                【告白价】全自动雨伞大号折叠小巧便
+                                携防紫外线防晒遮阳女王印遮阳女王印
+                            </div>
+                            <div class="collect-enc color_3">
+                                <div class="price">
+                                    <p class="now-price">
+                                        <span class="fw_b">￥</span>
+                                        <span class="fs30 fw_b">26</span>
+                                        <span class="fw_b">.99</span>
+                                    </p>
+                                    <span class="old-price">￥120.00</span>
+                                </div>
+                                <div class="cancel">取消收藏</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="text_c color_9">已经到底啦~</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".collect-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+    </script>
+</body>
+
+</html>

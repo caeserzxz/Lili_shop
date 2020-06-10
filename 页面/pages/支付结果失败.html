@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="viewport"
+        content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+    <link rel="stylesheet" href="../assets/css/layout.css" />
+    <script src="../assets/js/page.js"></script>
+
+    <title>支付结果</title>
+    <link rel="stylesheet" href="../assets/css/payment.css" />
+</head>
+
+<body>
+    <div class="page payResult">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+                <div class="header-left">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">支付结果</div>
+                <div class="header-right">
+                    <a href=''></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="paType">
+                <img src="../assets/images/payN.png" alt="">
+                <p class="fs34 fw_b color_3 file_p">订单支付失败</p>
+                <span class="fs24 color_9 xianshi_end">该限时活动已结束</span>
+                <!-- <span class="fs24 color_9 xianshi_end">该活动商品已售罄</span>
+                <span class="fs24 color_9 xianshi_end">订单已超时</span> -->
+            </div>
+            <div class="button">
+                <a href="#" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
+                <a href="index.html" class="color_w fs28 BGcolor_r ">继续逛逛</a>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+    <script src="../assets/js/lib/fastclick.js"></script>
+    <script src="../assets/js/art-template.js"></script>
+    <script>
+        $(function () {
+            FastClick.attach(document.body);
+        });
+    </script>
+    <script>
+    </script>
+</body>
+
+</html>

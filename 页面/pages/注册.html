@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>注册</title>
+    <link rel="stylesheet" href="../assets/css/login.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">注册</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+      </div>
+
+      <div class="page-bd">
+        <!-- 页面内容-->
+        <!-- <div class="top">
+          <img src="../assets/images/APPLOGO.png" alt="">
+          <span class="fs34 color_3 fw_b">最新潮购物商城</span>
+        </div> -->
+        <div class="inputBlock bor_b">
+            <img src="../assets/images/register03.png" alt="" class="imgIcon">
+            <input type="text" class="fs32 fw_b textBox" placeholder="手机号"> 
+        </div>
+        <div class="inputBlock bor_b">
+            <img src="../assets/images/register04.png" alt="" class="imgIcon">
+              <input type="text" class="fs32 fw_b textBox code" placeholder="验证码"> 
+              <div class="codeBox">
+                  <span class="color_r fs28 fw_b getCode" onclick="codeButton()">获取验证码</span>
+                  <span class="color_9 fs28 fw_b time" style="display:none">60s</span>
+              </div>  
+        </div>
+
+
+        <div class="inputBlock bor_b">
+            <img src="../assets/images/register02.png" alt="" class="imgIcon">
+              <input type="password" class="fs32 fw_b textBox" placeholder="密码"> 
+              <div class="ereBox">
+                  <img src="../assets/images/login01.png" alt="" data-type="0">
+              </div>  
+        </div>
+        <div class="inputBlock bor_b">
+            <img src="../assets/images/register06.png" alt="" class="imgIcon">
+            <input type="text" class="fs32 fw_b textBox" placeholder="邀请码"> 
+        </div>
+        <div class="rulesBox">
+            <label for="s12">
+                <div class="iconBox">
+                  <input type="checkbox" class="check" name="checkbox1" id="s12">
+                  <i class="icon_checked"></i>
+                </div>
+            </label>
+            <div class="rules fs26 color_9">我同意<a href="" class="color_3">《新商城使用》</a>注册协议</div>
+        </div>
+
+        <div class="button btn fs32 fw_b color_w BGcolor_r">注册</div>
+        <div class="fs30 goregister"><span class="color_9">已有账号，</span><a href="登录.html" class="fw_b color_3">立即登录</a></div>
+      </div>
+      
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+    $(function(){
+
+      $('.ereBox').on('click',function(){
+        var obj=$(this).find('img')
+        if(obj.attr('data-type')=='0'){
+          obj.attr('src','../assets/images/login02.png')
+          obj.attr('data-type','1')
+          $(this).siblings('input').attr('type','text')
+        }else{
+          obj.attr('src','../assets/images/login01.png')
+          obj.attr('data-type','0')
+          $(this).siblings('input').attr('type','password')
+        }
+      })
+    })
+
+	function codeButton(){
+      var timeObj=$('.time')
+      var getCodeObj=$('.getCode')
+      getCodeObj.hide();
+      timeObj.show();
+	    var time = 60;
+	    var set=setInterval(function(){
+        timeObj.text(""+--time+"s");
+        if (time<=0) {
+          timeObj.hide();
+          getCodeObj.show();
+          clearInterval(set);
+        }
+	    }, 1000);
+	}
+    </script>
+  </body>
+</html>

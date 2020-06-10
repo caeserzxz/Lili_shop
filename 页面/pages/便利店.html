@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>喜士多便利店</title>
+    <link rel="stylesheet" href="../assets/js/Swiper-4.0.7/swiper.min.css" />
+    <link rel="stylesheet" href="../assets/css/shop.css" />
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">喜士多便利店</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="swiperGird" style="">
+                <div class="swiper-container swiper1" id="swiper01">
+                    <div class="swiper-wrapper">
+                        <a href="#" class="swiper-slide"><img data-src="../assets/images/swiperimg01.png"
+                                class="swiper-lazy" />
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </a>
+                        <a href="#" class="swiper-slide"><img data-src="../assets/images/swiperimg01.png"
+                                class="swiper-lazy" />
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </a>
+                        <a href="#" class="swiper-slide"><img data-src="../assets/images/swiperimg01.png"
+                                class="swiper-lazy" />
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </a>
+                        <a href="#" class="swiper-slide">
+                            <img data-src="../assets/images/swiperimg01.png" class="swiper-lazy" />
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </a>
+                    </div>
+                    <div class="swiper-pagination pagination1"></div>
+                </div>
+            </div>
+            <!-- 店铺描述 -->
+            <div class="nearShop">
+                <div class="shop-list">
+                    <div class="list-item">
+                        <img class="shop-img" src="../assets/images/seckillimg.png" alt="" />
+                        <div class="shop-info">
+                            <div class="shop-name fs34 fw_b col_3">全家士多便利店</div>
+                            <div class="shop-decs fs24 color_9">本店商品种类齐全，皆为正当渠道进货，品质保证
+                                与大厂合作，商品价格实惠，欢迎选购价格实惠，欢迎选购</div>
+                            <div class="shop-label mt15">
+                                <div>
+                                    <span>便利店</span>
+                                    <span>优惠多</span>
+                                    <span>种类齐全</span>
+                                </div>
+                                <div class="shop-enc">
+                                    <span>鼓励金:8%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 电话 地址 -->
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><img src="../assets/images/shop_icon_01.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="fs26 color_3">电话：020-415629</p>
+                    </div>
+                    <div class="weui-cell__ft"><img src="../assets/images/shop_icon_02.png" alt=""></div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><img src="../assets/images/shop_icon_03.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="fs26 color_3">
+                            地址：广东省广州市天河区毓敏南路12号海州
+                            信息中心121-1店铺</p>
+                    </div>
+                    <div class="weui-cell__ft"><img src="../assets/images/shop_icon_04.png" alt=""></div>
+                </div>
+            </div>
+
+            <!-- 地图位置 -->
+            <div></div>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script src="../assets/js/Swiper-4.0.7/swiper.min.js"></script>
+    <script>
+        $(function () {
+            var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
+            var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
+        });
+
+        function createSwiper(index, _direction, time, type) {
+            var swiper = new Swiper(".swiper" + index, {
+                pagination: {
+                    el: ".pagination" + index,
+                    type: type,
+                },
+                lazy: {
+                    loadPrevNext: true,
+                },
+                direction: _direction,
+                preloadImages: false,
+                paginationClickable: true,
+                loop: true,
+                autoplay: {
+                    delay: time,
+                    disableOnInteraction: false,
+                },
+                onSlideChangeEnd: function (swiper) {
+                    swiper.update(); //swiper更新
+                },
+            });
+            return swiper;
+        }
+        
+    </script>
+</body>
+
+</html>

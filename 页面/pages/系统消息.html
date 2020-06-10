@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>系统消息</title>
+    <link rel="stylesheet" href="../assets/css/bulletinList.css" />
+</head>
+
+<body>
+    <div class="page sousuo">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">系统消息</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="systemNews">
+                <div class="news-list">
+                    <a href="#" class="list-item">
+                        <div class="news-info">
+                            <div class="news-name fs28 fw_b col_3 news">送您一张无门槛20元优惠券！</div>
+                            <div class="news-addr fs23 color_9">全店商品无门槛优惠券，只要消费即可使用！</div>
+                            <div class="news-enc color_9">2019.02.12</div>
+                        </div>
+                    </a>
+                    <a href="#" class="list-item">
+                        <div class="news-info">
+                            <div class="news-name fs28 fw_b col_3">红包过期提醒</div>
+                            <div class="news-addr fs23 color_9">您的红包将于2019年02月15日过期24点过期</div>
+
+                            <div class="news-enc color_9">2020.05.19</div>
+                        </div>
+                    </a>
+                </div>
+                <div class="text_c color_9">已经到底啦~</div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".bulletin-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>添加收货地址</title>
+  <link rel="stylesheet" href="../assets/css/cityPicker.css">
+  <link rel="stylesheet" href="../assets/css/userData.css" />
+
+</head>
+
+<body>
+  <div class="page">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">添加收货地址</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd"><span class="fs28 color_3 fw_b">收货人</span></div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请输入收货人姓名">
+          </div>
+
+        </div>
+        <div class="cell">
+          <div class="cell_hd"><span class="fs28 color_3 fw_b">电话</span></div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请输入收货人电话">
+          </div>
+        </div>
+        <div class="cell bankType cell_access">
+          <div class="cell_hd"><span class="fs28 color_3 fw_b">所在地区</span></div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3 bankBox" placeholder="请选择所在区域" style="width: 100%" readonly
+              id="city-picker">
+          </div>
+          <div class="cell_ft">
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd"><span class="fs28 color_3 fw_b">详细地址</span></div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请输入详细地址">
+          </div>
+        </div>
+
+      </div>
+
+      <!-- 设置为默认地址 -->
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_bd">
+            <span class="fs28 fw_b color_3">是否设置为默认地址</span></div>
+          <div class="cell_ft">
+            <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+            <label for="male" class="choose-label"></label>
+          </div>
+        </div>
+      </div>
+
+      <div class="page-ft">
+        <span class="fs32 color_w fw_b BGcolor_r">确认添加</span>
+      </div>
+    </div>
+
+
+  </div>
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        title: "请选择省市区"
+      });
+    })
+
+  </script>
+</body>
+
+</html>

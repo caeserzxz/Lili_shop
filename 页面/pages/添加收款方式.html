@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>添加收款方式</title>
+    <link rel="stylesheet" href="../assets/css/orderDetails.css" />
+</head>
+
+<body>
+    <div class="page addType">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">添加收款方式</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="tab fs32">
+                <div class="color_9 active">银行卡</div>
+                <div class="color_9">支付宝</div>
+                <div class="color_9">微信</div>
+            </div>
+            <div class="tabBox">
+                <div class="block ">
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">姓名</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28  color_3" placeholder="请输入真实姓名">
+                            </div>
+                        </div>
+                        <div class="cell bankType">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">银行</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28  color_3 bankBox" placeholder="请选择银行类型" readonly
+                                    value="中国银行">
+                            </div>
+                            <div class="cell_ft">
+                                <img class="rightIcon" src="../assets/images/rightIcon.png" alt="">
+                            </div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">账号</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28  color_3" placeholder="请输入银行卡号">
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">验证码</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28 color_3" placeholder="请输入验证码">
+                            </div>
+                            <div class="cell_ft">
+                                <span class="fs28 fw_b color_r send-captcha" data-type="bank">发送验证码</span>
+                                <span class="fs28 fw_b color_9 countdown">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_bd">
+                                <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
+                            <div class="cell_ft">
+                                <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+                                <label for="male" class="choose-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block box">
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">姓名</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28  color_3" placeholder="请输入真实姓名">
+                            </div>
+                        </div>
+
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">账号</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28  color_3" placeholder="请输入支付宝账号">
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">验证码</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28 color_3" placeholder="请输入验证码">
+                            </div>
+                            <div class="cell_ft">
+                                <span class="fs28 fw_b color_r send-captcha" data-type="AliPay">发送验证码</span>
+                                <span class="fs28 fw_b color_9 countdown">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_bd">
+                                <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
+                            <div class="cell_ft">
+                                <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+                                <label for="male" class="choose-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="block box">
+                    <div class="cells">
+                        <div class="uploading">
+                            <div class="title fs32 fw_b color_3"></div>
+                            <div class="uploadBox">
+                                <div class="Box">
+                                    <img src="../assets/images/youLike01.png" alt="" class="imgBox">
+                                    <img src="../assets/images/closeImg.png" alt="" class="closeImg">
+                                </div>
+                                <div class="Box">
+                                    <img src="../assets/images/addImg.png" alt="" class="imgBox">
+                                    <input type="file" class="uploadInput">
+
+                                </div>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="cell_hd"><span class="fs28 color_3 fw_b">验证码</span></div>
+                            <div class="cell_bd">
+                                <input type="text" class="fs28 color_3" placeholder="请输入验证码">
+                            </div>
+                            <div class="cell_ft">
+                                <span class="fs28 fw_b color_r send-captcha" data-type="wxPay">发送验证码</span>
+                                <span class="fs28 fw_b color_9 countdown">60s</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_bd">
+                                <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
+                            <div class="cell_ft">
+                                <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+                                <label for="male" class="choose-label"></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="footer-btn">
+                <span>确认添加</span>
+            </div>
+        </div>
+
+        <!-- 支付方式 -->
+        <div class="model">
+            <div class="modelBg"></div>
+            <div class="modelContent">
+                <div class="closeBox"><img src="../assets/images/close_icon.png" alt=""></div>
+                <div class="title fs36 color_3 fw_b">请选择银行</div>
+                <div class="cantre">
+                    <div class="block">
+                        <label for="s11">
+                            <div class="payType"><img src="../assets/images/ZGBank.png" alt=""><span
+                                    class="fs30 color_3">中国银行</span></div>
+
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s11" checked>
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <label for="s12">
+                            <div class="payType"><img src="../assets/images/JSBank.png" alt=""><span
+                                    class="fs30 color_3">中国建设银行</span></div>
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s12">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <label for="s13">
+                            <div class="payType"><img src="../assets/images/GSBank.png" alt=""><span
+                                    class="fs30 color_3">中国工商银行</span></div>
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s13">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <label for="s14">
+                            <div class="payType"><img src="../assets/images/NYBank.png" alt=""><span
+                                    class="fs30 color_3">中国农业银行</span></div>
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s14">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <label for="s15">
+                            <div class="payType"><img src="../assets/images/ZSBank.png" alt=""><span
+                                    class="fs30 color_3">招商银行</span></div>
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s15">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <label for="s16">
+                            <div class="payType"><img src="../assets/images/JTBank.png" alt=""><span
+                                    class="fs30 color_3">交通银行</span></div>
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s16">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+
+<script>
+    $(function () {
+        $('.tab div').on('click', function () {
+            var index = $(this).index();
+            $(this).addClass('active')
+            $(this).siblings().removeClass('active')
+            $('.block').eq(index).show();
+            $('.block').eq(index).siblings().hide();
+        })
+
+        // 选择银行类型
+        $('.bankType').on('click', function () {
+            $('.model').show();
+        })
+        $('.block label').on('click', function () {
+            if ($(this).find('input').is(':checked')) {
+                var nameVal = $(this).find('span').text();
+                $('.bankBox').val(nameVal)
+                $('.model').hide();
+            }
+        })
+        $('.closeBox').on('click', function () {
+            $('.model').hide();
+        })
+        $('.modelBg').on('click', function () {
+            $('.model').hide();
+        })
+
+        // 发送验证码倒计时
+        var timerId = null
+        $('.send-captcha').on('click', function () {
+            var timeSecond = 60
+            var _this = this
+            $(_this).hide()
+            $(_this).next().show()
+            $(_this).next().text(timeSecond + 's')
+            clearInterval(timerId)
+            timerId = setInterval(function () {
+                if (timeSecond > 0) {
+                    timeSecond -= 1
+                    $(_this).next().text(timeSecond + 's')
+                } else {
+                    clearInterval(timerId)
+                    $(_this).show()
+                    $(_this).next().hide()
+                }
+            }, 1000)
+        })
+
+
+    })
+
+
+</script>
+
+</html>

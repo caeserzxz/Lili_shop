@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>邀请好友</title>
+    <link rel="stylesheet" href="../assets/css/inviteFriends.css" />
+</head>
+
+<body>
+    <div class="page invite-friends">
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="invite-friends-img">
+                <img src="../assets/images/code.png" alt="">
+            </div>
+
+            <!-- button -->
+            <div class="footer-btn fs26">
+                <div class="copy-link">
+                    <img src="../assets/images/link_icon.jpg" alt="">
+                    <span>复制链接</span>
+                </div>
+                <div class="share-wx">
+                    <img src="../assets/images/share01.png" alt="">
+                    <span>分享到微信</span>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".bulletin-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+    </script>
+</body>
+
+</html>

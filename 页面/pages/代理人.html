@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>代理人</title>
+  <link rel="stylesheet" href="../assets/css/proxyPerson.css">
+</head>
+
+<body>
+  <div class="page merchant">
+    <div class="page-hd"></div>
+
+    <div class="page-bd">
+      <div class="top">
+        <div class="user">
+          <div class="user-info">
+            <div class="head-img">
+              <img src="../assets/images/myIcon19.png" alt="">
+            </div>
+            <div class="info">
+              <div class="nickname fs32 fw_b">巴啦魔小仙女</div>
+              <div class="iphone-num">15923698569</div>
+              <div class="proxy">
+                <img src="../assets/images/proxy_01.jpg" alt="">
+                省级代理
+              </div>
+            </div>
+          </div>
+          <div class="proxy-label">省级代理 </div>
+        </div>
+      </div>
+
+      <div class="money num">
+        <div class="money-info">
+          <div class="money-month">
+            <div class="fs48">36962.00</div>
+            <div class="fs26 opacity08">本月业绩（元）</div>
+          </div>
+          <div class="money-day">
+            <div class="fs48">594.50</div>
+            <div class="fs26 opacity08">今日业绩（元）</div>
+          </div>
+        </div>
+        <div class="mt60">
+          <span class="opacity08">数据更新与:2020.05.21</span>
+          <span class="more">查看更多></span>
+        </div>
+      </div>
+
+      <div class="flex-grids">
+        <div class="grids-item">
+          <img class="icon" src="../assets/images/proxy_01.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="../assets/images/proxy_02.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="../assets/images/proxy_03.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="../assets/images/proxy_04.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        title: "请选择省市区"
+      });
+    })
+    $(function () {
+      $('.showmodal').on('click', function () {
+        $('.modal-proxy').show()
+      })
+      $('.footer-btn').on('click', function () {
+        $('.modal-proxy').hide()
+        $('.modal-proxy-main input[type=radio]').each(function () {
+          if ($(this).prop('checked')) {
+            // 执行操作逻辑
+          }
+        })
+      })
+    })
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>付款</title>
+    <link rel="stylesheet" href="../assets/css/pay.css" />
+</head>
+
+<body>
+    <div class="page chongzhi payment_coupons">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">付款</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="shop-name">
+                <div class="fs34 color_3">全家便利店</div>
+                <div><img src="../assets/images/shopimg.png" alt=""></div>
+            </div>
+            <div class="inputBlock">
+                <div class="tips fs26 fw_b color_3">消费金额</div>
+                <span class="fs52 fw_b color_9" style="display: inline-block;">￥</span>
+                <input type="number" class="fs60 num textBox" placeholder="请输入金额">
+            </div>
+            <div class="paytype">
+                <div class="title fs34 color_3 fw_b">请选择支付方式</div>
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd"></div>
+                        <div class="cell_bd"><span class="fs28 fw_b color_3">店铺红包</span></div>
+                        <div class="cell_ft" onclick="showCoupons()">
+                            <span class="mainjian">满200减100</span>
+                            <span><img src="../assets/images/rightIcon.png" alt=""></span>
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell_hd"></div>
+                        <div class="cell_bd"><span class="fs28 fw_b color_3">鼓励金</span></div>
+                        <div class="cell_ft fs26">
+                            <span>鼓励金剩余:</span>
+                            <span class="color_r">400.00</span>
+                            <label for="s12">
+                                <div class="iconBox">
+                                    <input type="checkbox" class="check" name="checkbox" id="s12">
+                                    <i class="icon_checked"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 抢第2件半价 -->
+            <div class="rush-buy" style="display: none;">
+                <img src="../assets/images/fuk.png" alt="">
+            </div>
+
+            <div class="button fs32 fw_b color_w BGcolor_r">确认付款</div>
+
+        </div>
+        <!-- 弹出使用优惠券 -->
+        <div class="model getCoupons" style="display: none">
+            <div class="modelContent">
+                <div class="title fs36 fw_b color_3">请选择优惠券</div>
+                <div class="list useTicket">
+                    <label for="r11">
+                        <div class="ticketInfo">
+                            <div class="fs30 fw_b color_3">不使用优惠券</div>
+                        </div>
+
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="r11" checked value="0">
+                            <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                    <div class="lineBox">
+                        <p></p>
+                        <span class="fs24 color_9">可使用(2)</span>
+                    </div>
+                    <label for="r12">
+                        <div class="ticketInfo">
+                            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em
+                                    class="fs40 num">5.00</em>生鲜品类券</div>
+                            <p>2019.07.01-2019.08.20</p>
+                            <p>满0元可用</p>
+                        </div>
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="r12" value="满0减5">
+                            <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                    <label for="r13">
+                        <div class="ticketInfo">
+                            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em
+                                    class="fs40 num">15.00</em>中秋团员券</div>
+                            <p>2019.07.01-2019.08.20</p>
+                            <p>满0元可用</p>
+                        </div>
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="r13" value="满0减15">
+                            <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                    <div class="lineBox">
+                        <p></p>
+                        <span class="fs24 color_9">不可使用(2)</span>
+                    </div>
+                    <label for="r14">
+                        <div class="ticketInfo noUse">
+                            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em
+                                    class="fs40 num">10.00</em>中秋团员券</div>
+                            <p>2019.07.01-2019.08.20</p>
+                            <p>满300元可用</p>
+                        </div>
+
+                    </label>
+                    <label for="r15">
+                        <div class="ticketInfo noUse">
+                            <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em
+                                    class="fs40 num">10.00</em>中秋团员券</div>
+                            <p>2019.07.01-2019.08.20</p>
+                            <p>满300元可用</p>
+                        </div>
+
+                    </label>
+                </div>
+                <div class="closeBtn fs32 fw_b color_w BGcolor_r" onclick="hideCoupons()">完成</div>
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        function showCoupons() {
+            console.log(222)
+            $('.getCoupons').show()
+        }
+        function hideCoupons() {
+            $('.getCoupons').hide()
+        }
+    </script>
+</body>
+
+</html>

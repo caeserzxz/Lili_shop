@@ -1,0 +1,50 @@
+.invite-friends {
+  padding-bottom: 0.666667rem;
+}
+
+.invite-friends-img img {
+  width: 100%;
+  height: auto;
+}
+
+.footer-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  background-color: #ffffff;
+}
+
+.footer-btn .copy-link,
+.footer-btn .share-wx {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 100%;
+  text-align: center;
+  line-height: 0.666667rem;
+}
+
+.footer-btn .copy-link img,
+.footer-btn .share-wx img {
+  display: inline-block;
+  margin-right: 0.066667rem;
+  width: 0.32rem;
+  height: 0.32rem;
+  vertical-align: middle;
+  border-radius: 50%;
+}
+
+.footer-btn .copy-link {
+  border-right: 0.013333rem solid #e5e5e5;
+}

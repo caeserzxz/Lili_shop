@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>添加红包</title>
+    <link rel="stylesheet" href="../assets/css/addRedenv.css" />
+</head>
+
+<body>
+    <div class="page my-business">
+        <div class="page-hd"></div>
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">添加红包</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        <div class="page-bd">
+            <div class="main">
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="fs28 color_3 fw_b">红包名称</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" placeholder="请输入用户名">
+                        </div>
+                    </div>
+                </div>
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="redenvType">随</span>
+                            <span class="fs28 color_3 fw_b">红包金额</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" placeholder="请输入红包金额">
+                        </div>
+                        <div class="cell_ft fs28 fw_b">元</div>
+                    </div>
+                </div>
+
+                <div class="text">
+                    <span class="fs24 color_9">当前为随机红包，</span>
+                    <span class="fs24 color_r">改为平均红包</span>
+                </div>
+
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="fs28 color_3 fw_b">红包数量</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" placeholder="请输入红包数量">
+                        </div>
+                    </div>
+                </div>
+                <div class="cells">
+                    <div class="cell cell-date">
+                        <div class="cell_hd">
+                            <span class="fs28 color_3 fw_b">使用时间</span>
+                        </div>
+                        <div class="cell_bd">
+                            <div class="date">
+                                <span class="datetimer-1">
+                                    <input class="fs24" type="text" value="2020-12-02" data-toggle='date' id='date1' />
+                                </span>
+                                <span>-</span>
+                                <span class="datetimer-1">
+                                    <input class="fs24" type="text" value="2020-12-16" data-toggle='date' id='date2' />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text">
+                    <span class="fs24 color_9">时间默认是到23:59:59</span>
+                </div>
+            </div>
+
+            <div class="tip">
+                提示:红包活动<span class="color_r">只能同时进行一个</span>，请停用其他红包或红包领取
+                完毕后再添加
+            </div>
+
+            <div class="bottom">
+                <div class="btn">确认添加</div>
+            </div>
+        </div>
+
+        <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+        <script>
+            $("#date1").calendar();
+            $("#date2").calendar();
+        </script>
+</body>
+
+</html>

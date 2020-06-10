@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>登录</title>
+  <link rel="stylesheet" href="../assets/css/login.css" />
+</head>
+
+<body>
+  <div class="page">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">登录</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="top">
+        <img src="../assets/images/APPLOGO.png" alt="">
+        <span class="fs34 color_3 fw_b">正品集团</span>
+      </div>
+      <div class="inputBlock bor_b">
+        <img src="../assets/images/register01.png" alt="" class="imgIcon">
+        <input type="text" class="fs32 fw_b textBox" placeholder="账号">
+      </div>
+      <div class="inputBlock bor_b">
+        <img src="../assets/images/register02.png" alt="" class="imgIcon">
+        <input type="password" class="fs32 fw_b textBox" placeholder="密码">
+        <div class="ereBox">
+          <img src="../assets/images/login01.png" alt="" data-type="0">
+        </div>
+      </div>
+      <!-- <a href="忘记密码.html" class="fs30 color_9 remPassword">忘记密码</a> -->
+      <div class="button fs32 fw_b color_w BGcolor_r">登录</div>
+      <div class="fs30 goregister">
+        <a href="注册.html" class="mr20 color_3">用户注册</a>
+        <a href="忘记密码.html" class="color_3">忘记密码？</a>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $('.ereBox').on('click', function () {
+        var obj = $(this).find('img')
+        if (obj.attr('data-type') == '0') {
+          obj.attr('src', '../assets/images/login02.png')
+          obj.attr('data-type', '1')
+          $(this).siblings('input').attr('type', 'text')
+        } else {
+          obj.attr('src', '../assets/images/login01.png')
+          obj.attr('data-type', '0')
+          $(this).siblings('input').attr('type', 'password')
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>
