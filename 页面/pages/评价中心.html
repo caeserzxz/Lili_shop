@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>评价中心</title>
+    <link rel="stylesheet" href="../assets/css/my.css" />
+  </head>
+  <body>
+    <div class="page evaluate">
+      <div class="page-hd ">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">评价中心</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+      </div>
+      <div class="tab fs32 ">
+        <div class="color_9 orderActive">待评价<span class="fs26">(3)</span></div>
+        <div class="color_9">已评价<span class="fs26">(1)</span></div>
+      </div> 
+      <div class="page-bd">
+        <!-- 页面内容-->
+          <div class="tabBox">
+              <div class="tabBlock ">
+                <div id="waitEvaluate"></div>
+              </div>
+              <div class="tabBlock box">
+                  <div id="evaluated"></div>
+              </div>
+          </div>
+
+      </div>
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script id="wait" type="text/html">
+      {{if wait}}
+        {{each order}}
+        <div class="goodsBox">
+            <img src={{$value.imgUrl}} alt=""> 
+            <div class="info">
+              <div class="fs28 color_3 textline_1">{{$value.name}}</div>
+              <div class="type fs28 color_9">{{$value.color}}-{{$value.size}}</div>
+              <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{$value.money}}</em><p>.{{$value.moneyPoint}}</p></div>
+                </div>
+                <a class="butt color_r fs28" href="评价.html">评价</a>
+              </div>
+            </div>                  
+        </div>
+        {{/each}}
+      {{else}}
+        {{each finishOrder}}
+        <div class="goodsBox">
+            <img src={{$value.imgUrl}} alt=""> 
+            <div class="info">
+              <div class="fs28 color_3 textline_1">{{$value.name}}</div>
+              <div class="type fs28 color_9">{{$value.color}}-{{$value.size}}</div>
+              <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{$value.money}}</em><p>.{{$value.moneyPoint}}</p></div>
+                </div>
+                <a class="butt color_3 fs28 borColor_e" href="查看评价.html">查看评价</a>
+              </div>
+            </div>                  
+        </div>
+        {{/each}}
+      {{/if}}
+   </script>
+    <script>
+       $(function(){
+          var data = {
+          wait:true,
+          order:[
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'77',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'66',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'55',originalMoney:'2635.00'},
+          ],
+          finishOrder:[
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'99',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'88',originalMoney:'2635.00'},
+              {imgUrl:"../assets/images/youLike01.png",name:'玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY',color:'铁锈红',size:'M码',money:'199',moneyPoint:'99',originalMoney:'2635.00'}
+          ]
+        };
+        var waitHtml = template("wait",data);
+        data.wait=false; 
+        var Html = template("wait",data);
+        document.getElementById("waitEvaluate").innerHTML = waitHtml;
+        document.getElementById("evaluated").innerHTML = Html;
+        $('.tab div').on('click',function(){
+             var index=$(this).index();
+             $(this).addClass('orderActive')
+             $(this).siblings().removeClass('orderActive')
+             $('.tabBlock').eq(index).show();
+             $('.tabBlock').eq(index).siblings().hide();
+           })
+       })
+       $('.tabBlock').scroll(function(){  
+         if($(this).children('div').height()-$(this).height()-$(this).scrollTop()<50){
+           if($('.orderActive').index()==0){
+             console.log('需要加载未评价的')
+           }else{
+            console.log('需要加载已评价的')
+           }
+         }
+       })
+    </script>
+    
+  </body>
+</html>

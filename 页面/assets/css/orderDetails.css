@@ -1,0 +1,1648 @@
+.orderDetails .butt {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.2rem;
+}
+
+.orderDetails .butt span,
+.orderDetails .butt a {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 0.533333rem;
+}
+
+.orderDetails .top {
+  background-image: url("../images/orderTopBG.png");
+  background-size: 100% 100%;
+  width: 100vw;
+  height: 1.333333rem;
+  background-repeat: no-repeat;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  padding-left: 0.266667rem;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.orderDetails .top div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.066667rem;
+}
+
+.orderDetails .top div img {
+  width: 0.266667rem;
+  height: 0.266667rem;
+  margin-right: 0.066667rem;
+}
+
+.orderDetails .top P {
+  opacity: 0.6;
+}
+
+.orderDetails .top .time {
+  color: rgba(255, 255, 255, 0.6);
+}
+
+.orderDetails .top .time P {
+  opacity: 1;
+}
+
+.orderDetails .money > div {
+  -webkit-box-align: center !important;
+  -webkit-align-items: center !important;
+          align-items: center !important;
+}
+
+.orderDetails .mg_rg {
+  margin-right: 0.093333rem;
+}
+
+.orderDetails .couponsPriceType {
+  color: #ffffff;
+  background-color: #f65236;
+}
+
+.orderDetails .buy_info {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding: 0.333333rem 0.2rem;
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.orderDetails .buy_info p {
+  line-height: 0.293333rem;
+}
+
+.orderDetails .address {
+  background-image: url("../images/lineBG.png");
+  background-size: 100% 0.026667rem;
+  width: 100vw;
+  height: 1.266667rem;
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-color: #fff;
+  margin-bottom: 0.133333rem;
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.orderDetails .address div {
+  margin-top: 0.306667rem;
+}
+
+.orderDetails .address p {
+  width: 4.4rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  margin-top: 0.106667rem;
+}
+
+.orderDetails .orderBox {
+  background-color: #fff;
+}
+
+.orderDetails .orderBox .code {
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.orderDetails .orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.orderDetails .orderBox .goodslist .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.066667rem 0 0.333333rem;
+}
+
+.orderDetails .orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.orderDetails .orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderDetails .orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.orderDetails .orderBox .goodslist .goodsinfo .appleBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  margin-top: -0.133333rem;
+}
+
+.orderDetails .orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.orderDetails .orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.orderDetails .orderBox .cell {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding: 0 0.266667rem;
+  height: 0.6rem;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderDetails .orderBox .cell div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.orderDetails .payInfo {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+  padding: 0.266667rem;
+  height: 1.733333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderDetails .button {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+  padding-right: 0.266667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+}
+
+.orderDetails .button span,
+.orderDetails .button a {
+  margin-left: 0.066667rem;
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-right: 0.006667rem;
+}
+
+.orderDetails .button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.orderDetails .model {
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  display: none;
+}
+
+.orderDetails .model img {
+  width: 100%;
+  margin-top: 0.666667rem;
+}
+
+.orderDetails .model span {
+  display: block;
+  text-align: center;
+  margin-top: 0.2rem;
+}
+
+.orderDetails .model .close {
+  width: 1.2rem;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  border-radius: 0.08rem;
+  border: 0.006667rem solid #fff;
+  margin: 0.533333rem auto;
+}
+
+.orderDetails .model .share_con {
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: #ffffff;
+  padding: 0.333333rem 0.2rem;
+}
+
+.orderDetails .model .share_con .tp_share {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.orderDetails .model .share_con .tp_share img {
+  width: 0.133333rem;
+  height: 0.133333rem;
+  margin-top: 0;
+}
+
+.orderDetails .model .share_con .bt_share {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  width: 25%;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  margin-bottom: 0.053333rem;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t img {
+  margin-top: 0.453333rem;
+  margin-bottom: 0.12rem;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t .img1 {
+  width: 0.32rem;
+  height: 0.24rem;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t .img2 {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t .img3 {
+  width: 0.333333rem;
+  height: 0.28rem;
+}
+
+.orderDetails .model .share_con .bt_share .bt_img_t .img4 {
+  width: 0.266667rem;
+  height: 0.266667rem;
+}
+
+.wuliu .top {
+  background-color: #fff;
+  height: 0.933333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  padding-left: 0.266667rem;
+}
+
+.wuliu .top img {
+  width: 0.533333rem;
+  height: 0.533333rem;
+  margin-right: 0.066667rem;
+}
+
+.wuliu .top div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.wuliu .info {
+  background-color: #fff;
+  padding: 0.4rem 0 0.2rem;
+  margin-top: 0.133333rem;
+}
+
+.wuliu .info .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.wuliu .info .block .left {
+  width: 1.6rem;
+  height: 1.066667rem;
+  background-size: 0.226667rem 100%;
+  background-image: url("../images/logistics02.png");
+  background-repeat: no-repeat;
+  background-position: right;
+  padding-right: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: end;
+  -webkit-align-items: flex-end;
+          align-items: flex-end;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+}
+
+.wuliu .info .block .left p {
+  margin-bottom: 0.013333rem;
+}
+
+.wuliu .info .block .left p:first-child {
+  color: #333;
+}
+
+.wuliu .info .block .start {
+  background-image: url("../images/logistics03.png");
+}
+
+.wuliu .info .block .end {
+  background-image: url("../images/logistics01.png");
+}
+
+.wuliu .info .block .right {
+  width: 3.4rem;
+  padding: 0 0.266667rem 0 0.133333rem;
+}
+
+.salesRturn .block {
+  margin: 0.066667rem 0 0.2rem;
+}
+
+.salesRturn .orderBox {
+  margin-bottom: 0.133333rem;
+  background-color: #fff;
+  padding-bottom: 0.333333rem;
+}
+
+.salesRturn .orderBox .code {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.salesRturn .orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.salesRturn .orderBox .goodslist a {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.266667rem;
+}
+
+.salesRturn .orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.salesRturn .orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.salesRturn .orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.salesRturn .orderBox .goodslist .goodsinfo span {
+  margin-top: -0.16rem;
+}
+
+.salesRturn .orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.salesRturn .orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.salesRturn .orderBox .payment {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 1.066667rem;
+  background: #fafafa;
+  margin: 0 0.2rem;
+  width: 4.573333rem;
+  padding-left: 0.266667rem;
+}
+
+.salesRturn .orderBox .payment div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.salesRturn .orderBox .payment div:first-child {
+  margin-bottom: 0.093333rem;
+}
+
+.salesRturn .orderBox .button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 0.2rem 0.266667rem 0;
+}
+
+.salesRturn .orderBox .button span,
+.salesRturn .orderBox .button a {
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-left: 0.066667rem;
+}
+
+.salesRturn .orderBox .button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.myOrder .tab {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  background-color: #f5f5f5;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.myOrder .tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+}
+
+.myOrder .active {
+  font-weight: bold;
+  color: #333;
+  position: relative;
+}
+
+.myOrder .active::after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  margin-left: -0.12rem;
+  bottom: 0;
+  width: 0.24rem;
+  border-bottom: 0.04rem solid #f65236;
+  color: #f65236;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+
+.myOrder .tabBox {
+  margin-top: 0.133333rem;
+  padding: 0 0.133333rem;
+}
+
+.myOrder .tabBox .box {
+  display: none;
+}
+
+.myOrder .block {
+  margin: 0.066667rem 0 0.2rem;
+}
+
+.myOrder .orderBox {
+  margin-bottom: 0.133333rem;
+  padding-bottom: 0.133333rem;
+  background-color: #fff;
+  border-radius: 0.133333rem;
+}
+
+.myOrder .orderBox .code {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.myOrder .orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.myOrder .orderBox .goodslist .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.266667rem;
+}
+
+.myOrder .orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.myOrder .orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.myOrder .orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.myOrder .orderBox .goodslist .goodsinfo span {
+  margin-top: -0.16rem;
+}
+
+.myOrder .orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.myOrder .orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.myOrder .orderBox .payment {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  background: #fafafa;
+  margin: 0 0.2rem;
+  padding-left: 0.2rem;
+  border-radius: 0.066667rem;
+}
+
+.myOrder .orderBox .payment div {
+  margin-left: 0.066667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.myOrder .orderBox .button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 0.2rem 0.266667rem 0.133333rem;
+}
+
+.myOrder .orderBox .button span,
+.myOrder .orderBox .button a {
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-left: 0.066667rem;
+  border-radius: 0.186667rem;
+}
+
+.myOrder .orderBox .button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.myOrder .empeyOrder {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  top: 0.8rem;
+}
+
+.myOrder .empeyOrder img {
+  width: 100%;
+  margin-top: 20vh;
+}
+
+.myOrder .empeyOrder span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding-bottom: 0.266667rem;
+}
+
+.afterOrder .tab {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  background-color: #f5f5f5;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.afterOrder .tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+}
+
+.afterOrder .active {
+  font-weight: bold;
+  color: #333;
+  position: relative;
+}
+
+.afterOrder .active::after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  margin-left: -0.12rem;
+  bottom: 0;
+  width: 0.24rem;
+  border-bottom: 0.04rem solid #f65236;
+  color: #f65236;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+
+.afterOrder .tabBox {
+  margin-top: 0.133333rem;
+  padding: 0 0.133333rem;
+}
+
+.afterOrder .tabBox .box {
+  display: none;
+}
+
+.afterOrder .block {
+  margin: 0.066667rem 0 0.2rem;
+}
+
+.afterOrder .orderBox {
+  margin-bottom: 0.133333rem;
+  padding-bottom: 0.133333rem;
+  background-color: #fff;
+  border-radius: 0.133333rem;
+}
+
+.afterOrder .orderBox .code {
+  height: 0.8rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  padding: 0 0.266667rem;
+}
+
+.afterOrder .orderBox .goodslist {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+}
+
+.afterOrder .orderBox .goodslist .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin-bottom: 0.266667rem;
+}
+
+.afterOrder .orderBox .goodslist img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.afterOrder .orderBox .goodslist .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.afterOrder .orderBox .goodslist .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.afterOrder .orderBox .goodslist .goodsinfo span {
+  margin-top: -0.16rem;
+}
+
+.afterOrder .orderBox .goodslist .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.afterOrder .orderBox .goodslist .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.afterOrder .orderBox .payment {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  padding: 0.2rem;
+  background: #fafafa;
+  margin: 0 0.2rem;
+  border-radius: 0.066667rem;
+}
+
+.afterOrder .orderBox .payment div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.afterOrder .orderBox .button {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: end;
+  -webkit-justify-content: flex-end;
+          justify-content: flex-end;
+  padding: 0.2rem 0.266667rem 0.133333rem;
+}
+
+.afterOrder .orderBox .button span,
+.afterOrder .orderBox .button a {
+  width: 1.066667rem;
+  height: 0.373333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  margin-left: 0.066667rem;
+  border-radius: 0.186667rem;
+}
+
+.afterOrder .orderBox .button .bor_e {
+  border: 1px solid #e5e5e5 !important;
+}
+
+.afterOrder .empeyOrder {
+  background-color: #fff;
+  position: absolute;
+  bottom: 0;
+  top: 0.8rem;
+}
+
+.afterOrder .empeyOrder img {
+  width: 100%;
+  margin-top: 20vh;
+}
+
+.afterOrder .empeyOrder span {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  padding-bottom: 0.266667rem;
+}
+
+.addType .tab {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-justify-content: space-around;
+          justify-content: space-around;
+  background-color: #f5f5f5;
+  box-shadow: 0 0.066667rem 0.133333rem 0 rgba(0, 0, 0, 0.04);
+}
+
+.addType .tab div {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  height: 100%;
+}
+
+.addType .active {
+  font-weight: bold;
+  color: #333;
+  position: relative;
+}
+
+.addType .active::after {
+  content: " ";
+  position: absolute;
+  left: 50%;
+  margin-left: -0.12rem;
+  bottom: 0;
+  width: 0.24rem;
+  border-bottom: 0.04rem solid #f65236;
+  color: #f65236;
+  -webkit-transform-origin: left top;
+  transform-origin: left top;
+}
+
+.addType .cells {
+  margin: 0.133333rem;
+  border-radius: 0.133333rem;
+  background-color: #fff;
+  overflow: hidden;
+}
+
+.addType .cell {
+  background-color: transparent;
+  height: 0.733333rem;
+}
+
+.addType .cell .cell_hd span {
+  width: 1.066667rem;
+  display: block;
+}
+
+.addType .cell .cell_ft input {
+  width: auto;
+  text-align: right;
+}
+
+.addType .cell .cell_ft .countdown {
+  display: none;
+}
+
+.addType .cell .cell_ft .userimg {
+  width: 0.533333rem;
+  height: 0.533333rem;
+  border-radius: 50%;
+}
+
+.addType .cell .cell_ft #code {
+  width: 0.933333rem;
+}
+
+.addType .cell .cell_ft #address {
+  width: 3.333333rem;
+}
+
+.addType .cell .rightIcon {
+  width: 0.186667rem;
+  height: 0.186667rem;
+}
+
+.addType .footer-btn {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  padding: 0.066667rem 0.2rem;
+  width: 100%;
+  background-color: #fff;
+}
+
+.addType .footer-btn span {
+  display: block;
+  height: 0.533333rem;
+  text-align: center;
+  line-height: 0.533333rem;
+  font-size: 0.186667rem;
+  color: #ffffff;
+  background-color: #fd0035;
+  border-radius: 0.266667rem;
+}
+
+.addType .model {
+  position: fixed;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 99;
+  display: none;
+}
+
+.addType .model .modelBg {
+  background: rgba(0, 0, 0, 0.6);
+  position: absolute;
+  top: 0;
+  left: 0;
+  bottom: 0;
+  right: 0;
+  z-index: 100;
+}
+
+.addType .model .modelContent {
+  position: absolute;
+  left: 0;
+  width: 100%;
+  bottom: 0;
+  background-color: #fff;
+  z-index: 999;
+}
+
+.addType .model .modelContent .closeBox {
+  position: absolute;
+  top: 0.306667rem;
+  right: 0.2rem;
+}
+
+.addType .model .modelContent .closeBox img {
+  width: 0.173333rem;
+  height: 0.173333rem;
+}
+
+.addType .model .modelContent .title {
+  padding: 0 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+}
+
+.addType .model .modelContent .cantre {
+  width: 100%;
+  padding: 0 0.2rem 0.133333rem;
+}
+
+.addType .model .modelContent .cantre .block {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  height: 0.6rem;
+}
+
+.addType .model .modelContent .cantre .block .payType {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.addType .model .modelContent .cantre .block .payType img {
+  width: 0.333333rem;
+  height: 0.333333rem;
+  margin-right: 0.133333rem;
+}
+
+.addType .model .modelContent .cantre .block .payType img div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.addType .model .modelContent .buttBox {
+  width: 100%;
+  padding: 0.2rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.addType .model .modelContent .buttBox span {
+  -webkit-box-flex: 1;
+  -webkit-flex: 1;
+          flex: 1;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.addType .model label > * {
+  pointer-events: none;
+}
+
+.addType .model label {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  touch-action: none;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 100%;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.addType .model label .check {
+  position: absolute;
+  left: -9999em;
+}
+
+.addType .model label .iconBox {
+  position: relative;
+}
+
+.addType .model label .check[type="radio"] + i {
+  display: inline-block;
+  vertical-align: middle;
+  font: normal normal normal 0.093333rem/1 weui;
+  font-size: inherit;
+  text-rendering: auto;
+  -webkit-font-smoothing: antialiased;
+}
+
+.addType .model label .check + i:after {
+  font-size: 0.24rem;
+  display: block;
+}
+
+.addType .model label .check[type="radio"]:checked + i:after {
+  content: "\EA08";
+  color: #f65236;
+}
+
+.addType .tabBox {
+  margin-top: 0.133333rem;
+  padding: 0 0.133333rem;
+}
+
+.addType .tabBox .box {
+  display: none;
+}
+
+.addType .block {
+  margin: 0.066667rem 0 0.2rem;
+}
+
+.afterSale .goodsbox {
+  padding: 0 0.266667rem;
+  overflow: hidden;
+  background-color: #fff;
+}
+
+.afterSale .goodsbox .goods {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  margin: 0.293333rem 0;
+}
+
+.afterSale .goodsbox img {
+  width: 0.933333rem;
+  height: 0.933333rem;
+  margin-right: 0.133333rem;
+}
+
+.afterSale .goodsbox .goodsinfo {
+  width: 3.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.afterSale .goodsbox .goodsinfo p {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+}
+
+.afterSale .goodsbox .goodsinfo .appleBox {
+  margin-top: -0.133333rem;
+}
+
+.afterSale .goodsbox .goodsinfo .money {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+  line-height: 0.16rem;
+}
+
+.afterSale .goodsbox .goodsinfo .money div {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: baseline;
+  -webkit-align-items: baseline;
+          align-items: baseline;
+}
+
+.afterSale .goodsbox .title {
+  overflow: hidden;
+}
+
+.afterSale .goodsbox .title div {
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.afterSale .goodsbox .title span {
+  width: 1.066667rem;
+  height: 0.466667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  border: 1px solid #e5e5e5;
+  float: left;
+  margin-right: 0.08rem;
+}
+
+.afterSale .goodsbox .number {
+  margin: 0.266667rem 0;
+  height: 0.4rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+          justify-content: space-between;
+}
+
+.afterSale .goodsbox .number .inputBox {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.afterSale .goodsbox .number .inputBox img {
+  width: 0.293333rem;
+  height: 0.293333rem;
+  margin: 0;
+}
+
+.afterSale .goodsbox .number .inputBox input {
+  width: 0.666667rem;
+  text-align: center;
+}
+
+.afterSale .inputBlock {
+  height: 1.066667rem;
+  background-color: #fff;
+  padding: 0 0.266667rem;
+  margin-top: 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  position: relative;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}
+
+.afterSale .inputBlock .tips {
+  position: absolute;
+  top: 0.2rem;
+  z-index: 0;
+}
+
+.afterSale .inputBlock input {
+  margin-top: 0.4rem;
+  position: relative;
+  z-index: 99;
+}
+
+.afterSale .textBlock {
+  height: 1.333333rem;
+  background-color: #fff;
+  padding: 0 0.266667rem;
+  margin-top: 0.133333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  position: relative;
+}
+
+.afterSale .textBlock .tips {
+  position: absolute;
+  top: 0.2rem;
+  z-index: 0;
+}
+
+.afterSale .textBlock textarea {
+  margin-top: 0.4rem;
+  position: relative;
+  z-index: 99;
+  width: 4.466667rem;
+}
+
+.afterSale .uploading {
+  margin-top: 0.133333rem;
+  background-color: #fff;
+}
+
+.afterSale .uploading .title {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  height: 0.666667rem;
+  padding: 0 0.266667rem;
+}
+
+.afterSale .uploading .uploadBox {
+  padding: 0.066667rem 0.266667rem 0.306667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+}
+
+.afterSale .uploading .uploadBox .Box {
+  position: relative;
+  width: 1.2rem;
+  height: 1.2rem;
+  border: 0.013333rem dashed #eeeeee;
+  margin-right: 0.186667rem;
+}
+
+.afterSale .uploading .uploadBox .Box .imgBox {
+  position: absolute;
+  width: 1.2rem;
+  height: 1.2rem;
+  margin: -0.013333rem 0 0 -0.013333rem;
+}
+
+.afterSale .uploading .uploadBox .Box .closeImg {
+  position: absolute;
+  width: 0.2rem;
+  height: 0.2rem;
+  top: -0.093333rem;
+  right: -0.093333rem;
+}
+
+.afterSale .uploading .uploadBox .Box input {
+  width: 100%;
+  height: 100%;
+  opacity: 0;
+}
+
+.afterSale .button {
+  width: 5rem;
+  height: 0.533333rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+}

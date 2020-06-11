@@ -1,16 +1,38 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/fenlei.css" />
+<style type="text/css">
+    .fenlei .top .search-btn {
+        margin-left: 0.133333rem;
+        width: 0.6rem;
+        height: 0.4rem;
+        line-height: 0.4rem;
+        text-align: center;
+        color: #ffffff;
+        border-radius: 0.066667rem;
+    }
+    .fenlei .right .rightBox .bigImg {
+        margin: auto;
+        margin-top: 0.133333rem;
+        width: 3.466667rem;
+        height: 1.133333rem;
+    }
+    .fenlei .right .rightBox .bigImg img {
+        width: 100%;
+        height: 100%;
+        border-radius: 0.093333rem;
+    }
+</style>
 {/block}
 {block name="pageType"}fenlei{/block}
 {block name="main" }
-
 	<div class="page-bd">
         <!-- 页面内容-->
-        <div class="top bor_b">
+        <div class="top bor_b" style="background-color:transparent">
         <a href="{:url('index/search')}">
-            <div class="inputBox"><img src="__STATIC__/mobile/default/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" placeholder="请输入关键词"></form></div></a>
-           <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span>
+            <div class="inputBox" style="background:#FFF;width: 3.85rem;border-radius:0.066667rem"><img src="__STATIC__/unique/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" placeholder="请输入搜索关键词"></form></div></a>
+            <div class="search-btn fs28 BGcolor_r color_W">搜索</div>
+           <!-- <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span> -->
         </div>
         <div class="left bor_R">
           {notempty name="$allSort.best"}	
@@ -22,10 +44,14 @@
         </div>
         <div class="right">
          {notempty name="$allSort.best"}	
+            
           	<div class="rightBox" style="display:block">
+                <a href="{$slide.data}">
+                    <div class="bigImg"><img src="{$slide.imgurl}"></div>
+                </a>
             {volist name="allSort.best" id="best" }
               <div class="block">
-                  <div class="title"><i></i><span class="fs28 fw_b color_3">{$best.m_name}</span><i></i></div>
+                  <div class="title"><i></i><span class="fs28 fw_b color_3">全部{$best.m_name}</span><i></i></div>
                   <div class="list">
                   	{volist name="best.children" id="cid"}
                       <a href='{:url("goods/index",['cid'=>$cid])}'><img src="{$classList[$cid]['pic']}" alt=""><span class="fs26 color_6">
@@ -40,10 +66,10 @@
         
         
         {volist name="allSort.rows" id="class" }
-              <div class="rightBox" style="{if condition="empty($allSort['best']) && $i == 1"}display:block{/if}">
+            <div class="rightBox" style="{if condition="empty($allSort['best']) && $i == 1"}display:block{/if}">
             {empty name="$class.children"}
                 <div class="block">
-                    <div class="title"><i></i><span class="fs28 fw_b color_3">{$class['m_name']?$class['m_name']:$class['name']}</span><i></i></div>
+                    <div class="title"><i></i><span class="fs28 fw_b color_3">全部{$class['m_name']?$class['m_name']:$class['name']}</span><i></i></div>
                     <div class="list">
                         <a href='{:url("goods/index",['cid'=>$class.id])}'><img src="{$class['pic']}" alt=""><span class="fs26 color_6">{$class['m_name']?$class['m_name']:$class['name']}</span></a>
                     </div>
@@ -51,7 +77,7 @@
             {else/}
                 {volist name="class.children"  id="cids" }
                   <div class="block">
-                      <div class="title"><i></i><span class="fs28 fw_b color_3">{$classList[$key]['m_name']?$classList[$key]['m_name']:$classList[$key]['name']}</span><i></i></div>
+                      <div class="title"><i></i><span class="fs28 fw_b color_3">全部{$classList[$key]['m_name']?$classList[$key]['m_name']:$classList[$key]['name']}</span><i></i></div>
                       <div class="list">
                       	{volist name="cids" id="cid" }
                         <a href='{:url("goods/index",['cid'=>$cid])}'><img src="{$classList[$cid]['pic']}" alt=""><span class="fs26 color_6">{$classList[$cid]['m_name']?$classList[$cid]['m_name']:$classList[$cid]['name']}</span></a>
@@ -64,7 +90,7 @@
          {/volist}
         </div>
       </div>
-{include file="layouts@bottom" /}
+{include file="layouts@bottom_unique" /}
 {/block}
 {block name="footer"}
 

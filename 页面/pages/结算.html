@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>结算</title>
+    <link rel="stylesheet" href="../assets/css/payment.css" />
+    <link rel="stylesheet" href="../assets/css/coupons.css" />
+</head>
+
+<body>
+    <div class="page payment payment_coupons">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">结算</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="top">
+                <!-- 没收货地址 -->
+                <a href="#" class="tips fs30 fw_b color_9">你还没有收货地址，<span class="color_3">去添加</span></a>
+                <!-- 收货地址 -->
+                <a href="我的收货地址.html" class="address">
+                    <div>
+                        <p class="fs30 fw_b color_3">周杰伦 15984568411</p><span
+                            class="fs28 color_9">广州市海珠区客村新南港西路丽影广场4栋105室</span>
+                    </div>
+                    <img src="../assets/images/rightIcon.png" alt="">
+                </a>
+            </div>
+            <!-- 购物车 -->
+            <div class="goodslist">
+                <div class="title fs26 color_9">商品信息</div>
+                <a href="商品.html">
+                    <div class="checkbox">
+                        <img src="../assets/images/youLike01.png" alt="" class="goodsimg">
+                        <div class="info">
+                            <p class="fs28 color_3">连帽系腰带鹅绒羽绒服大毛领手工刺服大毛领手工刺</p>
+                            <div class="sign fs28 color_9">铁锈红-M码</div>
+                            <div class="Money">
+                                <div class="left">
+                                    <div class="color_3 fs24 num mg_rg">
+                                        <p class="fw_b fm_p">￥</p><em class="fs32 fw_b">199</em><i>.00</i>
+                                    </div>
+                                </div>
+                                <!-- <em class="fs28 color_3">x10</em> -->
+                                <div class="number"><img src="../assets/images/goodsIcon05.png" alt=""
+                                        class="minus"><input class="fs30 color_3" type="text" value="10"> <img
+                                        src="../assets/images/goodsIcon06.png" alt="" class="add"></div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+                <div class="inputBox bor_t">
+                    <input type="text" placeholder="给商家留言" class="fs28 color_3" id="inpBox">
+                    <p class="fs28 color_9 num" id="wordNum">0/140</p>
+                </div>
+            </div>
+            <div class="cellBox">
+                <div class="color_3 cell fw_b">
+                    <span class="fs28">商品金额</span>
+                    <div class="color_3 fs28 num money">
+                        <p class="fw_b fm_p">￥</p><em class="fs28 ">982.00</em>
+                    </div>
+                </div>
+                <div class="color_3 cell fw_b">
+                    <span class="fs28">运费</span>
+                    <div class="color_3 fs28 num money">
+                        <p class="fw_b fm_p">￥</p><em class="fs28">10.00</em>
+                    </div>
+                </div>
+            </div>
+            <div class="cellBox">
+                <div class="color_3 cell fw_b">
+                    <label for="s15">
+                        <div class="iconBox">
+                            <input type="checkbox" class="check" name="checkbox1" id="s15" checked="checked">
+                            <i class="icon_checked"></i>
+                        </div>
+                        <span class="fs28">鼓励金抵扣</span>
+                        <span class="fs24 color_9">(余额：<span class="color_r">400.00</span>)</span>
+                    </label>
+
+                    <div class="color_3 fs28 num money">
+                        <p class="fw_b fm_p">-￥</p><em class="fs28">10.00</em>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="paymentbox">
+            <div class="left"><span class="fs28 color_9">实付款</span>
+                <div class="color_3 fs30 num money">
+                    <p class="fw_b fm_p">￥</p><em class="fs52">399</em><i>.00</i>
+                </div>
+            </div>
+            <div class="gopay fs28 color_w BGcolor_r">立即支付</div>
+        </div>
+        <!-- 支付方式 -->
+        <div class="model">
+            <div class="modelContent">
+                <div class="closeBox"><img src="../assets/images/close_icon.png" alt=""></div>
+                <div class="title fs36 color_3 fw_b">请选择支付方式</div>
+                <div class="cantre">
+                    <div class="block">
+                        <div class="payType"><img src="../assets/images/balancePay.png" alt="">
+                            <div><span class="fs30 color_3">余额支付</span><span class="fs26 color_r">(余额不足)</span></div>
+                        </div>
+                        <label for="s11">
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s11" checked>
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <div class="payType"><img src="../assets/images/weixinPay.png" alt="">
+                            <div><span class="fs30 color_3">微信支付</span></div>
+                        </div>
+                        <label for="s12">
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s12">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="block">
+                        <div class="payType"><img src="../assets/images/AliPay.png" alt="">
+                            <div><span class="fs30 color_3">支付宝</span></div>
+                        </div>
+                        <label for="s13">
+                            <div class="iconBox">
+                                <input type="radio" class="check" name="radiobox" id="s13">
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                    </div>
+                </div>
+                <div class="buttBox">
+                    <span class="fs32 fw_b color_w BGcolor_r">确认支付</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            $('.gopay').on('click', function () {
+                $('.model').show();
+            })
+            $('.closeBox').on('click', function () {
+                $('.model').hide();
+            })
+            $('.buttBox span').on('click', function () {
+                $(window).attr('location', './支付结果成功.html');
+            })
+            $('.number input').on('click', function () {
+                event.preventDefault();
+            })
+            //减
+            $('.minus').on('click', function () {
+                event.preventDefault();
+                var numVal = parseInt($(this).siblings('input').val()) - 1;
+                if (numVal <= 0) {
+                    return
+                } else {
+                    $(this).siblings('input').val(numVal)
+                }
+            })
+            //加
+            $('.add').on('click', function (event) {
+                event.preventDefault();
+                var numVal = parseInt($(this).siblings('input').val()) + 1;
+                $(this).siblings('input').val(numVal)
+            })
+
+        })
+        var txt = document.getElementById("inpBox");
+        var txtNum = document.getElementById("wordNum");
+        var sw = false; //定义关闭的开关
+
+        txt.addEventListener("keyup", function () {
+            if (sw == false) {
+                countTxt();
+            }
+        });
+        txt.addEventListener("compositionstart", function () {
+            sw = true;
+        });
+        txt.addEventListener("compositionend", function () {
+            sw = false;
+            countTxt();
+        });
+
+        function countTxt() { //计数函数
+            if (sw == false && txt.value.length <= 140) { //只有开关关闭时，才赋值
+                txtNum.textContent = txt.value.length + '/140';
+            } else {
+                txtNum.textContent = '140/140'
+                txtNum.style.color = '#F65236';
+            }
+        }
+    </script>
+</body>
+
+</html>

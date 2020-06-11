@@ -7,6 +7,7 @@ use app\shop\model\CartModel;
 use app\shop\model\GoodsModel;
 use app\weixin\model\MiniModel;
 use app\shop\model\BonusModel;
+use think\facade\Cache;
 
 /*------------------------------------------------------ */
 //-- 商品相关API
@@ -460,5 +461,16 @@ class Goods extends ApiController
         $value = url('shop/goods/info',['id'=>$goods_id,'share_token'=>$this->userInfo['token']],true,true);
         $QRcode::png($value, $file, "L", 10, 1, 2, true);
         return $file;
+    }
+    /*------------------------------------------------------ */
+    //-- 清除商品搜索历史
+    /*------------------------------------------------------ */
+    public function cleanSearchGoodsHistory()
+    {
+        $user_id = $this->userInfo['user_id'];
+        if (!$user_id) return ['code' => 1];
+        Session('searchKeys',null);
+        Cache::rm('searchKeys' . $user_id);
+        return ['code' => 1];
     }
 }

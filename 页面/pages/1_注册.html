@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>注册</title>
+  <link rel="stylesheet" href="../assets/css/login.css" />
+</head>
+
+<body>
+  <div class="page register">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">注册</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">手机号</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="number" placeholder="请输入手机号">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">验证码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="number" placeholder="请输入验证码">
+          </div>
+          <div class="cell_ft">
+            <span class="fs28 fw_b color_r send-captcha" data-type="AliPay">发送验证码</span>
+            <span class="fs28 fw_b color_9 countdown">60s</span>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">密码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28 password" type="password" placeholder="请输入密码(最少6位)">
+          </div>
+          <div class="cell_ft">
+            <div class="ereBox">
+              <img src="../assets/images/login01.png" alt="" data-type="0">
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text_c fs28 color_r save-btn">同意协议并提交</div>
+
+      <div class="protocol fs24 text_c ">
+        <span class="color_9">查看</span>
+        <a href="#" class="color_r">《用户协议》</a>
+      </div>
+
+
+    </div>
+
+  </div>
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+
+      $('.ereBox').on('click', function () {
+        var obj = $(this).find('img')
+        if (obj.attr('data-type') == '0') {
+          obj.attr('src', '../assets/images/login02.png')
+          obj.attr('data-type', '1')
+          $('.password').attr('type', 'text')
+        } else {
+          obj.attr('src', '../assets/images/login01.png')
+          obj.attr('data-type', '0')
+          $('.password').attr('type', 'password')
+        }
+      })
+    })
+
+    // 发送验证码倒计时
+    var timerId = null
+    $('.send-captcha').on('click', function () {
+      var timeSecond = 60
+      var _this = this
+      $(_this).hide()
+      $(_this).next().show()
+      $(_this).next().text(timeSecond + 's')
+      clearInterval(timerId)
+      timerId = setInterval(function () {
+        if (timeSecond > 0) {
+          timeSecond -= 1
+          $(_this).next().text(timeSecond + 's')
+        } else {
+          clearInterval(timerId)
+          $(_this).show()
+          $(_this).next().hide()
+        }
+      }, 1000)
+    })
+  </script>
+</body>
+
+</html>

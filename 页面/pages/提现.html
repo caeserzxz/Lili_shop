@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>提现</title>
+  <link rel="stylesheet" href="../assets/css/wallet.css" />
+</head>
+
+<body>
+  <div class="page chongzhi">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">提现</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="inputBlock">
+        <div class="tips fs28 color_3">提现金额</div>
+        <div class="input">
+          <div class="input-left">
+            <em class="fs48 fw_b color_9 mr10">¥</em>
+            <input type="text" class="fs60 num textBox" value="0">
+          </div>
+          <span class="fs24 fw_b color_3">手续费0元</span>
+        </div>
+        <div class="money">
+          <div class="fs26 color_9">余额：<span class="color_3 num">198</span></div>
+          <p class="fs24 fw_b color_r">全部提现</p>
+        </div>
+      </div>
+
+      <div class="cells withdraw">
+        <div class="cell current">
+          <div class="cell_hd">
+            <span class="fs28 color_3">提现至：</span>
+            <img src="../assets/images/AliPay.png" alt="">
+          </div>
+          <div class="cell_bd">
+            <span class="fs30 color_3">支付宝</span>
+            <span class="fs26 color_9">(134***5236)</span>
+          </div>
+          <div class="cell_ft arrowright"></div>
+        </div>
+        <a href="添加收款账户.html" class="cell">
+          <div class="cell_hd"><img src="../assets/images/icon_add.png" alt=""></div>
+          <div class="cell_bd"><span class="fs30 color_r">添加收款账户</span></div>
+        </a>
+      </div>
+
+
+      <div class="button fs32 fw_b color_w BGcolor_r">提现</div>
+      <div class="fs32 text_c color_9 mb30"><span>提现记录</span></div>
+
+    </div>
+    <!-- 提现方式 弹窗 -->
+    <div class="modal">
+      <div class="paytype">
+        <div class="title fs34 color_3 fw_b">请选择提现方式</div>
+        <div class="cells">
+          <div class="cell">
+            <div class="cell_hd"><img src="../assets/images/weixinPay.png" alt=""></div>
+            <div class="cell_bd">
+              <span class="fs30 color_3">微信支付</span>
+              <span class="fs26 color_9">(134***5236)</span>
+            </div>
+            <div class="cell_ft">
+              <label for="s11">
+                <div class="iconBox">
+                  <input type="radio" class="check" name="radiobox" id="s11" checked>
+                  <i class="icon_checked"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="cell">
+            <div class="cell_hd"><img src="../assets/images/AliPay.png" alt=""></div>
+            <div class="cell_bd">
+              <span class="fs30 color_3">支付宝</span>
+              <span class="fs26 color_9">(158***2345)</span>
+            </div>
+            <div class="cell_ft">
+              <label for="s12">
+                <div class="iconBox">
+                  <input type="radio" class="check" name="radiobox" id="s12">
+                  <i class="icon_checked"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="cell">
+            <div class="cell_hd"><img src="../assets/images/GSBank.png" alt=""></div>
+            <div class="cell_bd">
+              <span class="fs30 color_3">中国工商银行</span>
+              <span class="fs26 color_9">(622***9945)</span>
+            </div>
+            <div class="cell_ft">
+              <label for="s13">
+                <div class="iconBox">
+                  <input type="radio" class="check" name="radiobox" id="s13">
+                  <i class="icon_checked"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="cell">
+            <div class="cell_hd"><img src="../assets/images/JSBank.png" alt=""></div>
+            <div class="cell_bd">
+              <span class="fs30 color_3">中国建设银行</span>
+              <span class="fs26 color_9">(622***7356)</span>
+            </div>
+            <div class="cell_ft">
+              <label for="s14">
+                <div class="iconBox">
+                  <input type="radio" class="check" name="radiobox" id="s14">
+                  <i class="icon_checked"></i>
+                </div>
+              </label>
+            </div>
+          </div>
+          <div class="modal-btn">完成</div>
+        </div>
+      </div>
+    </div>
+
+
+  </div>
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+
+    $(".withdraw").on("click", '.arrowright', function () {
+      $(".modal").show();
+    })
+    //选择提现方式
+    $('.modal .modal-btn').on('click', function() {
+      $('.modal input').each(function() {
+        if ($(this).prop('checked')) {
+          var parentCell = $(this).parents('.modal .cell')
+          var imgSrc = parentCell.find('img').attr('src')
+          var cell_bd = parentCell.find('.cell_bd').html()
+
+          $('.withdraw .current').find('img').attr('src', imgSrc)
+          $('.withdraw .current').find('.cell_bd').html(cell_bd)
+          $('.modal').hide()
+        }
+      })
+    })
+
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>评价</title>
+    <link rel="stylesheet" href="../assets/css/my.css" />
+  </head>
+  <body>
+    <div class="page evaluating">
+      <div class="page-hd ">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">评价</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+      </div>
+      <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="block">
+          <div class="title fs26 fw_b color_9">商品信息</div>
+          <a href="商品.html" class="goodsBox">
+            <img src="../assets/images/youLike01.png" alt=""> 
+            <div class="info">
+              <div class="name fs28 color_3 textline_2">玉兰油OLAY 新生塑颜臻粹修护精华玉兰油玉兰油OLAY护精华玉</div>
+              <div class="type fs28 color_9">铁锈红-M码</div>
+              <div class="infoBott">
+                <div class="money">
+                    <div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">199</em><p>.88</p></div>
+                </div>
+              </div>
+            </div>                  
+          </a>
+        </div>
+        <div class="block">
+          <div class="title fs32 fw_b color_3">评价</div>
+          <textarea placeholder="请输入您的评价~" class="fs28 color_3" rows="4" maxlength="100" id="textBox"></textarea>
+          <span class="textlength fs28 color_9 num" id="wordNum">0/100</span>
+        </div>
+        <div class="block">
+          <div class="uploading">
+            <div class="title fs32 fw_b color_3">
+              上传照片
+              <span class="fs24 color_9">(最多支持6张)</span>
+            </div>
+            <div class="uploadBox">
+               <div class="Box">
+                 <img src="../assets/images/youLike01.png" alt="" class="imgBox">
+                 <img src="../assets/images/closeImg.png" alt="" class="closeImg">
+               </div>
+               <div class="Box">
+                  <img src="../assets/images/addImg.png" alt="" class="imgBox">
+                  <input type="file" class="uploadInput">
+                  
+                </div>
+            </div>
+          </div>
+        </div>
+        <div class="butt">
+          <span class="fs32 fw_b color_w BGcolor_r">提交</span>
+        </div>
+      </div>
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+
+    <script>
+    var txt = document.getElementById("textBox");
+    var txtNum = document.getElementById("wordNum");
+    var sw = false;      //定义关闭的开关
+
+    txt.addEventListener("keyup", function(){
+        if(sw == false){
+            countTxt();
+        }
+    });
+    txt.addEventListener("compositionstart", function(){
+        sw = true;
+    });
+    txt.addEventListener("compositionend", function(){
+        sw = false;
+        countTxt();
+    });
+    function countTxt(){       //计数函数
+        if(sw == false&&txt.value.length<=100){        //只有开关关闭时，才赋值
+            txtNum.textContent = txt.value.length+'/100';
+        }else{
+          txtNum.textContent = '100/100'
+          txtNum.style.color = '#F65236';
+        }
+    }
+    </script>
+    
+  </body>
+</html>

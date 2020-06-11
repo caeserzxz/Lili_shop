@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>商家红包</title>
+    <link rel="stylesheet" href="../assets/css/merRedEnv.css" />
+</head>
+
+<body>
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">商家红包</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!--start 页面内容-->
+            <div class="weui-tab">
+                <!--start navbar -->
+                <div class="weui-navbar">
+                    <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                        未使用(12)
+                    </a>
+                    <a class="weui-navbar__item" href="#tab2">
+                        已使用(1)
+                    </a>
+                    <a class="weui-navbar__item" href="#tab3">
+                        已过期(3)
+                    </a>
+                </div>
+                <!--end navbar -->
+                <div class="weui-tab__bd">
+                    <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                        <div class="list-item Unused">
+                            <div class="left-money">
+                                <span class="fs38 fw_b">￥</span>
+                                <span class="fs60 fw_b">20</span>
+                            </div>
+                            <div class="dash-line"></div>
+                            <div class="right-info">
+                                <div class="fs34 fw_b color_3">全家便利店</div>
+                                <div class="fs24 color_9">有效期至:2019.01.20</div>
+                                <div class="text_r mt10"><span class="go-btn">去使用</span></div>
+                            </div>
+                        </div>
+                        <div class="list-item Unused">
+                            <div class="left-money">
+                                <span class="fs38 fw_b">￥</span>
+                                <span class="fs60 fw_b">100</span>
+                            </div>
+                            <div class="dash-line Unused"></div>
+                            <div class="right-info">
+                                <div class="fs34 fw_b color_3">好运来超市</div>
+                                <div class="fs24 color_9">有效期至:2019.01.20</div>
+                                <div class="text_r mt10"><span class="go-btn">去使用</span></div>
+                            </div>
+                        </div>
+                        <div class="list-item Unused">
+                            <div class="left-money">
+                                <span class="fs38 fw_b">￥</span>
+                                <span class="fs60 fw_b">99</span>
+                            </div>
+                            <div class="dash-line"></div>
+                            <div class="right-info">
+                                <div class="fs34 fw_b color_3">喜士多便利店</div>
+                                <div class="fs24 color_9">有效期至:2019.01.20</div>
+                                <div class="text_r mt10"><span class="go-btn">去使用</span></div>
+                            </div>
+                        </div>
+                        <!-- 没有更多了 -->
+                        <div class="text_c color_9">已经到底啦~</div>
+                    </div>
+                    <div id="tab2" class="weui-tab__bd-item">
+                        <div class="list-item used">
+                            <div class="left-money">
+                                <span class="fs38 fw_b">￥</span>
+                                <span class="fs60 fw_b">20</span>
+                            </div>
+                            <div class="dash-line"></div>
+                            <div class="right-info">
+                                <div class="fs34 fw_b color_3">全家便利店</div>
+                                <div class="fs24 color_9">有效期至:2019.01.20</div>
+                                <div class="text_r mt10"><span class="go-btn">使用详情</span></div>
+                            </div>
+                        </div>
+                        <!-- 没有更多了 -->
+                        <div class="text_c color_9">已经到底啦~</div>
+                    </div>
+                    <div id="tab3" class="weui-tab__bd-item">
+                        <div class="list-item expired">
+                            <div class="left-money">
+                                <span class="fs38 fw_b">￥</span>
+                                <span class="fs60 fw_b">20</span>
+                            </div>
+                            <div class="dash-line"></div>
+                            <div class="right-info">
+                                <div class="fs34 fw_b">全家便利店</div>
+                                <div class="fs24 color_9">有效期至:2019.01.20</div>
+                                <div class="text_r mt10"><span class="go-btn">已过期</span></div>
+                            </div>
+                        </div>
+                        <!-- 没有更多了 -->
+                        <div class="text_c color_9">已经到底啦~</div>
+                    </div>
+                    
+                </div>
+            </div>
+            <!--end 页面内容-->
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".trace-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+    </script>
+</body>
+
+</html>

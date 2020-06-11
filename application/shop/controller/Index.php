@@ -73,6 +73,9 @@ class Index  extends ClientbaseController{
 		$GoodsModel = new GoodsModel();
 		$this->assign('allSort',$GoodsModel->getClassToAllSort());//获取分层分类
 		$this->assign('classList',$GoodsModel->getClassList());//获取分类
+        $this->assign('not_top_nav',true);
+        $slide = SlideModel::where(['status' => 1,'type' => 3])->order('sort_order DESC')->find();
+        $this->assign('slide',$slide);//获取banner图
 		return $this->fetch('all_sort');
 	}
 	/*------------------------------------------------------ */
@@ -81,6 +84,7 @@ class Index  extends ClientbaseController{
 	public function search(){
 		$this->assign('title', '搜索');
 		$this->assign('hotSearch', explode(' ',settings('hot_search')));
+        $this->assign('hotRedSearch', explode(' ',settings('hot_red_search')));
         $GoodsModel = new GoodsModel();
         $this->assign('searchKeys', $GoodsModel->searchKeys());
 		return $this->fetch('search');

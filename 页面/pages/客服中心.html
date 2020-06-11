@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>客服中心</title>
+  <link rel="stylesheet" href="../assets/css/serverCenter.css" />
+</head>
+
+<body>
+  <div class="page serverCenter">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">客服中心</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd"></div>
+          <div class="cell_bd">
+            <span class="fs30 color_3">客服电话</span>
+          </div>
+          <div class="cell_ft arrowright">
+            <span class="fs28 color_9">020-456952</span>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd"></div>
+          <div class="cell_bd">
+            <span class="fs30 color_3">客服微信二维码</span>
+          </div>
+          <div class="cell_ft arrowright show-code">
+            <span class="fs28 color_9">查看二维码</span>
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd"></div>
+          <div class="cell_bd">
+            <span class="fs30 color_3">客服时间</span>
+          </div>
+          <div class="cell_ft">
+            <span class="fs28 color_9">09:00-18:00</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- 二维码弹窗 -->
+    <div class="modal">
+      <div class="modal-main">
+        <img src="../assets/images/code.png" alt="">
+        <div class="fs26 color_w mt40">长按图片保存二维码</div>
+      </div>
+    </div>
+
+
+  </div>
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    
+    $('.show-code').on('click', function() {
+      $('.modal').show()
+    })
+    $('.modal').on('click', function() {
+      $(this).hide()
+    })
+
+  </script>
+</body>
+
+</html>

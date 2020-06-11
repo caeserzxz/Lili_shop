@@ -1,0 +1,46 @@
+.get-redenv img {
+  width: 100%;
+  height: 3.333333rem;
+}
+
+.get-redenv .content {
+  position: relative;
+  margin: auto;
+  margin-top: -1rem;
+  padding: 0.533333rem 0;
+  width: 4.733333rem;
+  height: 3.333333rem;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 0.133333rem;
+  z-index: 2;
+}
+
+.redenv-over,
+.active-over {
+  display: none;
+  margin: auto;
+  width: 4.733333rem;
+  height: 4.666667rem;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 0.133333rem;
+  overflow: hidden;
+}
+
+.redenv-over img,
+.active-over img {
+  margin: 0.8rem auto 0.4rem;
+  width: 0.666667rem;
+  height: 0.666667rem;
+}
+
+.redenv-over .active-over-img,
+.active-over .active-over-img {
+  width: 1rem;
+  height: 1rem;
+}
+
+.fs120 {
+  font-size: 0.8rem;
+}

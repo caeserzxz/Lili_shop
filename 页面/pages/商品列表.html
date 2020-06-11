@@ -1,0 +1,440 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+  <head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>商品列表</title>
+    <link rel="stylesheet" href="../assets/css/goodslist.css" />
+    <link rel="stylesheet" href="../assets/css/coupons.css" />
+  </head>
+  <body>
+    <div class="page">
+      <div class="page-hd">
+        <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">商品列表</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+      </div>
+
+      <div class="page-bd" id="content">
+        <!-- 页面内容-->
+        <div class="scrollBox" style="display: flex;flex-direction: column;height: 100%;">
+          <div class="top">
+            <div class="inputBox"><img src="../assets/images/selech01.png" alt=""><input class="fs28 color_3" readonly type="text" placeholder="请输入关键词"></div>
+            <div class="search-btn">搜索</div>
+          </div>
+          <div style="width: 100%;height: 0.6rem;">
+            <div class="selectBox">
+                  <div class="color_3 fs30 rank">综合</div>
+                  <div class="color_3 fs30 rank">新品</div>
+                  <div class="color_3 fs30 rank rank_active"><span>销量</span><img src="../assets/images/goodslist02.png" alt="" data-type="0"></div>
+                  <div class="color_3 fs30 bor_R rank"><span>价格</span><img src="../assets/images/goodslist01.png" alt="" data-type="1"></div>
+                  <div class="color_3 fs30 select"><span>筛选</span><img src="../assets/images/goodslist04.png" alt=""></div>
+            </div>
+          </div>
+          <div class="coupones_gooddlist" style="display:  none;">
+            <div class="title fs26 color_3">以下商品可以使用如下优惠</div>
+            <div class="block">
+                <div class="left">
+                  <div class="fs34 fw_b color_3">新人专享券</div>
+                  <p class="fs24 color_9">有效期2019.07.30</p>
+                </div>
+                <div class="right">
+                  <div class="fs38 money color_r">
+                    <p class="fw_b">￥</p><em class="fs60 num">100</em>
+                  </div>
+                  <span class="fs26 color_9">满39元可用</span>
+                </div>
+              </div>
+          </div>
+          <div class="goodslist" id="container" style="flex: 1;">
+
+          </div>
+        </div>
+      </div>
+      <!-- 弹出规格选择 -->
+      <div class="model">
+          <div class="modelContent">
+            <div class="cantre">
+                <div class="block">
+                    <div class="title"><p class="fs32 fw_b color_3">价格区间</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                    <div class="list moneyBox">
+                      <div><input type="text" class="fs30 color_3" placeholder="最低价"></div>
+                      <em class="fs28 color_3"></em>
+                      <div><input type="text" class="fs30 color_3" placeholder="最高价"></div>
+                    </div>
+                  </div>
+              <div class="block">
+                  <div class="title"><p class="fs32 fw_b color_3">分类</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                <div class="list">
+                  <span class="fs28 color_3 ">中国红</span>
+                  <span class="fs28 color_3">藏青色</span>
+                  <span class="fs28 color_3">铁锈红</span>
+                  <span class="fs28 color_3">宝蓝色</span>
+                  <span class="fs28 color_3">中国红中国红中国红中国红</span>
+                  <span class="fs28 color_3">藏青色</span>
+                  <span class="fs28 color_3">铁锈红</span>
+                  <span class="fs28 color_3">宝蓝色</span>
+                  <span class="fs28 color_3">中国火红</span>
+                  <span class="fs28 color_3">藏青色</span>
+                  <span class="fs28 color_3">铁锈红</span>
+                  <span class="fs28 color_3">宝蓝色</span>
+                </div>
+              </div>
+              <div class="block">
+                  <div class="title"><p class="fs32 fw_b color_3">品牌</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                  <div class="list">
+                    <span class="fs28 color_3 ">S码</span>
+                    <span class="fs28 color_3 ">M码</span>
+                    <span class="fs28 color_3 ">L码</span>
+                    <span class="fs28 color_3 ">XL码</span>
+                  </div>
+                </div>
+                <div class="block">
+                    <div class="title"><p class="fs32 fw_b color_3">品牌</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                    <div class="list">
+                      <span class="fs28 color_3 ">S码</span>
+                      <span class="fs28 color_3 ">M码</span>
+                      <span class="fs28 color_3 ">L码</span>
+                      <span class="fs28 color_3 ">XL码</span>
+                    </div>
+                  </div>
+                  <div class="block">
+                      <div class="title"><p class="fs32 fw_b color_3">品牌</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                      <div class="list">
+                        <span class="fs28 color_3 ">S码</span>
+                        <span class="fs28 color_3 ">M码</span>
+                        <span class="fs28 color_3 ">L码</span>
+                        <span class="fs28 color_3 ">XL码</span>
+                      </div>
+                    </div>
+                    <div class="block">
+                        <div class="title"><p class="fs32 fw_b color_3">品牌</p><img src="../assets/images/goodslist05.png" alt="" data-type="0"></div> 
+                        <div class="list">
+                          <span class="fs28 color_3 ">S码</span>
+                          <span class="fs28 color_3 ">M码</span>
+                          <span class="fs28 color_3 ">L码</span>
+                          <span class="fs28 color_3 ">XL码</span>
+                        </div>
+                      </div>
+            </div>
+            <div class="buttBox">
+              <span class="fs28 fw_b color_w BGcolor_3">清除</span>
+              <span class="fs28 fw_b color_w BGcolor_r">确定</span>
+            </div>
+          </div>
+      </div>
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+      $(function(){
+          $('.inputBox').on('click',function(){
+            window.location.href='./搜索.html'
+          })
+          $('.rank').on('click',function(){
+            if(!$(this).hasClass('rank_active')){
+              var sibImg=$('.rank').find('img')
+              sibImg.attr('src','../assets/images/goodslist01.png')
+              sibImg.attr('data-type','1')
+            }
+            $(this).addClass('rank_active')
+            $(this).siblings().removeClass('rank_active')
+            var imgObj=$(this).find('img')
+            if(imgObj.attr('data-type')==0){
+              imgObj.attr('src','../assets/images/goodslist03.png')
+              imgObj.attr('data-type','1')
+            }else{
+              imgObj.attr('src','../assets/images/goodslist02.png')
+              imgObj.attr('data-type','0')
+            }    
+          })
+        //开启规格选择弹窗
+        $('.select').on('click',function(){
+            $('.model').show()
+        })
+        //关闭规格选择弹窗
+        $('.buttBox span').eq(1).on('click',function(){
+            $('.model').hide()
+        })
+        //筛选选择
+        $('.list span').on('click',function(){
+           $(this).addClass('tag_active')
+           $(this).siblings().removeClass('tag_active')
+        })
+        //筛选块的收放
+        $('.title').on('click',function(){
+          $(this).siblings().slideToggle()
+          var imgObj=$(this).find('img')
+          if(imgObj.attr('data-type')==0){
+            imgObj.css('transform','rotate(180deg)')
+            imgObj.attr('data-type','1')
+          }else{
+            imgObj.css('transform','rotate(3600deg)')
+            imgObj.attr('data-type','0')
+          }
+        })
+      })
+    </script>
+    <script id="test" type="text/html">
+      {{if goodsData== undefined || goodsData.length <= 0}}
+          <span class="fs30 color_9">可用商品已下架</span>
+      {{else}}
+        {{each goodsData value index}}
+        <a href='商品.html?goodsid={{value.id}}' class="Box">
+          <img src="{{value.imgurl}}" alt="">
+          <div class="info">
+            <span class="fs30 color_3">{{value.name}}</span>
+            <div class="color_r fs24 num money">
+              <div class="moneytext">
+                <p class="fw_b fm_p fw_b">￥</p><em class="fs36">{{value.money}}</em><p>.{{value.decimals}}</p>
+              </div>
+              <p class="color_9">已售{{value.salesNum}}</p>
+            </div>
+            <div class="ratio fs20 mt10">自购返8%</div>
+          </div>
+        </a>
+        {{/each}}   
+      {{/if}}
+   
+    </script>
+    <script>
+     var data={
+       goodsData:[{
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621
+       },{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621},{         
+         id:'01',
+         imgurl:'../assets/images/youLike01.png',
+         name:'连帽系腰带鹅绒羽绒服',
+         money:199,
+         decimals:88,
+         oldMoney:299.00,
+         salesNum:5621}]
+      }
+      $(function(){
+        var ls = window.localStorage;
+        var pageIndex = 0;//页数
+        var historyData = [];
+        var listData = {};
+        if (sessionStorage.getItem("listData")) {
+
+          state = JSON.parse(sessionStorage.getItem("listData"));
+          sessionStorage.removeItem("listData");//防止跳转回列表页，点击刷新时，继续读缓存
+          pageIndex = state.pageIndex;
+          historyData = state.historyData;
+
+          document.getElementById("container").innerHTML = template('test',historyData);
+          //页面每次加载的时候获取本地存储里面的值
+          if (ls.getItem('sTop')) {
+            var oldStop = ls.getItem('sTop');
+            // 获取到的值来设置页面滚动条的位置
+            $('#content').scrollTop(oldStop)
+          }
+        } else {
+          // data.goodsData=[] 模拟没有优惠券对应的商品
+          if(data.goodsData== undefined || data.goodsData.length <= 0){
+              $('#container').addClass('coupones_noGooddlist')
+          }
+          document.getElementById("container").innerHTML = template('test',data);//ajax请求
+        }
+        $('.Box').on('click',function(){
+            state = { pageIndex: pageIndex, historyData: data};
+            sessionStorage.setItem("listData", JSON.stringify(state));
+        }) 
+        $('.page-bd').scroll(function(){
+            var box_h=$(this).height()
+            var content_h=$('.scrollBox').height()
+            var scroll_h=$(this).scrollTop();
+            var selectBox_h=$('.selectBox').height()
+            ls.setItem('sTop', scroll_h);
+            if(scroll_h>selectBox_h){
+              $('.selectBox').css({'position':'fixed','top':$('.page-hd').height()+'px',  'backgroundColor': '#fff'})
+            }else{
+              $('.selectBox').css({'position':'relative','top':'0', 'backgroundColor': ''})
+            }
+            if(content_h-box_h-scroll_h<20){
+              console.log('需要加载更多')
+            }
+          })     
+      })
+    </script>
+  </body>
+</html>

@@ -1,0 +1,489 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>商品详情</title>
+    <link rel="stylesheet" href="../assets/js/Swiper-4.0.7/swiper.min.css" />
+    <link rel="stylesheet" href="../assets/css/goodsDetail.css" />
+    <link rel="stylesheet" href="../assets/css/coupons.css" />
+</head>
+
+<body>
+    <div class="page Goods">
+        <div class="page-hd">
+            <div class="header">
+                <div class="header-left back">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">
+                    <span class="fs32 color_9 active">商品</span>
+                    <span class="fs32 color_9">评价</span>
+                    <span class="fs32 color_9">详情</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-bd tabBox" id="goods">
+            <!-- 页面内容-->
+            <!-- 商品轮播 -->
+            <div class="swiperBox">
+                <div class="shadow_box">
+                    <div class="swiper-container swiper1" id="swiper01">
+                        <div class="swiper-wrapper">
+                            <a href="#" class="swiper-slide"><img src="../assets/images/goods01.png" alt="" /></a>
+                            <a href="#" class="swiper-slide"><img src="../assets/images/goods01.png" alt="" /></a>
+                            <a href="#" class="swiper-slide"><img src="../assets/images/goods01.png" alt="" /></a>
+                            <a href="#" class="swiper-slide"><img src="../assets/images/goods01.png" alt="" /></a>
+                        </div>
+                        <div class="swiper-pagination pagination1"></div>
+
+                    </div>
+                </div>
+            </div>
+            <!-- 商品信息 -->
+            <div class="moneyBox">
+
+                <div class="money_shou">
+                    <div class="top">
+                        <div class="color_3 fs30 num money">
+                            <p class="fw_b fm_p">￥</p><em class="fs52">399</em><i>.00</i>
+                        </div>
+                        <span class="fs20 color_w BGcolor_r ratio">自购返5%</span>
+                    </div>
+                    <!-- 浮按钮 -->
+                    <div class="floatBtn">
+                        <a href="商品二维码.html" class="share ">
+                            <img src="../assets/images/goodsIcon01.png" alt="">
+                            <p class="fs20 color_9">分享</p>
+                        </a>
+                        <div class="attention ">
+                            <img src="../assets/images/goodsIcon03.png" data-no="0" alt="">
+                            <p class="fs20 color_9">收藏</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="original fs24 color_9">￥2635.00</div>
+                <div class="name fw_b fs34 color_3">冬季新款羽绒服宽松面包服休闲百搭短款羽绒服女女红色喜庆</div>
+            </div>
+
+
+            <div class="cell">
+                <span class="fs26 fw_b color_9">选择规格</span>
+                <div class="size">
+                    <p class="fs28 color_r">蓝色 / M码 / 2件</p><img src="../assets/images/rightIcon.png" alt=""
+                        class="threeRight">
+                </div>
+            </div>
+            <!-- 评论 -->
+            <div class="comment">
+                <a class="top" href="更多评论.html">
+                    <div class="fs26 color_9"><span class="fw_b">用户评价</span>
+                        <p class="color_9">(9)</p>
+                    </div>
+                    <div><span class="fs26 color_r">查看全部</span><img src="../assets/images/rightIcon.png" alt=""
+                            class="threeRight">
+                    </div>
+                </a>
+                <div class="commentBox">
+                    <div class="user">
+                        <img src="../assets/images/seckillimg.png" alt="">
+                        <div class="info">
+                            <p class="fs28 color_3">狂风扫落叶</p>
+                            <span class="fs24 color_9">2018.12.22</span>
+                        </div>
+                    </div>
+                    <div class="comtext fs28 color_3 line_twe">
+                        大衣是A字型的，有暗扣，系腰带效果一般，12.17买的，以为低价了，结果刚买完又降价了，预料不到的促销
+                    </div>
+                    <div class="comimg">
+                        <img src="../assets/images/youLike01.png" alt="">
+                        <img src="../assets/images/youLike01.png" alt="">
+                        <img src="../assets/images/youLike01.png" alt="">
+                    </div>
+                </div>
+            </div>
+            <!-- 图文 -->
+            <div class="imgText">
+                <div class="title fw_b fs26 color_9"><span class="dashedline"></span> 商品详情<span
+                        class="dashedline"></span></div>
+                <div class="imgBox"><img data-original="http://xingheshidai.gitee.io/communityshopimages/imgtext.png"
+                        alt="" class="textimg"></div>
+                <div class="imgBox"><img data-original="http://xingheshidai.gitee.io/communityshopimages/imgtext.png"
+                        alt="" class="textimg"></div>
+                <div class="imgBox"><img data-original="http://xingheshidai.gitee.io/communityshopimages/imgtext.png"
+                        alt="" class="textimg"></div>
+            </div>
+
+        </div>
+        <!-- 弹出规格选择 -->
+        <div class="model modelSize" style="display: block">
+            <div class="modelContent">
+                <div class="closeBox"><img src="../assets/images/close_icon.png" alt="" onclick="closeModel(this)">
+                </div>
+                <div class="top">
+                    <div class="left"><img src="../assets/images/goods01.png" alt=""></div>
+                    <div class="right">
+                        <div class="money">
+                            <div class="color_3 fs30 num">
+                                <p class="fw_b fm_p">￥</p><em class="fs52">199</em><i>.00</i>
+                            </div>
+                            <span class="fs20 color_w BGcolor_r ratio">自购返5%</span>
+                        </div>
+                        <div class="fs24 color_9 moneyPrimary">￥2635.00</div>
+                        <p class="fs28 fw_b color_3 goodstype">铁锈红-M码</p>
+                    </div>
+                </div>
+                <div class="tan_text fs24 color_r fw_b">对不起！该规格不参与优惠！</div>
+                <div class="cantre">
+                    <div class="block">
+                        <p class="fs32 fw_b color_3">颜色</p>
+                        <div class="list color">
+                            <span class="fs28 color_3 tag_active" data-money="198.99">中国红</span>
+                            <span class="fs28 color_3" data-money="199.99">藏青色</span>
+                            <span class="fs28 color_3 shimiao" data-money="199.99">铁锈红</span>
+                            <span class="fs28 color_3" data-money="188.99">宝蓝色</span>
+                            <span class="fs28 color_3" data-money="190.99">中国红中国红</span>
+                            <span class="fs28 color_3" data-money="190.99">藏青色</span>
+                            <span class="fs28 color_3" data-money="199.99">铁锈红</span>
+                            <span class="fs28 color_3" data-money="198.99">宝蓝色</span>
+                            <span class="fs28 color_3" data-money="199.99">中国红</span>
+                            <span class="fs28 color_3" data-money="189.99">藏青色</span>
+                            <span class="fs28 color_3" data-money="199.99">铁锈红</span>
+                            <span class="fs28 color_3" data-money="199.99">宝蓝色</span>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <p class="fs32 fw_b color_3">尺码</p>
+                        <div class="list size">
+                            <span class="fs28 color_3 tag_active">S码</span>
+                            <span class="fs28 color_3 ">M码</span>
+                            <span class="fs28 color_3 ">L码</span>
+                            <span class="fs28 color_3 ">XL码</span>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="numberBox">
+                            <p class="fs32 fw_b color_3">数量</p>
+                            <div class="number">
+                                <p class="fs24 color_r mg_rg">限购<span class="num_xianzhi">5</span>件</p><img
+                                    src="../assets/images/goodsIcon05.png" alt="" class="minus"><input
+                                    class="fs30 color_3" type="text" value="10"> <img
+                                    src="../assets/images/goodsIcon06.png" alt="" class="add">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttBox">
+                    <a href="结算.html" class="fs28 fw_b color_w BGcolor_3">加入购物车</a>
+                    <a href="结算.html" class="fs28 fw_b color_w BGcolor_r">立即购买</a>
+                </div>
+            </div>
+        </div>
+
+        <!-- 弹出领取优惠券 -->
+        <div class="model getCoupons" style="display: none">
+            <div class="modelContent">
+                <div class="title fs36 fw_b color_3">请领取优惠券</div>
+                <div class="list">
+                    <div class="block userTicket">
+                        <div class="left">
+                            <div class="fs34 fw_b">新人专享券</div>
+                            <p class="fs26">满0元可用</p>
+                            <span class="fs24">2018.12.20-2019.01.20</span>
+                        </div>
+                        <div class="right">
+                            <div class="fs38 money">
+                                <p class="fw_b">￥</p><em class="fs60 num">50</em>
+                            </div>
+                            <button class="fs24 active">立即领取</button>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="left">
+                            <div class="fs34 fw_b">新人专享券</div>
+                            <p class="fs26">满0元可用</p>
+                            <span class="fs24">2018.12.20-2019.01.20</span>
+                        </div>
+                        <div class="right">
+                            <div class="fs38 money">
+                                <p class="fw_b">￥</p><em class="fs60 num">100</em>
+                            </div>
+                            <button class="fs24 active">已失效</button>
+                        </div>
+                    </div>
+                    <div class="block userTicket">
+                        <div class="left">
+                            <div class="fs34 fw_b">新人专享券</div>
+                            <p class="fs26">满0元可用</p>
+                            <span class="fs24">2018.12.20-2019.01.20</span>
+                        </div>
+                        <div class="right">
+                            <div class="fs38 money">
+                                <p class="fw_b">￥</p><em class="fs60 num">99</em>
+                            </div>
+                            <button class="fs24 active">立即领取</button>
+                        </div>
+                    </div>
+                    <div class="block">
+                        <div class="left">
+                            <div class="fs34 fw_b">新人专享券</div>
+                            <p class="fs26">满0元可用</p>
+                            <span class="fs24">2018.12.20-2019.01.20</span>
+                        </div>
+                        <div class="right">
+                            <div class="fs38 money">
+                                <p class="fw_b">￥</p><em class="fs60 num">100</em>
+                            </div>
+                            <button class="fs24 active">已失效</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="closeBtn fs32 fw_b color_w BGcolor_r" onclick="closeModel(this)">关闭</div>
+            </div>
+        </div>
+
+        <!-- 弹出提示 -->
+        <div class="layout" style="display: none">
+            <div class="layoutBG"></div>
+            <div class="layoutBox">
+                <div class="text fs30 color_3 bor_b">
+                    抱歉，优惠券已抢光！
+                </div>
+                <!-- 单按钮 -->
+                <div class="button fs32 fw_b color_r">
+                    知道了
+                </div>
+            </div>
+        </div>
+        <!-- 底部 -->
+        <div class="page-ft">
+            <div class="left">
+                <a href="index.html"><img src="../assets/images/bottom_icon02.png" alt=""><span
+                        class="fs22 color_6">商城首页</span></a>
+                <a href="购物车.html"><em class="BGcolor_r fs22 color_w">99+</em><img
+                        src="../assets/images/bottom_icon04.png" alt=""><span class="fs22 color_6">购物车</span></a>
+            </div>
+            <div class="right">
+                <div class="fs28 color_w fw_b BGcolor_3 butt">加入购物车</div>
+                <div class="fs28 color_w fw_b BGcolor_r butt">立即购买</div>
+
+            </div>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script src="../assets/js/Swiper-4.0.7/swiper.min.js"></script>
+    <script src="../assets/js/jquery.lazyload.min.js"></script>
+    <script>
+        $(function () {
+            codeButton($('.start div'))
+            swiper1 = createSwiper(1);
+            $('#goods').animate({
+                scrollTop: 1
+            }, 1);
+            $("img.textimg").lazyload({
+                effect: "fadeIn",
+                event: "scroll",
+                container: $("#goods")
+            });
+
+            // 关注
+            $('.attention').on('click', function () {
+                var imgObj = $(this).find('img')
+                if (imgObj.attr('data-no') == 0) {
+                    imgObj.attr('src', '../assets/images/goodsIcon03_lh.png')
+                    imgObj.attr('data-no', '1')
+                } else {
+                    imgObj.attr('src', '../assets/images/goodsIcon03.png')
+                    imgObj.attr('data-no', '0')
+                }
+
+            })
+            // 滚动出现tab
+            $('#goods').scroll(function () {
+
+                var scrolltop = $(this).scrollTop()
+
+                if (scrolltop > 100) {
+                    $('.header-title').css('display', 'flex');
+                    $('.header-left').removeClass('back')
+                    $('.page-hd').css('background-color', '#fff')
+                    $('.header').addClass('bgShow')
+                    if ($('.comment').offset().top < $('.page-hd').height()) {
+                        $('.header-title span').eq(1).addClass('active')
+                        $('.header-title span').eq(1).siblings().removeClass('active')
+                        if ($('.imgText').offset().top < $('.page-hd').height()) {
+                            $('.header-title span').eq(2).addClass('active')
+                            $('.header-title span').eq(2).siblings().removeClass('active')
+                        } else {
+                            $('.header-title span').eq(1).addClass('active')
+                            $('.header-title span').eq(1).siblings().removeClass('active')
+                        }
+                    } else {
+                        $('.header-title span').eq(0).addClass('active')
+                        $('.header-title span').eq(0).siblings().removeClass('active')
+                    }
+
+                } else {
+                    $('.header-title').css('display', 'none');
+                    $('.header-left').addClass('back')
+                    $('.page-hd').css('background-color', 'transparent')
+                    $('.header').removeClass('bgShow')
+                }
+            })
+            $('.number input').on('click', function () {
+                event.preventDefault();
+            })
+            //减
+            $('.minus').on('click', function () {
+                event.preventDefault();
+                var numVal = parseInt($(this).siblings('input').val()) - 1;
+                if (numVal <= 0) {
+                    return
+                } else {
+                    $(this).siblings('input').val(numVal)
+                }
+            })
+            //加
+            $('.add').on('click', function (event) {
+                event.preventDefault();
+                var numXianzhi = $(".num_xianzhi").text()
+                console.log(numXianzhi)
+                var numVal = parseInt($(this).siblings('input').val()) + 1;
+                // 限购5件
+                if (numVal > numXianzhi) {
+                    $(this).siblings('input').val(numXianzhi)
+                } else {
+                    $(this).siblings('input').val(numVal)
+                }
+
+            })
+            //tab切换
+            $('.header-title span').on('click', function () {
+                var index = $(this).index()
+                var topHeight = $('.page-hd').height()
+                var commentTop = $('.comment').offset().top + $('#goods').scrollTop() - topHeight + 1
+                var imgTextTop = $('.imgText').offset().top + $('#goods').scrollTop() - topHeight + 1
+                if (index == 0) {
+                    $("#goods").animate({
+                        scrollTop: 0
+                    }, 300)
+                } else if (index == 1) {
+                    $("#goods").animate({
+                        scrollTop: commentTop + 'px'
+                    }, 300)
+                } else {
+                    $("#goods").animate({
+                        scrollTop: imgTextTop + 'px'
+                    }, 300)
+                }
+            })
+
+            //弹窗提示
+            $('.userTicket button').on('click', function () {
+                $('.model').hide()
+                $('.layout').show()
+            })
+            $('.layoutBG').on('click', function () {
+                $('.layout').hide()
+            })
+            $('.button').on('click', function () {
+                console.log('知道了')
+                $('.layout').hide()
+            })
+        })
+        //开启规格选择弹窗
+        $('.size').on('click', function () {
+            $('.modelSize').show()
+        })
+        //规格选择
+        $('.list span').on('click', function () {
+            $(this).addClass('tag_active')
+            $(this).siblings().removeClass('tag_active')
+            var type = $('.color .tag_active').text() + '-' + $('.size .tag_active').text()
+            $('.goodstype').text(type)
+            $('.model .money em').text($('.color .tag_active').attr('data-money'))
+            // 显示不参与活动
+            // 显示无货，原价购买
+            if ($(this).text() == "宝蓝色") {
+                $(".tan_text").show()
+                $(".tan_text").text("对不起！该规格活动库存已售罄，您将以原价购买！")
+
+            } else if ($(this).text() == "铁锈红") {
+                $(".tan_text").show()
+                $(".tan_text").text("对不起！该规格不参与优惠！")
+            } else {
+                $(".tan_text").hide()
+            }
+        })
+
+
+
+        function createSwiper(index) {
+            var swiper = new Swiper(".swiper" + index, {
+                pagination: {
+                    el: ".pagination" + index
+                },
+                paginationClickable: true,
+                observer: true,
+                observeParents: true,
+                loop: true,
+                onSlideChangeEnd: function (swiper) {
+                    swiper.update(); //swiper更新
+                }
+            });
+            return swiper;
+        }
+
+        function closeModel(obj) {
+            $(obj).parents('.model').hide()
+        }
+
+        // 限时优惠
+
+        function codeButton(obj) {
+            var code = obj;
+            var time = 10 //总秒数
+            var hour = time % 3600 == 0 ? parseInt(time / 3600) - 1 : parseInt(time / 3600); //shi
+            var min = time % 60 == 0 ? parseInt((time - hour * 3600) / 60) - 1 : parseInt(time / 3600) > 0 ? parseInt((time - hour * 3600) / 60) : parseInt(time / 60); //fen
+            var second = time % 60 == 0 ? 59 : time % 60 //miao
+            code.eq(0).text(hour > 9 ? hour : '0' + hour)
+            code.eq(1).text(min > 9 ? min : '0' + min)
+            code.eq(2).text(second > 9 ? second : '0' + second)
+            var set = setInterval(function () {
+                code.eq(0).text(hour > 9 ? hour : '0' + hour)
+                code.eq(1).text(min > 9 ? min : '0' + min)
+                code.eq(2).text(--second > 9 ? second : '0' + second)
+                if (second == 0) {
+                    second = 60
+                    min <= 0 ? 0 : --min
+                    if (min == 0 && hour > 0) {
+                        min = 59
+                        hour <= 0 ? 0 : --hour
+                    }
+                }
+            }, 1000);
+            setTimeout(function () {
+                clearInterval(set);
+            }, 1000 * time);
+        }
+    </script>
+</body>
+
+</html>

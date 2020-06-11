@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>提现记录</title>
+  <link rel="stylesheet" href="../assets/css/wallet.css" />
+  <style>
+    .weui-tab {
+      box-sizing: border-box;
+      height: calc(100% - 0.533rem);
+    }
+  </style>
+</head>
+
+<body>
+  <div class="page withdrawals-record">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">提现记录</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="tips-money fs28 fw_b color_r">累计提现成功：¥5698.23</div>
+
+      <!-- 容器 -->
+      <div class="weui-tab">
+        <div class="weui-navbar">
+          <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+            申请中
+          </a>
+          <a class="weui-navbar__item" href="#tab1">
+            审核通过
+          </a>
+          <a class="weui-navbar__item" href="#tab1">
+            审核不通过
+          </a>
+        </div>
+        <div class="weui-tab__bd">
+          <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+            <div class="list-item">
+              <div class="title">
+                <span>流水号：569854698</span>
+                <span class="color_9">申请中</span>
+              </div>
+              <div class="info">
+                <p class="money fw_b color_3">
+                  <span class="fs28">¥</span>
+                  <span class="fs36">819.00</span>
+                </p>
+                <p class="color_9 mt20">提现账号:工商银行(6222854632659874)</p>
+                <p class="color_9 mt10">提现时间:5月1日 12:30</p>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="title">
+                <span>流水号:569854698</span>
+                <span class="color_9">申请中</span>
+              </div>
+              <div class="info">
+                <p class="money fw_b color_3">
+                  <span class="fs28">¥</span>
+                  <span class="fs36">100.00</span>
+                </p>
+                <p class="color_9 mt20">
+                  提现账号:微信收款码
+                  <span data-imgsrc="../assets/images/index_banner04.png" class="gallery color_r">(点击查看图片)</span>
+                </p>
+                <p class="color_9 mt10">提现时间:5月1日 12:30</p>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="title">
+                <span>流水号：569854698</span>
+                <span class="color_r">失败</span>
+              </div>
+              <div class="info">
+                <p class="money fw_b color_3">
+                  <span class="fs28">¥</span>
+                  <span class="fs36">819.00</span>
+                </p>
+                <p class="color_9 mt20">提现账号:微信收款码</p>
+                <p class="color_9 mt10">提现时间:5月1日 12:30</p>
+              </div>
+            </div>
+            <div class="list-item">
+              <div class="title">
+                <span>流水号：569854698</span>
+                <span class="color_r">失败</span>
+              </div>
+              <div class="info">
+                <p class="money fw_b color_3">
+                  <span class="fs28">¥</span>
+                  <span class="fs36">819.00</span>
+                </p>
+                <p class="color_9 mt20">提现账号:微信收款码</p>
+                <p class="color_9 mt10">提现时间:5月1日 12:30</p>
+              </div>
+            </div>
+            
+            <div class="text_c color_9">已经到底啦~</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- 预览图片 -->
+      <div class="weui-gallery">
+        <span class="weui-gallery__img">
+          <img src="" alt="">
+        </span>
+        <div class="weui-gallery__opr">
+          <a href="javascript:" class="weui-gallery__del">
+            <img class="close" src="../assets/images/orderIcon02.png" alt="">
+          </a>
+        </div>
+      </div>
+
+
+    </div>
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+      $('#tab1').on('click', '.gallery', function () {
+        var imgSrc = $(this).data('imgsrc')
+        $('.weui-gallery').show()
+        $('.weui-gallery').find('.weui-gallery__img img').attr('src', imgSrc)
+      })
+      $('.weui-gallery__opr .close').on('click', function() {
+        $('.weui-gallery').hide()
+      })
+    </script>
+</body>
+
+</html>

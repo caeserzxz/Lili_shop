@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>成为商家</title>
+  <link rel="stylesheet" href="../assets/css/proxy.css" />
+  <link rel="stylesheet" href="../assets/css/cityPicker.css">
+</head>
+
+<body>
+  <div class="page merchant">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">成为商家</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">邀请码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入邀请码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">店铺名称</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入店铺名称">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">姓名</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入你的姓名">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">手机号码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入手机号码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">让利率</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="只能输入1-100整数">
+          </div>
+          <div class="cell_ft">%</div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">行业分类</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28 color_3 showmodal" placeholder="请选择行业" readonly>
+          </div>
+          <div class="cell_ft arrowright"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">地区</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请选择地区" style="width: 100%" readonly
+              id="city-picker">
+          </div>
+          <div class="cell_ft arrowright">
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">详细地址</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+      </div>
+
+      <div class="cells">
+        <div class="uploading">
+          <div class="title fs28 fw_b color_3">
+            店铺实景图
+            <span class="fs24 color_9">（最多添加3张）</span>
+          </div>
+          <div class="uploadBox">
+             <div class="Box">
+               <img src="../assets/images/youLike01.png" alt="" class="imgBox">
+               <img src="../assets/images/closeImg.png" alt="" class="closeImg">
+             </div>
+             <div class="Box">
+                <img src="../assets/images/addImg.png" alt="" class="imgBox">
+                <input type="file" class="uploadInput">
+                
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cells">
+        <div class="uploading">
+          <div class="title fs28 fw_b color_3">
+            营业执照
+            <span class="fs24 color_9">（最多添加3张）</span>
+          </div>
+          <div class="uploadBox">
+             <div class="Box">
+               <img src="../assets/images/youLike01.png" alt="" class="imgBox">
+               <img src="../assets/images/closeImg.png" alt="" class="closeImg">
+             </div>
+             <div class="Box">
+                <img src="../assets/images/addImg.png" alt="" class="imgBox">
+                <input type="file" class="uploadInput">
+                
+              </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="text_c fs28 color_r save-btn">提交</div>
+
+    </div>
+
+  </div>
+
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        title: "请选择省市区"
+      });
+    })
+    $(function () {
+      $('.showmodal').on('click', function () {
+        $('.modal-proxy').show()
+      })
+      $('.footer-btn').on('click', function () {
+        $('.modal-proxy').hide()
+        $('.modal-proxy-main input[type=radio]').each(function () {
+          if ($(this).prop('checked')) {
+            // 执行操作逻辑
+          }
+        })
+      })
+    })
+
+  </script>
+</body>
+
+</html>

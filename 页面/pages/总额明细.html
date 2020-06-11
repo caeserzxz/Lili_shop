@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+    <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+    <title>跨界奖总额明细</title>
+    <link rel="stylesheet" href="../assets/css/myWallet.css" />
+</head>
+
+<body>
+    <div class="page wallet">
+        <div class="page-hd">
+            <div class="header box-shadow-1px">
+                <div class="header-left">
+                    <a href="javascript:history.go(-1)" class="left-arrow"></a>
+                </div>
+                <div class="header-title">跨界奖总额明细</div>
+                <div class="header-right">
+                    <a href=''></a>
+                </div>
+            </div>
+        </div>
+
+        <div class="page-bd">
+            <div class="top">
+                <div class="left">
+                    <img class="headimg" src="../assets/images/myIcon19.png" alt="">
+                    <div class="money num">
+                        <p class="fs48 color_w">36962.00</p>
+                        <p class="text">跨界奖金余额(元)</p>
+                    </div>
+                </div>
+                <a href="提现.html" class="right btn">提现</a>
+            </div>
+
+            <div class="date-type">
+                <div class="date">
+                    <span class="fs28 fw_b color_3 mr10">时间:</span>
+                    <span class="datetimer-1">
+                        <input type="text" value="2020-12-02" data-toggle='date' id='date1' />
+                    </span>
+                    <span>-</span>
+                    <span class="datetimer-1">
+                        <input type="text" value="2020-12-16" data-toggle='date' id='date2' />
+                    </span>
+                </div>
+            </div>
+
+            <!-- 数据列表 -->
+            <div class="data-info">
+                <div class="title color_r fs24">
+                    <!-- <span class="mr20">支出: ¥36952.00</span> -->
+                    <span>收入: ¥36952.00</span>
+                </div>
+                <div class="wrap-list">
+                    <div class="list-item">
+                        <div class="item-top">
+                            <p>
+                                <span class="fs28 fw_b color_3">跨界奖</span>
+                                <span class="fs24 color_9">(线下订单:536985469)</span>
+                            </p>
+                            <p class="fs28 fw_b color_3">+0.66</p>
+                        </div>
+                        <div class="item-bot mt20 fs24 color_9">
+                            <p><span>5月23日 12:30</span></p>
+                            <p>余额100.68</p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-top">
+                            <p>
+                                <span class="fs28 fw_b color_3">跨界奖</span>
+                                <span class="fs24 color_9">(线下订单:536985469)</span>
+                            </p>
+                            <p class="fs28 fw_b color_3">+0.66</p>
+                        </div>
+                        <div class="item-bot mt20 fs24 color_9">
+                            <p><span>5月23日 12:30</span></p>
+                            <p>余额100.68</p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-top">
+                            <p>
+                                <span class="fs28 fw_b color_3">跨界奖</span>
+                                <span class="fs24 color_9">(线下订单:536985469)</span>
+                            </p>
+                            <p class="fs28 fw_b color_3">+100.00</p>
+                        </div>
+                        <div class="item-bot mt20 fs24 color_9">
+                            <p><span>5月23日 12:30</span></p>
+                            <p>余额100.68</p>
+                        </div>
+                    </div>
+                    <div class="list-item">
+                        <div class="item-top">
+                            <p>
+                                <span class="fs28 fw_b color_3">跨界奖</span>
+                                <span class="fs24 color_9">(线下订单:536985469)</span>
+                            </p>
+                            <p class="fs28 fw_b color_3">+0.66</p>
+                        </div>
+                        <div class="item-bot mt20 fs24 color_9">
+                            <p><span>5月23日 12:30</span></p>
+                            <p>余额100.68</p>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+            <!-- 没有更多了 -->
+            <div class="text_c color_9 mt20 mb20">已经到底啦~</div>
+        </div>
+
+    </div>
+
+    <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            $("#date1").calendar();
+            $("#date2").calendar();
+        })
+    </script>
+</body>
+
+</html>

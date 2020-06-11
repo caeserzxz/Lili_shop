@@ -1,6 +1,7 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css" />
+<!-- <link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css" /> -->
+<link rel="stylesheet" href="__STATIC__/unique/css/login.css"/>
 {/block}
 {block name="main" }
       <div class="page-bd">
@@ -34,7 +35,7 @@
               </div>  
         </div>
         {/if}
-        <div class="remPassword">
+        <div class="remPassword" style="display: none;">
             <label for="remember">
                 <div class="iconBox">
                   <input type="checkbox" class="check" name="checkbox1" id="remember" value="1">
@@ -44,15 +45,28 @@
             </label>
             <a href="{:url('forgetPwd')}" class="fs28 color_9 ">忘记密码</a>
         </div>
-        <div class="loginbutton fs32 fw_b color_w BGcolor_r login">登录</div>
-          {if condition="$is_wx == 1"}
-          <a href="{:url('wxLogin')}" class="loginbutton fs32 fw_b color_w " style="background-color: #61ce74; margin-top: 0.2rem ;">微信登录</a>
-          {/if}
-          {if condition="settings('app_apk_path')"}
-            <div class="fs30 goregister"><a href="{:url('publics/download/app')}" class="fw_b color_3">立即下载</a></div>
-          {/if}
+        <!-- <div class="loginbutton fs32 fw_b color_w BGcolor_r login">登录</div> -->
+        <div class="button fs32 fw_b color_w BGcolor_r login">登录</div>
+
+        {if condition="$is_wx == 1"}
+        <a href="{:url('wxLogin')}" class="loginbutton fs32 fw_b color_w " style="background-color: #61ce74; margin-top: 0.2rem ;">微信登录</a>
+        {/if}
+        {if condition="settings('app_apk_path')"}
+          <div class="fs30 goregister"><a href="{:url('publics/download/app')}" class="fw_b color_3">立即下载</a></div>
+        {/if}
+
+        <div class="fs30 goregister">
+            {eq name="$register_status" value="1"}
+                <a href="{:url('register')}" class="mr20 color_3">用户注册</a>
+             {/eq}
+            <a href="{:url('forgetPwd')}" class="color_3">忘记密码？</a>
+        </div>
+
         {eq name="$register_status" value="1"}
-          <div class="fs30 goregister"><span class="color_9">还没有账号，</span><a href="{:url('register')}" class="fw_b color_3">立即注册</a></div>
+          <div class="fs30 goregister" style="display: none;">
+              <span class="color_9">还没有账号，</span>
+              <a href="{:url('register')}" class="fw_b color_3">立即注册</a>
+            </div>
          {/eq}
       </div>
 

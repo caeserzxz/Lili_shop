@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>搜索</title>
+  <link rel="stylesheet" href="../assets/css/fenlei.css" />
+</head>
+
+<body>
+  <div class="page sousuo">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">搜索</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <!-- 页面内容-->
+      <div class="top">
+        <div class="inputBox"><img src="../assets/images/selech01.png" alt=""><input class="fs30 color_3" type="text"
+            placeholder="请输入城市名称查询"></div>
+        <a class="search fs30" href="./搜索结果.html">搜索</a>
+      </div>
+      
+      <div class="history">
+        <div class="title">
+          <div class="fw_b color_3 fs34">历史搜索</div>
+          <div><img class="del-icon" src="../assets/images/delete_01.png" alt=""></div>
+        </div>
+        <div class="list">
+          <span class="fs28 color_3">苹果手机</span>
+          <span class="fs28 color_3">限量款</span>
+          <span class="fs28 color_3">经典包袋</span>
+          <span class="fs28 color_3">羽绒服</span>
+          <span class="fs28 color_3">围巾</span>
+          <span class="fs28 color_3">GUCCI</span>
+        </div>
+      </div>
+      <div class="history hot">
+        <div class="title fw_b color_3 fs34">热门搜索</div>
+        <div class="twe">
+            <p class="fs28 color_3">圣诞送女神好礼</p><p class="fs28 color_3">时髦衣橱必buy单品</p>
+        </div>
+        <div class="list">
+          <span class="fs28 color_3">苹果手机</span>
+          <span class="fs28 color_3">限量款</span>
+          <span class="fs28 color_3">经典包袋</span>
+          <span class="fs28 color_3">羽绒服</span>
+          <span class="fs28 color_3">围巾</span>
+          <span class="fs28 color_3">GUCCI</span>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $('.inputBox input').focus();
+      $('.top span').on('click', function () {
+        $('.inputBox input').val('');
+        $('.inputBox input').focus();
+      });
+    })
+  </script>
+</body>
+
+</html>

@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="zh-cmn-Hans">
+
+<head>
+  <meta charset="UTF-8">
+<meta name="apple-mobile-web-app-capable" content="yes">  
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1.0,user-scalable=0,viewport-fit=cover">
+<link rel="stylesheet" href="../assets/css/all.css"/>
+<link rel="stylesheet" href="../assets/css/layout.css"/>
+<script src="../assets/js/page.js"></script>
+
+  <title>成为代理</title>
+  <link rel="stylesheet" href="../assets/css/proxy.css" />
+  <link rel="stylesheet" href="../assets/css/cityPicker.css">
+</head>
+
+<body>
+  <div class="page proxy">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">成为代理</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">邀请码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入邀请码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">姓名</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入你的姓名">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">手机号码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入手机号码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">代理级别</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28 color_3 showmodal" placeholder="请选择代理" readonly>
+          </div>
+          <div class="cell_ft arrowright"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">地区</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请选择地区" style="width: 100%" readonly
+              id="city-picker">
+          </div>
+          <div class="cell_ft arrowright">
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">申请理由</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="password" placeholder="请输入">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+      </div>
+
+      <div class="text_c fs28 color_r save-btn">提交</div>
+
+    </div>
+
+    <!-- 代理弹窗 -->
+    <div class="modal-proxy">
+      <div class="modal-proxy-main">
+        <div class="title fs30 fw_b">代理级别</div>
+        <div class="wrap-list cells">
+          <label class="cell">
+            <div class="cell_bd">
+              <span class="fs30 fw_b color_3">省级代理</span>
+            </div>
+            <div class="cell_ft">
+              <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" checked>
+                <i class="icon_checked"></i>
+              </div>
+            </div>
+          </label>
+          <label class="cell">
+            <div class="cell_bd">
+              <span class="fs30 fw_b color_3">市级代理</span>
+            </div>
+            <div class="cell_ft">
+              <div class="iconBox">
+                <input type="radio" class="check" name="radiobox">
+                <i class="icon_checked"></i>
+              </div>
+            </div>
+          </label>
+          <label class="cell">
+            <div class="cell_bd">
+              <span class="fs30 fw_b color_3">区级代理</span>
+            </div>
+            <div class="cell_ft">
+              <div class="iconBox">
+                <input type="radio" class="check" name="radiobox">
+                <i class="icon_checked"></i>
+              </div>
+            </div>
+          </label>
+        </div>
+        <div class="footer-btn">完成</div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <script src="../assets/js/lib/jquery-2.1.4.js"></script>
+<script src="../assets/js/lib/fastclick.js"></script>
+<script src="../assets/js/jquery-weui.min.js"></script>
+<script src="../assets/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        title: "请选择省市区"
+      });
+    })
+    $(function () {
+      $('.showmodal').on('click', function () {
+        $('.modal-proxy').show()
+      })
+      $('.footer-btn').on('click', function () {
+        $('.modal-proxy').hide()
+        $('.modal-proxy-main input[type=radio]').each(function () {
+          if ($(this).prop('checked')) {
+            // 执行操作逻辑
+          }
+        })
+      })
+    })
+
+  </script>
+</body>
+
+</html>
