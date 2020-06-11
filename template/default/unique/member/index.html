@@ -170,6 +170,12 @@
             if (res.unSeeNum > 0) $('.un_see_num').append('<em>'+res.unSeeNum+'</em>');
         })
     })
+
+    // 成为商家
+    $('.partner-mer').on('click',function(){
+        window.location.href = "{:url('unique/index/add_business')}";
+    })
+
 </script>
 </body>
 </html>

@@ -48,4 +48,5 @@ class Index extends ApiController
 
         return $this->ajaxReturn($list);
     }
+
 }

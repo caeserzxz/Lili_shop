@@ -36,7 +36,7 @@
                   <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
                   <input type="file" class="uploadInput" >                  
                 </div>
-                <div c></div>
+                <div></div>
             </div>
           </div>
         </div>
@@ -116,6 +116,7 @@ $('.postBtn').click(function(){
 				}
 				_imgNum++;
 				fd.append("imgfile["+_imgNum+"]", base64Img);
+				console.log(fd);
 				$(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum+'" class="closeImg"></div>');
 			}
     })

@@ -1,36 +1,36 @@
 //--------------------处理上传包括兼容ios----------------------------//
-var _imgNum = 0;
-var _uplocalfunction = function(){}; //上传完毕调用的函数
-var _listenSelector = '.uploadInput' ; //监听选择器
-var _delSelector='.uploadBox' //删除图片选择器
+var _imgNum2 = 0;
+var _uplocalfunction2 = function(){}; //上传完毕调用的函数
+var _listenSelector2 = '.uploadInput2' ; //监听选择器
+var _delSelector2='.uploadFile';//删除图片选择器
 
 
 //删除上传图片
-$(_delSelector).on('click','.closeImg',function(){
+$(_delSelector2).on('click','.closeImg',function(){
 
 	var type = typeof($(this).data('type')) == undefined ? 'more' : $(this).data('type');
 	console.log(type);
 	if(type == 'one'){
 		$(this).parent().remove();
-	    fd.delete("qrcodefile");
+	    fd2.delete("qrcodefile");
 	    $('#upload_qrcode_box').css('visibility','');
 	}else{
 		$(this).parent().remove();
-		fd.delete("imgfile["+$(this).data('imgnum')+"]");
+		fd2.delete("imgfile["+$(this).data('imgnum')+"]");
 	}
 })
 
- $(_listenSelector).on('change',function(event){
- 	uploadFile(this,event)
+ $(_listenSelector2).on('change',function(event){
+ 	uploadFile2(this,event)
  })
 
 //安卓和HTML上传方式选择上传图片
-function uploadFile(_this,e){
-	compress(e, _uplocalfunction)
+function uploadFile2(_this,e){
+	compress2(e, _uplocalfunction2)
 }
 
 //压缩方法
-function compress(event, callback) {
+function compress2(event, callback) {
 	if ( typeof (FileReader) === 'undefined') {
 		console.log("当前浏览器内核不支持base64图标压缩");
 		//调用上传方式  不压缩
@@ -41,7 +41,7 @@ function compress(event, callback) {
 			if(!/image\/\w+/.test(file.type)){
                 file_type = 'image/jpg';
 			}
-
+           
 			var reader = new FileReader();
 			reader.onload = function (e) {
 			var image = $('<img/>');
@@ -80,8 +80,8 @@ function compress(event, callback) {
 
 //ios上传图片
 function AppReturnBase64Image(image) {
-    if(typeof(_uplocalfunction) == 'function'){
-         _uplocalfunction(image)
+    if(typeof(_uplocalfunction2) == 'function'){
+         _uplocalfunction2(image)
     }else{
         _alert('未定义方法')
     }

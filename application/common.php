@@ -809,3 +809,26 @@ function asynRun($rule,$param){
     fputs($fp, $out);
     fclose($fp);
 }
+
+/**
+ **上传图片base64_decode
+ **/
+function uploadimage($base_img,$img_type){
+    //$base_img是获取到前端传递的src里面的值，也就是我们的数据流文件
+
+    $findArr = ['data:image/jpeg;base64,','data:image/png;base64,'];
+    $base_img = str_replace($findArr, '', $base_img);
+    //设置文件路径和文件前缀名称
+    $path = '../public'.UPLOAD_PATH.'/'.$img_type."/".date(Ymd,time()).'/';
+    is_dir($path) OR mkdir($path, 0777, true);
+    $prefix='nx_';
+    $output_file = $prefix.time().'.png';
+    $path = $path.$output_file;
+    $ifp = fopen( $path, "wb" );
+    fwrite( $ifp, base64_decode( $base_img) );
+    fclose( $ifp );
+    $return['path'] = UPLOAD_PATH.'/'.$img_type."/".date(Ymd,time()).'/'.$output_file;
+    $return['img_type'] = $img_type;
+
+    return $return;
+}
