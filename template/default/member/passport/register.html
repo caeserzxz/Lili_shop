@@ -1,11 +1,85 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css"/>
+<!-- <link rel="stylesheet" href="__STATIC__/mobile/default/css/login.css"/> -->
+<link rel="stylesheet" href="__STATIC__/unique/css/login.css"/>
 {/block}
+{block name="pageType"}register{/block}
+
 {block name="main" }
 <div class="page-bd">
-    <!-- 页面内容-->
-    <div class="top">
+
+    <div class="cells">
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">手机号</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28" type="number" id="mobile" placeholder="请输入手机号">
+            </div>
+            <div class="cell_ft"></div>
+        </div>
+        {if condition="$sms_fun['register']==1"}
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">验证码</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28" type="number" id="code" placeholder="请输入验证码">
+            </div>
+            <div class="cell_ft">
+                <span class="fs28 fw_b color_r send-captcha getCode" data-type="AliPay" onclick="codeButton()">发送验证码</span>
+                <span class="fs28 fw_b color_9 countdown time">60s</span>
+            </div>
+        </div>
+        {/if}
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">密码</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28 password" type="password" id="password" placeholder="请输入密码">
+            </div>
+            <div class="cell_ft">
+                <div class="ereBox" style="width: 100%">
+                    <img src="__STATIC__/unique/images/login01.png" alt="" data-type="0">
+                </div>
+            </div>
+        </div>
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">昵称</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28" type="text" id="nick_name" placeholder="请输入昵称">
+            </div>
+            <div class="cell_ft"></div>
+        </div>
+        <div class="cell {$register_invite_code==0?'hide':''}">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">邀请码</span>
+            </div>
+            <div class="cell_bd">
+            {empty name="$share_token"}
+                <input type="text" class="fs28" id="invite_code" placeholder="{$lang_register_invite_code[$register_invite_code]}">
+            {else/}
+                <input type="text" class="fs28" id="invite_code" value="{$share_token}" disabled placeholder="{$lang_register_invite_code[$register_invite_code]}">
+            {/empty}
+                <!-- <input class="fs28" type="text" id="nick_name" placeholder="请输入邀请码"> -->
+            </div>
+            <div class="cell_ft"></div>
+        </div>
+    </div>
+    <div class="text_c fs28 color_r save-btn registerPost">同意协议并提交</div>
+    <div class="protocol fs24 text_c ">
+        <span class="color_9">查看</span>
+        <a href="{:url('shop/article/registerAgreement')}" class="color_r">《{:settings('shop_title')}》</a>
+        <span class="color_9">用户协议</span>
+        <!-- <a href="#" class="color_r">《用户协议》</a> -->
+    </div>
+
+
+
+    <!-- <div class="top">
         {if condition="$sign_logo"}
         <img src="{$sign_logo}" alt="">
         {else/}
@@ -38,7 +112,6 @@
             <img src="__STATIC__/mobile/default/images/login01.png" alt="" data-type="0">
         </div>
     </div>
-
     <div class="inputBlock bor_b {$register_invite_code==0?'hide':''}">
         <img src="__STATIC__/mobile/default/images/register01.png" alt="" class="imgIcon">
         {empty name="$share_token"}
@@ -57,10 +130,11 @@
         <div class="rules fs26 color_9">我同意<a href="{:url('shop/article/registerAgreement')}" class="color_3">《{:settings('shop_title')}》注册协议</a>
         </div>
     </div>
-
     <div class="loginbutton fs32 fw_b color_w BGcolor_r register">注册</div>
-    <div class="fs30 goregister"><span class="color_9">已有账号，</span><a href="{:url('login')}"
-                                                                      class="fw_b color_3">立即登录</a></div>
+    <div class="fs30 goregister">
+        <span class="color_9">已有账号，</span>
+        <a href="{:url('login')}" class="fw_b color_3">立即登录</a>
+    </div> -->
 </div>
 {/block}
 {block name="footer"}
@@ -69,19 +143,22 @@
     var register_must_invite = {$register_must_invite|intval};
     $(function () {
         $('.ereBox').on('click', function () {
+
             var obj = $(this).find('img')
             if (obj.attr('data-type') == '0') {
                 obj.attr('src', '__STATIC__/mobile/default/images/login02.png')
                 obj.attr('data-type', '1')
-                $(this).siblings('input').attr('type', 'text')
+                $('.password').attr('type', 'text')
+                // $(this).siblings('input').attr('type', 'text')
             } else {
                 obj.attr('src', '__STATIC__/mobile/default/images/login01.png')
                 obj.attr('data-type', '0')
-                $(this).siblings('input').attr('type', 'password')
+                $('.password').attr('type', 'text')
+                // $(this).siblings('input').attr('type', 'password')
             }
         })
     })
-    $('.register').on('click', function () {
+    $('.registerPost').on('click', function () {
         var arr = new Object();
         arr.mobile = $('#mobile').val();
         arr.nick_name = $('#nick_name').val();
@@ -118,10 +195,10 @@
                 return false;
             }
         }
-        if ($('#isAgree').is(':checked') == false) {
+        /*if ($('#isAgree').is(':checked') == false) {
             _alert('请查看后并勾选同意注册协议..');
             return false;
-        }
+        }*/
         jq_ajax('{:url("member/api.passport/register")}', arr, function (res) {
             if (res.code == 0) {
                 _alert(res.msg);
@@ -157,7 +234,6 @@
                 }
             }, 1000);
         })
-
     }
 </script>
 {/block}
