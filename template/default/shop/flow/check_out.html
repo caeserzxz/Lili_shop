@@ -1,6 +1,6 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/payment.css"/>
 <script type="text/javascript">
     var orderTotal = 0, shippingFee = 0, bonus_money = 0, totalGoodsPrice = 0, used_bonus_id = 0;
     var offlineChoose = false;
@@ -19,17 +19,17 @@
             <div style="line-height: 100px; text-align: center">数据加载中..</div>
         </div>
         <div class="inputBox bor_t">
-            <span class="fs28 color_3">留言</span><input type="text" placeholder="请输入" class="fs26 color_3" id="buyMsg">
+            <input type="text" placeholder="给商家留言" class="fs28 color_3" id="buyMsg">
             <p class="fs28 color_9 num" id="wordNum">0/140</p>
         </div>
     </div>
     <div class="cellBox">
-        <div class="color_3 cell">
+        <div class="color_3 cell fw_b">
             <span class="fs28">商品金额</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 totalGoodsPrice">0.00</em>
             </div>
         </div>
-        <div class="color_3 cell">
+        <div class="color_3 cell fw_b">
             <span class="fs28">折扣</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">-￥</p><em class="fs34 totalDiscount">0.00</em>
             </div>
@@ -38,19 +38,35 @@
         {eq name="$setting.shop_used_bonus" value="1"}
         {include file="flow/bonus" /}
         {/eq}
-        <div class="color_3 cell">
+        <div class="color_3 cell fw_b">
             <span class="fs28">运费</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 shippingFee">0.00</em></div>
         </div>
-        <div class="color_3 cell use_integral hide">
+        <div class="color_3 cell use_integral hide fw_b">
             <span class="fs28">积分：</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">-</p><em class="fs34 integralTotal"></em></div>
+        </div>
+    </div>
+    <div class="cellBox">
+        <div class="color_3 cell fw_b">
+            <label for="s15" style="width: auto;">
+                <div class="iconBox">
+                    <input type="checkbox" class="check" name="checkbox1" id="s15" checked="checked">
+                    <i class="icon_checked"></i>
+                </div>
+                <span class="fs28" >鼓励金抵扣</span>
+                <span class="fs24 color_9">(余额：<span class="color_r">400.00</span>)</span>
+            </label>
+
+            <div class="color_3 fs28 num money">
+                <p class="fw_b fm_p">-￥</p><em class="fs28">10.00</em>
+            </div>
         </div>
     </div>
 </div>
 
 <div class="paymentbox">
-    <div class="left"><span class="fs28 color_9">实付</span>
+    <div class="left"><span class="fs28 color_9">实付款</span>
         <div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span>
         </div>
         <span class="color_9 fs28 num money use_integral hide"> + 积分<i class="color_3 fs52 integralTotal"></i></span>
@@ -59,13 +75,11 @@
 </div>
 <!-- 支付方式 -->
 <div class="model payModel">
-    <div class="modelContent">
+    <div class="modelContent" style="height: auto;">
         <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
         <div class="title fs36 color_3 fw_b">请选择支付方式</div>
         <div class="cantre pay" id="payListBox">
-
             <p class="get_list_tip">加载中...</p>
-
         </div>
         <div class="buttBox">
             <span class="fs32 fw_b color_w BGcolor_r ">确认支付</span>
@@ -75,19 +89,10 @@
 {include file="flow/offline" /}
 <script type="text/html" id="goodsListTpl">
     {{each supplyerGoods as skuKey index}}
-        {literal}
-        {{if index == 0}}
-            <div class="title fs32 color_3 fw_b">
-                商品信息
-                <div class="color_r fs24" id="shipping_fee_child_{{index}}" style="position: absolute;right: 10px;font-weight: normal;"></div>
-            </div>
-        {{else if supplyerList}}
-            <div class="title fs32 color_3 fw_b">
-                <span>{{supplyerList[index]}}</span>
-                <div class="color_r fs24 " id="shipping_fee_child_{{index}}" style="position: absolute;right: 10px;font-weight: normal;"></div>
-            </div>
-        {{/if}}
-        {/literal}
+        <div class="title fs26 color_9">
+            <span>{literal}{{if index == 0}}平台自营{{else if supplyerList}}{{supplyerList[index]}}{{/if}}{/literal}</span>
+            <div class="color_r fs24 " id="shipping_fee_child_{{index}}" style="position: absolute;right: .3rem;font-weight: normal;"></div>
+        </div>
         {{each skuKey as skey}}
             <div class="checkbox">
                 <a href='{:_url("shop/goods/info",["id"=>"[[goodsList[skey].goods_id]]"])}' >
@@ -114,7 +119,8 @@
                                  onClick="editNum(this,'{{goodsList[skey].rec_id}}','down');" class="minus">
                             <input class="fs30 color_3" type="text" readonly value="{{goodsList[skey].goods_number}}">
                             <img src="__STATIC__/mobile/default/images/goodsIcon06.png"
-                                 onClick="editNum(this,'{{goodsList[skey].rec_id}}','up');" class="add"></div>
+                                 onClick="editNum(this,'{{goodsList[skey].rec_id}}','up');" class="add">
+                        </div>
                     </div>
                 </div>
                 {/literal}
@@ -137,7 +143,7 @@
                 </div>
             </div>
         </label>
-        <label for="{{item.pay_code}}">
+        <label for="{{item.pay_code}}" style="width: auto;">
             <div class="iconBox">
                 <input type="radio" class="check" name="pay_id" value="{{item.pay_id}}" id="{{item.pay_code}}">
                 <i class="icon_checked"></i>

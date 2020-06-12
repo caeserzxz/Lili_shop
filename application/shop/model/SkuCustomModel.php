@@ -62,9 +62,11 @@ class SkuCustomModel extends BaseModel
         }
         $skuName = array();
         foreach ($skurows as $row){
-            $skuName[] = $row['sku'].':'.$row['val'];
+            // $skuName[] = $row['sku'].':'.$row['val'];
+            $skuName[] = $row['val'];
         }
-        $sku[$arrKey] = join(',',$skuName);
+        // $sku[$arrKey] = join(',',$skuName);
+        $sku[$arrKey] = join('-',$skuName);
         Cache::set($_mkey,$sku,3600);
         return  $sku[$arrKey];
     }
