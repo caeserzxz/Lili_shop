@@ -14,6 +14,8 @@ class Flow extends ClientbaseController{
 	//-- 购物车页
 	/*------------------------------------------------------ */
 	public function cart(){
+        $this->assign('not_top_nav', true);
+        
 		$this->assign('title', '购物车');
 		return $this->fetch('index');
 	}
