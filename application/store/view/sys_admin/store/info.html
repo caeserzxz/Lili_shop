@@ -1,0 +1,404 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet" />
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet" />
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>商家管理</strong>
+            </li>                                  
+        </ul>
+        <a href="{:url('info')}"  title="添加商家" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加商家</a>
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                </div>
+                <div class="form-group">
+                    <label class="control-label">选择行业</label>
+                    <div class="controls w250 must">
+                     <select class="wb80 " name="industry" data-maxcount="3" data-msg-required="请选择行业" data-toggle="select2" data-placeholder="请选择行业" data-width="999px">
+                        <option value=""></option>
+                            {$catOpt|raw}                   
+                        </select>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">绑定用户：</label>
+                    <div class="col-sm-4 " >
+                        <input type="text" id="user_keyword" placeholder="用户ID/昵称" value="" style="width:160px;"/> 
+                        <a href="javascript:;" class="m-xs" title="查看" onclick="searchUser('user_keyword','select_user');">
+                            <i class="fa fa-search text-muted"></i>
+                        </a>
+                        <select id="select_user" style="width: 200px; " >
+                          <option value="">选择用户</option>
+                        </select>               
+                    </div>
+                    <div class="clearfix"></div>
+                    <label class="control-label">绑定用户：</label>
+                    <span style="color:#f30;"> * </span>
+                    <div class="col-sm-8 m-t-md" id="nick_name" style="width: auto">
+                        {$row['nick_name']}
+                    </div>
+                    <input name="user_id" id="user_id" type="hidden" value="{$row['user_id']}"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">商家名称：</label>
+                    <div class="col-sm-7 must ">
+                        <input type="text" class="input-xlarge" data-rule-maxlength="30" data-rule-required="true" data-msg-required="供应商名称不能为空" name="business_name" value="{$row.business_name}" >
+                    </div>
+                </div>
+            <!--<div class="form-group alliance">
+                <label class="control-label">登录名：</label>
+                <div class="col-sm-7 must ">
+                    <input type="text" class="input-xlarge" data-rule-maxlength="30" readonly name="login_name" value="{$row.login_name}" >
+                </div>
+            </div>-->
+                <!--<div class="form-group" id="is_pwd">-->
+                    <!--<label class="control-label">登陆密码：</label>-->
+                    <!--<div class="col-sm-7" >-->
+                        <!--<input type="password" class="input-sm" {lt name="row.supplyer_id" value="1"}data-rule-required="true"{/lt} data-rule-maxlength="15" name="password" value="" id="new_password" >-->
+                        <!--{gt name="row.supplyer_id" value="0"}-->
+                        <!--<span class="help-inline">不修改不需要填写</span>-->
+                        <!--{else/}-->
+                        <!--<span class="maroon">*</span>-->
+                        <!--{/gt}-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="form-group" id="is_pwd2">-->
+                    <!--<label class="control-label">确认密码：</label>-->
+                    <!--<div class="col-sm-7" >-->
+                    <!--<input type="password" class="input-sm" data-rule-maxlength="15" name="cmf_password" value="" id="repassword" data-rule-equalto="#new_password"  >-->
+                    <!--<span class="help-inline">请填写以上面一致的密码，进行确认.</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                 <div class="form-group">
+                    <label class="control-label">状态：</label>
+                    <div class="controls">
+                         <label class="radio-inline">
+                            <input name="status" value="0"  class="js_undertake" type="radio" {$row['status']<1?'checked':''}>未审核
+                        </label>
+                        <label class="radio-inline">
+                            <input name="status" value="1"  class="js_undertake " type="radio" {$row['status']==1?'checked':''}>审核通过
+                        </label>
+                        <label class="radio-inline">
+                            <input name="status" value="2"  class="js_undertake " type="radio" {$row['status']==2?'checked':''}>审核不通过
+                        </label>
+                    </div>
+                   <div class="clearfix"></div>
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">是否优质商家：</label>-->
+                    <!--<div class="controls">-->
+                        <!--<label class="radio-inline">-->
+                            <!--<input name="is_superb" value="0"  class="js_undertake" type="radio" {$row['is_superb']<1?'checked':''}>否-->
+                        <!--</label>-->
+                        <!--<label class="radio-inline">-->
+                            <!--<input name="is_superb" value="1"  class="js_undertake " type="radio" {$row['is_superb']==1?'checked':''}>是-->
+                        <!--</label>-->
+                    <!--</div>-->
+                    <!--<div class="clearfix"></div>-->
+                <!--</div>-->
+                <div class="form-group">
+                    <label class="control-label">是否禁用商家：</label>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input name="is_ban" value="0"  class="js_undertake" type="radio" {$row['is_ban']<1?'checked':''}>否
+                        </label>
+                        <label class="radio-inline">
+                            <input name="is_ban" value="1"  class="js_undertake " type="radio" {$row['is_ban']==1?'checked':''}>是
+                        </label>
+                    </div>
+                    <div class="clearfix"></div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">联系人：</label>
+                    <div class="controls" >
+                        <input type="text" class="input-max" data-rule-maxlength="10" data-rule-required="true" data-msg-required="联系人不能为空" name="business_user_name" value="{$row.business_user_name}" >
+                    </div><span class="maroon">*</span>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">注册手机号：</label>
+                    <div class="controls " >
+                    <input type="text" class="input-max" data-rule-maxlength="11" name="business_mobile" data-rule-required="true" data-msg-required="联系手机不能为空"  value="{$row.business_mobile}" >
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">联系展示手机号：</label>
+                    <div class="controls " >
+                        <input type="text" class="input-max" data-rule-maxlength="11" name="contact_mobile" data-rule-required="true" data-msg-required="联系手机不能为空"  value="{$row.contact_mobile}" >
+                    </div>
+                </div>
+            <div class="form-group">
+                <label class=" control-label">省/市/区：</label>
+                <div class="col-sm-9 must">
+                    <select name="province" id="province" style="width:120px;"  class="region_sel" nextsel="city|district" sel_val="100000|{$row['province']}">
+                        <option value="">请选择</option>
+                    </select>
+                    <select name="city" id="city" style="width:120px;"  class="region_sel" nextsel="district" sel_val="{$row['province']}|{$row['city']}">
+                        <option value="">请选择</option>
+                    </select>
+                    <select name="district" id="district" style="width:120px;"  class="region_sel" sel_val="{$row['city']}|{$row['district']}">
+                        <option value="">请选择</option>
+                    </select>
+                </div>
+            </div>
+                <div class="form-group">
+                    <label class="control-label">联系地址：</label>
+                    <div class="col-sm-7" >
+                        <input type="text" class="input-max" data-rule-maxlength="50"  name="address" value="{$row.address}" >
+                    </div>
+                </div>
+            <!--<div class="form-group">-->
+                <!--<label class="control-label">商家经度：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="longitude" data-rule-required="true" data-msg-required="商家经度不能为空"  value="{$row.longitude}" >-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group">-->
+                <!--<label class="control-label">商家纬度：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="latitude" data-rule-required="true" data-msg-required="商家纬度不能为空"  value="{$row.latitude}" >-->
+                <!--</div>-->
+            <!--</div>-->
+                <div class="line line-dashed line-lg pull-in" ></div>
+                <div class="form-group">
+                    <label class="control-label">商家实景图：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="live_views_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家相册</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue"></div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="live_views_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=live_views_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
+                                    <input value="{$gg.img_id}" name="live_views_bum[id][]" type="hidden">
+                                    <input value="{$gg.goods_img}" name="live_views_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                             </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">商家营业执照：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="license_bum" data-count="5" data-uploadpath="{:url('uploadImg')}" data-delpath="{:url('removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家图片</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue">
+                            </div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="license_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=license_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}"></a>
+                                    <input value="{$gg.img_id}" name="license_bum[id][]" type="hidden">
+                                    <input value="{$gg.goods_img}" name="license_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                             </ul>
+                        </div>
+                    </div>
+                </div>
+            <div class="form-group">
+                <label class="control-label">商家简介：</label>
+                <div class="controls " >
+                    <textarea rows="3" name="info" cols="35">{$row.info}</textarea>
+                </div>
+            </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">营业时间：</label>-->
+                    <!--<div class="controls " >-->
+                        <!--<input type="text" class="input-xlarge" name="operate_time" value="{$row.operate_time}" >-->
+                    <!--</div>-->
+                <!--</div>-->
+            <div class="form-group alliance">
+                <label class="control-label">让利%：</label>
+                <div class="controls " >
+                    <input type="text" class="input-xlarge" name="profits" value="{$row.profits}" >%
+                </div>
+            </div>
+            <!--<input type="hidden" class="input-xlarge" name="share_code" value="{$row.share_code}" >-->
+
+            <!--<div class="form-group activity">-->
+                <!--<label class="control-label">商家服务名称：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<input type="text" class="input-xlarge" name="service_name" value="{$row.service_name}" >-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group activity">-->
+                <!--<label class="control-label">商家服务价格：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<input type="text" class="input-xlarge" name="service_price" value="{$row.service_price}" >-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group activity">-->
+                <!--<label class="control-label">商家服务次数：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<input type="text" class="input-xlarge" name="service_number" {$activity==0 ? '':'readonly'} value="{$row.service_number}" >-->
+                    <!--<input type="text" class="input-sm" name="service_unit" data-rule-required="true" data-msg-required="单位不能为空" value="{$row.service_unit}" >-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group activity">-->
+                <!--<label class="control-label">免单内容：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<textarea rows="3" name="service_content" cols="35">{$row.service_content}</textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="form-group activity">-->
+                <!--<label class="control-label">使用要求：</label>-->
+                <!--<div class="controls " >-->
+                    <!--<textarea rows="3" name="use_claim" cols="35">{$row.use_claim}</textarea>-->
+                <!--</div>-->
+            <!--</div>-->
+                <!--<div class="line line-dashed line-lg pull-in"></div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">最近登陆时间：</label>-->
+                    <!--<div class="col-sm-3"><label>{$row.login_time|dateTpl}</label></div>-->
+                    <!--<label class="control-label">最近登陆IP：</label>-->
+                    <!--<div class="col-sm-3"><label>{$row.login_ip}</label></div>-->
+                <!--</div>-->
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">上次登陆时间：</label>-->
+                    <!--<div class="col-sm-3"><label>{$row.last_login_time|dateTpl}</label></div>-->
+                    <!--<label class="control-label">上次登陆IP：</label>-->
+                    <!--<div class="col-sm-3"><label>{$row.last_login_ip}</label></div>-->
+                <!--</div>-->
+            <!--<div class="line line-dashed line-lg pull-in"></div>
+            <div class="form-group">
+                <label class="control-label">退货收货人：</label>
+                <div class="col-sm-3"><label>{$setting.return_consignee|default='未填写'}</label></div>
+                <label class="control-label">退货联系电话：</label>
+                <div class="col-sm-3">
+                    <label>{$setting.return_mobile|default='未填写'}</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">退货地址：</label>
+                <div class="col-sm-3">
+                    <label>{$setting.return_address|default='未填写'}</label>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">退货说明：</label>
+                <div class="col-sm-3">
+                    <label>{$setting.return_desc|default='未填写'}</label>
+                </div>
+            </div>-->
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="supplyer_id" type="hidden" value="{$row.supplyer_id|intval}">
+    </form>
+</section>
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+   seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
+    $('#editStore').on('click',function(){
+        var arr = $('.form-horizontal').toJson();
+        jq_ajax('{:url("editStore")}',arr,function (res) {
+            if (res.code == 0){
+                return _alert(res.msg);
+            }
+            window.location.reload();
+        })
+    });
+   $('.lon_lat').click(function () {
+     var lat = $("input[name='latitude']").val();
+     var lon = $("input[name='longitude']").val();
+     if(lat == '' || lon == ''){
+       var arr = new Object();
+       arr.address = $("input[name='address']").val();
+       arr.province = $('#province').val();
+       arr.city = $('#city').val();
+       arr.district = $('#district').val();
+       if(arr.address != '' && arr.province != '' && arr.city != '' && arr.district != ''){
+         jq_ajax('{:url("getLatLon")}',arr,function (res) {
+           if (res.code == 0){
+             return _alert('获取经纬度失败，请稍后再试或者手动填写');
+           }
+           $("input[name='latitude']").val(res.latitude);
+           $("input[name='longitude']").val(res.longitude);
+           // window.location.reload();
+         })
+       }
+     }
+   });
+   var store_type = "{$row['type']}";
+   if(store_type != ''){
+     $('.store_type_lab').hide();
+     $("input:radio[name='type']:checked").parent().show();
+   }
+
+</script>
+<script type="text/javascript">
+    is_pwd();
+    // 搜索商家
+    function searchUser(keyword,selects) {
+        var searchUrl = "{:url('member/sys_admin.users/pubSearch')}";
+        var keyword = $("#"+keyword).val();
+        $("#"+selects+" option").each(function(){if ($(this).val() != 0) $(this).remove();});   
+        var res = jq_ajax(searchUrl, 'keyword='+keyword);
+        if (res.code == 0) {
+            alert(res.msg);
+            return false 
+        }
+        $.each(res.list,function(i,val){
+            $("#"+selects).append("<option value='"+val.user_id+"'>"+val.user_id+'-'+val.mobile+'-'+val.nick_name+"</option>");
+        });   
+    }
+    $('#select_user').change(function(){
+        var user_id = $(this).val();
+        var text = $(this).find("option:selected").text();
+        // 免单商家名称追加
+        $('#nick_name').text(text);
+        // 免单商家ID替换
+        $('#user_id').val(user_id);
+    });
+    // 免单商家无需密码
+    $("input:radio[name='type']").change(function (){
+        is_pwd();
+    });
+    function is_pwd() {
+        var type = $("input:radio[name='type']:checked").val();
+        if (type == 1) {
+            $("#is_pwd").show();
+            $("#is_pwd2").show();
+            $('.activity').hide();
+            $('.alliance').show();
+        }else{
+            $("#is_pwd").hide();
+            $("#is_pwd2").hide();
+            $('.activity').show();
+            $('.alliance').hide();
+        }
+    }
+</script>
+{/block}

@@ -1,0 +1,40 @@
+<table class="table table-bordered table-striped ">
+<thead class="flip-content bordered-palegreen">
+<thead>
+<tr>
+	<th width="80">ID</th>
+    <th >商家名称</th>
+    <th width="160">创建时间</th>
+    <th width="60">状态</th>
+    <th width="160">是否审核</th>
+    <th width="150">操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+	<td>{$vo.business_id}</td>
+    <td>{$vo.business_name}</td>
+    <td>{$vo.add_time|dateTpl}</td>
+   <td><a href="#"  class="{$vo.is_ben|tplckval='=1','active'}" data-remote="{:url('ajaxEdit',array('supplyer_id'=>$vo['supplyer_id'],'field'=>'is_ben'))}" data-ajax="true" data-toggle="class"><i class="fa fa-check text-success text"></i><i class="fa fa-times text-danger text-active"></i></a></td>
+    <td>{$vo['status'] == 0 ? "未审核":$vo['status'] == 1 ? "已审核":"审核不通过"}</td>
+    <td>
+<!--<a href="{:url('supplyer/sys_admin.order/index',['supplyer_id'=>$vo['supplyer_id']])}" target="_blank" title="查看订单" class="fa fa-shopping-cart text-muted m-xs"></a>-->
+<!--<a href="{:url('supplyer/sys_admin.goods/index',['supplyer_id'=>$vo['supplyer_id']])}" target="_blank" title="查看商品" class="fa fa-gift text-muted m-xs"></a>-->
+<!--<a href="{:url('supplyer/sys_admin.statistics/index',['supplyer_id'=>$vo['supplyer_id']])}" target="_blank" title="查看统计" class="fa fa-pie-chart text-muted m-xs"></a>-->
+<a href="{:url('info',['business_id'=>$vo['business_id']])}" title="编辑" class="fa fa-edit text-muted m-xs" ></a>
+<a href="{:url('del',array('business_id'=>$vo['business_id']))}" data-toggle="ajaxRemove" data-msg="确定将商家{$vo.supplyer_name} 删除？"  class="fa fa-trash"  title="回收"></a>
+
+
+    </td>
+</tr>
+
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

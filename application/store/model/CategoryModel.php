@@ -18,11 +18,11 @@ class CategoryModel extends BaseModel
 	public function cleanMemcache(){
 		Cache::rm($this->mkey);
 	}
-	/*------------------------------------------------------ */
-	//-- 获取列表
-	/*------------------------------------------------------ */
-    public function getRows(){  
-        $rows = Cache::get($this->mkey);    
+    /*------------------------------------------------------ */
+    //-- 获取列表
+    /*------------------------------------------------------ */
+    public function getRows(){
+        $rows = Cache::get($this->mkey);
         if (empty($rows) == false) return $rows;
         $rows = $this->order('sort_order,pid ASC')->select()->toArray();
         $rows = returnRows($rows);
