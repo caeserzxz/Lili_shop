@@ -468,3 +468,31 @@ label .iconBox {
   font-size: 0.213333rem;
   background-color: #F65236;
 }
+label .check_sup {
+    position: absolute;
+    left: -9999em;
+}
+label .check_sup[type=checkbox] + i {
+    display: inline-block;
+    vertical-align: middle;
+    font: normal normal normal 0.093333rem/1 weui;
+    font-size: inherit;
+    text-rendering: auto;
+    -webkit-font-smoothing: antialiased;
+}
+label .check_sup[type=checkbox]:checked + i:after {
+    content: "\EA06";
+    color: #f65236;
+}
+label .check_sup + i:after {
+    content: "\EA01";
+    color: #c9c9c9;
+    font-size: 0.253333rem;
+    display: block;
+    margin: 0 1px;
+}
+.copyright {
+    text-align: center;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}

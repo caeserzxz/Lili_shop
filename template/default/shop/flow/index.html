@@ -1,11 +1,19 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/shopCart.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/shopCart.css" />
 {/block}
 {block name="main" }
 <div class="page-bd">
 <!-- 页面内容-->
-<div class="top"><span class="fs32 color_3">当前购物车共<em>0</em>件商品</span><p class="fs28 color_r" data-type='0'>编辑</p></div>
+<!-- <div class="top"><span class="fs32 color_3">当前购物车共<em>0</em>件商品</span><p class="fs28 color_r" data-type='0'>编辑</p></div> -->
+    <div class="top">
+        <span class="fs32 color_3">
+            <span class="fs34 fw_b">购物车</span>
+            <span class="fs22 color_9">(共<em>0</em>件商品)</span>
+        </span>
+        <p class="fs28 color_r" data-type='0'>管理</p>
+    </div>
+
     <!-- 空购物车 -->
     <div class="emptyBox">
         <img src="__STATIC__/mobile/default/images/emptyCart.png" alt="">
@@ -13,20 +21,15 @@
     </div>
     <!-- 购物车 -->
     <div class="goodslist">
-        <a href="javascript:;" class="goCoupons">
+        <a href="javascript:;" class="goCoupons" style="display: none;">
             <p class="fs26 color_3">先领券再下单能享受更多优惠哦!</p>
             <div class="goCouponsBtn"><span class="fs26 color_r">领券</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
         </a>
-        <ul>
-
-        </ul>
     </div>
     <!-- 失效商品 -->
     <div class="loseGoods" style="display: none;">
         <div class="title"><span class="fs32 fw_b color_3">失效商品</span><p class="fs28 color_r clearInvalid">清空</p></div>
-
     </div>
-
 </div>
 <div class="paying">
     <div class="totalBox ">
@@ -50,7 +53,7 @@
         <div class="left">
             <label for="checkall_b">
                 <div class="iconBox">
-                    <input type="checkbox"  class="check checkall" name="checkbox1" id="checkall_b">
+                    <input type="checkbox" class="check checkall" name="checkbox1" id="checkall_b">
                     <i class="icon_checked"></i>
                 </div>
                 <span class="fs32 fw_b color-3">全选</span>
@@ -59,9 +62,75 @@
         <div class="button fs30 color_w fw_b"><span class="BGcolor_3 delSelGoods">删除</span><span class="BGcolor_r collectGoods">收藏</span></div>
     </div>
 </div>
-{include file="layouts@bottom" /}
+{include file="layouts@bottom_unique" /}
 
 <script type="text/html" id="goodsLi">
+    {{each supplyerGoods as skuKey index}}
+    <div class="flagship-store">
+        <div class="store-name sup_ul" data-sup="sup_ul_{{index}}">
+            <label for="sup_check_{{index}}">
+                <div class="iconBox">
+                    <input type="checkbox" class="check_sup" name="sup_checks" id="sup_check_{{index}}" checked="checked" data-sup="sup_ul_{{index}}">
+                    <i class="icon_checked"></i>
+                </div>
+                <span class="fs28 fw_b color_3">
+                    {literal}{{if index == 0}}平台自营{{else if supplyerList}}{{supplyerList[index]}}{{/if}}{/literal}
+                </span>
+            </label>
+        </div>
+        <ul>
+            {{each skuKey as skey}}
+                <li>
+                    <div class="checkbox">
+                        <label for="s{{goodsList[skey].rec_id}}">
+                            <div class="iconBox">
+                                <input type="checkbox" class="check sup_ul_{{index}}" id="s{{goodsList[skey].rec_id}}" name="rec_ids[]" value="{{goodsList[skey].rec_id}}" data-rec_id="{{goodsList[skey].rec_id}}" {{goodsList[skey].is_select?'checked':''}}>
+                                <i class="icon_checked"></i>
+                            </div>
+                        </label>
+                        <div class="block">
+                            <a href='{:_url("shop/goods/info",["id"=>"[[goodsList[skey].goods_id]]"])}' >
+                                <img src="{{goodsList[skey].pic}}" alt="" class="goodsimg">
+                            </a>
+                            <div class="info">
+                                <p class="fs28 color_3">{{goodsList[skey].goods_name}}</p>
+                                <div class="sign fs28 color_9">{{goodsList[skey].sku_name}}</div>
+                                <div class="Money">
+                                    <div class="left">
+                                        <div class="color_3 fs24 num">
+                                            <p class="fw_b fm_p">￥</p><em class="fs36">{{goodsList[skey].exp_price[0]}}</em><i>.{{goodsList[skey].exp_price[1]}} </i>
+                                        </div>
+                                        {literal}
+                                        {{if goodsList[skey].use_integral > 0}}
+                                        <p class="fw_b fm_p"> + </p><em class="fs36">{{goodsList[skey].use_integral}}</em>积分
+                                       {{else if goodsList[skey].prom_type == 1}}
+                                        <div class="couponsPriceType">优惠价</div>
+                                        {{else if goodsList[skey].shop_price != goodsList[skey].sale_price}}
+                                        <span class="fs24 color_9">￥{{goodsList[skey].shop_price}}</span>
+                                        {{/if}}
+                                        {/literal}
+                                    </div>
+                                    <div class="number">
+                                        <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{goodsList[skey].rec_id}}','down');" class="minus">
+                                        <input class="fs30 color_3" type="text" readonly value="{{goodsList[skey].goods_number}}" style="width: 0.2rem">
+                                        <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{goodsList[skey].rec_id}}','up');" class="add">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                            <div class="swiped BGcolor_3">
+                                <div class="delect" data-rec_id="{{goodsList[skey].rec_id}}"><img src="__STATIC__/mobile/default/images/delectIcon.png" alt=""></div>
+                                <div class="like collectGoods" data-goods_id="{{goodsList[skey].goods_id}}"><img src="__STATIC__/mobile/default/images/goodsIcon03{{goodsList[skey].is_collect==1?'_lh':''}}.png" alt="" data-type="{{goodsList[skey].is_collect}}"></div>
+                            </div>
+                        </div>
+                    </a>
+                </li>
+            {{/each}}
+        </ul>
+    </div>
+    {{/each}}
+</script>
+<!-- <script type="text/html" id="goodsLi">
     {{each goodsList as item index}}
     <li>
         <div class="checkbox">
@@ -93,12 +162,11 @@
                             {{/if}}
                             {/literal}
                         </div>
-
                         <div class="number">
                             <img src="__STATIC__/mobile/default/images/goodsIcon05.png" onClick="editNum(this,'{{item.rec_id}}','down');" class="minus">
                             <input class="fs30 color_3" type="text" readonly value="{{item.goods_number}}">
-                            <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{item.rec_id}}','up');" class="add"></div>
-
+                            <img src="__STATIC__/mobile/default/images/goodsIcon06.png" onClick="editNum(this,'{{item.rec_id}}','up');" class="add">
+                        </div>
                     </div>
                 </div>
             </div>
@@ -110,7 +178,7 @@
         </a>
     </li>
     {{/each}}
-</script>
+</script> -->
 <script type="text/html" id="loseGoodsLi">
     {{each invalidList as item index}}
     <a href='{:_url("shop/goods/info",["id"=>"[[item.goods_id]]"])}' >
@@ -144,9 +212,12 @@
             $('#buyNum').html(res.cartInfo.buyGoodsNum);
             if (res.cartInfo.goodsList){
                 $('.emptyBox').hide();
-                $('.goodslist ul').html(template('goodsLi',res.cartInfo));
+                // $('.goodslist ul').html(template('goodsLi',res.cartInfo));
+                $('.goodslist').html(template('goodsLi',res.cartInfo));
+                autoCheckUlSup();
             }else{
-                $('.goodslist ul').html('');
+                // $('.goodslist ul').html('');
+                $('.goodslist').html('');
                 $('.emptyBox').show();
             }
 
@@ -194,6 +265,17 @@
         }
         return evalCart('setSel','rec_id='+$(this).data('rec_id')+'&is_select='+is_select);
     })
+    // 点击商家按钮取消/选中该商家的商品
+    $('.goodslist').on('click','.check_sup',function () {
+        var is_select = 0;
+        if ($(this).is(':checked')) is_select = 1;
+        var sup_ul = $(this).attr("data-sup");
+        $('.'+sup_ul).each(function() {
+            if ($(this).prop('checked') != is_select) {
+                $(this).trigger("click");
+            }
+        })
+    })
     //全选或全不选商品
     $('.checkall').on('click',function () {
         var is_select = 0;
@@ -206,8 +288,6 @@
     $('.delSelGoods').on('click',function () {
         return evalCart('delSelGoods','');
     })
-   
-
     $(function(){
         evalCart('getList');//加载购物车
         $('.top p').on('click',function(){
@@ -240,11 +320,22 @@
 					imgObj.data('type', '0')
 				}
 			});
-
         })
     })
     function closeModel(obj){
         $(obj).parents('.model').hide()
+    }
+    // 各个供应商的商品是否全部选中
+    function autoCheckUlSup() {
+        var allSup = $(".sup_ul");
+        for (var i = 0; i < allSup.length; i++) {
+            var sup_ul = $(allSup[i]).attr("data-sup");
+            $('.'+sup_ul).each(function() {
+                if (!$(this).prop('checked')) {
+                     $(allSup[i]).find("input[type='checkbox']").prop('checked', false)
+                }
+            })
+        }
     }
 </script>
 {/block}
