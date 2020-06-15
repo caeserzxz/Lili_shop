@@ -97,26 +97,26 @@
           <div class="cell_ft"></div>
         </div>
       </div>
-      <div class="cells">
-        <div class="uploading">
-          <div class="title fs28 fw_b color_3">
-            店铺logo
-            <span class="fs24 color_9"></span>
-          </div>
-          <div class="block">
-            <div class="uploading">
-              <div class="uploadBox" >
+      <!--<div class="cells">-->
+        <!--<div class="uploading">-->
+          <!--<div class="title fs28 fw_b color_3">-->
+            <!--店铺logo-->
+            <!--<span class="fs24 color_9"></span>-->
+          <!--</div>-->
+          <!--<div class="block">-->
+            <!--<div class="uploading">-->
+              <!--<div class="uploadBox" >-->
 
-                <div class="Box">
-                  <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
-                  <input type="file" class="uploadInput3" >
-                </div>
-                <div c></div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
+                <!--<div class="Box">-->
+                  <!--<img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">-->
+                  <!--<input type="file" class="uploadInput3" >-->
+                <!--</div>-->
+                <!--<div c></div>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</div>-->
+        <!--</div>-->
+      <!--</div>-->
 
       <div class="cells">
         <div class="uploading">
@@ -297,7 +297,7 @@
   </script>
 <script src="__STATIC__/mobile/default/js/uploadsimage.js?v=1"></script>
 <script src="__STATIC__/mobile/default/js/uploadsimage2.js?v=1"></script>
-<script src="__STATIC__/mobile/default/js/uploadsimage3.js?v=1"></script>
+<!--<script src="__STATIC__/mobile/default/js/uploadsimage3.js?v=1"></script>-->
 <script>
     //处理点击改变的调用函数-做IOS兼容
     $(_listenSelector).click(function(){
@@ -330,22 +330,22 @@
         }
     })
 </script>
-<script>
-    //处理点击改变的调用函数-做IOS兼容
-    $(_listenSelector3).click(function(){
-        var that = $(this);
-        _uplocalfunction3=function(base64Img){
-            if ($('.appendBox3').length >= 1){
-                _alert('最多允许上传1张图片.');
-                return false;
-            }
-            _imgNum2++;
-            fd.append("imgfile3["+_imgNum3+"]", base64Img);
-            console.log(fd);
-            $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox3"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum3+'" class="closeImg"></div>');
-        }
-    })
-</script>
+<!--<script>-->
+    <!--//处理点击改变的调用函数-做IOS兼容-->
+    <!--$(_listenSelector3).click(function(){-->
+        <!--var that = $(this);-->
+        <!--_uplocalfunction3=function(base64Img){-->
+            <!--if ($('.appendBox3').length >= 1){-->
+                <!--_alert('最多允许上传1张图片.');-->
+                <!--return false;-->
+            <!--}-->
+            <!--_imgNum2++;-->
+            <!--fd.append("imgfile3["+_imgNum3+"]", base64Img);-->
+            <!--console.log(fd);-->
+            <!--$(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox3"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum3+'" class="closeImg"></div>');-->
+        <!--}-->
+    <!--})-->
+<!--</script>-->
 </body>
 
 </html>

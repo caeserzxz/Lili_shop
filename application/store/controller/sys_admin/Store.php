@@ -4,6 +4,7 @@ use app\AdminController;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\member\model\UsersModel;
+use app\mainadmin\model\RegionModel;
 
 /**
  * 行业分类
@@ -58,19 +59,6 @@ class Store extends AdminController
     /*------------------------------------------------------ */
     public function asInfo($data)
     {
-//        $ActivityWhere[] = ['is_putaway', '=', 1];
-//        $Activity = 0;
-//        $ActivityModel = new ActivityModel();
-//        $Activity_list = $ActivityModel->where($ActivityWhere)->select();
-//        foreach ($Activity_list as $key => $value){
-//            $supplyer_ids = explode(',', $value['supplyer_ids']);
-//            if (in_array($data['supplyer_id'], $supplyer_ids)){
-//                $Activity = 1;
-//                break;
-//            }
-//        }
-//        $this->assign("activity", $Activity);
-
         $UsersModel = new UsersModel();
         $store_user = $UsersModel->field('mobile,nick_name')->where('user_id','=',$data['user_id'])->find();
         $data['nick_name'] = ' ' .$data['user_id'].'-'. $store_user['mobile'] . ' - ' . $store_user['nick_name'] . ' ';
@@ -96,8 +84,13 @@ class Store extends AdminController
                 'goods_img' => $value,
             ];
         }
-        $this->assign('live_views_bum', $live_views_bum);
-        $this->assign('license_bum', $license_bum);
+        if(empty($live_views_bum[0]['goods_img'])==false){
+            $this->assign('live_views_bum', $live_views_bum);
+        }
+        if(empty($license_bum[0]['goods_img'])==false){
+            $this->assign('license_bum', $license_bum);
+        }
+
         return $data;
     }
 
@@ -105,26 +98,28 @@ class Store extends AdminController
     //-- 添加前处理
     /*------------------------------------------------------ */
     public function beforeAdd($data) {
-
-        if (empty($data['supplyer_name'])){
-            return $this->error('请输入供应商名称.');
+        if (empty($data['business_name'])){
+            return $this->error('请输入商家名称.');
         }
-        if (empty($data['type'])){
-            return $this->error('请选择商家类型.');
+        if (empty($data['category_id'])){
+            return $this->error('请选择行业.');
         }
-        $where[] = ['supplyer_name','=',$data['supplyer_name']];
+        $where[] = ['business_name','=',$data['business_name']];
         $where[] = ['user_id','<>',$data['user_id']];
-        $count = $this->Model->where($where)->count('supplyer_id');
-        if ($count > 0) return $this->error('操作失败:已存在供应商名称，不允许重复添加！');
+        $count = $this->Model->where($where)->count('business_id');
+        if ($count > 0) return $this->error('操作失败:已存在商家名称，不允许重复添加！');
+
         $data['merger_name'] = $this->getRegion($data['province'],$data['city'],$data['district']);
         $data['add_time'] = time();
         $data['update_time'] = time();
-        if ($data['password']) {
-            $data['password'] = _hash($data['password']);
+        #商家实拍图处理
+        if(empty($data['live_views_bum']['path'])==false){
+            $data['live_views'] =  implode(',',$data['live_views_bum']['path']);
         }
-        //审核通过时判断等级并且修改等级
-        $this->userLevel($data);
-
+        #商家营业照处理
+        if(empty($data['license_bum']['path'])==false){
+            $data['license'] =  implode(',',$data['license_bum']['path']);
+        }
         return $data;
     }
     /*------------------------------------------------------ */
@@ -132,82 +127,49 @@ class Store extends AdminController
     /*------------------------------------------------------ */
     public function afterAdd($data)
     {
-        $logInfo = '添加供应商帐号，供应商帐号状态：';
+        $logInfo = '添加商家，商家帐号状态：';
         $logInfo .= $data['is_ban'] == 1 ? '封禁':'正常';
-        $this->_Log($data['supplyer_id'],$logInfo);
-        return $this->success('修改成功.',url('index'));
+        $this->_Log($data['business_id'],$logInfo);
+        return $this->success('添加成功.',url('index'));
     }
     /*------------------------------------------------------ */
     //-- 修改前处理
     /*------------------------------------------------------ */
     public function beforeEdit($data){
-        if (empty($data['supplyer_name'])){
-            return $this->error('请输入供应商名称.');
+        if (empty($data['business_name'])){
+            return $this->error('请输入商家名称.');
+        }
+        if (empty($data['category_id'])){
+            return $this->error('请选择行业.');
         }
         $data['merger_name'] = $this->getRegion($data['province'],$data['city'],$data['district']);
-        $supplyerImg   = input('post.supplyerImg');
-        $supplyerAlbum = input('post.supplyerAlbum');
-        $data['supplyer_img']   = serialize($supplyerImg);
-        $data['supplyer_album'] = serialize($supplyerAlbum);
-        unset($post['supplyerImg'],$post['supplyerAlbum']);
+        $data['live_views']   = implode(',',$data['live_views_bum']['path']);
+        $data['license'] = implode(',',$data['license_bum']['path']);
+
 
         $data['is_ban'] = $data['is_ban'] * 1;
-        $where[] = ['supplyer_name','=',$data['supplyer_name']];
-        $where[] = ['supplyer_id','<>',$data['supplyer_id']];
+        $where[] = ['business_name','=',$data['business_name']];
+        $where[] = ['business_id','<>',$data['business_id']];
         $where[] = ['user_id','<>',$data['user_id']];
-        $count = $this->Model->where($where)->count('supplyer_id');
+        $count = $this->Model->where($where)->count('business_id');
         if ($count > 0) return $this->error('操作失败:已存在供应商名称，不允许重复添加！');
         $data['update_time'] = time();
-        if (empty($data['password']) == false){
-            $data['password'] = _hash($data['password']);
-        }else{
-            unset($data['password']);
-        }
-        //审核通过时判断等级并且修改等级
-        $this->userLevel($data);
-        $logInfo = '修改供应商信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
-        $this->_log($data['supplyer_id'], $logInfo ,'supplyer');
+
+        $logInfo = '修改商家信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
+        $this->_log($data['business_id'], $logInfo );
         return $data;
     }
     /*------------------------------------------------------ */
     //-- 修改后调用
     /*------------------------------------------------------ */
     public function afterEdit($data){
-        $GoodsImgsModel = new GoodsImgsModel();
-        $supplyerImg = input('post.supplyerImg');
-        $supplyerAlbum = input('post.supplyerAlbum');
-        foreach ($supplyerImg['id'] as $key => $img_id) {
-            $imgwhere = [];
-            $imgwhere[] = ['img_id', '=', $img_id];
-            $imgwhere[] = ['admin_id', '=', AUID];
-
-            $upData['sort_order'] = $key;
-            $upData['supplyer_id'] = $data['supplyer_id'];
-            $GoodsImgsModel->where($imgwhere)->update($upData);
-        }
-        foreach ($supplyerAlbum['id'] as $key => $img_id) {
-            $imgwhere = [];
-            $imgwhere[] = ['img_id', '=', $img_id];
-            $imgwhere[] = ['admin_id', '=', AUID];
-
-            $upData['sort_order'] = $key;
-            $upData['supplyer_id'] = $data['supplyer_id'];
-            $GoodsImgsModel->where($imgwhere)->update($upData);
-        }
-
         $logInfo = '供应商帐号状态：';
         if ($data['is_ban'] == 1){
             $logInfo .= '封禁';
-            //批量执行商品下架
-            (new GoodsModel)->where('supplyer_id',$data['supplyer_id'])->update(['isputaway'=>0]);
         }else{
             $logInfo .= '正常';
         }
-        if (empty($data['password']) == false){
-            $logInfo .= '，修改供应商密码.';
-            $this->_Log($data['supplyer_id'],'平台修改供应商密码','supplyer');
-        }
-        $this->_Log($data['supplyer_id'],$logInfo);
+        $this->_Log($data['business_id'],$logInfo);
         return $this->success('修改成功.',url('index'));
     }
 
@@ -215,7 +177,7 @@ class Store extends AdminController
      * 删除商品图片
      */
     public function removeImg($file='') {
-        $img_id = input('post.id',0,'intval');
+        $img_id = input('post.id');
         $business_id = input('business_id',0,'intval');
         $type = input('type');
         if ($business_id > 0){
@@ -229,18 +191,17 @@ class Store extends AdminController
                 return $this->error('没有找到相关图片.');
             }
             $imgs = explode(',',$img);
-            $file = $imgs[$img_id];
-            unset($imgs[$img_id]);
+            foreach ($imgs as $k=>$v){
+                if($img_id==$v){
+                    unset($imgs[$k]);
+                }
+            }
             $new_imgs =  implode(',',$imgs);
-            dump($type);
             if($type=='license_bum'){
-                dump(111);die;
                 $res = $this->Model->where('business_id',$business_id)->update(['license'=>$new_imgs]);
             }else{
-                dump(222);die;
                 $res = $this->Model->where('business_id',$business_id)->update(['live_views'=>$new_imgs]);
             }
-
             if ($res < 1){
                 return $this->error('删除图片失败.');
             }
@@ -258,61 +219,35 @@ class Store extends AdminController
         $thumb['width'] = 350;
         $thumb['height'] = 300;
 
-        if ($this->supplyer_id > 0){
-            $dir = 'supplyer/'.$this->supplyer_id.'/gimg';
-        }else{
-            $dir = 'gimg/';
-        }
+        $dir = 'storeimg/';
         $result = $this->_upload($_FILES['file'],$dir,$thumb);
         if ($result['error']) {
             $data['code'] = 1;
             $data['msg'] = $result['info'];
             return $this->ajaxReturn($data);
         }
-        $addarr['goods_id'] = input('post.gid',0,'intval');
-        $addarr['sku_val'] = input('post.sku','','trim');
 
-        if ($this->store_id > 0){
-            $where[] = ['store_id','=',$this->store_id ];
-        }elseif ($this->supplyer_id > 0){//供应商相关
-            $addarr['supplyer_id'] = $this->supplyer_id;
-            $addarr['admin_id'] = 0;
-            $where[] = ['supplyer_id','=',$this->supplyer_id];
-        }else{
-            $addarr['admin_id'] = AUID;
-            $where[] = ['admin_id','=',AUID];
-        }
         $savepath = trim($result['info'][0]['savepath'],'.');
-
-        $addarr['store_id'] = $this->store_id;
-        $addarr['goods_img'] = $file_url = $savepath.$result['info'][0]['savename'];
-        $addarr['goods_thumb'] = str_replace('.','_thumb.',$addarr['goods_img']);
-        $GoodsImgsModel =  new GoodsImgsModel();
-        //如果sku不为空，查询之前是否已上传过,则删除
-        if (empty($addarr['sku_val']) == false){
-            $where[] = ['goods_id','=',$addarr['goods_id']];
-            $where[] = ['sku_val','=',$addarr['sku_val']];
-            $imgObj = $GoodsImgsModel->where($where)->find();
-            if (empty($imgObj) == false){
-                unlink('.'.$imgObj['goods_thumb'],'.'.$imgObj['goods_img']);
-                $imgObj->delete();
-            }
-        }
-        $GoodsImgsModel->save($addarr);
-        $img_id = $GoodsImgsModel->img_id;
-        if ($img_id < 1){
-            $this->removeImg($file_url);//删除刚刚上传的
-            $data['code'] = 0;
-            $data['msg'] = '商品图片写入数据库失败！';
-            return $this->ajaxReturn($data);
-        }
+        $file_url = $savepath.$result['info'][0]['savename'];
         $data['code'] = 0;
         $data['msg'] = "上传成功";
-        $data['image'] = array('id'=>$img_id,'thumbnail'=>$file_url,'path'=>$file_url);
+        $data['image'] = array('path'=>$file_url,'thumbnail'=>$file_url);
         $data['savename'] = $result['info'][0]['savename'];
         $data['src'] = $file_url;
         return $this->ajaxReturn($data);
 
+    }
+
+    /*------------------------------------------------------ */
+    //-- 地址区域获取
+    /*------------------------------------------------------ */
+    public function getRegion($province,$city,$district){
+        $regionModel = new RegionModel();
+        $province_name = $regionModel->where('id',$province)->value('name');
+        $city_name = $regionModel->where('id',$city)->value('name');
+        $district_name = $regionModel->where('id',$district)->value('name');
+        $merger_name = "$province_name $city_name $district_name";
+        return $merger_name;
     }
 
 }

@@ -18,7 +18,7 @@ require __DIR__ . '/../thinkphp/base.php';
 // 支持事先使用静态方法设置Request对象和Config对象
 define('INDEX', true);
 define('VIEWPATH', '../template/default/');
-define('UPLOAD_PATH','/static/unique/upload');
+define('UPLOAD_PATH','/upload');
 define('EXTEND_PATH', '../extend/');
 if (strstr($_SERVER['REQUEST_URI'],'sys_admin.')){
     Header("HTTP/1.1 404 Not Found");
