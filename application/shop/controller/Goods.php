@@ -66,10 +66,14 @@ class Goods extends ClientbaseController{
             $Footprint = $GoodsFootprintModel->where($where)->order('add_time DESC')->find();
             if(empty($Footprint) || $Footprint['goods_id'] != $goods_id){
                 $where['goods_id'] = $goods_id;
-                $GoodsFootprintModel->where($where)->delete();
-                $createData = $where;
-                $createData['add_time'] = time();
-                $GoodsFootprintModel->create($createData);
+                $Footprint = $GoodsFootprintModel->where($where)->order('add_time DESC')->find();
+                $footprintData = $where;
+                $footprintData['add_time'] = time();
+                if(empty($Footprint)){
+                    $GoodsFootprintModel->create($footprintData);
+                }else{
+                    $GoodsFootprintModel->where($where)->update($footprintData);
+                }
                 Cache::rm('footprint_'.$this->userInfo['user_id']);
             }
         }
