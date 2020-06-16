@@ -1,0 +1,49 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/myCollection.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+	<div class="goodslist">
+		<ul></ul>
+	</div>
+</div>
+<script type="text/html" id="goodsTpl">
+{{each list as item index}}
+<li id="gid{{item.goods_id}}">
+  <object>	  
+	<div class="checkbox">
+	  <a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}">
+	  <div class="block margion_l30">                   
+		<img src="{{item.goods_thumb}}" alt="" class="goodsimg">
+		<div class="info">
+		  <p class="fs28 color_3">{{item.goods_name}}</p>
+		  <div class="sign fs28 color_9"></div>
+		  <div class="Money">
+			  <div class="left">
+				<div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+				<span class="fs24 color_9">￥{{item.market_price}}</span>
+			  </div>
+		   </div>
+		</div>
+	  </div>
+	  </a>
+	</div>
+  </object> 
+</li>
+{{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script>
+      $(function(){
+		   jq_ajax('{:_url("shop/api.goods/getFootprintlist")}','',function(res){
+			   if(res.code  == 0 ){
+                    _alert(res.msg)
+					return false;
+               }
+			    $('.goodslist ul').html(template('goodsTpl',res));
+			});
+      })
+</script>
+{/block}

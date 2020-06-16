@@ -338,6 +338,40 @@ class Goods extends ApiController
         return $this->ajaxReturn($return);
 	}
     /*------------------------------------------------------ */
+    //-- 获取商品足迹列表
+    /*------------------------------------------------------ */
+    public function getFootprintlist()
+    {
+        $this->checkLogin();//验证登陆
+        $return = Cache::get('footprint_'.$this->userInfo['user_id']);
+        if (empty($return) == false) $this->ajaxReturn($return);
+        $GoodsFootprintModel = new \app\shop\model\GoodsFootprintModel();
+        $where['user_id'] = $this->userInfo['user_id'];
+        $rows = $GoodsFootprintModel->where($where)->order('add_time DESC')->limit(50)->select();
+        foreach ($rows as $row){
+            $goods = $this->Model->info($row['goods_id']);
+            if ($goods['is_delete'] == 1){
+                continue;
+            }
+            $_goods['goods_id'] = $goods['goods_id'];
+            $_goods['goods_name'] = $goods['goods_name'];
+            $_goods['short_name'] = $goods['short_name'];
+            $_goods['is_spec'] = $goods['is_spec'];
+            $_goods['exp_price'] = $goods['exp_price'];
+            $_goods['now_price'] = $goods['_price'];
+            $_goods['market_price'] = $goods['market_price'];
+            $_goods['sale_count'] = $goods['sale_count'];
+            $_goods['collect_count'] = $goods['collect_count'];
+            $_goods['goods_thumb'] = $goods['goods_thumb'];
+            $_goods['is_promote'] = $goods['is_promote'];
+            $return['list'][] = $_goods;
+            $return['count'] += 1;
+        }
+        $return['code'] = 1;
+        Cache::set('footprint_'.$this->userInfo['user_id'],$return,7200);
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
     //-- 获取商品详情
     /*------------------------------------------------------ */
     public function info(){
