@@ -27,8 +27,8 @@
                     <a href="{:url('shop/collect/index')}">
                         <p class="num fs40 color_3 collect_num">0</p><span class="fs26 color_9">收藏</span>
                     </a>
-                    <a href="我的钱包.htnl">
-                        <p class="num fs40 color_3">371</p><span class="fs26 color_9">足迹</span>
+                    <a href="{:url('shop/footprint/index')}">
+                        <p class="num fs40 color_3 footprint_num">0</p><span class="fs26 color_9">足迹</span>
                     </a>
                     <a href="我的钱包.htnl">
                         <p class="num fs40 color_3">62</p><span class="fs26 color_9">商家红包</span>
@@ -157,6 +157,7 @@
             $('.use_integral').html(res.userInfo.account.use_integral);
             $('.bouns_num').html(res.unusedNum);
             $('.collect_num').html(res.collectNum);
+            $('.footprint_num').html(res.footprintNum);
             $('.unusedNum').html(res.unusedNum);
             if (res.orderStats.wait_pay_num > 0) {
                 $('.wait_pay_num').append('<em>' + res.orderStats.wait_pay_num + '</em>');

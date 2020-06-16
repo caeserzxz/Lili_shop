@@ -1,14 +1,13 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/my.css" />
 {/block}
 {block name='pageType'}evaluating{/block}
 {block name="main" }
-
  <div class="page-bd">
         <!-- 页面内容-->
         <div class="block">
-          <div class="title fs32 fw_b color_3">商品信息</div>
+          <div class="title fs26 fw_b color_9">商品信息</div>
           <a href="" class="goodsBox">
             <img src="" alt=""> 
             <div class="info">
@@ -29,7 +28,9 @@
         </div>
         <div class="block">
           <div class="uploading">
-            <div class="title fs32 fw_b color_3">上传照片</div>
+            <div class="title fs32 fw_b color_3">上传照片
+              <span class="fs24 color_9">(最多支持6张)</span>
+            </div>
             <div class="uploadBox" >
               
                <div class="Box">

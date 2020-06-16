@@ -7,6 +7,7 @@ namespace app\shop\controller;
 use app\ClientbaseController;
 use app\shop\model\GoodsModel;
 use app\shop\model\CartModel;
+use think\facade\Cache;
 
 class Goods extends ClientbaseController{
     /*------------------------------------------------------ */
@@ -58,6 +59,23 @@ class Goods extends ClientbaseController{
             $wxShare['description'] = $goods['description'];
             $wxShare['shareUrl'] = getUrl('','',['id'=>$goods_id]);
             $this->assign('wxShare',$wxShare);
+        }
+        if($this->userInfo['user_id'] > 0){
+            $GoodsFootprintModel = new \app\shop\model\GoodsFootprintModel();
+            $where['user_id'] = $this->userInfo['user_id'];
+            $Footprint = $GoodsFootprintModel->where($where)->order('add_time DESC')->find();
+            if(empty($Footprint) || $Footprint['goods_id'] != $goods_id){
+                $where['goods_id'] = $goods_id;
+                $Footprint = $GoodsFootprintModel->where($where)->order('add_time DESC')->find();
+                $footprintData = $where;
+                $footprintData['add_time'] = time();
+                if(empty($Footprint)){
+                    $GoodsFootprintModel->create($footprintData);
+                }else{
+                    $GoodsFootprintModel->where($where)->update($footprintData);
+                }
+                Cache::rm('footprint_'.$this->userInfo['user_id']);
+            }
         }
         return $this->fetch('info');
     }
