@@ -815,14 +815,14 @@ function asynRun($rule,$param){
  **/
 function uploadimage($base_img,$img_type){
     //$base_img是获取到前端传递的src里面的值，也就是我们的数据流文件
-
+    $rand = mt_rand(100000,999999);
     $findArr = ['data:image/jpeg;base64,','data:image/png;base64,'];
     $base_img = str_replace($findArr, '', $base_img);
     //设置文件路径和文件前缀名称
     $path = '../public'.UPLOAD_PATH.'/'.$img_type."/".date(Ymd,time()).'/';
     is_dir($path) OR mkdir($path, 0777, true);
     $prefix='nx_';
-    $output_file = $prefix.time().'.png';
+    $output_file = $prefix.time().$rand.'.png';
     $path = $path.$output_file;
     $ifp = fopen( $path, "wb" );
     fwrite( $ifp, base64_decode( $base_img) );

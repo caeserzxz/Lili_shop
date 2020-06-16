@@ -6,6 +6,7 @@
 namespace app\unique\controller;
 use app\ClientbaseController;
 use app\member\model\UsersModel;
+use app\store\model\UserBusinessModel;
 
 class Member extends ClientbaseController{
   
@@ -19,6 +20,25 @@ class Member extends ClientbaseController{
         $this->assign('user_center_nav_tpl', settings('user_center_nav_tpl'));
         // $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
 
+        #判断商家入口
+        $UserBusinessModel = new UserBusinessModel();
+        $business = $UserBusinessModel->where('user_id',$this->userInfo['user_id'])->find();
+        $business_sta = 0;
+        if(empty($business)){
+            #可申请
+            $business_sta = 1;
+        }else if($business['status']==1){
+            #审核通过
+            $business_sta = 2;
+        }else if($business['status']==2){
+            #审核不通过
+            $business_sta = 3;
+        }else if($business['status']==0){
+            #审核中
+            $business_sta = 4;
+        }
+
+        $this->assign('business_sta',$business_sta);
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */

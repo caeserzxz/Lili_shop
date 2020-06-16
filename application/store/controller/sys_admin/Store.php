@@ -70,8 +70,9 @@ class Store extends AdminController
 
         $img   = explode(',',$data['live_views']);
         $album = explode(',',$data['license']);
-
-        $live_views_bum = $license_bum = [];
+        $lbum = explode(',',$data['logo']);
+        $ibum = explode(',',$data['imgs']);
+        $live_views_bum = $license_bum = $logo_bum = $imgs_bum = [];
         foreach ($img as $key => $value) {
             $live_views_bum[] = [
                 'img_id'    => $key,
@@ -84,11 +85,30 @@ class Store extends AdminController
                 'goods_img' => $value,
             ];
         }
+        foreach ($lbum as $key => $value) {
+            $logo_bum[] = [
+                'img_id'    => $key,
+                'goods_img' => $value,
+            ];
+        }
+        foreach ($ibum as $key => $value) {
+            $imgs_bum[] = [
+                'img_id'    => $key,
+                'goods_img' => $value,
+            ];
+        }
+
         if(empty($live_views_bum[0]['goods_img'])==false){
             $this->assign('live_views_bum', $live_views_bum);
         }
         if(empty($license_bum[0]['goods_img'])==false){
             $this->assign('license_bum', $license_bum);
+        }
+        if(empty($logo_bum[0]['goods_img'])==false){
+            $this->assign('logo_bum', $logo_bum);
+        }
+        if(empty($imgs_bum[0]['goods_img'])==false){
+            $this->assign('imgs_bum', $imgs_bum);
         }
 
         return $data;
@@ -120,6 +140,15 @@ class Store extends AdminController
         if(empty($data['license_bum']['path'])==false){
             $data['license'] =  implode(',',$data['license_bum']['path']);
         }
+        #店铺logo处理
+        if(empty($data['logo_bum']['path'])==false){
+            $data['logo'] =  implode(',',$data['logo_bum']['path']);
+        }
+        #店铺相册
+        if(empty($data['imgs_bum']['path'])==false){
+            $data['imgs'] =  implode(',',$data['imgs_bum']['path']);
+        }
+
         return $data;
     }
     /*------------------------------------------------------ */
@@ -145,7 +174,8 @@ class Store extends AdminController
         $data['merger_name'] = $this->getRegion($data['province'],$data['city'],$data['district']);
         $data['live_views']   = implode(',',$data['live_views_bum']['path']);
         $data['license'] = implode(',',$data['license_bum']['path']);
-
+        $data['logo'] = implode(',',$data['logo_bum']['path']);
+        $data['imgs'] = implode(',',$data['imgs_bum']['path']);
 
         $data['is_ban'] = $data['is_ban'] * 1;
         $where[] = ['business_name','=',$data['business_name']];
@@ -183,8 +213,12 @@ class Store extends AdminController
         if ($business_id > 0){
             if($type=='license_bum'){
                 $img = $this->Model->where('business_id',$business_id)->value('license');
-            }else{
+            }else if($type=='live_views'){
                 $img = $this->Model->where('business_id',$business_id)->value('live_views');
+            }else if($type=='logo_bum'){
+                $img = $this->Model->where('business_id',$business_id)->value('logo_bum');
+            }else if($type=='imgs_bum'){
+                $img = $this->Model->where('business_id',$business_id)->value('imgs_bum');
             }
 
             if (empty($img)){
@@ -199,8 +233,12 @@ class Store extends AdminController
             $new_imgs =  implode(',',$imgs);
             if($type=='license_bum'){
                 $res = $this->Model->where('business_id',$business_id)->update(['license'=>$new_imgs]);
-            }else{
+            }else if($type=='live_views'){
                 $res = $this->Model->where('business_id',$business_id)->update(['live_views'=>$new_imgs]);
+            }else if($type=='logo_bum'){
+                $res = $this->Model->where('business_id',$business_id)->update(['logo'=>$new_imgs]);
+            }else if($type=='imgs_bum'){
+                $res = $this->Model->where('business_id',$business_id)->update(['imgs'=>$new_imgs]);
             }
             if ($res < 1){
                 return $this->error('删除图片失败.');

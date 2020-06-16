@@ -138,11 +138,55 @@
             <!--</div>-->
                 <div class="line line-dashed line-lg pull-in" ></div>
                 <div class="form-group">
+                    <label class="control-label">店铺logo：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="logo_bum" data-count="1" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">店铺logo</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)最多1张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue"></div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="logo_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=logo_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
+                                    <input value="{$gg.goods_img}" name="logo_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">商家相册：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="imgs_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家相册</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue"></div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="imgs_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=imgs_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
+                                    <input value="{$gg.goods_img}" name="imgs_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label">商家实景图：</label>
                     <div class="col-sm-10">
                         <div class="js_upload_container">
                             <div class="js_file_upload ">
-                                <button type="button" class="btn btn-default js_new_upload" data-submitname="live_views_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家相册</button>
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="live_views_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家实景图</button>
                                 <span class="maroon">*</span>
                                 <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
                             </div>
@@ -164,7 +208,7 @@
                     <div class="col-sm-10">
                         <div class="js_upload_container">
                             <div class="js_file_upload ">
-                                <button type="button" class="btn btn-default js_new_upload" data-submitname="license_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家图片</button>
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="license_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家营业执照</button>
                                 <span class="maroon">*</span>
                                 <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
                             </div>

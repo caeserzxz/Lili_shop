@@ -170,10 +170,23 @@
             if (res.unSeeNum > 0) $('.un_see_num').append('<em>'+res.unSeeNum+'</em>');
         })
     })
-
+    var business_sta = {$business_sta};
     // 成为商家
     $('.partner-mer').on('click',function(){
-        window.location.href = "{:url('unique/index/add_business')}";
+        if(business_sta==1){
+            //可申请
+            window.location.href = "{:url('unique/store/add_business')}";
+        }else if(business_sta==2){
+            //商家中心
+            window.location.href = "{:url('unique/store/business')}";
+        }else if(business_sta==3){
+            //审核不通过
+            window.location.href = "{:url('unique/store/business_fail')}";
+        }else if(business_sta==4){
+            //审核中
+            window.location.href = "{:url('unique/store/business_review')}";
+        }
+
     })
 
 </script>

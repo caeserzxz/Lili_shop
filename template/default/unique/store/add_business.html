@@ -36,7 +36,7 @@
             <span class="label required fs28 fw_b color_3">店铺名称</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="business_name" placeholder="请输入店铺名称">
+            <input class="fs28" type="text" id="business_name" value="{$info.business_name}" placeholder="请输入店铺名称">
           </div>
           <div class="cell_ft"></div>
         </div>
@@ -45,7 +45,7 @@
             <span class="label required fs28 fw_b color_3">姓名</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="business_user_name" placeholder="请输入你的姓名">
+            <input class="fs28" type="text" id="business_user_name" value="{$info.business_user_name}" placeholder="请输入你的姓名">
           </div>
           <div class="cell_ft"></div>
         </div>
@@ -54,7 +54,7 @@
             <span class="label required fs28 fw_b color_3">手机号码</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="business_mobile" placeholder="请输入手机号码">
+            <input class="fs28" type="text" id="business_mobile" value="{$info.business_mobile}" placeholder="请输入手机号码">
           </div>
           <div class="cell_ft"></div>
         </div>
@@ -63,7 +63,7 @@
             <span class="label required fs28 fw_b color_3">让利率</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="profits" placeholder="只能输入1-100整数">
+            <input class="fs28" type="text" id="profits" value="{$info.profits}"  placeholder="只能输入1-100整数">
           </div>
           <div class="cell_ft">%</div>
         </div>
@@ -92,31 +92,11 @@
             <span class="label required fs28 fw_b color_3">详细地址</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="address" placeholder="请输入">
+            <input class="fs28" type="text" id="address" value="{$info.address}" placeholder="请输入">
           </div>
           <div class="cell_ft"></div>
         </div>
       </div>
-      <!--<div class="cells">-->
-        <!--<div class="uploading">-->
-          <!--<div class="title fs28 fw_b color_3">-->
-            <!--店铺logo-->
-            <!--<span class="fs24 color_9"></span>-->
-          <!--</div>-->
-          <!--<div class="block">-->
-            <!--<div class="uploading">-->
-              <!--<div class="uploadBox" >-->
-
-                <!--<div class="Box">-->
-                  <!--<img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">-->
-                  <!--<input type="file" class="uploadInput3" >-->
-                <!--</div>-->
-                <!--<div c></div>-->
-              <!--</div>-->
-            <!--</div>-->
-          <!--</div>-->
-        <!--</div>-->
-      <!--</div>-->
 
       <div class="cells">
         <div class="uploading">
@@ -127,12 +107,17 @@
           <div class="block">
             <div class="uploading">
               <div class="uploadBox" >
-
+                {volist name="live_views_arr" id="vol"}
+                <div class="Box">
+                  <img src="{$vol}" alt="" class="imgBox appendBox">
+                  <img src="/static/mobile/default/images/closeImg.png" alt="" data-imgnum="1" class="closeImg">
+                </div>
+                {/volist}
                 <div class="Box">
                   <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
                   <input type="file" class="uploadInput" >
                 </div>
-                <div c></div>
+                <div></div>
               </div>
             </div>
           </div>
@@ -148,7 +133,12 @@
           <div class="block">
             <div class="uploading">
               <div class="uploadBox" >
-
+                {volist name="license_arr" id="vol"}
+                <div class="Box">
+                  <img src="{$vol}" alt="" class="imgBox appendBox2">
+                  <img src="/static/mobile/default/images/closeImg.png" alt="" data-imgnum="1" class="closeImg">
+                </div>
+                {/volist}
                 <div class="Box">
                   <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
                   <input type="file" class="uploadInput2" >
@@ -279,6 +269,17 @@
           fd.append("address", address);
           fd.append("data_codes", data_codes);
 
+          $('.appendBox2').each(function(k,v){
+              k++;
+              src = $(this).attr('src');
+              fd.append("imgfile2["+k+"]", src);
+          });
+          $('.appendBox').each(function(k,v){
+              k++;
+              src = $(this).attr('src');
+              fd.append("imgfile["+k+"]", src);
+          });
+
           $.ajax({
               url: '{:url("unique/api.business/add_business")}',
               type: 'post',
@@ -308,7 +309,7 @@
                 return false;
             }
             _imgNum++;
-            fd.append("imgfile["+_imgNum+"]", base64Img);
+            // fd.append("imgfile["+_imgNum+"]", base64Img);
             console.log(fd);
             $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum+'" class="closeImg"></div>');
         }
@@ -324,28 +325,12 @@
                 return false;
             }
             _imgNum2++;
-            fd.append("imgfile2["+_imgNum2+"]", base64Img);
+            // fd.append("imgfile2["+_imgNum2+"]", base64Img);
             console.log(fd);
             $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox2"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum2+'" class="closeImg"></div>');
         }
     })
 </script>
-<!--<script>-->
-    <!--//处理点击改变的调用函数-做IOS兼容-->
-    <!--$(_listenSelector3).click(function(){-->
-        <!--var that = $(this);-->
-        <!--_uplocalfunction3=function(base64Img){-->
-            <!--if ($('.appendBox3').length >= 1){-->
-                <!--_alert('最多允许上传1张图片.');-->
-                <!--return false;-->
-            <!--}-->
-            <!--_imgNum2++;-->
-            <!--fd.append("imgfile3["+_imgNum3+"]", base64Img);-->
-            <!--console.log(fd);-->
-            <!--$(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox3"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum3+'" class="closeImg"></div>');-->
-        <!--}-->
-    <!--})-->
-<!--</script>-->
 </body>
 
 </html>
