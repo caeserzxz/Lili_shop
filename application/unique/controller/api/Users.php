@@ -77,8 +77,8 @@ class Users extends ApiController
     public function getAccountLog()
     {
         $type = input('type', 'balance', 'trim');
-        $date1 = input('time', date('Y-m-d',strtotime("-1 month")), 'trim');
-        $date2 = input('time', date('Y-m-d'), 'trim');
+        $date1 = input('date1', date('Y-m-d',strtotime("-1 month")), 'trim');
+        $date2 = input('date2', date('Y-m-d'), 'trim');
         $flag = input('flag','all','trim');
         $date1 = strtotime($date1." 00:00:00");
         $date2 = strtotime($date2." 23:59:59");
@@ -106,6 +106,7 @@ class Users extends ApiController
         $where[] = $arr;
         $where[] = ['change_time', 'between', array($date1, $date2)];
         $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
+//        echo $AccountLogModel->where($where)->order('change_time DESC')->fetchSql()->select();die;
         $return['income'] = 0;
         $return['expend'] = 0;
         foreach ($rows as $key => $row) {
@@ -120,8 +121,6 @@ class Users extends ApiController
             $row['balance_remaining'] = $row['old_balance_money'] + $row['balance_money'];
             $return['list'][] = $row;
         }
-        $return['balance_money'] = $this->userInfo['account']['balance_money'];
-        $return['headimgurl'] = $this->userInfo['headimgurl'];
         return $this->ajaxReturn($return);
     }
 }

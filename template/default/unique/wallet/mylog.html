@@ -38,7 +38,7 @@
             <span>收入: ¥<em class="b_income">0</em></span>
         </div>
         <div class="wrap-list list">
-            
+            <div style="text-align:center; line-height: 100px;">加载中...</div>
         </div>
     </div>
     <!-- 没有更多了 -->
@@ -77,11 +77,21 @@
 <script>
     $("#date1").calendar({
         onClose(){
+            var date = new Date(p.value[0]);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear();
+            var M = date.getMonth()+1;
+            var D = date.getDate();
+            $('#date1').val(Y + '-' + M + '-' + D);
             getList();
         }
     });
     $("#date2").calendar({
-        onClose(){
+        onClose(p){
+            var date = new Date(p.value[0]);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear();
+            var M = date.getMonth()+1;
+            var D = date.getDate();
+            $('#date2').val(Y + '-' + M + '-' + D);
             getList();
         }
     });
@@ -124,11 +134,17 @@
             $('#nowValue').val(res.time);
             $('.b_expend').html(res.expend);
             $('.b_income').html(res.income);
-            $('.balance_money').html(res.balance_money);
-            $('.headimg').attr('src',res.headimgurl);
         });
     }
     $(function () {
+        jq_ajax('{:url("member/api.users/getcenterinfo")}',[],function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            $('.balance_money').html(res.userInfo.account.balance_money);
+            $('.headimg').attr('src',res.userInfo.headimgurl);
+        });
         getList();
     })
 </script>
