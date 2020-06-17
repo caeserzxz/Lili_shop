@@ -3,7 +3,7 @@
 <div class="page-bd">
     <div class="top">
         <div class="left">
-            <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
+            <img class="headimg" src="__STATIC__/mobile/default/images/defheadimg.jpg" alt="">
             <div class="money">
                 <p class="fs48 color_w"><em class="balance_money">0</em></p>
                 <p class="text">鼓励金(元)</p>
@@ -143,7 +143,9 @@
                 return false;
             }
             $('.balance_money').html(res.userInfo.account.balance_money);
-            $('.headimg').attr('src',res.userInfo.headimgurl);
+            if(res.userInfo.headimgurl){
+                $('.headimg').attr('src', res.userInfo.headimgurl);
+            }
         });
         getList();
     })
