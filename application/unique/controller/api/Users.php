@@ -3,6 +3,7 @@
 namespace app\unique\controller\api;
 
 use app\ApiController;
+use app\member\model\AccountLogModel;
 use app\member\model\UsersModel;
 use app\store\model\UserBusinessModel;
 use app\unique\model\RedbagModel;
@@ -68,6 +69,59 @@ class Users extends ApiController
                 $return['list_expired'][] = $row;
             }
         }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户变动日志
+    /*------------------------------------------------------ */
+    public function getAccountLog()
+    {
+        $type = input('type', 'balance', 'trim');
+        $date1 = input('time', date('Y-m-d',strtotime("-1 month")), 'trim');
+        $date2 = input('time', date('Y-m-d'), 'trim');
+        $flag = input('flag','all','trim');
+        $date1 = strtotime($date1." 00:00:00");
+        $date2 = strtotime($date2." 23:59:59");
+        $return['date1'] = $date1;
+        $return['date2'] = $date2;
+        $return['code'] = 1;
+        $AccountLogModel = new AccountLogModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        switch ($type) {
+            //余额
+            case 'balance':
+                $field = 'balance_money';
+                break;
+            //默认查余额
+            default:
+                $field = 'balance_money';
+                break;
+        }
+
+        //收入 支出 全部 筛选
+        $arr = '';
+        $arr = $flag == 'all' ? [$field, '<>', 0] : $arr;
+        $arr = $flag == 'income' ? [$field, '>', 0] : $arr;
+        $arr = $flag == 'expend' ? [$field, '<', 0] : $arr;
+        $where[] = $arr;
+        $where[] = ['change_time', 'between', array($date1, $date2)];
+        $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
+        $return['income'] = 0;
+        $return['expend'] = 0;
+        foreach ($rows as $key => $row) {
+            if ($row[$field] > 0) {
+                $return['income'] += $row[$field];
+                $row['value'] = '+' . $row[$field];
+            } else {
+                $return['expend'] += $row[$field] * -1;
+                $row['value'] = $row[$field];
+            }
+            $row['_time'] = timeTran($row['change_time']);
+            $row['balance_remaining'] = $row['old_balance_money'] + $row['balance_money'];
+            $return['list'][] = $row;
+        }
+        $return['balance_money'] = $this->userInfo['account']['balance_money'];
+        $return['headimgurl'] = $this->userInfo['headimgurl'];
         return $this->ajaxReturn($return);
     }
 }

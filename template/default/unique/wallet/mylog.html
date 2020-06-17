@@ -1,0 +1,175 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<div class="page-bd">
+    <div class="top">
+        <div class="left">
+            <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
+            <div class="money">
+                <p class="fs48 color_w"><em class="balance_money">0</em></p>
+                <p class="text">鼓励金(元)</p>
+            </div>
+        </div>
+        <a href="{:url('member/withdraw/index')}" class="right btn">提现</a>
+    </div>
+
+    <div class="date-type">
+        <div class="date">
+            <span class="fs28 fw_b color_3 mr10">时间:</span>
+            <span class="datetimer-1">
+                <input type="text" value="{$date1}" data-toggle='date' id='date1' />
+            </span>
+            <span>-</span>
+            <span class="datetimer-1">
+                <input type="text" value="{$date2}" data-toggle='date' id='date2' />
+            </span>
+        </div>
+        <div class="type mt20">
+            <span class="fs28 fw_b color_3 mr10">类型:</span>
+            <span class="datetimer-1">
+                <input value="全部" type="text" data-values="all" name="flag" id='picker-type' />
+            </span>
+        </div>
+    </div>
+
+    <!-- 数据列表 -->
+    <div class="data-info">
+        <div class="title color_r fs24">
+            <span class="mr20">支出: ¥<em class="b_expend">0</em></span>
+            <span>收入: ¥<em class="b_income">0</em></span>
+        </div>
+        <div class="wrap-list list">
+            <div class="list-item">
+                <div class="item-top">
+                    <p>
+                        <span class="fs28 fw_b color_3">自购返</span>
+                        <span class="fs24 color_9">(线下订单:536985469)</span>
+                    </p>
+                    <p class="fs28 fw_b color_3">+0.66</p>
+                </div>
+                <div class="item-bot mt20 fs24 color_9">
+                    <p><span>5月23日 12:30</span></p>
+                    <p>余额100.68</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="item-top">
+                    <p>
+                        <span class="fs28 fw_b color_3">抵扣</span>
+                        <span class="fs24 color_9">(线下订单:536985469)</span>
+                    </p>
+                    <p class="fs28 fw_b color_r">-8.33</p>
+                </div>
+                <div class="item-bot mt20 fs24 color_9">
+                    <p><span>5月23日 12:30</span></p>
+                    <p>余额100.68</p>
+                </div>
+            </div>
+            <div class="list-item">
+                <div class="item-top">
+                    <p>
+                        <span class="fs28 fw_b color_3">提现</span>
+                        <span class="fs24 color_9">(流水号:536985469)</span>
+                    </p>
+                    <p class="fs28 fw_b color_r">-100.00</p>
+                </div>
+                <div class="item-bot mt20 fs24 color_9">
+                    <p><span>5月23日 12:30</span></p>
+                    <p>余额100.68</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 没有更多了 -->
+    <div class="text_c color_9 mt20 mb20">已经到底啦~</div>
+</div>
+</div>
+{literal}
+<script type="text/html" id="logTpl">
+    {{each list as item index}}
+    <div class="list-item">
+        <div class="item-top">
+            <p>
+                <span class="fs28 fw_b color_3">{{item.change_desc}}</span>
+                <span class="fs24 color_9"></span>
+            </p>
+            <p class="fs28 fw_b color_3">{{item.value}}</p>
+        </div>
+        <div class="item-bot mt20 fs24 color_9">
+            <p><span>{{item._time}}</span></p>
+            <p>余额{{item.balance_remaining}}</p>
+        </div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+<link rel="stylesheet" href="__STATIC__/unique/css/encouragement.css" />
+<script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/unique/js/lib/fastclick.js"></script>
+<script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/unique/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $("#date1").calendar({
+        onClose(){
+            getList();
+        }
+    });
+    $("#date2").calendar({
+        onClose(){
+            getList();
+        }
+    });
+    $("#picker-type").select({
+        title: "选择类型",
+        items: [
+            {
+                title: "全部",
+                value: "all"
+            },
+            {
+                title: "收入",
+                value: "income"
+            },
+            {
+                title: "支出",
+                value: "expend"
+            }],
+        onClose() {
+            getList();
+        }
+    });
+
+    function getList(){
+        var arr = new Object;
+        arr.date1 = $('#date1').val();
+        arr.date2 = $('#date2').val();
+        arr.type = '{$type|default=balance}';
+        arr.flag = $("input[name='flag']").attr('data-values');
+        jq_ajax('{:url("unique/api.Users/getAccountLog")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            if (typeof(res.list) == 'undefined'){
+                $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+            }else{
+                $('.list').html(template('logTpl', res));
+            }
+            $('#nowValue').val(res.time);
+            $('.b_expend').html(res.expend);
+            $('.b_income').html(res.income);
+            $('.balance_money').html(res.balance_money);
+            $('.headimg').attr('src',res.headimgurl);
+        });
+    }
+    $(function () {
+        getList();
+    })
+</script>
+</body>
+</html>
+{/block}
