@@ -172,6 +172,7 @@
         })
     })
     var business_sta = {$business_sta};
+    var agent_sta = {$agent_sta};
     // 成为商家
     $('.partner-mer').on('click',function(){
         if(business_sta==1){
@@ -189,7 +190,22 @@
         }
 
     })
-
+    //成为代理
+    $('.partner-pro').on('click',function(){
+        if(agent_sta==1){
+            //可申请
+            window.location.href = "{:url('unique/agent/add_agent')}";
+        }else if(agent_sta==2){
+            //商家中心
+            window.location.href = "{:url('unique/agent/agent')}";
+        }else if(agent_sta==3){
+            //审核不通过
+            window.location.href = "{:url('unique/agent/agent_fail')}";
+        }else if(agent_sta==4){
+            //审核中
+            window.location.href = "{:url('unique/agent/agent_review')}";
+        }
+    })
 </script>
 </body>
 </html>

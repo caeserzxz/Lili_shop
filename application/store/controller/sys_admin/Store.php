@@ -156,6 +156,13 @@ class Store extends AdminController
     /*------------------------------------------------------ */
     public function afterAdd($data)
     {
+        #更新users表的商家状态
+        $UsersModel = new UsersModel();
+        if($data['status']==1){
+            $map['is_business'] = 1;
+            $UsersModel->where('user_id',$data['user_id'])->update($map);
+        }
+
         $logInfo = '添加商家，商家帐号状态：';
         $logInfo .= $data['is_ban'] == 1 ? '封禁':'正常';
         $this->_Log($data['business_id'],$logInfo);
@@ -198,6 +205,12 @@ class Store extends AdminController
             $logInfo .= '封禁';
         }else{
             $logInfo .= '正常';
+        }
+        #更新users表的商家状态
+        $UsersModel = new UsersModel();
+        if($data['status']==1){
+            $map['is_business'] = 1;
+            $UsersModel->where('user_id',$data['user_id'])->update($map);
         }
         $this->_Log($data['business_id'],$logInfo);
         return $this->success('修改成功.',url('index'));

@@ -7,6 +7,7 @@ namespace app\unique\controller;
 use app\ClientbaseController;
 use app\member\model\UsersModel;
 use app\store\model\UserBusinessModel;
+use app\agent\model\AgentModel;
 
 class Member extends ClientbaseController{
   
@@ -37,8 +38,26 @@ class Member extends ClientbaseController{
             #审核中
             $business_sta = 4;
         }
-
         $this->assign('business_sta',$business_sta);
+
+        #判断代理入口
+        $AgentModel = new AgentModel();
+        $agent = $AgentModel->where('user_id',$this->userInfo['user_id'])->find();
+        $agent_sta = 0;
+        if(empty($agent)){
+            #可申请
+            $agent_sta = 1;
+        }else if($agent['status']==1){
+            #审核通过
+            $agent_sta = 2;
+        }else if($agent['status']==2){
+            #审核不通过
+            $agent_sta = 3;
+        }else if($agent['status']==0){
+            #审核中
+            $agent_sta = 4;
+        }
+        $this->assign('agent_sta',$agent_sta);
 		return $this->fetch('index');
 	}
 	/*------------------------------------------------------ */

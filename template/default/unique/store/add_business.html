@@ -260,6 +260,9 @@
               _alert('请填写详细地址');
               return false;
           }
+          if (isPost == true) return false;
+          isPost = true;
+
           fd.append("token", token);
           fd.append("business_name", business_name);
           fd.append("business_user_name", business_user_name);
@@ -287,6 +290,7 @@
               contentType: false,
               data: fd,
               success: function (res) {
+                  isPost = false;
                   if (res.code == 0){
                       _alert(res.msg);
                       return false;
