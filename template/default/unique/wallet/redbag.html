@@ -122,8 +122,8 @@
                 $('.tab-b').html(template('usedTpl', res));
                 $('.tab-c').html(template('expiredTpl', res));
             }
-            $('.sp1').html(res.used_num);
-            $('.sp2').html(res.unused_num);
+            $('.sp1').html(res.unused_num);
+            $('.sp2').html(res.used_num);
             $('.sp3').html(res.expired_num);
         });
     }
