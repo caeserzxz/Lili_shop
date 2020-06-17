@@ -372,6 +372,20 @@ class Goods extends ApiController
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
+    //-- 删除单个商品足迹
+    /*------------------------------------------------------ */
+    public function delfootprintlist()
+    {
+        $this->checkLogin();//验证登陆
+        $GoodsFootprintModel = new \app\shop\model\GoodsFootprintModel();
+        $where['user_id'] = $this->userInfo['user_id'];
+        $where['goods_id'] = input('goods_id', '0', 'trim');
+        $rows = $GoodsFootprintModel->where($where)->delete();
+        $return['code'] = 1;
+        $return = Cache::rm('footprint_'.$this->userInfo['user_id']);
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
     //-- 获取商品详情
     /*------------------------------------------------------ */
     public function info(){

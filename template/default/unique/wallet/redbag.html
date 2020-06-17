@@ -1,0 +1,137 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+    <div class="page-bd">
+        <!--start 页面内容-->
+        <div class="weui-tab">
+            <!--start navbar -->
+            <div class="weui-navbar">
+                <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                    未使用(<span class="sp1">0</span>)
+                </a>
+                <a class="weui-navbar__item" href="#tab2">
+                    已使用(<span class="sp2">0</span>)
+                </a>
+                <a class="weui-navbar__item" href="#tab3">
+                    已过期(<span class="sp3">0</span>)
+                </a>
+            </div>
+            <!--end navbar -->
+            <div class="weui-tab__bd">
+                <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                    <div class="tab-a">
+
+                    </div>
+                    <!-- 没有更多了 -->
+                    <div class="text_c color_9">已经到底啦~</div>
+                </div>
+                <div id="tab2" class="weui-tab__bd-item">
+                    <div class="tab-b">
+
+                    </div>
+                    <!-- 没有更多了 -->
+                    <div class="text_c color_9">已经到底啦~</div>
+                </div>
+                <div id="tab3" class="weui-tab__bd-item">
+                    <div class="tab-c">
+
+                    </div>
+                        <!-- 没有更多了 -->
+                        <div class="text_c color_9">已经到底啦~</div>
+                </div>
+
+            </div>
+        </div>
+        <!--end 页面内容-->
+    </div>
+</div>
+
+{literal}
+<script type="text/html" id="unusedTpl">
+    {{each list_unused as item index}}
+    <div class="list-item Unused">
+        <div class="left-money">
+            <span class="fs38 fw_b">￥</span>
+            <span class="fs60 fw_b">{{item.price}}</span>
+        </div>
+        <div class="dash-line"></div>
+        <div class="right-info">
+            <div class="fs34 fw_b color_3">{{item.business_name}}</div>
+            <div class="fs24 color_9">有效期至:{{item._time}}</div>
+            <div class="text_r mt10"><span class="go-btn">去使用</span></div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script type="text/html" id="usedTpl">
+    {{each list_used as item index}}
+    <div class="list-item used">
+        <div class="left-money">
+            <span class="fs38 fw_b">￥</span>
+            <span class="fs60 fw_b">{{item.price}}</span>
+        </div>
+        <div class="dash-line"></div>
+        <div class="right-info">
+            <div class="fs34 fw_b color_3">{{item.business_name}}</div>
+            <div class="fs24 color_9">有效期至:{{item._time}}</div>
+            <div class="text_r mt10"><span class="go-btn">使用详情</span></div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+<script type="text/html" id="expiredTpl">
+    {{each list_expired as item index}}
+    <div class="list-item expired">
+        <div class="left-money">
+            <span class="fs38 fw_b">￥</span>
+            <span class="fs60 fw_b">{{item.price}}</span>
+        </div>
+        <div class="dash-line"></div>
+        <div class="right-info">
+            <div class="fs34 fw_b">{{item.business_name}}</div>
+            <div class="fs24 color_9">有效期至:{{item._time}}</div>
+            <div class="text_r mt10"><span class="go-btn">已过期</span></div>
+        </div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+
+<link rel="stylesheet" href="__STATIC__/unique/css/merRedEnv.css" />
+<script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/unique/js/lib/fastclick.js"></script>
+<script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/unique/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    function getList(){
+        var arr = new Object;
+        arr.type = '{$type|default=all}';
+        jq_ajax('{:url("api.Users/getredbag")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            if (typeof(res.list_used) == 'undefined'){
+                $('.tab-a').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+            }else{
+                $('.tab-a').html(template('unusedTpl', res));
+                $('.tab-b').html(template('usedTpl', res));
+                $('.tab-c').html(template('expiredTpl', res));
+            }
+            $('.sp1').html(res.unused_num);
+            $('.sp2').html(res.used_num);
+            $('.sp3').html(res.expired_num);
+        });
+    }
+    $(function(){
+        getList();
+        $('.header-left').find('a').attr('href',"{:url('unique/member/index')}")
+    })
+</script>
+</body>
+</html>
+{/block}

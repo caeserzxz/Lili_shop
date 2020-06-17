@@ -104,6 +104,11 @@ class Users extends ApiController
         $where[]=['status','=',1];
         $collectNum = (new \app\shop\model\GoodsCollectModel)->where($where)->cache(true,60)->count('collect_id');
         $return['collectNum'] = $collectNum;
+        $where_redbag[] = ['user_id','=',$this->userInfo['user_id']];
+        $where_redbag[] = ['status', '=', '0'];
+        $where_redbag[] = ['expire_time', '>', time()];
+        $RedbagModelNum = (new \app\unique\model\RedbagModel)->where($where_redbag)->cache(true,30)->count('redbag_id');
+        $return['redbagNum'] = $RedbagModelNum;
 
         $return['code'] = 1;
         return $this->ajaxReturn($return);
