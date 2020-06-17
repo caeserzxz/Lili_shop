@@ -1,41 +1,51 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/myCollection.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/collect.css" />
 {/block}
 {block name="main" }
 <div class="page-bd">
-	<div class="goodslist">
-		<ul></ul>
+	<!-- 页面内容-->
+	<div class="trace">
+		<div class="trace-list goodslist">
+			<ul></ul>
+		</div>
+		<div class="text_c color_9">已经到底啦~</div>
 	</div>
+
 </div>
 <script type="text/html" id="goodsTpl">
 {{each list as item index}}
-<li id="gid{{item.goods_id}}">
-  <object>	  
-	<div class="checkbox">
-	  <a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}">
-	  <div class="block margion_l30">                   
-		<img src="{{item.goods_thumb}}" alt="" class="goodsimg">
-		<div class="info">
-		  <p class="fs28 color_3">{{item.goods_name}}</p>
-		  <div class="sign fs28 color_9"></div>
-		  <div class="Money">
-			  <div class="left">
-				<div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
-				<span class="fs24 color_9">￥{{item.market_price}}</span>
-			  </div>
-		   </div>
+<div class="list-item footprint_{{item.goods_id}}">
+	<a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}"><img class="trace-img" src="{{item.goods_thumb}}" /></a>
+	<div class="trace-info">
+		<a href="{:_url('goods/info',['id'=>'[[item.goods_id]]'])}" class="trace-name fs28 fw_b color_3">{{item.goods_name}}</a>
+		<div class="trace-enc color_3">
+			<div class="price">
+				<p class="now-price">
+					<span class="fw_b">￥</span>
+					<span class="fs30 fw_b">{{item.exp_price[0]}}</span>
+					<span class="fw_b">.{{item.exp_price[1]}}</span>
+				</p>
+				<span class="old-price">￥{{item.market_price}}</span>
+			</div>
+			<div class="cancel" onclick="del_footprint({{item.goods_id}})">删除记录</div>
 		</div>
-	  </div>
-	  </a>
 	</div>
-  </object> 
-</li>
+</div>
 {{/each}}
 </script>
 {/block}
 {block name="footer"}
 <script>
+	function del_footprint(id){
+		$('.footprint_'+id).fadeOut("slow");
+        jq_ajax('{:_url("shop/api.goods/delFootprintlist")}','goods_id='+id,function(res){
+            if(res.code  == 0 ){
+                _alert(res.msg)
+                return false;
+            }
+        });
+	}
       $(function(){
 		   jq_ajax('{:_url("shop/api.goods/getFootprintlist")}','',function(res){
 			   if(res.code  == 0 ){
