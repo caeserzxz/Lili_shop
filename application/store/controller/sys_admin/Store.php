@@ -300,5 +300,36 @@ class Store extends AdminController
         $merger_name = "$province_name $city_name $district_name";
         return $merger_name;
     }
+    /**
+     * 百度后台获取经纬度
+     */
+    public function getLatLon(){
+        $input = input();
+        $regionModel = new RegionModel();
+        $province = $regionModel->where('id',$input['province'])->value('name');
+        $city = $regionModel->where('id',$input['city'])->value('name');
+        $district = $regionModel->where('id',$input['district'])->value('name');
+        $key = settings('tx_key');
+        $secret_key = settings('secret_key');
+
+        $sig = md5("/ws/geocoder/v1/?address=".$province.$city.$district.$input['address']."&key=".$key."&output=json&region=".$city.$secret_key);
+        $longitude = 116.405289;$latitude = 39.904987;
+        if(!empty($key)){
+            $url = "https://apis.map.qq.com/ws/geocoder/v1/?address=".$province.$city.$district.$input['address']."&key=".$key."&output=json&region=".$city."&sig=".$sig;
+
+            if ($result=file_get_contents($url)) {
+                $result = json_decode($result,ture);
+                $longitude = $result["result"]["location"]['lng'];
+                $latitude = $result["result"]["location"]['lat'];
+            }
+        }
+        $data = array(
+            'code' => 1,
+            'longitude' =>$longitude,
+            'latitude' =>$latitude,
+        );
+        $this->ajaxReturn($data);
+    }
+
 
 }

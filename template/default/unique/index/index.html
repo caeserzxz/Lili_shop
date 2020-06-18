@@ -263,33 +263,11 @@
         $(function () {
             get_recommend_class();
             get_class();
+
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
             var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
         });
 
-        // function createSwiper(index, _direction, time, type) {
-        //     var swiper = new Swiper(".swiper" + index, {
-        //         pagination: {
-        //             el: ".pagination" + index,
-        //             type: type,
-        //         },
-        //         lazy: {
-        //             loadPrevNext: true,
-        //         },
-        //         direction: _direction,
-        //         preloadImages: false,
-        //         paginationClickable: true,
-        //         loop: true,
-        //         autoplay: {
-        //             delay: time,
-        //             disableOnInteraction: false,
-        //         },
-        //         onSlideChangeEnd: function (swiper) {
-        //             swiper.update(); //swiper更新
-        //         },
-        //     });
-        //     return swiper;
-        // }
         function createSwiper(index, _direction, time, type) {
             var swiper = new Swiper(".swiper" + index, {
                 pagination: {
@@ -326,13 +304,45 @@
         var loading = false;  //状态标记
         $('.page-bd').infinite().on("infinite", function() {
             if(loading) return;
-            loading = true;
+            // loading = true;
             // 请求数据
-            setTimeout(function() {
-                $(".shop-list").append("<p> 我是新加载的内容 </p>");
-                loading = false;
-            }, 1500);   //模拟延迟
+
+            // setTimeout(function() {
+            //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
+            //     loading = false;
+            // }, 1500);   //模拟延迟
         })
+
+        function get_business(){
+            $.ajax({
+                url:'{:url("unique/api.index/getList")}',// 跳转到 action
+                data:arr,
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    if(res.info != ''){
+                        info = res.info;
+                        html = '';
+                        for(x in info) {
+                            html += '<div class="weui-cells"><div class="weui-cell"><div class="weui-cell__hd"><img class="top_image" src="'+info[x]['supplyer_img']+'"></div><div class="weui-cell__bd"><p class="fs30 color_o ">'+info[x]['supplyer_name']+'</p><p class="fs24 color_6 ">电话：'+info[x]['moblie']+'</p><p class="fs24 color_6 adress">地址：'+info[x]['merger_name']+info[x]['address']+'</p></div><div class="weui-cell__ft fs24 h color_6">'+info[x]['distance']+'</div></div><img class="content_img" src="'+info[x]['supplyer_album']+'" alt=""><p class="fs24 color_r oneMore" data-id="'+info[x]['supplyer_id']+'">点击查看详情 >></p></div>';
+                        }
+
+                        $('.region_n').append(html);
+
+                        $('.color_r').on('click',function(){
+                            var id = $(this).data('id');
+                            window.location.href = "{:url('store/activity/goods')}?id="+id;
+                        });
+
+                        window.page += 1;
+                    }
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        }
 
         // 显示隐藏  分类弹窗
         function showCategory(type) {

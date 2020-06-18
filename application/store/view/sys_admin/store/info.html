@@ -124,18 +124,18 @@
                         <input type="text" class="input-max" data-rule-maxlength="50"  name="address" value="{$row.address}" >
                     </div>
                 </div>
-            <!--<div class="form-group">-->
-                <!--<label class="control-label">商家经度：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="longitude" data-rule-required="true" data-msg-required="商家经度不能为空"  value="{$row.longitude}" >-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group">-->
-                <!--<label class="control-label">商家纬度：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="latitude" data-rule-required="true" data-msg-required="商家纬度不能为空"  value="{$row.latitude}" >-->
-                <!--</div>-->
-            <!--</div>-->
+            <div class="form-group">
+                <label class="control-label">商家经度：</label>
+                <div class="controls " >
+                    <input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="longitude" data-rule-required="true" data-msg-required="商家经度不能为空"  value="{$row.longitude}" >
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="control-label">商家纬度：</label>
+                <div class="controls " >
+                    <input type="text" class="input-max lon_lat" data-rule-maxlength="20" name="latitude" data-rule-required="true" data-msg-required="商家纬度不能为空"  value="{$row.latitude}" >
+                </div>
+            </div>
                 <div class="line line-dashed line-lg pull-in" ></div>
                 <div class="form-group">
                     <label class="control-label">店铺logo：</label>
@@ -265,9 +265,9 @@
         })
     });
    $('.lon_lat').click(function () {
-     var lat = $("input[name='latitude']").val();
-     var lon = $("input[name='longitude']").val();
-     if(lat == '' || lon == ''){
+     // var lat = $("input[name='latitude']").val();
+     // var lon = $("input[name='longitude']").val();
+     // if(lat == '' || lon == ''){
        var arr = new Object();
        arr.address = $("input[name='address']").val();
        arr.province = $('#province').val();
@@ -283,7 +283,7 @@
            // window.location.reload();
          })
        }
-     }
+     // }
    });
    var store_type = "{$row['type']}";
    if(store_type != ''){
