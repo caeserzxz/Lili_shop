@@ -17,7 +17,7 @@ class Member extends ClientbaseController{
         $this->assign('isUserIndex', 1);
         $this->assign('not_top_nav', true);
         $this->assign('user_center_nav_tpl', settings('user_center_nav_tpl'));
-        // $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
+        $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
 
 		return $this->fetch('index');
 	}

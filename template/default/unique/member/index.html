@@ -68,55 +68,33 @@
                         </a>
                     </div>
                 </div>
+                {notempty name="navMenuList"}
+                {if condition="$user_center_nav_tpl eq 0"}
+            <!-- 网格型 -->
                 <div class="girdBox">
                     <div class="title bor_b">
                         <span class="fs28 fw_b">我的工具</span>
                     </div>
                 <div>
-                <a href="{:url('member/center/address')}">
-                    <img src="__STATIC__/unique/images/myIcon08.png" alt="">
-                    <span class="fs24 fw_b color_3">收货地址</span>
+                {volist name="navMenuList" id="nav" }
+                <a href="{$nav.url|default='javascript:void();'}">
+                    <img src="{$nav.imgurl}" alt="">
+                    <span class="fs24 fw_b color_3">{$nav.title}</span>
                 </a>
-                <a href="{:url('member/wallet/mylog',['type'=>'balance'])}">
-                    <img src="__STATIC__/unique/images/myIcon09.png" alt="">
-                    <span class="fs24 fw_b color_3">消费记录</span>
-                </a>
-                <a href="{:url('member/center/mycode')}">
-                    <img src="__STATIC__/unique/images/myIcon10.png" alt="">
-                    <span class="fs24 fw_b color_3">我要分享</span>
-                </a>
-                <a href="{:url('member/withdraw/index')}">
-                    <img src="__STATIC__/unique/images/myIcon11.png" alt="">
-                    <span class="fs24 fw_b color_3">提现管理</span>
-                </a>
-                <a href="{:url('shop/comment/index')}">
-                    <img src="__STATIC__/unique/images/myIcon12.png" alt="">
-                    <span class="fs24 fw_b color_3">我的评价</span>
-                </a>
-                <a href="我的收货地址.html">
-                    <img src="__STATIC__/unique/images/myIcon13.png" alt="">
-                    <span class="fs24 fw_b color_3">客服中心</span>
-                </a>
-                <a href="{:url('member/center/setting')}">
-                    <img src="__STATIC__/unique/images/myIcon14.png" alt="">
-                    <span class="fs24 fw_b color_3">设置</span>
-                </a>
-                <a href="">
-                  <img src="__STATIC__/unique/images/myIcon15.png" alt="">
-                  <span class="fs24 fw_b color_3">关于我们</span>
-                </a>
-                <a href="">
-                    <img src="__STATIC__/unique/images/myIcon16.png" alt="">
-                    <span class="fs24 fw_b color_3">意见反馈</span>
-                </a>
-                <a href="">
-                    <img src="__STATIC__/unique/images/myIcon17.png" alt="">
-                    <span class="fs24 fw_b color_3">常见问题</span>
-                </a>
-                <a href="">
-                    <img src="__STATIC__/unique/images/myIcon18.png" alt="">
-                    <span class="fs24 fw_b color_3">绑定手机</span>
-                </a>
+                {/volist}
+                {elseif condition="$user_center_nav_tpl eq 1"/}
+                <!-- 列表型 -->
+                <div class=" tab">
+                    {volist name="navMenuList" id="nav" }
+                    <a href="{$nav.url|default='javascript:void();'}" class="bor_b">
+                        <img src="{$nav.imgurl}" alt="" class="icon">
+                        <span class="fs24 fw_b color_3">{$nav.title}</span>
+                        <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="right">
+                    </a>
+                    {/volist}
+                </div>
+                {/if}
+                {/notempty}
             </div>
         </div>
         <div class="cooperation">
