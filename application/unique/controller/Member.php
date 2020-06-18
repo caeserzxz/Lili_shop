@@ -19,7 +19,7 @@ class Member extends ClientbaseController{
         $this->assign('isUserIndex', 1);
         $this->assign('not_top_nav', true);
         $this->assign('user_center_nav_tpl', settings('user_center_nav_tpl'));
-        // $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
+        $this->assign('navMenuList', (new \app\shop\model\NavMenuModel)->getRows(3));//获取导航菜单
 
         #判断商家入口
         $UserBusinessModel = new UserBusinessModel();
@@ -140,5 +140,16 @@ class Member extends ClientbaseController{
     public function addBankCard(){
         $this->assign('title', '添加银行卡');
         return $this->fetch('add_bank_card');
+    }
+    /*------------------------------------------------------ */
+    //-- 首页
+    /*------------------------------------------------------ */
+    public function kefu(){
+        $this->assign('title', '客服中心');
+        $settings = settings();
+        $this->assign('kefu_tel', $settings['kefu_tel']);
+        $this->assign('kefu_ecode', $settings['kefu_ecode']);
+        $this->assign('kefu_time', $settings['kefu_time']);
+        return $this->fetch();
     }
 }?>
