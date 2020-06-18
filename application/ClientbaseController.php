@@ -40,6 +40,12 @@ class ClientbaseController extends BaseController{
     {
 		global $userInfo;
 		parent::initialize();
+		#代理邀请码处理
+        $agent_token = input('agent_token');
+        if(!empty($agent_token)){
+            session('agent_token',$agent_token);
+        }
+
 		//判断是否微信访问
         $this->is_wx = session('is_wx');
 		if (empty($this->is_wx)){
@@ -50,6 +56,7 @@ class ClientbaseController extends BaseController{
             }
             session('is_wx',$this->is_wx);
         }//end
+
 
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();

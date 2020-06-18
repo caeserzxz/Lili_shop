@@ -46,6 +46,7 @@ class Store extends ClientbaseController{
         }
         $this->assign('license_arr',$license_arr);
 
+        $this->assign('agent_token',session('agent_token'));
         $this->assign('info',$info);
         $this->assign('cate_name_json',$cate_name_json);
         $this->assign('title', '申请商家');

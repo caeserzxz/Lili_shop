@@ -21,9 +21,9 @@
           <div class="cell_hd">
             <span class="label fs28 fw_b color_3">邀请码</span>
           </div>
-          <div class="cell_bd">
-            <input class="fs28" type="text" name="token" id="token" disabled placeholder="请输入邀请码">
-          </div>
+            <div class="cell_bd">
+              <input class="fs28" type="text" name="token" id="token" value="{$agent_token}" disabled placeholder="请输入邀请码">
+            </div>
           <div class="cell_ft"></div>
         </div>
         <div class="cell">
@@ -157,6 +157,7 @@
     var fd = new FormData();
     isPost = false;
     $('.save-btn').on('click',function(){
+        var token = $('#token').val();
         var agent_user_name = $('#agent_user_name').val();
         var agent_mobile = $('#agent_mobile').val();
         var agent_level = $('input[name="radiobox"]:checked').val();
@@ -196,7 +197,7 @@
         }
         if (isPost == true) return false;
         isPost = true;
-
+        fd.append("token", token);
         fd.append("agent_user_name", agent_user_name);
         fd.append("agent_mobile", agent_mobile);
         fd.append("agent_level", agent_level);

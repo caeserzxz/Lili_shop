@@ -37,7 +37,6 @@ class Agent extends ApiController
 
         #获取代理信息
         $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
-
         #如果存在token,则绑定上下级关系
         if(empty($data['token'])==false){
             $top_info = $this->Model->where('token',$data['token'])->find();

@@ -6,6 +6,8 @@ use app\ApiController;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\mainadmin\model\RegionModel;
+use app\agent\model\AgentModel;
+
 /*------------------------------------------------------ */
 //-- 首页相关API
 /*------------------------------------------------------ */
@@ -29,10 +31,9 @@ class Business extends ApiController
         $this->checkLogin();//验证登陆
         $CategoryModel = new CategoryModel();
         $RegionModel = new RegionModel();
+        $AgentModel = new AgentModel();
         $data = input('post.');
 
-
-        if(empty($data['token'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写邀请码']);
         if(empty($data['business_name'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写店铺名称']);
         if(empty($data['business_user_name'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写真实姓名']);
         if(empty($data['business_mobile'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写手机号']);
@@ -45,8 +46,23 @@ class Business extends ApiController
         //获取当前用户的商家信息
         $UserBusinessModel = new UserBusinessModel();
         $info = $UserBusinessModel->where('user_id',$this->userInfo['user_id'])->find();
+        #检查代理信息
+        if(empty($data['token'])==false){
+            $agent_info  = $AgentModel->where('token',$data['token'])->find();
+            if(empty($agent_info)){
+                return $this->ajaxReturn(['code' => 0,'msg' => '代理不存在']);
+            }
+        }
         #检查店铺区域与代理的代理区域是否相同
-
+        if(empty($agent_info)==false){
+            $codes = explode(",",$data['data_codes']);
+            if($codes[0]!=$agent_info['province']||$codes[1]!=$agent_info['city']){
+                return $this->ajaxReturn(['code' => 0,'msg' => '代理区域不同']);
+            }
+        }
+        if(empty($agent_info)==false){
+            $inArr['agent_id'] = $agent_info['agent_id'];
+        }
         #行业分类
         $category_id = $CategoryModel->where('name',$data['category'])->value('id');
         if(empty($category_id)){

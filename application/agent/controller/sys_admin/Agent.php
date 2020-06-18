@@ -68,7 +68,14 @@ class Agent extends AdminController
     //-- 添加前处理
     /*------------------------------------------------------ */
     public function beforeAdd($data) {
+        $info = $this->Model->where('user_id',$data['user_id'])->find();
+        if(empty($info)==false){
+            return $this->error('操作失败:该用户已存在代理申请，不允许重复添加！');
+        }
 
+        if($data['status']==1){
+            $data['token'] = $this->getToken();
+        }
         return $data;
     }
     /*------------------------------------------------------ */
@@ -76,6 +83,12 @@ class Agent extends AdminController
     /*------------------------------------------------------ */
     public function afterAdd($data)
     {
+        $UsersModel = new UsersModel();
+        if($data['status']==1){
+            $map['is_agent'] = 1;
+            $UsersModel->where('user_id',$data['user_id'])->update($map);
+        }
+
         $logInfo = '添加代理，代理帐号状态：';
         $logInfo .= $data['is_ban'] == 1 ? '封禁':'正常';
         $this->_Log($data['agent_id'],$logInfo);
@@ -85,8 +98,17 @@ class Agent extends AdminController
     //-- 修改前处理
     /*------------------------------------------------------ */
     public function beforeEdit($data){
+        #地址处理
+        if($data['city']){
+            $regionModel = new RegionModel();
+            $city_info = $regionModel->where('id',$data['city'])->find();
+            if($city_info){
+                $data['merger_name'] = $city_info['merger_name'];
+            }
+        }
         if($data['status']==1){
-            if(empty($data['token'])){
+            $info = $this->Model->where('agent_id',$data['agent_id'])->find();
+            if(empty($info['token'])){
                 #生成token
                 $data['token'] = $this->getToken();
             }

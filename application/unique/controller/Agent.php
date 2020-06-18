@@ -24,6 +24,7 @@ class Agent extends ClientbaseController
     //-- 申请代理
     /*------------------------------------------------------ */
     public function add_agent(){
+        $this->assign('agent_token',session('agent_token'));
         $this->assign('title', '申请代理');
         $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
         $this->assign('info',$info);
@@ -35,7 +36,7 @@ class Agent extends ClientbaseController
     /*------------------------------------------------------ */
     public function agent(){
         $this->assign('title', '代理管理');
-        return $this->fetch('add_agent');
+        return $this->fetch('agent');
     }
 
     /*------------------------------------------------------ */

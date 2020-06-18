@@ -27,7 +27,7 @@
             <span class="label required fs28 fw_b color_3">邀请码</span>
           </div>
           <div class="cell_bd">
-            <input class="fs28" type="text" id="token" placeholder="请输入邀请码">
+            <input class="fs28" type="text" id="token" name="token" value="{$agent_token}" placeholder="请输入邀请码">
           </div>
           <div class="cell_ft"></div>
         </div>
@@ -211,10 +211,6 @@
           var address = $('#address').val();
           var data_codes = $('#city-picker').attr('data-codes');
 
-          if(token==''||token==null){
-              _alert('请填写邀请码');
-              return false;
-          }
           if(business_name==''||business_name==null){
               _alert('请填写店铺名称');
               return false;
