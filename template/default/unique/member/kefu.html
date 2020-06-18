@@ -1,0 +1,67 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+    <div class="page-bd">
+        <div class="cells">
+            <div class="cell">
+                <div class="cell_hd"></div>
+                <div class="cell_bd">
+                    <span class="fs30 color_3">客服电话</span>
+                </div>
+                <div class="cell_ft arrowright">
+                    <a href="tel:{$kefu_tel}"><span class="fs28 color_9">{$kefu_tel}</span></a>
+                </div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd"></div>
+                <div class="cell_bd">
+                    <span class="fs30 color_3">客服微信二维码</span>
+                </div>
+                <div class="cell_ft arrowright show-code">
+                    <span class="fs28 color_9">查看二维码</span>
+                </div>
+            </div>
+            <div class="cell">
+                <div class="cell_hd"></div>
+                <div class="cell_bd">
+                    <span class="fs30 color_3">客服时间</span>
+                </div>
+                <div class="cell_ft">
+                    <span class="fs28 color_9">{$kefu_time}</span>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <!-- 二维码弹窗 -->
+<div class="serverCenter">
+    <div class="modal">
+        <div class="modal-main">
+            <img src="{$kefu_ecode}" alt="">
+            <div class="fs26 color_w mt40">长按图片保存二维码</div>
+        </div>
+    </div>
+</div>
+
+</div>
+<link rel="stylesheet" href="__STATIC__/unique/css/serverCenter.css" />
+<script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/unique/js/lib/fastclick.js"></script>
+<script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/unique/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $('.show-code').on('click', function() {
+        $('.modal').show()
+    })
+    $('.modal').on('click', function() {
+        $(this).hide()
+    })
+</script>
+</body>
+</html>
+{/block}

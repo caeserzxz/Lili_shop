@@ -141,4 +141,15 @@ class Member extends ClientbaseController{
         $this->assign('title', '添加银行卡');
         return $this->fetch('add_bank_card');
     }
+    /*------------------------------------------------------ */
+    //-- 首页
+    /*------------------------------------------------------ */
+    public function kefu(){
+        $this->assign('title', '客服中心');
+        $settings = settings();
+        $this->assign('kefu_tel', $settings['kefu_tel']);
+        $this->assign('kefu_ecode', $settings['kefu_ecode']);
+        $this->assign('kefu_time', $settings['kefu_time']);
+        return $this->fetch();
+    }
 }?>
