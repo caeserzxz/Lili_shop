@@ -1,0 +1,197 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/shopSet.css" />
+  <div class="page shopSet">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">店铺设置</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <p class="introduc">店铺介绍</p>
+        <div class="pdb10">
+          <textarea class="weui-textarea fs28" name="info" id="info"  placeholder="请输入介绍内容~" rows="4">{$info.info}</textarea>
+        </div>
+      </div>
+
+      <div class="cells">
+        <div class="uploading">
+          <div class="title fs28 fw_b color_3">
+            店铺主图
+            <span class="fs24 color_9"></span>
+          </div>
+          <div class="block">
+            <div class="uploading">
+              <div class="uploadBox" >
+                {volist name="logo_arr" id="vol"}
+                <div class="Box">
+                  <img src="{$vol}" alt="" class="imgBox appendBox3">
+                  <img src="/static/mobile/default/images/closeImg.png" alt="" data-imgnum="1" class="closeImg">
+                </div>
+                {/volist}
+                <div class="Box">
+                  <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                  <input type="file" class="uploadInput3" >
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">联系电话</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" style="width: 100%;" name="contact_mobile"  id="contact_mobile" value="{$info.contact_mobile}" type="text" placeholder="展示在平台的联系方式，非注册手机">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+
+      </div>
+
+      <div class="cells">
+        <div class="uploading">
+          <div class="title fs28 fw_b color_3">
+            店铺相册
+            <span class="fs24 color_9">（最多添加6张）</span>
+          </div>
+          <div class="block">
+            <div class="uploading">
+              <div class="uploadBox" >
+                {volist name="imgs_arr" id="vol"}
+                  <div class="Box">
+                    <img src="{$vol}" alt="" class="imgBox appendBox">
+                    <img src="/static/mobile/default/images/closeImg.png" alt="" data-imgnum="1" class="closeImg">
+                  </div>
+                {/volist}
+                <div class="Box">
+                  <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                  <input type="file" class="uploadInput" >
+                </div>
+                <div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <input type="hidden" name="business_id" id="business_id" value="{$info.business_id}">
+      <div class="text_c fs28 color_r save-btn">保存</div>
+
+    </div>
+
+  </div>
+
+
+{/block}
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/uploadsimage.js?v=1"></script>
+<script src="__STATIC__/mobile/default/js/uploadsimage3.js?v=1"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+      var fd = new FormData();
+      var _imgNum = 0;
+      var _imgNum3 = 0;
+
+  </script>
+<script>
+  $('.save-btn').on('click',function(){
+      var business_id = $('#business_id').val();
+      var contact_mobile = $('#contact_mobile').val();
+      var info = $('#info').val();
+      if(info==''||info==null){
+          _alert('请填写店铺介绍');
+          return false;
+      }
+      if(contact_mobile==''||contact_mobile==null){
+          _alert('请填写手机号码');
+          return false;
+      }else{
+          if(!(/^1[3456789]\d{9}$/.test(contact_mobile))){
+              _alert("手机号码有误，请重填");
+              return false;
+          }
+      }
+
+      fd.append("business_id", business_id);
+      fd.append("contact_mobile", contact_mobile);
+      fd.append("info", info);
+
+      $('.appendBox3').each(function(k,v){
+           k++;
+           src = $(this).attr('src');
+          fd.append("imgfile3["+k+"]", src);
+      });
+      $('.appendBox').each(function(k,v){
+          k++;
+          src = $(this).attr('src');
+          fd.append("imgfile["+k+"]", src);
+      });
+      $.ajax({
+          url: '{:url("unique/api.business/business_set")}',
+          type: 'post',
+          processData: false,
+          contentType: false,
+          data: fd,
+          success: function (res) {
+              if (res.code == 0){
+                  _alert(res.msg);
+                  return false;
+              }
+              _alert(res.msg,'{:url("unique/store/business")}');
+          }
+      })
+
+  })
+</script>
+<script>
+    //处理点击改变的调用函数-做IOS兼容
+    $(_listenSelector).click(function(){
+        var that = $(this);
+        _uplocalfunction=function(base64Img){
+            if ($('.appendBox').length >= 6){
+                _alert('最多允许上传6张图片.');
+                return false;
+            }
+            _imgNum++;
+            // fd.append("imgfile["+_imgNum+"]", base64Img);
+            console.log(fd);
+            $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum+'" class="closeImg"></div>');
+        }
+    })
+</script>
+<script>
+    //处理点击改变的调用函数-做IOS兼容
+    $(_listenSelector3).click(function(){
+        var that = $(this);
+        _uplocalfunction3=function(base64Img){
+            if ($('.appendBox3').length >= 1){
+                _alert('最多允许上传1张图片.');
+                return false;
+            }
+            _imgNum3++;
+            // fd.append("imgfile3["+_imgNum3+"]", base64Img);
+            console.log(fd);
+            $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox3"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum3+'" class="closeImg"></div>');
+        }
+    })
+</script>
+</body>
+
+</html>
+{/block}

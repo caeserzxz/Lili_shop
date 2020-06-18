@@ -1,0 +1,182 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="head" }
+<link href="__STATIC__/main/css/stylesheets/uploadify/uploadify.min.css" rel="stylesheet" />
+<link href="__STATIC__/main/css/stylesheets/page/goods.css?v=1" rel="stylesheet" />
+{/block}
+{block name="main" }
+
+<header class="header  b-b clearfix">
+    <div class="page-breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>代理管理</strong>
+            </li>                                  
+        </ul>
+        <!--<a href="{:url('info')}"  title="添加商家" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-plus m-r-xs"></i>添加代理</a>-->
+        <a class="text-muted pull-right m-r-tm m-t-md pointer" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
+    </div>
+</header>
+<section class="scrollable  wrapper">
+    <form class="form-horizontal form-validate" method="post" action="{:url('info')}" style="padding:0;">
+        <section class="panel panel-default">
+            <div class="panel-body">
+                </div>
+                <!--<div class="form-group">-->
+                    <!--<label class="control-label">选择行业</label>-->
+                    <!--<div class="controls w250 must">-->
+                     <!--<select class="wb80 " name="category_id" data-maxcount="3" data-msg-required="请选择行业" data-toggle="select2" data-placeholder="请选择行业" data-width="999px">-->
+                        <!--<option value=""></option>-->
+                            <!--{$catOpt|raw}                   -->
+                        <!--</select>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+                <div class="form-group">
+                    <label class="control-label">绑定用户：</label>
+                    <div class="col-sm-4 " >
+                        <input type="text" id="user_keyword" placeholder="用户ID/昵称" value="" style="width:160px;"/> 
+                        <a href="javascript:;" class="m-xs" title="查看" onclick="searchUser('user_keyword','select_user');">
+                            <i class="fa fa-search text-muted"></i>
+                        </a>
+                        <select id="select_user" style="width: 200px; " >
+                          <option value="">选择用户</option>
+                        </select>               
+                    </div>
+                    <div class="clearfix"></div>
+                    <label class="control-label">绑定用户：</label>
+                    <span style="color:#f30;"> * </span>
+                    <div class="col-sm-8 m-t-md" id="nick_name" style="width: auto">
+                        {$row['nick_name']}
+                    </div>
+                    <input name="user_id" id="user_id" type="hidden" value="{$row['user_id']}"/>
+                </div>
+
+                <div class="form-group">
+                    <label class="control-label">代理名称：</label>
+                    <div class="col-sm-7 must ">
+                        <input type="text" class="input-xlarge" data-rule-maxlength="30" data-rule-required="true" data-msg-required="代理商名称不能为空" name="agent_user_name" value="{$row.agent_user_name}" >
+                    </div>
+                </div>
+                 <div class="form-group">
+                    <label class="control-label">状态：</label>
+                    <div class="controls">
+                         <label class="radio-inline">
+                            <input name="status" value="0"  class="js_undertake" type="radio" {$row['status']<1?'checked':''}>未审核
+                        </label>
+                        <label class="radio-inline">
+                            <input name="status" value="1"  class="js_undertake " type="radio" {$row['status']==1?'checked':''}>审核通过
+                        </label>
+                        <label class="radio-inline">
+                            <input name="status" value="2"  class="js_undertake " type="radio" {$row['status']==2?'checked':''}>审核不通过
+                        </label>
+                    </div>
+                   <div class="clearfix"></div>
+                </div>
+
+
+                <div class="form-group">
+                    <label class="control-label">代理手机号：</label>
+                    <div class="controls " >
+                    <input type="text" class="input-max" data-rule-maxlength="11" name="agent_mobile" data-rule-required="true" data-msg-required="联系手机不能为空"  value="{$row.agent_mobile}" >
+                    </div>
+                </div>
+
+            <div class="form-group">
+                <label class=" control-label">省/市：</label>
+                <div class="col-sm-9 must">
+                    <select name="province" id="province" style="width:120px;"  class="region_sel" nextsel="city|district" sel_val="100000|{$row['province']}">
+                        <option value="">请选择</option>
+                    </select>
+                    <select name="city" id="city" style="width:120px;"  class="region_sel" nextsel="district" sel_val="{$row['province']}|{$row['city']}">
+                        <option value="">请选择</option>
+                    </select>
+                    <!--<select name="district" id="district" style="width:120px;"  class="region_sel" sel_val="{$row['city']}|{$row['district']}">-->
+                        <!--<option value="">请选择</option>-->
+                    <!--</select>-->
+                </div>
+            </div>
+
+
+                <div class="line line-dashed line-lg pull-in" ></div>
+
+            <div class="form-group">
+                <label class="control-label">申请理由：</label>
+                <div class="controls " >
+                    <textarea rows="3" name="reason" cols="35">{$row.reason}</textarea>
+                </div>
+            </div>
+
+                <div class="line line-dashed line-lg pull-in"></div>
+                <div class="form-group">
+                    <div class="col-sm-4 col-sm-offset-2">
+                        <button type="submit" class="btn btn-primary" data-loading-text="保存中...">保存</button>
+                        <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <input name="agent_id" type="hidden" value="{$row.agent_id|intval}">
+    </form>
+</section>
+{/block}
+
+{block name="footer" }
+<script type="text/javascript">
+   seajs.use(["dist/plupload/init.js", "dist/goods/init.js"])
+    $('#editStore').on('click',function(){
+        var arr = $('.form-horizontal').toJson();
+        jq_ajax('{:url("editStore")}',arr,function (res) {
+            if (res.code == 0){
+                return _alert(res.msg);
+            }
+            window.location.reload();
+        })
+    });
+
+
+</script>
+<script type="text/javascript">
+    is_pwd();
+    // 搜索商家
+    function searchUser(keyword,selects) {
+        var searchUrl = "{:url('member/sys_admin.users/pubSearch')}";
+        var keyword = $("#"+keyword).val();
+        $("#"+selects+" option").each(function(){if ($(this).val() != 0) $(this).remove();});   
+        var res = jq_ajax(searchUrl, 'keyword='+keyword);
+        if (res.code == 0) {
+            alert(res.msg);
+            return false 
+        }
+        $.each(res.list,function(i,val){
+            $("#"+selects).append("<option value='"+val.user_id+"'>"+val.user_id+'-'+val.mobile+'-'+val.nick_name+"</option>");
+        });   
+    }
+    $('#select_user').change(function(){
+        var user_id = $(this).val();
+        var text = $(this).find("option:selected").text();
+        // 免单商家名称追加
+        $('#nick_name').text(text);
+        // 免单商家ID替换
+        $('#user_id').val(user_id);
+    });
+    // 免单商家无需密码
+    $("input:radio[name='type']").change(function (){
+        is_pwd();
+    });
+    function is_pwd() {
+        var type = $("input:radio[name='type']:checked").val();
+        if (type == 1) {
+            $("#is_pwd").show();
+            $("#is_pwd2").show();
+            $('.activity').hide();
+            $('.alliance').show();
+        }else{
+            $("#is_pwd").hide();
+            $("#is_pwd2").hide();
+            $('.activity').show();
+            $('.alliance').hide();
+        }
+    }
+</script>
+{/block}

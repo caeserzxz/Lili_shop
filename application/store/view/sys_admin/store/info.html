@@ -25,7 +25,7 @@
                 <div class="form-group">
                     <label class="control-label">选择行业</label>
                     <div class="controls w250 must">
-                     <select class="wb80 " name="industry" data-maxcount="3" data-msg-required="请选择行业" data-toggle="select2" data-placeholder="请选择行业" data-width="999px">
+                     <select class="wb80 " name="category_id" data-maxcount="3" data-msg-required="请选择行业" data-toggle="select2" data-placeholder="请选择行业" data-width="999px">
                         <option value=""></option>
                             {$catOpt|raw}                   
                         </select>
@@ -58,30 +58,6 @@
                         <input type="text" class="input-xlarge" data-rule-maxlength="30" data-rule-required="true" data-msg-required="供应商名称不能为空" name="business_name" value="{$row.business_name}" >
                     </div>
                 </div>
-            <!--<div class="form-group alliance">
-                <label class="control-label">登录名：</label>
-                <div class="col-sm-7 must ">
-                    <input type="text" class="input-xlarge" data-rule-maxlength="30" readonly name="login_name" value="{$row.login_name}" >
-                </div>
-            </div>-->
-                <!--<div class="form-group" id="is_pwd">-->
-                    <!--<label class="control-label">登陆密码：</label>-->
-                    <!--<div class="col-sm-7" >-->
-                        <!--<input type="password" class="input-sm" {lt name="row.supplyer_id" value="1"}data-rule-required="true"{/lt} data-rule-maxlength="15" name="password" value="" id="new_password" >-->
-                        <!--{gt name="row.supplyer_id" value="0"}-->
-                        <!--<span class="help-inline">不修改不需要填写</span>-->
-                        <!--{else/}-->
-                        <!--<span class="maroon">*</span>-->
-                        <!--{/gt}-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="form-group" id="is_pwd2">-->
-                    <!--<label class="control-label">确认密码：</label>-->
-                    <!--<div class="col-sm-7" >-->
-                    <!--<input type="password" class="input-sm" data-rule-maxlength="15" name="cmf_password" value="" id="repassword" data-rule-equalto="#new_password"  >-->
-                    <!--<span class="help-inline">请填写以上面一致的密码，进行确认.</span>-->
-                    <!--</div>-->
-                <!--</div>-->
                  <div class="form-group">
                     <label class="control-label">状态：</label>
                     <div class="controls">
@@ -97,18 +73,7 @@
                     </div>
                    <div class="clearfix"></div>
                 </div>
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label">是否优质商家：</label>-->
-                    <!--<div class="controls">-->
-                        <!--<label class="radio-inline">-->
-                            <!--<input name="is_superb" value="0"  class="js_undertake" type="radio" {$row['is_superb']<1?'checked':''}>否-->
-                        <!--</label>-->
-                        <!--<label class="radio-inline">-->
-                            <!--<input name="is_superb" value="1"  class="js_undertake " type="radio" {$row['is_superb']==1?'checked':''}>是-->
-                        <!--</label>-->
-                    <!--</div>-->
-                    <!--<div class="clearfix"></div>-->
-                <!--</div>-->
+
                 <div class="form-group">
                     <label class="control-label">是否禁用商家：</label>
                     <div class="controls">
@@ -173,11 +138,55 @@
             <!--</div>-->
                 <div class="line line-dashed line-lg pull-in" ></div>
                 <div class="form-group">
+                    <label class="control-label">店铺logo：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="logo_bum" data-count="1" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">店铺logo</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)最多1张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue"></div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="logo_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=logo_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
+                                    <input value="{$gg.goods_img}" name="logo_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="control-label">商家相册：</label>
+                    <div class="col-sm-10">
+                        <div class="js_upload_container">
+                            <div class="js_file_upload ">
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="imgs_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家相册</button>
+                                <span class="maroon">*</span>
+                                <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
+                            </div>
+                            <div class="uploadify-queue js_file_upload_queue"></div>
+                            <ul class="ipost-list ui-sortable js_fileList" data-required="true">
+                                {volist name="imgs_bum" id="gg"  }
+                                <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=imgs_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
+                                    <input value="{$gg.goods_img}" name="imgs_bum[path][]" type="hidden">
+                                    <span class="item_box"><img src="{$gg.goods_img}"></span>
+                                </li>
+                                {/volist}
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group">
                     <label class="control-label">商家实景图：</label>
                     <div class="col-sm-10">
                         <div class="js_upload_container">
                             <div class="js_file_upload ">
-                                <button type="button" class="btn btn-default js_new_upload" data-submitname="live_views_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家相册</button>
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="live_views_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('mainAdmin/attachment/removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家实景图</button>
                                 <span class="maroon">*</span>
                                 <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
                             </div>
@@ -186,7 +195,6 @@
                                 {volist name="live_views_bum" id="gg"  }
                                 <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
                                     <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=live_views_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}" data-post-business_id="{$row.business_id}"></a>
-                                    <input value="{$gg.img_id}" name="live_views_bum[id][]" type="hidden">
                                     <input value="{$gg.goods_img}" name="live_views_bum[path][]" type="hidden">
                                     <span class="item_box"><img src="{$gg.goods_img}"></span>
                                 </li>
@@ -200,7 +208,7 @@
                     <div class="col-sm-10">
                         <div class="js_upload_container">
                             <div class="js_file_upload ">
-                                <button type="button" class="btn btn-default js_new_upload" data-submitname="license_bum" data-count="5" data-uploadpath="{:url('uploadImg')}" data-delpath="{:url('removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家图片</button>
+                                <button type="button" class="btn btn-default js_new_upload" data-submitname="license_bum" data-count="5" data-uploadpath="{:url('goodsUpload')}" data-delpath="{:url('removeImg')}" data-data="{ 'gid':'{$row.goods_id|intval}' }" style="position: relative; z-index: 1;">商家营业执照</button>
                                 <span class="maroon">*</span>
                                 <span class="help-inline">(建议尺寸：640*640或800*800)默认显示第1张图片，最多5张 (<small>可拖拽图片调整显示顺序 </small>)</span>
                             </div>
@@ -209,8 +217,7 @@
                             <ul class="ipost-list ui-sortable js_fileList" data-required="true">
                                 {volist name="license_bum" id="gg"  }
                                 <li class="imgbox" data-post-id="{$gg.img_id}" data-path="{$gg.goods_img}">
-                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=license_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.img_id}"></a>
-                                    <input value="{$gg.img_id}" name="license_bum[id][]" type="hidden">
+                                    <a class="item_new_close item_close" href="javascript:void(0)" data-delpath="{:url('removeImg')}?business_id={$row.business_id}&type=license_bum"  title="删除" data-path="{$gg.goods_img}" data-post-id="{$gg.goods_img}"></a>
                                     <input value="{$gg.goods_img}" name="license_bum[path][]" type="hidden">
                                     <span class="item_box"><img src="{$gg.goods_img}"></span>
                                 </li>
@@ -225,85 +232,12 @@
                     <textarea rows="3" name="info" cols="35">{$row.info}</textarea>
                 </div>
             </div>
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label">营业时间：</label>-->
-                    <!--<div class="controls " >-->
-                        <!--<input type="text" class="input-xlarge" name="operate_time" value="{$row.operate_time}" >-->
-                    <!--</div>-->
-                <!--</div>-->
-            <div class="form-group alliance">
+            <div class="form-group">
                 <label class="control-label">让利%：</label>
                 <div class="controls " >
                     <input type="text" class="input-xlarge" name="profits" value="{$row.profits}" >%
                 </div>
             </div>
-            <!--<input type="hidden" class="input-xlarge" name="share_code" value="{$row.share_code}" >-->
-
-            <!--<div class="form-group activity">-->
-                <!--<label class="control-label">商家服务名称：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<input type="text" class="input-xlarge" name="service_name" value="{$row.service_name}" >-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group activity">-->
-                <!--<label class="control-label">商家服务价格：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<input type="text" class="input-xlarge" name="service_price" value="{$row.service_price}" >-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group activity">-->
-                <!--<label class="control-label">商家服务次数：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<input type="text" class="input-xlarge" name="service_number" {$activity==0 ? '':'readonly'} value="{$row.service_number}" >-->
-                    <!--<input type="text" class="input-sm" name="service_unit" data-rule-required="true" data-msg-required="单位不能为空" value="{$row.service_unit}" >-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group activity">-->
-                <!--<label class="control-label">免单内容：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<textarea rows="3" name="service_content" cols="35">{$row.service_content}</textarea>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="form-group activity">-->
-                <!--<label class="control-label">使用要求：</label>-->
-                <!--<div class="controls " >-->
-                    <!--<textarea rows="3" name="use_claim" cols="35">{$row.use_claim}</textarea>-->
-                <!--</div>-->
-            <!--</div>-->
-                <!--<div class="line line-dashed line-lg pull-in"></div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label">最近登陆时间：</label>-->
-                    <!--<div class="col-sm-3"><label>{$row.login_time|dateTpl}</label></div>-->
-                    <!--<label class="control-label">最近登陆IP：</label>-->
-                    <!--<div class="col-sm-3"><label>{$row.login_ip}</label></div>-->
-                <!--</div>-->
-                <!--<div class="form-group">-->
-                    <!--<label class="control-label">上次登陆时间：</label>-->
-                    <!--<div class="col-sm-3"><label>{$row.last_login_time|dateTpl}</label></div>-->
-                    <!--<label class="control-label">上次登陆IP：</label>-->
-                    <!--<div class="col-sm-3"><label>{$row.last_login_ip}</label></div>-->
-                <!--</div>-->
-            <!--<div class="line line-dashed line-lg pull-in"></div>
-            <div class="form-group">
-                <label class="control-label">退货收货人：</label>
-                <div class="col-sm-3"><label>{$setting.return_consignee|default='未填写'}</label></div>
-                <label class="control-label">退货联系电话：</label>
-                <div class="col-sm-3">
-                    <label>{$setting.return_mobile|default='未填写'}</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">退货地址：</label>
-                <div class="col-sm-3">
-                    <label>{$setting.return_address|default='未填写'}</label>
-                </div>
-            </div>
-            <div class="form-group">
-                <label class="control-label">退货说明：</label>
-                <div class="col-sm-3">
-                    <label>{$setting.return_desc|default='未填写'}</label>
-                </div>
-            </div>-->
                 <div class="line line-dashed line-lg pull-in"></div>
                 <div class="form-group">
                     <div class="col-sm-4 col-sm-offset-2">
@@ -313,7 +247,7 @@
                 </div>
             </div>
         </section>
-        <input name="supplyer_id" type="hidden" value="{$row.supplyer_id|intval}">
+        <input name="business_id" type="hidden" value="{$row.business_id|intval}">
     </form>
 </section>
 {/block}

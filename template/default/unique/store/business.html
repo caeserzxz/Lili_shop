@@ -1,0 +1,125 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/busIde.css">
+  <div class="page">
+    <div class="page-hd"></div>
+
+    <div class="page-bd">
+      <div class="top">
+        <div class="user">
+          <div class="user-info">
+            <div class="head-img">
+              <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+            </div>
+            <div class="info">
+              <div class="nickname fs32 fw_b">
+                <span>巴啦魔小仙女</span>
+                <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
+              </div>
+              <div class="address mt10">广东省广州市天河区棠东毓敏路12号</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="feature-flex">
+          <div class="flex-item">
+            <img class="icon-img" src="__STATIC__/unique/images/mer_icon01.png" alt="">
+            <p>收款码</p>
+          </div>
+          <div class="flex-item">
+            <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
+            <p>收款码</p>
+          </div>
+          <div class="flex-item">
+            <img class="icon-img" src="__STATIC__/unique/images/mer_icon03.png" alt="">
+            <p>收款码</p>
+          </div>
+        </div>
+      </div>
+
+      <div class="money num">
+        <div class="money-info">
+          <div class="money-month">
+            <div class="fs48">36962.00</div>
+            <div class="fs26 opacity08">本月业绩（元）</div>
+          </div>
+          <div class="money-day">
+            <div class="fs48">594.50</div>
+            <div class="fs26 opacity08">今日业绩（元）</div>
+          </div>
+        </div>
+        <div class="mt60">
+          <span class="opacity08">数据更新与:2020.05.21</span>
+          <span class="more">查看更多></span>
+        </div>
+      </div>
+
+      <div class="flex-grids">
+        <div class="grids-item">
+          <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="__STATIC__/unique/images/mer_icon05.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="__STATIC__/unique/images/mer_icon06.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+        <div class="grids-item">
+          <img class="icon" src="__STATIC__/unique/images/mer_icon07.png" alt="">
+          <p class="fs28 color_3 mt20">邀请商家</p>
+        </div>
+      </div>
+
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_bd">
+            <span class="fs28 fw_b color_3">APP语音播报开关</span></div>
+          <div class="cell_ft">
+            <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+            <label for="male" class="choose-label"></label>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+
+
+  </div>
+
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        title: "请选择省市区"
+      });
+    })
+    $(function () {
+      $('.showmodal').on('click', function () {
+        $('.modal-proxy').show()
+      })
+      $('.footer-btn').on('click', function () {
+        $('.modal-proxy').hide()
+        $('.modal-proxy-main input[type=radio]').each(function () {
+          if ($(this).prop('checked')) {
+            // 执行操作逻辑
+          }
+        })
+      })
+    })
+
+  </script>
+</body>
+
+</html>
+{/block}

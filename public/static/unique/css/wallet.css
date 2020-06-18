@@ -727,38 +727,29 @@
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
+  height: 0.933333rem;
   overflow: hidden;
-  height: 1.533333rem;
 }
 
 .takeOut .goodslist .checkbox .block {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -webkit-box-direction: normal;
-  -webkit-flex-direction: column;
-          flex-direction: column;
-  width: 4.733333rem;
-  background-color: #fff;
-}
-
-.takeOut .goodslist .checkbox .block .info {
-  width: 100%;
+  box-sizing: border-box;
   padding: 0 0.266667rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
   -webkit-box-pack: justify;
   -webkit-justify-content: space-between;
           justify-content: space-between;
-  height: 0.8rem;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+          align-items: center;
+  width: 4.733333rem;
+  height: 100%;
+  background-color: #fff;
+  border-radius: 0.133333rem;
 }
 
-.takeOut .goodslist .checkbox .block .info .left {
+.takeOut .goodslist .checkbox .block .block-left {
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -767,34 +758,32 @@
           align-items: center;
 }
 
-.takeOut .goodslist .checkbox .block .info .left img {
+.takeOut .goodslist .checkbox .block .block-left .default {
+  margin-left: 0.066667rem;
+  padding: 0.013333rem 0.066667rem;
+  font-size: 0.146667rem;
+  color: #ffffff;
+  line-height: 1;
+  background-color: #fd0035;
+  border-radius: 0.133333rem;
+}
+
+.takeOut .goodslist .checkbox .block .block-left .paytypeIcon {
+  display: inline-block;
+  margin-right: 0.133333rem;
   width: 0.333333rem;
   height: 0.333333rem;
-  margin-right: 0.066667rem;
+  border-radius: 50%;
 }
 
-.takeOut .goodslist .checkbox .block .info .rightIcon {
+.takeOut .goodslist .checkbox .block .block-right .right-icon {
+  display: inline-block;
   width: 0.133333rem;
-  height: 0.16rem;
-}
-
-.takeOut .goodslist .checkbox .block .cardCode {
-  display: -webkit-box;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-align: center;
-  -webkit-align-items: center;
-          align-items: center;
-  -webkit-box-pack: justify;
-  -webkit-justify-content: space-between;
-          justify-content: space-between;
-  padding: 0 0.266667rem;
-  height: 0.733333rem;
+  height: 0.166667rem;
 }
 
 .takeOut .goodslist .checkbox .swiped {
   width: 16vw;
-  height: 1.533333rem;
 }
 
 .takeOut .goodslist .checkbox .swiped div {
@@ -817,9 +806,9 @@
 
 .takeOut .addType {
   position: fixed;
-  margin: 0 0.2rem 0.133333rem;
   bottom: 0;
-  width: 4.6rem;
+  padding: 0.066667rem 0.2rem;
+  width: 100%;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
@@ -829,7 +818,16 @@
   -webkit-box-align: center;
   -webkit-align-items: center;
           align-items: center;
+  background-color: #ffffff;
+}
+
+.takeOut .addType span {
+  width: 100%;
   height: 0.533333rem;
+  text-align: center;
+  line-height: 0.533333rem;
+  background-color: #fd0035;
+  border-radius: 0.266667rem;
 }
 
 .takeOut .model {
@@ -1018,6 +1016,7 @@
   height: 0.533333rem;
 }
 
+.applySuccess .wait,
 .applySuccess .success {
   margin: 0.133333rem;
   padding-bottom: 0.866667rem;
@@ -1026,14 +1025,53 @@
   border-radius: 0.133333rem;
 }
 
+.applySuccess .wait img,
 .applySuccess .success img {
+  display: inline-block;
+  margin-top: 0.946667rem;
+}
+
+.applySuccess .wait .jump-my,
+.applySuccess .success .jump-my {
+  margin: 0.633333rem auto 0;
+  width: 3.333333rem;
+  height: 0.533333rem;
+  text-align: center;
+  line-height: 0.533333rem;
+  font-size: 0.186667rem;
+  color: #ffffff;
+  background-color: #fd0035;
+  border-radius: 0.266667rem;
+}
+
+.applySuccess .wait img {
+  width: 1.066667rem;
+  height: 1.066667rem;
+  border-radius: 50%;
+}
+
+.applySuccess .success img {
+  width: 1rem;
+  height: 1rem;
+  border-radius: 50%;
+}
+
+.applyProxy .success {
+  margin: 0.133333rem;
+  padding-bottom: 0.866667rem;
+  text-align: center;
+  background-color: #ffffff;
+  border-radius: 0.133333rem;
+}
+
+.applyProxy .success img {
   display: inline-block;
   margin-top: 0.946667rem;
   width: 1.046667rem;
   height: 0.92rem;
 }
 
-.applySuccess .success .jump-my {
+.applyProxy .success .jump-my {
   margin: 0.633333rem auto 0;
   width: 3.333333rem;
   height: 0.533333rem;

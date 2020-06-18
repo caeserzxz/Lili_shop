@@ -1,0 +1,46 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<style>
+    .weui-tab {
+        box-sizing: border-box;
+        height: calc(100% - 0.533rem);
+    }
+</style>
+<link rel="stylesheet" href="__STATIC__/unique/css/wallet.css" />
+<div class="page">
+    <div class="page-hd">
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">成为代理</div>
+            <div class="header-right">
+                <a href=''></a>
+            </div>
+        </div>
+    </div>
+
+    <div class="page-bd applySuccess">
+        <!-- 等待平台审核中-->
+        <div class="wait">
+        <img src="__STATIC__/unique/images/wait.png" alt="">
+        <p class="text_c fs34 fw_b color_3 mt20">等待平台审核中</p>
+        <p class="text_c fs26 color_9 mt10">平台工作人员稍后将与您联系</p>
+
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+
+</script>
+</body>
+
+</html>
+{/block}

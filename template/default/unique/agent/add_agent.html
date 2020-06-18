@@ -1,0 +1,227 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/proxy.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/cityPicker.css">
+  <div class="page proxy">
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">成为代理</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+    </div>
+
+    <div class="page-bd">
+      <div class="cells">
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">邀请码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="text" name="token" id="token" disabled placeholder="请输入邀请码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">姓名</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="text" name="agent_user_name" value="{$info.agent_user_name}" id="agent_user_name" placeholder="请输入你的姓名">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 fw_b color_3">手机号码</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="text" name="agent_mobile" value="{$info.agent_mobile}" id="agent_mobile" placeholder="请输入手机号码">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">代理级别</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28 color_3 showmodal" placeholder="请选择代理" readonly>
+          </div>
+          <div class="cell_ft arrowright"></div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label required fs28 color_3 fw_b">地区</span>
+          </div>
+          <div class="cell_bd">
+            <input type="text" class="fs28  color_3" placeholder="请选择地区" style="width: 100%" readonly
+              id="city-picker">
+          </div>
+          <div class="cell_ft arrowright">
+          </div>
+        </div>
+        <div class="cell">
+          <div class="cell_hd">
+            <span class="label fs28 fw_b color_3">申请理由</span>
+          </div>
+          <div class="cell_bd">
+            <input class="fs28" type="text" name="reason" id="reason" value="{$info.reason}" placeholder="请输入">
+          </div>
+          <div class="cell_ft"></div>
+        </div>
+      </div>
+
+      <div class="text_c fs28 color_r save-btn">提交</div>
+
+    </div>
+
+    <!-- 代理弹窗 -->
+    <div class="modal-proxy">
+      <div class="modal-proxy-main">
+        <div class="title fs30 fw_b">代理级别</div>
+        <div class="wrap-list cells">
+          <!--<label class="cell">-->
+            <!--<div class="cell_bd">-->
+              <!--<span class="fs30 fw_b color_3">省级代理</span>-->
+            <!--</div>-->
+            <!--<div class="cell_ft">-->
+              <!--<div class="iconBox">-->
+                <!--<input type="radio" class="check" name="radiobox" checked>-->
+                <!--<i class="icon_checked"></i>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</label>-->
+          <label class="cell">
+            <div class="cell_bd">
+              <span class="fs30 fw_b color_3">市级代理</span>
+            </div>
+            <div class="cell_ft">
+              <div class="iconBox">
+                <input type="radio" class="check" name="radiobox" value="2" data-text="市级代理">
+                <i class="icon_checked"></i>
+              </div>
+            </div>
+          </label>
+          <!--<label class="cell">-->
+            <!--<div class="cell_bd">-->
+              <!--<span class="fs30 fw_b color_3">区级代理</span>-->
+            <!--</div>-->
+            <!--<div class="cell_ft">-->
+              <!--<div class="iconBox">-->
+                <!--<input type="radio" class="check" name="radiobox">-->
+                <!--<i class="icon_checked"></i>-->
+              <!--</div>-->
+            <!--</div>-->
+          <!--</label>-->
+        </div>
+        <div class="footer-btn">完成</div>
+      </div>
+    </div>
+
+  </div>
+
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    $(function () {
+      $("#city-picker").cityPicker({
+        showDistrict: false,
+        title: "请选择省市区"
+      });
+    })
+    $(function () {
+      $('.showmodal').on('click', function () {
+        $('.modal-proxy').show()
+      })
+      $('.footer-btn').on('click', function () {
+        $('.modal-proxy').hide()
+        $('.modal-proxy-main input[type=radio]').each(function () {
+          if ($(this).prop('checked')) {
+            // 执行操作逻辑
+             var text = $('input[name="radiobox"]:checked').attr('data-text');
+             $('.showmodal').val(text);
+          }
+        })
+      })
+    })
+    var fd = new FormData();
+    isPost = false;
+    $('.save-btn').on('click',function(){
+        var agent_user_name = $('#agent_user_name').val();
+        var agent_mobile = $('#agent_mobile').val();
+        var agent_level = $('input[name="radiobox"]:checked').val();
+        var reason = $('#reason').val();
+        var data_code = $('#city-picker').attr('data-code');
+        var data_codes = $('#city-picker').attr('data-codes');
+        if(agent_user_name==''||agent_user_name==null){
+            _alert('请填写真实姓名');
+            return false;
+        }else{
+            var reg = /^[\u4E00-\u9FA5\uf900-\ufa2d·s]{2,20}$/;//验证姓名正则
+            if(!reg.test(agent_user_name)){
+                _alert("真实姓名有误，请重填");
+                return false;
+            }
+        }
+        if(agent_mobile==''||agent_mobile==null){
+            _alert('请填写手机号码');
+            return false;
+        }else{
+            if(!(/^1[3456789]\d{9}$/.test(agent_mobile))){
+                _alert("手机号码有误，请重填");
+                return false;
+            }
+        }
+        if(agent_level==''||agent_level==null){
+            _alert("请选择代理级别");
+            return false;
+        }
+        if(data_code==''||data_code==null){
+            _alert("请选择代理区域");
+            return false;
+        }
+        if(reason==''||reason==null){
+            _alert("请填写申请理由");
+            return false;
+        }
+        if (isPost == true) return false;
+        isPost = true;
+
+        fd.append("agent_user_name", agent_user_name);
+        fd.append("agent_mobile", agent_mobile);
+        fd.append("agent_level", agent_level);
+        fd.append("reason", reason);
+        fd.append("data_code", data_code);
+        fd.append("data_codes", data_codes);
+        $.ajax({
+            url: '{:url("unique/api.agent/add_agent")}',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: fd,
+            success: function (res) {
+                isPost = false;
+                if (res.code == 0){
+                    _alert(res.msg);
+                    return false;
+                }
+                _alert(res.msg,'{:url("unique/member/index")}');
+            }
+        })
+
+    })
+  </script>
+</body>
+
+</html>
+{/block}
