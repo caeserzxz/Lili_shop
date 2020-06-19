@@ -22,21 +22,21 @@
 
                     </div>
                     <!-- 没有更多了 -->
-                    <div class="text_c color_9">已经到底啦~</div>
+                    <div class="text_c color_9 is_down">已经到底啦~</div>
                 </div>
                 <div id="tab2" class="weui-tab__bd-item">
                     <div class="tab-b">
 
                     </div>
                     <!-- 没有更多了 -->
-                    <div class="text_c color_9">已经到底啦~</div>
+                    <div class="text_c color_9 is_down">已经到底啦~</div>
                 </div>
                 <div id="tab3" class="weui-tab__bd-item">
                     <div class="tab-c">
 
                     </div>
-                        <!-- 没有更多了 -->
-                        <div class="text_c color_9">已经到底啦~</div>
+                    <!-- 没有更多了 -->
+                    <div class="text_c color_9 is_down">已经到底啦~</div>
                 </div>
 
             </div>
@@ -115,12 +115,26 @@
                 _alert(res.msg);
                 return false;
             }
-            if (typeof(res.list_used) == 'undefined'){
+            if (typeof(res.list_unused) == 'undefined'){
                 $('.tab-a').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab1 .is_down').hide();
             }else{
                 $('.tab-a').html(template('unusedTpl', res));
+                $('#tab1 .is_down').show();
+            }
+            if (typeof(res.list_used) == 'undefined'){
+                $('.tab-b').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab2 .is_down').hide();
+            }else{
                 $('.tab-b').html(template('usedTpl', res));
+                $('#tab2 .is_down').show();
+            }
+            if (typeof(res.list_expired) == 'undefined'){
+                $('.tab-c').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab3 .is_down').hide();
+            }else{
                 $('.tab-c').html(template('expiredTpl', res));
+                $('#tab3 .is_down').show();
             }
             $('.sp1').html(res.unused_num);
             $('.sp2').html(res.used_num);
