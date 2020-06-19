@@ -42,7 +42,7 @@
         </div>
     </div>
     <!-- 没有更多了 -->
-    <div class="text_c color_9 mt20 mb20">已经到底啦~</div>
+    <div class="text_c color_9 mt20 mb20 is_down">已经到底啦~</div>
 </div>
 </div>
 {literal}
@@ -76,7 +76,7 @@
 </script>
 <script>
     $("#date1").calendar({
-        onClose(){
+        onClose(p){
             var date = new Date(p.value[0]);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
             var Y = date.getFullYear();
             var M = date.getMonth()+1;
@@ -128,8 +128,10 @@
             }
             if (typeof(res.list) == 'undefined'){
                 $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('.is_down').hide();
             }else{
                 $('.list').html(template('logTpl', res));
+                $('.is_down').show();
             }
             $('#nowValue').val(res.time);
             $('.b_expend').html(res.expend);
