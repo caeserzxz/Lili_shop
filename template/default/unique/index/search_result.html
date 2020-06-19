@@ -39,48 +39,48 @@
                     </div>
                 </div>
             </div>
-            <div class="list-item">
-                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
-                <div class="shop-info">
-                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
-                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
-                    <div class="shop-label">
-                        <span>便利店</span>
-                        <span>优惠多</span>
-                        <span>种类齐全</span>
-                    </div>
-                    <div class="shop-enc">
-                        <span>鼓励金:8%</span>
-                    </div>
-                </div>
-                <div class="shop-distance">
-                    <div class="text_c color_9">613m</div>
-                    <div>
-                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
-                    </div>
-                </div>
-            </div>
-            <div class="list-item">
-                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
-                <div class="shop-info">
-                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
-                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
-                    <div class="shop-label">
-                        <span>便利店</span>
-                        <span>优惠多</span>
-                        <span>种类齐全</span>
-                    </div>
-                    <div class="shop-enc">
-                        <span>鼓励金:8%</span>
-                    </div>
-                </div>
-                <div class="shop-distance">
-                    <div class="text_c color_9">613m</div>
-                    <div>
-                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
-                    </div>
-                </div>
-            </div>
+            <!--<div class="list-item">-->
+                <!--<img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />-->
+                <!--<div class="shop-info">-->
+                    <!--<div class="shop-name fs28 fw_b col_3">全家士多便利店</div>-->
+                    <!--<div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>-->
+                    <!--<div class="shop-label">-->
+                        <!--<span>便利店</span>-->
+                        <!--<span>优惠多</span>-->
+                        <!--<span>种类齐全</span>-->
+                    <!--</div>-->
+                    <!--<div class="shop-enc">-->
+                        <!--<span>鼓励金:8%</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="shop-distance">-->
+                    <!--<div class="text_c color_9">613m</div>-->
+                    <!--<div>-->
+                        <!--<img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
+            <!--<div class="list-item">-->
+                <!--<img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />-->
+                <!--<div class="shop-info">-->
+                    <!--<div class="shop-name fs28 fw_b col_3">全家士多便利店</div>-->
+                    <!--<div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>-->
+                    <!--<div class="shop-label">-->
+                        <!--<span>便利店</span>-->
+                        <!--<span>优惠多</span>-->
+                        <!--<span>种类齐全</span>-->
+                    <!--</div>-->
+                    <!--<div class="shop-enc">-->
+                        <!--<span>鼓励金:8%</span>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="shop-distance">-->
+                    <!--<div class="text_c color_9">613m</div>-->
+                    <!--<div>-->
+                        <!--<img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">-->
+                    <!--</div>-->
+                <!--</div>-->
+            <!--</div>-->
         </div>
         <div class="text_c color_9">已经到底啦~</div>
     </div>
@@ -97,6 +97,8 @@
     });
 </script>
   <script>
+      var keyword = "{$keyword}";
+      console.log(keyword);
     $(function () {
       $('.inputBox input').focus();
       $('.top span').on('click', function () {
@@ -116,7 +118,49 @@
                 loading = false;
             }, 1500);   //模拟延迟
         })
+
+        var arr = new Object();
+
+        getList();
     })
+      function getList(arr){
+          console.log(arr);
+          $.ajax({
+              url:'{:url("unique/api.business/getList")}',// 跳转到 action
+              data:arr,
+              type:'post',
+              cache:false,
+              async: false,
+              dataType:'json',
+              success:function(res) {
+                  console.log(res)
+                  if (res.list.length > 0) {
+                      $('#tab3').prepend(template('listTpl3',res));
+                      window.page += 1;
+                  }else{
+                      $.toast('加载完成',"text");
+                  }
+                  // if(res.info != ''){
+                  //     info = res.info;
+                  //     html = '';
+                  //     for(x in info) {
+                  //         html += '<div class="weui-cells"><div class="weui-cell"><div class="weui-cell__hd"><img class="top_image" src="'+info[x]['supplyer_img']+'"></div><div class="weui-cell__bd"><p class="fs30 color_o ">'+info[x]['supplyer_name']+'</p><p class="fs24 color_6 ">电话：'+info[x]['moblie']+'</p><p class="fs24 color_6 adress">地址：'+info[x]['merger_name']+info[x]['address']+'</p></div><div class="weui-cell__ft fs24 h color_6">'+info[x]['distance']+'</div></div><img class="content_img" src="'+info[x]['supplyer_album']+'" alt=""><p class="fs24 color_r oneMore" data-id="'+info[x]['supplyer_id']+'">点击查看详情 >></p></div>';
+                  //     }
+                  //
+                  //     $('.region_n').append(html);
+                  //
+                  //     $('.color_r').on('click',function(){
+                  //         var id = $(this).data('id');
+                  //         window.location.href = "{:url('store/activity/goods')}?id="+id;
+                  //     });
+                  //
+                  //     window.page += 1;
+                  // }
+              },error : function(res) {
+                  $.toast(res.msg);
+              }
+          });
+      }
   </script>
 </body>
 

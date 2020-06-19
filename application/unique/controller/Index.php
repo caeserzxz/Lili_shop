@@ -59,7 +59,14 @@ class Index extends ClientbaseController{
     //-- 搜索结果
     /*------------------------------------------------------ */
     public function search_result(){
+        $UsersModel = new UsersModel();
         $this->assign('title', '搜索结果');
+        $keyword = trim(' ',input('keyworkd'));
+        $this->assign('keyword',$keyword);
+
+        $userInfo = $UsersModel->where('user_id',$this->userInfo['user_id'])->find();
+        $this->assign('longitude',$userInfo['longitude']);
+        $this->assign('latitude',$userInfo['latitude']);
 
         return $this->fetch('search_result');
     }

@@ -33,6 +33,7 @@ class Business extends ApiController
 
         $city = input('city',0);
         // $where[] = ['city','=',$city];
+        $keyword = trim(' ',input('keyword'));
 
         $search['page'] = input('page',0,'int');
 
@@ -55,18 +56,16 @@ class Business extends ApiController
             }
             #标签处理
             $storeInfo[$key]['label_arr'] = explode(' ',trim($val['label']));
-//            if( substr($val['supplyer_img'], 0, 1) != '/') {
-//                $storeInfo[$key]['supplyer_img'] = unserialize($val['supplyer_img'])['path'][0];
-//            }
-//
-//            if( substr($val['supplyer_album'], 0, 1) != '/') {
-//                $storeInfo[$key]['supplyer_album'] = unserialize($val['supplyer_album'])['path'][0];
-//            }
+            #鼓励金处理
+            $profits = unserialize(settings('profits'));
+            $storeInfo[$key]['hearten'] = intval($profits[$val['profits']]['hearten']);
+
         }
         $return['list'] = $storeInfo;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
+
 
     public function index(){
         $lat = input('lat');
