@@ -4,6 +4,7 @@ namespace app\unique\controller\api;
 
 use app\ApiController;
 use app\member\model\AccountLogModel;
+use app\member\model\UsersBindSuperiorModel;
 use app\member\model\UsersModel;
 use app\store\model\UserBusinessModel;
 use app\unique\model\RedbagModel;
@@ -121,6 +122,45 @@ class Users extends ApiController
             $row['balance_remaining'] = $row['old_balance_money'] + $row['balance_money'];
             $return['list'][] = $row;
         }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取我的会员总数
+    /*------------------------------------------------------ */
+    public function getteamnum()
+    {
+        $UsersBindSuperiorModel = new UsersBindSuperiorModel();
+        $where1[] = ['superior',['like',"%,".$this->userInfo['user_id']]];
+        $where2[] = ['superior',['like',"%,".$this->userInfo['user_id'].",%"]];
+        $allnum = $UsersBindSuperiorModel->Field('user_id')->where($where1)->whereOr($where2)->order('user_id DESC')->count();
+        $return['allnum'] = $allnum;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+    //*------------------------------------------------------ */
+    //-- 获取我的会员列表
+    /*------------------------------------------------------ */
+    public function getmyteam()
+    {
+        $limit = 20;
+        $limit_start = input('limit_start', 0, 'trim');
+        $UsersBindSuperiorModel = new UsersBindSuperiorModel();
+        $user_id = $this->userInfo['user_id'];
+        $where1[] = ['superior',['like',"%,".$user_id]];
+        $where2[] = ['superior',['like',"%,".$user_id.",%"]];
+        $rows = $UsersBindSuperiorModel->Field('user_id')->where($where1)->whereOr($where2)->order('user_id DESC')->limit($limit_start,$limit)->select()->toArray();
+        if(count($rows) < $limit){
+            $return['is_over'] = 1;
+        }
+        foreach ($rows as $key => $row) {
+            $user_info = $this->Model->where($this->Model->pk,$row['user_id'])->find()->toarray();
+            $row['nick_name'] = $user_info['nick_name'];
+            $row['headimgurl'] = $user_info['headimgurl'];
+            $row['_time'] = date('Y-m-d H:i',$user_info['reg_time']);
+            $return['list'][] = $row;
+        }
+        $return['limit_start'] = $limit_start + $limit;
+        $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
 }
