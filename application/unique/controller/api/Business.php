@@ -7,6 +7,7 @@ use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\mainadmin\model\RegionModel;
 use app\agent\model\AgentModel;
+use app\member\model\UsersModel;
 
 /*------------------------------------------------------ */
 //-- 首页相关API
@@ -23,7 +24,79 @@ class Business extends ApiController
         parent::initialize();
         $this->Model = new UserBusinessModel();
     }
+    /*------------------------------------------------------ */
+    //-- 获取商家数据
+    /*------------------------------------------------------ */
+    public function getList(){
+        $where[] = ['status', '=', 1];
+        $where[] = ['is_ban', '=', 0];
 
+        $city = input('city',0);
+        // $where[] = ['city','=',$city];
+
+        $search['page'] = input('page',0,'int');
+
+        $limit = $search['page']*20 . ',' . 20;
+        $longitude = input('longitude');
+        $latitude = input('latitude');
+
+        //获取商家信息
+        $storeInfo  = $this->Model->where($where)->field("*,round(6378.138*2*asin(sqrt(pow(sin( (".$latitude."*pi()/180-latitude*pi()/180)/2),2)+cos(".$latitude."*pi()/180)*cos(latitude*pi()/180)* pow(sin( (".$longitude."*pi()/180-longitude*pi()/180)/2),2)))*1000) as distance")->order('distance')->limit($limit)->select();
+        foreach ($storeInfo as $key => $val) {
+            #距离处理
+            if($val['distance']){
+                if( $val['distance'] > 1000 ){
+                    $storeInfo[$key]['distance'] = round($val['distance']/1000). 'km';
+                } else {
+                    $storeInfo[$key]['distance'] = round($val['distance']) . 'm';
+                }
+            } else {
+                $storeInfo[$key]['distance'] = '0m';
+            }
+            #标签处理
+            $storeInfo[$key]['label_arr'] = explode(' ',trim($val['label']));
+//            if( substr($val['supplyer_img'], 0, 1) != '/') {
+//                $storeInfo[$key]['supplyer_img'] = unserialize($val['supplyer_img'])['path'][0];
+//            }
+//
+//            if( substr($val['supplyer_album'], 0, 1) != '/') {
+//                $storeInfo[$key]['supplyer_album'] = unserialize($val['supplyer_album'])['path'][0];
+//            }
+        }
+        $return['list'] = $storeInfo;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+
+    public function index(){
+        $lat = input('lat');
+        $lng = input('lng');
+        if($this->userInfo['longitude'] != $lng || $this->userInfo['latitude'] != $lat){
+            $this->userInfo['longitude'] = $lng;
+            $this->userInfo['latitude'] = $lat;
+        }
+        $userModel = new UsersModel();
+        $regionModel = new RegionModel();
+        $userModel->upInfo($this->userInfo['user_id'],array('longitude'=>$lng,'latitude'=>$lat));
+
+        $url = "http://api.map.baidu.com/reverse_geocoding/v3/?ak=".settings('baidu_ak')."&output=json&coordtype=wgs84ll&location=".$lat.",".$lng;
+        if ($result=file_get_contents($url)) {
+            $result = json_decode($result,true);
+        }
+        $data = array(
+            'code'=>1,
+            'city'=>'广东',
+            'address'=>'棠东御富科贸园C1座',
+            'city_id'=>440100
+        );
+        if($result['status']==0){
+            $data['city'] = $result['result']['addressComponent']['city'];
+            $data['address'] = $result['result']['formatted_address'];
+            $data['city_id'] = $regionModel->where('name',$result['result']['addressComponent']['city'])->value('id');
+        }
+        $this->userInfo['now_address'] = $data['address'];
+        return $this->ajaxReturn($data);
+    }
     /*------------------------------------------------------ */
     //-- 申请商家
     /*------------------------------------------------------ */
@@ -215,6 +288,7 @@ class Business extends ApiController
         }
 
     }
+
 
 
 }

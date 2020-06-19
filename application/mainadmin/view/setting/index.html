@@ -21,6 +21,7 @@
                     <li><a href="#payment" data-toggle="tab">收款方式</a></li>
                     <li><a href="#kefu" data-toggle="tab">客服中心</a></li>
                     <li><a href="#t_map" data-toggle="tab">腾讯地图</a></li>
+                    <li><a href="#profits" data-toggle="tab">返佣设置</a></li>
                 </ul>
             </header>
 
@@ -254,6 +255,28 @@
                                    value="{$setting.secret_key}">
                         </div>
                     </div>
+                </div>
+                <div class="tab-pane" id="profits">
+                    {volist name="nums" id='vol'}
+                        <div class="form-group">
+                            <label class="col-sm-2 control-label">返利率是{$vol}%时:</label>
+                                <span style="margin-left: 25px;">
+                                跨界奖-
+                                <input type="text" name="setting[trans][{$vol}]" placeholder="" class="input-mini"
+                                       value="{$profits[$vol][trans]}">%
+                                </span>
+                            <span style="margin-left: 25px;">
+                                鼓励金-
+                                <input type="text" name="setting[hearten][{$vol}]" placeholder="" class="input-mini"
+                                       value="{$profits[$vol][hearten]}">%
+                            </span>
+                            <span style="margin-left: 25px;">
+                                代理奖-
+                                <input type="text" name="setting[agent][{$vol}]" placeholder="" class="input-mini"
+                                       value="{$profits[$vol][agent]}">%
+                            </span>
+                        </div>
+                    {/volist}
                 </div>
             </div>
 

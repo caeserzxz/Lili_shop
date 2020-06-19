@@ -20,7 +20,15 @@ class Setting extends AdminController
 	//-- 首页
 	/*------------------------------------------------------ */
     public function index(){
-		
+        $nums = [];
+		for ($i=1;$i<101;$i++){
+            array_push($nums,$i);
+        }
+        $setting = $this->Model->getRows();
+        $profits = unserialize($setting['profits']);
+
+        $this->assign('profits',$profits);
+        $this->assign('nums',$nums);
 		$this->assign("setting", $this->Model->getRows());
         return $this->fetch();
     }
@@ -29,6 +37,16 @@ class Setting extends AdminController
 	/*------------------------------------------------------ */
     public function save(){
         $set = input('post.setting');
+        $profits = [];
+        for ($i=1;$i<101;$i++){
+            $profits[$i]['trans'] = $set['trans'][$i];
+            $profits[$i]['hearten'] = $set['hearten'][$i];
+            $profits[$i]['agent'] = $set['agent'][$i];
+        }
+        unset($set['trans']);
+        unset($set['hearten']);
+        unset($set['agent']);
+        $set['profits'] = serialize($profits);
 		$res = $this->Model->editSave($set);
 		if ($res == false) return $this->error();
 		return $this->success('设置成功.');

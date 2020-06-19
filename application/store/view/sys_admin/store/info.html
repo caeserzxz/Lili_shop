@@ -227,6 +227,14 @@
                     </div>
                 </div>
             <div class="form-group">
+                <label class="control-label">标签：</label>
+                <div class="col-sm-7" >
+                    <input type="text" class="input-max" data-rule-maxlength="250"  name="label" value="{$row.label}" >
+                    <span class="maroon">*</span>
+                    <span class="help-inline">(标签有特定格式,标签中间使用空格间隔,如:便利店 优惠多 种类齐全....;为了前端正常显示,建议标签不要超过3个)</span>
+                </div>
+            </div>
+            <div class="form-group">
                 <label class="control-label">商家简介：</label>
                 <div class="controls " >
                     <textarea rows="3" name="info" cols="35">{$row.info}</textarea>

@@ -28,6 +28,7 @@ class Index extends ClientbaseController{
         empty($city) && $city = "北京";
         $regionModel = new RegionModel();
         $city_info = $regionModel->where('short_name',$city)->find();
+
         $this->assign('city_info', $city_info);
 
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片

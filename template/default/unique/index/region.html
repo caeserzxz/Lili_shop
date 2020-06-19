@@ -135,7 +135,8 @@
                 $('.page-bd').animate({
                     scrollTop: '0px'
                 }, 100);
-                window.location.href = '{:url("unique/index/index")}?city='+$(this).text();
+                var city = $(this).text().replace(/\s+/g,"");
+                window.location.href = '{:url("unique/index/index")}?city='+city;
             })
         });
         $(".letter-index").on('touchmove',function(e){
