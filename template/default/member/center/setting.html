@@ -1,32 +1,35 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/serverCenter.css" />
+<style>
+    .text_c{ text-align: center}
+</style>
 {/block}
 
 {block name="main" }
 <div class="page-bd userData">
     <!-- 页面内容-->
     <div class="cells">
-
-        <a href="{:url('editPwd')}" class=" cell cell_access noline">
-            <div class="cell_bd"><span class="fs28 color_3 fw_b">修改密码</span></div>
-            <div class="cell_ft">
-               
+        <div class="cell">
+            <div class="cell_hd"></div>
+            <div class="cell_bd">
+                <a href="{:url('editPwd')}"><span class="fs30 fw_b color_3">修改密码</span></a>
             </div>
-        </a>
-        <a href="{:url('editPayPwd')}" class=" cell cell_access noline">
-            <div class="cell_bd"><span class="fs28 color_3 fw_b">设置支付密码</span></div>
-            <div class="cell_ft">
-
+            <div class="cell_ft arrowright"></div>
+        </div>
+        <div class="cell">
+            <div class="cell_hd"></div>
+            <div class="cell_bd">
+                <a href="{:url('editPwd')}"><span class="fs30 fw_b color_3">修改支付密码</span></a>
             </div>
-        </a>
-        <a href="{:url('logout')}"  class=" cell cell_access noline">
-            <div class="cell_bd"><span class="fs28 color_3 fw_b">退出登录</span></div>
-            <div class="cell_ft">
-
-            </div>
-        </a>
+            <div class="cell_ft arrowright"></div>
+        </div>
     </div>
+
+    <div class="cells Set">
+        <a href="{:url('logout')}"><div class="text_c fs28 color_r loginout">退出登录</div></a>
+    </div>
+
 </div>
 {/block}
 

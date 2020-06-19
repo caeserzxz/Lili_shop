@@ -152,4 +152,11 @@ class Member extends ClientbaseController{
         $this->assign('kefu_time', $settings['kefu_time']);
         return $this->fetch();
     }
+    /*------------------------------------------------------ */
+    //-- 我的团队
+    /*------------------------------------------------------ */
+    public function my_team(){
+        $this->assign('title', '我的会员');
+        return $this->fetch();
+    }
 }?>

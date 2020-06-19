@@ -1,9 +1,10 @@
 {extend name="layouts@base" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/userData.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/userData.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/serverCenter.css" />
 {/block}
 {block name="main" }
-<div class="page-bd userData">
+<div class="page-bd userData setPassword">
         <!-- 页面内容-->
         <div class="cells ">
 
@@ -46,10 +47,8 @@
                     <input type="password" class="fs28 fw_b  color_3" placeholder="请再次输入新密码" id="cfm_password">
                 </div>
               </div>
-        </div> 
-        <div class="page-ft">
-            <span class="fs32 color_w fw_b BGcolor_r forgetpwd">确定</span>
-          </div>
+        </div>
+            <div class="text_c fs28 color_r save-btn forgetpwd">确定</div>
       </div>
 
 {/block}
