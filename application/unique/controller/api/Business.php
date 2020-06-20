@@ -32,11 +32,17 @@ class Business extends ApiController
         $where[] = ['is_ban', '=', 0];
 
         $city = input('city',0);
-        // $where[] = ['city','=',$city];
+        #名称搜索条件
         $keyword = trim(input('keyword'),' ');
         if(empty($keyword)==false){
             $where[] = ['business_name',['like',"%".$keyword."%"]];
         }
+        #分类搜索条件
+        $cid =input('cid');
+        if(empty($cid)==false){
+            $where[] = ['category_id','=',$cid];
+        }
+
         $search['page'] = input('page',0,'int');
 
         $limit = $search['page']*20 . ',' . 20;
@@ -78,11 +84,15 @@ class Business extends ApiController
         $userModel = new UsersModel();
         $regionModel = new RegionModel();
         $userModel->upInfo($this->userInfo['user_id'],array('longitude'=>$lng,'latitude'=>$lat));
+        $key = settings('tx_key');
+        $secret_key = settings('secret_key');
 
-        $url = "http://api.map.baidu.com/reverse_geocoding/v3/?ak=".settings('baidu_ak')."&output=json&coordtype=wgs84ll&location=".$lat.",".$lng;
+        $sig= md5("/ws/geocoder/v1/?get_poi=1&key=".$key."&location=".$lat.",".$lng.$secret_key);
+        $url = "https://apis.map.qq.com/ws/geocoder/v1/?get_poi=1&key=".settings('tx_key')."&location=".$lat.",".$lng."&sig=".$sig;
         if ($result=file_get_contents($url)) {
             $result = json_decode($result,true);
         }
+
         $data = array(
             'code'=>1,
             'city'=>'广东',
@@ -90,9 +100,9 @@ class Business extends ApiController
             'city_id'=>440100
         );
         if($result['status']==0){
-            $data['city'] = $result['result']['addressComponent']['city'];
-            $data['address'] = $result['result']['formatted_address'];
-            $data['city_id'] = $regionModel->where('name',$result['result']['addressComponent']['city'])->value('id');
+            $data['city'] = $result['result']['address_component']['city'];
+            $data['address'] = $result['result']['address'];
+            $data['city_id'] = $regionModel->where('name',$result['result']['address_component']['city'])->value('id');
         }
         $this->userInfo['now_address'] = $data['address'];
         return $this->ajaxReturn($data);

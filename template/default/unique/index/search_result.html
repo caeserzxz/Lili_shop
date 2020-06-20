@@ -63,6 +63,7 @@
       var keyword = "{$keyword}";
       var longitude = "{$longitude}";
       var latitude = "{$latitude}";
+      var cid = "{$cid}";
 
     $(function () {
       $('.inputBox input').focus();
@@ -88,7 +89,8 @@
         arr.keyword = keyword;
         arr.longitude = longitude;
         arr.latitude = latitude;
-
+        arr.cid = cid;
+        console.log(arr);
         getList(arr);
     })
       function getList(arr){

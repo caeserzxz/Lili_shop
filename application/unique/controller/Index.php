@@ -29,7 +29,6 @@ class Index extends ClientbaseController{
         empty($city) && $city = "北京";
         $regionModel = new RegionModel();
         $city_info = $regionModel->where('short_name',$city)->find();
-
         $this->assign('city_info', $city_info);
 
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片
@@ -44,6 +43,7 @@ class Index extends ClientbaseController{
         $regionModel = new RegionModel();
         $list = $regionModel->where('level_type',2)->select();
         $this->assign('list', $list);
+        $this->assign('city',input('city'));
         return $this->fetch('region');
     }
 
@@ -52,6 +52,9 @@ class Index extends ClientbaseController{
     /*------------------------------------------------------ */
     public function search(){
         $this->assign('title', '搜索');
+        #热门搜索处理
+        $hot_keywords = explode(' ',settings('hot_keywords'));
+        $this->assign('hot_keywords',$hot_keywords);
 
         return $this->fetch('search');
     }
@@ -85,7 +88,7 @@ class Index extends ClientbaseController{
         $userInfo = $UsersModel->where('user_id',$this->userInfo['user_id'])->find();
         $this->assign('longitude',$userInfo['longitude']);
         $this->assign('latitude',$userInfo['latitude']);
-
+        $this->assign('cid',input('cid'));
         return $this->fetch('search_result');
     }
 

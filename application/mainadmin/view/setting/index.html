@@ -83,6 +83,14 @@
 
                     </div>
                     <div class="form-group">
+                        <label class="col-sm-2 control-label">热门搜索：</label>
+                        <div class="controls col-xs-7 ">
+                            <input type="text" class="input-max" data-rule-maxlength="200" name="setting[hot_keywords]"
+                                   value="{$setting.hot_keywords}">
+                            <span class="help-inline">用空格分隔</span></div>
+
+                    </div>
+                    <div class="form-group">
                         <label class="col-sm-2 control-label">默认简单描述：</label>
                         <div class="controls col-xs-7">
                             <textarea name="setting[description]" class="input-max" style="height:100px;">{$setting.description}</textarea>

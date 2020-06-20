@@ -39,12 +39,9 @@
             <!--<p class="fs28 color_3">圣诞送女神好礼</p><p class="fs28 color_3">时髦衣橱必buy单品</p>-->
         <!--</div>-->
         <div class="list">
-          <span class="fs28 color_3 hot_text">苹果手机</span>
-          <span class="fs28 color_3 hot_text">限量款</span>
-          <span class="fs28 color_3 hot_text">经典包袋</span>
-          <span class="fs28 color_3 hot_text">羽绒服</span>
-          <span class="fs28 color_3 hot_text">围巾</span>
-          <span class="fs28 color_3 hot_text">GUCCI</span>
+          {volist name="hot_keywords" id="vol"}
+            <span class="fs28 color_3 hot_text">{$vol}</span>
+          {/volist}
         </div>
       </div>
 
