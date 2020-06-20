@@ -77,7 +77,8 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     public function getAccountLog()
     {
-        $type = input('type', 'balance', 'trim');
+        $type = input('type', '0', 'trim');
+        if($type < 11 || $type > 15)$type = 0;
         $date1 = input('date1', date('Y-m-d',strtotime("-1 month")), 'trim');
         $date2 = input('date2', date('Y-m-d'), 'trim');
         $flag = input('flag','all','trim');
@@ -88,17 +89,11 @@ class Users extends ApiController
         $return['code'] = 1;
         $AccountLogModel = new AccountLogModel();
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
-        switch ($type) {
-            //余额
-            case 'balance':
-                $field = 'balance_money';
-                break;
-            //默认查余额
-            default:
-                $field = 'balance_money';
-                break;
-        }
 
+        if($type){
+            $where[] = ['change_type' ,'=' ,$type];
+        }
+        $field = 'balance_money';
         //收入 支出 全部 筛选
         $arr = '';
         $arr = $flag == 'all' ? [$field, '<>', 0] : $arr;
@@ -107,7 +102,6 @@ class Users extends ApiController
         $where[] = $arr;
         $where[] = ['change_time', 'between', array($date1, $date2)];
         $rows = $AccountLogModel->where($where)->order('change_time DESC')->select();
-//        echo $AccountLogModel->where($where)->order('change_time DESC')->fetchSql()->select();die;
         $return['income'] = 0;
         $return['expend'] = 0;
         foreach ($rows as $key => $row) {
@@ -122,6 +116,19 @@ class Users extends ApiController
             $row['balance_remaining'] = $row['old_balance_money'] + $row['balance_money'];
             $return['list'][] = $row;
         }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户总额
+    /*------------------------------------------------------ */
+    public function getAccountLogNum()
+    {
+        $AccountLogModel = new AccountLogModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['balance_money' ,'>' ,0];
+        $return['num_all'] = $AccountLogModel->where($where)->sum('balance_money');
+        $return['num_11']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,11]])->sum('balance_money');
+        $return['num_15']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,15]])->sum('balance_money');
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */

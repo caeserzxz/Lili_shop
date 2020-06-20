@@ -24,7 +24,8 @@ class Withdraw  extends ClientbaseController{
     /*------------------------------------------------------ */
     public function bindMobile(){
         if (empty($this->userInfo['mobile']) == false){
-            return $this->redirect('unique/member/index');
+//            return $this->redirect('unique/member/index');
+            return $this->error('您已绑定过手机','unique/member/index');
         }
         $this->assign('title', '绑定手机');
         $this->assign('sms_fun', settings('sms_fun'));//获取短信配置

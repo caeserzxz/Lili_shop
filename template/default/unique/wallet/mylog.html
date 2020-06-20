@@ -30,12 +30,25 @@
             </span>
         </div>
     </div>
-
+    <div class="money-info" style="display: none; text-align: center">
+        <div>
+            <p class="fs32 fw_b color_3 num_all">0.00</p>
+            <p class="fs24 color_9">总收入</p>
+        </div>
+        <div>
+            <a href="{:url('',['type'=>11])}"><p class="fs32 fw_b color_3 num_11">0.00</p>
+            <p class="fs24 color_9">鼓励金收入</p></a>
+        </div>
+        <div>
+            <a href="{:url('',['type'=>15])}"><p class="fs32 fw_b color_3 num_15">0.00</p>
+            <p class="fs24 color_9">自购返收入</p></a>
+        </div>
+    </div>
     <!-- 数据列表 -->
     <div class="data-info">
         <div class="title color_r fs24">
-            <span class="mr20">支出: ¥<em class="b_expend">0</em></span>
-            <span>收入: ¥<em class="b_income">0</em></span>
+            <span class="mr20">收入: ¥<em class="b_income">0</em></span>
+            <span>支出: ¥<em class="b_expend">0</em></span>
         </div>
         <div class="wrap-list list">
             <div style="text-align:center; line-height: 100px;">加载中...</div>
@@ -64,7 +77,7 @@
     {{/each}}
 </script>
 {/literal}
-<link rel="stylesheet" href="__STATIC__/unique/css/encouragement.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/myWallet.css" />
 <script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
 <script src="__STATIC__/unique/js/lib/fastclick.js"></script>
 <script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
@@ -121,7 +134,7 @@
         arr.date2 = $('#date2').val();
         arr.type = '{$type|default=balance}';
         arr.flag = $("input[name='flag']").attr('data-values');
-        jq_ajax('{:url("unique/api.Users/getAccountLog")}',arr,function(res){
+        jq_ajax('{:url("api.Users/getAccountLog")}',arr,function(res){
             if (res.code == 0){
                 _alert(res.msg);
                 return false;
@@ -149,6 +162,18 @@
                 $('.headimg').attr('src', res.userInfo.headimgurl);
             }
         });
+        if('{$type}' == '' || '{$type}' == '0'){
+            jq_ajax('{:url("api.users/getAccountLogNum")}',[],function(res){
+                if (res.code == 0){
+                    _alert(res.msg);
+                    return false;
+                }
+                $('.num_all').html(res.num_all);
+                $('.num_11').html(res.num_11);
+                $('.num_15').html(res.num_15);
+                $('.money-info').show();
+            });
+        }
         getList();
     })
 </script>
