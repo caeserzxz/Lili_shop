@@ -1,0 +1,75 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/userData.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/orderDetails.css" />
+{/block}
+
+{block name="main" }
+<form id="alipay_from">
+<div class="page-bd addType">
+  <!-- 页面内容-->
+    <div class="tab fs32">
+        <div class="color_9"><a href="{:url('bankAdd')}">银行卡</a></div>
+        <div class="color_9 active"><a href="javascript:;">支付宝</a></div>
+        <div class="color_9"><a href="{:url('weixinAdd')}">微信</a></div>
+    </div>
+    <div class="cells">
+      <div class="cell">
+        <div class="cell_hd"><span class="fs28 color_3 fw_b">账户姓名</span></div>
+        <div class="cell_bd">
+            <input type="text" class="fs28  color_3" name="alipay_user_name" placeholder="请输入账户姓名">
+        </div>
+      </div>
+      <div class="cell">
+          <div class="cell_hd"><span class="fs28 color_3 fw_b">支付宝账号</span></div>
+        <div class="cell_bd">
+            <input type="text" class="fs28  color_3" name="alipay_account" placeholder="请输入支付宝账号">
+        </div>
+      </div>
+    </div>
+    <div class="cells">
+        <div class="cell">
+            <div class="cell_bd">
+                <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
+            <div class="cell_ft">
+                <input type="checkbox" name="is_default" id="isis_default" class="chooseBtn" />
+                <label for="isis_default" class="choose-label"></label>
+            </div>
+        </div>
+    </div>
+    <div class="page-ft">
+        <span class="fs32 color_w fw_b BGcolor_r postBtn">确认添加</span>
+    </div>
+</div>
+</div>
+</form>
+{/block}
+
+{block name="footer"}
+<script>
+$(function(){
+  
+	
+	$('.postBtn').click(function (){
+		var arr = $('#alipay_from').toJson();
+		if (arr.alipay_user_name == ''){
+			_alert('请输入账户姓名.');
+			return false;	
+		}
+		if (arr.alipay_account == ''){
+			_alert('请输入支付宝账号.');
+			return false;	
+		}
+	
+		jq_ajax('{:url("unique/api.withdraw/addAlipay")}',arr,function(res){
+			if (res.code == 0){
+				_alert(res.msg);
+				return false;
+			}
+            window.location.href = '{:url("unique/withdraw/index")}';
+		});	
+		
+	})
+})
+</script>
+{/block}
