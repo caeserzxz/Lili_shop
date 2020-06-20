@@ -4,6 +4,7 @@
 /*------------------------------------------------------ */
 namespace app\unique\controller;
 use app\ClientbaseController;
+use app\member\model\AccountLogModel;
 
 
 class Wallet extends ClientbaseController{
@@ -25,9 +26,10 @@ class Wallet extends ClientbaseController{
     //-- 余额明细
     /*------------------------------------------------------ */
     public function mylog(){
-        $type = input('type','balance','trim');
-        $title = '';
-        $title = $type == 'balance' ? '奖励金' : $title;
+        $type = input('type', 0, 'trim');
+        if($type >= 11 && $type <= 15)
+            $title = AccountLogModel::$type_desc[$type];
+        $title = $title ? $title : '钱包';
         $this->assign('title', $title);
         $this->assign('type', $type);
         $this->assign('date1', date('Y-m-d',strtotime("-1 month")));
