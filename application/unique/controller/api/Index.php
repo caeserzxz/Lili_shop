@@ -4,6 +4,7 @@ use think\Db;
 use think\facade\Cache;
 use app\ApiController;
 use app\store\model\CategoryModel;
+use app\unique\model\SearchRecordsModel;
 /*------------------------------------------------------ */
 //-- 首页相关API
 /*------------------------------------------------------ */
@@ -49,4 +50,14 @@ class Index extends ApiController
         return $this->ajaxReturn($list);
     }
 
+    /*------------------------------------------------------ */
+    //-- 获取历史搜索记录
+    /*------------------------------------------------------ */
+    public function geg_search_records(){
+        $SearchRecordsModel = new SearchRecordsModel();
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+
+        $list['list'] = $SearchRecordsModel->where($where)->field("id,keyword,FROM_UNIXTIME(add_time, '%Y-%m-%d %H:%i:%s' ) as add_time")->order('add_time desc')->limit(6)->select();
+        return $this->ajaxReturn($list);
+    }
 }

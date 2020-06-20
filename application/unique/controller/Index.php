@@ -10,6 +10,7 @@ use app\shop\model\SlideModel;
 use app\mainadmin\model\RegionModel;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
+use app\unique\model\SearchRecordsModel;
 
 class Index extends ClientbaseController{
 
@@ -61,8 +62,25 @@ class Index extends ClientbaseController{
     public function search_result(){
         $UsersModel = new UsersModel();
         $this->assign('title', '搜索结果');
-        $keyword = trim(' ',input('keyworkd'));
+        $keyword = trim(input('keyword'),' ');
         $this->assign('keyword',$keyword);
+
+        #更新历史搜索
+        if(empty($keyword)==false){
+            $SearchRecordsModel = new SearchRecordsModel();
+            $where[] = ['user_id','=',$this->userInfo['user_id']];
+            $where[] = ['keyword','=',$keyword];
+            $search_info = $SearchRecordsModel->where($where)->find();
+
+            $map['keyword'] = $keyword;
+            $map['user_id'] = $this->userInfo['user_id'];
+            $map['add_time'] = time();
+            if(empty($search_info)){
+                $res = $SearchRecordsModel->insert($map);
+            }else{
+                $res = $SearchRecordsModel->where('id',$search_info['id'])->update($map);
+            }
+        }
 
         $userInfo = $UsersModel->where('user_id',$this->userInfo['user_id'])->find();
         $this->assign('longitude',$userInfo['longitude']);

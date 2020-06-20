@@ -24,27 +24,27 @@
       
       <div class="history">
         <div class="title fw_b color_3 fs34">历史搜索</div>
-        <div class="list">
-          <span class="fs28 color_3">苹果手机</span>
-          <span class="fs28 color_3">限量款</span>
-          <span class="fs28 color_3">经典包袋</span>
-          <span class="fs28 color_3">羽绒服</span>
-          <span class="fs28 color_3">围巾</span>
-          <span class="fs28 color_3">GUCCI</span>
+        <div class="list" id="tab3">
+          <script type="text/html" id="listTpl3">
+            {{each list as item index}}
+              <span class="fs28 color_3 hot_text" onclick="go_search('{{item.keyword}}');">{{item.keyword}}</span>
+            {{/each}}
+          </script>
+
         </div>
       </div>
       <div class="history hot">
         <div class="title fw_b color_3 fs34">热门搜索</div>
-        <div class="twe">
-            <p class="fs28 color_3">圣诞送女神好礼</p><p class="fs28 color_3">时髦衣橱必buy单品</p>
-        </div>
+        <!--<div class="twe">-->
+            <!--<p class="fs28 color_3">圣诞送女神好礼</p><p class="fs28 color_3">时髦衣橱必buy单品</p>-->
+        <!--</div>-->
         <div class="list">
-          <span class="fs28 color_3">苹果手机</span>
-          <span class="fs28 color_3">限量款</span>
-          <span class="fs28 color_3">经典包袋</span>
-          <span class="fs28 color_3">羽绒服</span>
-          <span class="fs28 color_3">围巾</span>
-          <span class="fs28 color_3">GUCCI</span>
+          <span class="fs28 color_3 hot_text">苹果手机</span>
+          <span class="fs28 color_3 hot_text">限量款</span>
+          <span class="fs28 color_3 hot_text">经典包袋</span>
+          <span class="fs28 color_3 hot_text">羽绒服</span>
+          <span class="fs28 color_3 hot_text">围巾</span>
+          <span class="fs28 color_3 hot_text">GUCCI</span>
         </div>
       </div>
 
@@ -61,6 +61,7 @@
 </script>
   <script>
     $(function () {
+        geg_search_records()
       $('.inputBox input').focus();
       $('.top span').on('click', function () {
         $('.inputBox input').val('');
@@ -71,12 +72,33 @@
        var search_text = $('.search_text').val();
        go_search(search_text);
     })
+    $('.hot_text').on('click',function(){
+        var search_text = $(this).html();
+        go_search(search_text);
+    })
     function go_search(search_text){
         if(search_text==''||search_text==null){
             $.toast('请输入要搜索的店铺',"text");
             return false;
         }
         window.location.href = "{:url('unique/index/search_result')}?keyword="+search_text;
+    }
+    //获取历史搜索记录
+    function geg_search_records(){
+        $.ajax({
+            'url':'{:url("unique/api.index/geg_search_records")}',// 跳转到 action
+            'type':'post',
+            'data':'',
+            'dataType':'json',
+            'success':function(res){
+                if (res.list.length > 0) {
+                    $('#tab3').prepend(template('listTpl3',res));
+                    window.page += 1;
+                }else{
+                    // $.toast('加载完成',"text");
+                }
+            }
+        });
     }
   </script>
 </body>

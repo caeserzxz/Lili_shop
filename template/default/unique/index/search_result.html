@@ -17,71 +17,34 @@
     <div class="page-bd">
       <!-- 页面内容-->
       <div class="nearShop">
-        <div class="shop-list">
-            <div class="list-item">
-                <img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />
-                <div class="shop-info">
-                    <div class="shop-name fs28 fw_b col_3">全家士多便利店</div>
-                    <div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>
-                    <div class="shop-label">
-                        <span>便利店</span>
-                        <span>优惠多</span>
-                        <span>种类齐全</span>
-                    </div>
-                    <div class="shop-enc">
-                        <span>鼓励金:8%</span>
-                    </div>
-                </div>
-                <div class="shop-distance">
-                    <div class="text_c color_9">613m</div>
-                    <div>
-                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
-                    </div>
-                </div>
-            </div>
-            <!--<div class="list-item">-->
-                <!--<img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />-->
-                <!--<div class="shop-info">-->
-                    <!--<div class="shop-name fs28 fw_b col_3">全家士多便利店</div>-->
-                    <!--<div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>-->
-                    <!--<div class="shop-label">-->
-                        <!--<span>便利店</span>-->
-                        <!--<span>优惠多</span>-->
-                        <!--<span>种类齐全</span>-->
-                    <!--</div>-->
-                    <!--<div class="shop-enc">-->
-                        <!--<span>鼓励金:8%</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="shop-distance">-->
-                    <!--<div class="text_c color_9">613m</div>-->
-                    <!--<div>-->
-                        <!--<img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-            <!--<div class="list-item">-->
-                <!--<img class="shop-img" src="__STATIC__/unique/images/seckillimg.png" alt="" />-->
-                <!--<div class="shop-info">-->
-                    <!--<div class="shop-name fs28 fw_b col_3">全家士多便利店</div>-->
-                    <!--<div class="shop-addr fs23 color_9">广州市天河区棠东毓敏东路12号</div>-->
-                    <!--<div class="shop-label">-->
-                        <!--<span>便利店</span>-->
-                        <!--<span>优惠多</span>-->
-                        <!--<span>种类齐全</span>-->
-                    <!--</div>-->
-                    <!--<div class="shop-enc">-->
-                        <!--<span>鼓励金:8%</span>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="shop-distance">-->
-                    <!--<div class="text_c color_9">613m</div>-->
-                    <!--<div>-->
-                        <!--<img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">-->
-                    <!--</div>-->
-                <!--</div>-->
-            <!--</div>-->
-        </div>
+          <div class="shop-list" id="tab3">
+              <script type="text/html" id="listTpl3">
+                  {{each list as item index}}
+                  <div class="list-item">
+                      <img class="shop-img" src="{{item.logo}}" alt="" />
+                      <div class="shop-info">
+                          <div class="shop-name fs28 fw_b col_3">{{item.business_name}}</div>
+                          <div class="shop-addr fs23 color_9">{{item.address}}</div>
+
+                          <div class="shop-label">
+                              {{each item.label_arr as v k}}
+                              <span>{{v}}</span>
+                              {{/each}}
+                          </div>
+                          <div class="shop-enc">
+                              <span>鼓励金:{{item.hearten}}%</span>
+                          </div>
+                      </div>
+                      <div class="shop-distance">
+                          <div class="text_c color_9">{{item.distance}}</div>
+                          <div>
+                              <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                          </div>
+                      </div>
+                  </div>
+                  {{/each}}
+              </script>
+          </div>
         <div class="text_c color_9">已经到底啦~</div>
     </div>
 
@@ -98,7 +61,9 @@
 </script>
   <script>
       var keyword = "{$keyword}";
-      console.log(keyword);
+      var longitude = "{$longitude}";
+      var latitude = "{$latitude}";
+
     $(function () {
       $('.inputBox input').focus();
       $('.top span').on('click', function () {
@@ -120,11 +85,14 @@
         })
 
         var arr = new Object();
+        arr.keyword = keyword;
+        arr.longitude = longitude;
+        arr.latitude = latitude;
 
-        getList();
+        getList(arr);
     })
       function getList(arr){
-          console.log(arr);
+
           $.ajax({
               url:'{:url("unique/api.business/getList")}',// 跳转到 action
               data:arr,

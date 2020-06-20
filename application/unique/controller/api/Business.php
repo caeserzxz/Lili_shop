@@ -33,14 +33,15 @@ class Business extends ApiController
 
         $city = input('city',0);
         // $where[] = ['city','=',$city];
-        $keyword = trim(' ',input('keyword'));
-
+        $keyword = trim(input('keyword'),' ');
+        if(empty($keyword)==false){
+            $where[] = ['business_name',['like',"%".$keyword."%"]];
+        }
         $search['page'] = input('page',0,'int');
 
         $limit = $search['page']*20 . ',' . 20;
         $longitude = input('longitude');
         $latitude = input('latitude');
-
         //获取商家信息
         $storeInfo  = $this->Model->where($where)->field("*,round(6378.138*2*asin(sqrt(pow(sin( (".$latitude."*pi()/180-latitude*pi()/180)/2),2)+cos(".$latitude."*pi()/180)*cos(latitude*pi()/180)* pow(sin( (".$longitude."*pi()/180-longitude*pi()/180)/2),2)))*1000) as distance")->order('distance')->limit($limit)->select();
         foreach ($storeInfo as $key => $val) {
