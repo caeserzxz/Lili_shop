@@ -17,12 +17,7 @@
        	  	<td>{$g.id}</td>
        	  	<td><img src="{$g.imgurl}" style="max-width:100px;max-width:80px;"/></td>
             <td>{$g.sort_order}</td>
-            <td>
-                {if condition="$g.type eq 1"}
-                    商城首页幻灯片
-                {elseif condition="$g.type eq 2" /}
-                    APP首页幻灯片
-                {/if}
+            <td>{$slideType[$g.type]}
             </td>
 
             <td>

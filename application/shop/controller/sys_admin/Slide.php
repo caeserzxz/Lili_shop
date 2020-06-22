@@ -12,7 +12,9 @@ class Slide extends AdminController
 	/*------------------------------------------------------ */
 	public function initialize(){
         parent::initialize();
-        $this->Model = new SlideModel();		
+        $this->Model = new SlideModel();	
+        $this->slideType = [1 => '商城首页幻灯片',2 => 'APP首页幻灯片',3 => '商城分类banner图',5 => '商城榜单banner图',6 => '商城榜单图'];
+		$this->assign("slideType", $this->slideType);
     }
 	/*------------------------------------------------------ */
 	//-- 首页
