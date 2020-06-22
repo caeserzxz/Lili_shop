@@ -15,12 +15,15 @@ class SlideModel extends BaseModel
 	/*------------------------------------------------------ */ 
 	public function cleanMemcache(){
 		Cache::rm(self::$mkey);
+		for ($i=1; $i < 7; $i++) { 
+			Cache::rm(self::$mkey.'_'.$i);
+		}
 	}
 	/*------------------------------------------------------ */
 	//-- 获取列表
 	/*------------------------------------------------------ */
     public static function getRows($type){
-		$rows = Cache::get(self::$mkey);	
+		$rows = Cache::get(self::$mkey.'_'.$type);	
 		if (empty($rows) == false) return $rows;
 		$where[] = ['status','=',1];
 		if($type>0){
@@ -33,7 +36,7 @@ class SlideModel extends BaseModel
 			else $row['url'] = $row['data'];			
 			$rows[$key] = $row;
 		}
-		Cache::set(self::$mkey,$rows,3600);
+		Cache::set(self::$mkey.'_'.$type,$rows,3600);
 		return $rows;
 	}
 }

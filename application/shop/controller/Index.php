@@ -15,6 +15,8 @@ class Index  extends ClientbaseController{
 	//-- 首页
 	/*------------------------------------------------------ */
 	public function index($isIndex = false){
+        $this->redirect(url('shop/index/index_new'));
+
 		$tipsubscribe = 0;//是否显示提示关注
         //微信网页访问执行
         if (strpos($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
@@ -61,6 +63,7 @@ class Index  extends ClientbaseController{
         $GoodsModel->autoSale();//自动上下架处理
 		$this->assign('classGoods',$GoodsModel->getIndexClass());//获取首页分类
 		$this->assign('bestGoods',$GoodsModel->getIndexBestGoods());//获取首页分类
+
 		return $this->fetch('index');
 	}
 
@@ -233,8 +236,8 @@ class Index  extends ClientbaseController{
         return $this->fetch($tmpPath.'index');
     }
 
-   //获取真实用户数据 
-   public function getordermessage(){
+    //获取真实用户数据 
+    public function getordermessage(){
         $type = input('type','real') ;
 
         if($type == 'real'){
@@ -253,6 +256,43 @@ class Index  extends ClientbaseController{
          $lists = \lib\OrderMessage::set('/upload/headimg/5/LaGeCKaSEI9C.jpg','你可'.time());
     }
 
+    
+    /*------------------------------------------------------ */
+    //-- 首页 新
+    /*------------------------------------------------------ */
+    public function index_new(){
+        //调用自定义首页
+        if ($isIndex == false && settings('shop_index_tpl') == 1){
+            $res = $this->diypage(true);
+            if ($res !== false){
+                return $res;
+            }
+        }
+        //首页头条
+        $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
+        $this->assign('headline', $headline);
 
+        //楼层板块
+        $plateList = (new \app\shop\model\PlateModel)->getRows();
+        $this->assign('plateList', $plateList);
+        foreach ($plateList as $val){
+            $this->assign($val['key'], $val['name']);
+        }
+        //标签
+        $tagList = (new \app\shop\model\GoodsTagModel)->getAbleList();
+        $this->assign('tagList', $tagList);
+
+        $this->assign('slideList', SlideModel::getRows(1));//获取banner轮播图
+        $this->assign('rankBanner', SlideModel::getRows(5));//获取榜单banner图
+        $this->assign('rankList', SlideModel::getRows(6));//获取榜单图
+
+        $this->assign('navMenuList', NavMenuModel::getRows());//获取导航菜单
+        $GoodsModel = new GoodsModel();
+        $GoodsModel->autoSale();//自动上下架处理
+
+        $this->assign('not_top_nav',true);
+        $this->assign('title', '首页');
+        return $this->fetch();
+    }
 
 }?>

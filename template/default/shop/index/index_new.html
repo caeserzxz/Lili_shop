@@ -1,0 +1,161 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/mall.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="sousuo">
+        <div class="top">
+            <a href="{:url('index/search')}">
+                <div class="inputBox"><img src="__STATIC__/unique/images/selech01.png" alt=""><input class="fs30 color_3" type="text" placeholder="请输入搜索关键字"></div>
+                <a class="search fs30" href="{:url('index/search')}">搜索</a>
+            </a>
+        </div>
+    </div>
+    <div class="swiperGird" style="">
+        <div class="swiper-container swiper1" id="swiper01">
+            <div class="swiper-wrapper">
+                {volist name="slideList" id="slide" }
+                <a href="{$slide.url}" class="swiper-slide"><img data-src="{$slide.imgurl}" class="swiper-lazy" />
+                    <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                </a>
+                {/volist}
+            </div>
+            <div class="swiper-pagination pagination1"></div>
+        </div>
+        <!-- 分类 -->
+        {notempty name="navMenuList"}
+        <div class="gird">
+            <div class='scrllBox {lt name="navMenuList|count" value="5"}fournav{/lt}'>
+                {volist name="navMenuList" id="nav" }
+                <a href="{$nav.url}" class="box">
+                    <div>
+                        <img src="{$nav.imgurl}" alt="" />
+                    </div>
+                    <span class="fs26 color_3">{$nav.title}</span>
+                </a>
+                {/volist}
+            </div>
+        </div>
+        {/notempty}
+    </div>
+
+    <div class="bannerSwiper">
+        <img src="__STATIC__/unique/images/index_icon09.png" alt="">
+        <span class="fs32 fw_b color_3">新闻头条</span>
+        <div class="swiper-container swiper2" id="swiper02">
+            <div class="swiper-wrapper">
+                {volist name="headline" id="hl" }
+                <a href="{:url('shop/article/headline')}" class="swiper-slide">{$hl.title}</a>
+                {/volist}
+            </div>
+        </div>
+    </div>
+    <!-- banner位 -->
+    {notempty name="rankList"}
+    <div class="bannerBox">
+        <div class="oneBanner imgBox">
+            <a href="{$rankBanner.0.url}">
+                <img src="{$rankBanner.0.imgurl}" alt="">
+            </a>
+        </div>
+        <div class="thereBanner imgBox">
+            {volist name="rankList" id="rank" }
+                <a href="{$rank.url}"><img src="{$rank.imgurl}" alt=""></a>
+            {/volist}
+        </div>
+    </div>
+    {/notempty}
+
+    {foreach name="plateList" item="vo"}
+        {if condition="$vo.key eq 'favour'"}
+        <!-- 限时优惠 -->
+        {include file="index/favour" title="$favour" /}
+        {elseif condition="$vo.key eq 'fightgroup'"/}
+        <!-- 拼团 -->
+        {include file="index/fightgroup" title="$fightgroup"  /}
+        {elseif condition="$vo.key eq 'category'"/}
+        <!-- 分类 -->
+        {include file="index/category" /}
+        {elseif condition="$vo.key eq 'goods_tag'"/}
+        <!-- 商品标签 -->
+        {include file="index/goods_tag" /}
+        {/if}
+    {/foreach}
+    {include file="layouts@bottom_unique" /}   
+</div>  
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
+<script>
+    $(function () {
+        var swiper1 = createSwiper(1, 'horizontal', 4000, 'fraction');
+        var swiper2 = createSwiper(2, 'vertical', 5000, 'bullets');
+        var swiper3 = createSwiper01();
+        $('.topTips .cell_ft p').on('click', function () {
+            $('.model').show()
+        })
+        $('.topTips .cell_ft img').on('click', function () {
+            $('.topTips').hide()
+        })
+
+        $('.navBox div').on('click', function () {
+            $(this).siblings().removeClass('divActive')
+            $(this).addClass('divActive')
+            $('.celllist').hide()
+            $('.celllist').eq($(this).index()).show()
+        })
+    });
+
+    function closeModel() {
+        $('.model').hide()
+    }
+
+    function createSwiper(index, _direction, time, type) {
+        var swiper = new Swiper(".swiper" + index, {
+            pagination: {
+                el: ".pagination" + index,
+                type: type
+            },
+            lazy: {
+                loadPrevNext: true,
+            },
+            direction: _direction,
+            preloadImages: false,
+            paginationClickable: true,
+            loop: true,
+            autoplay: {
+                delay: time,
+                disableOnInteraction: false
+            },
+            onSlideChangeEnd: function (swiper) {
+                swiper.update(); //swiper更新
+            }
+        });
+        return swiper;
+    }
+
+    function createSwiper01() {
+        var swiper = new Swiper(".swiper3", {
+            pagination: {
+                el: ".pagination3",
+                clickable: true
+            },
+            loop: true,
+            onSlideChangeEnd: function (swiper) {
+                swiper.update(); //swiper更新
+            }
+        });
+        return swiper;
+    }
+</script>
+</body>
+</html>
+{/block}

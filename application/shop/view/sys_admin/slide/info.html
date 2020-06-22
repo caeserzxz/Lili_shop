@@ -42,12 +42,11 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">所属页面</label>
                     <div class="col-sm-2 must">
-                        <select id="type" name="type" class="input-medium"
-                                style="width:200px;">
+                        <select id="type" name="type" class="input-medium" style="width:200px;">
                             <option value="0">请选择</option>
-                            <option value="1" <?php if($row['type']==1) echo 'selected'?>>商城首页幻灯片</option>
-                            <option value="2" <?php if($row['type']==2) echo 'selected'?>>APP首页幻灯片</option>
-                            <option value="3" <?php if($row['type']==3) echo 'selected'?>>商城分类banner图</option>
+                            {volist name="slideType" id="type" }
+                            <option value="{$key}" {$row['type']==$key?'selected':''}>{$type}</option>
+                            {/volist}
                         </select>
                     </div>
                 </div>
