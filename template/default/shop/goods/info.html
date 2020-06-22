@@ -1,7 +1,9 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/js/Swiper-4.0.7/swiper.min.css"/>
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/>
+<!-- <link rel="stylesheet" href="__STATIC__/mobile/default/css/goods.css"/> -->
+<link rel="stylesheet" href="__STATIC__/unique/css/goodsDetail.css"/>
+
 {/block}
 {block name='pageType'}Goods{/block}
 {block name="main" }
@@ -63,6 +65,8 @@
                     {/if}
                 {/eq}
             </div>
+            <span class="fs20 color_w BGcolor_r ratio">自购返5%</span>
+
            <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}" id="is_prom_price">活动价</span>
         </div>
           <!-- 浮按钮 -->
@@ -84,16 +88,18 @@
             {/volist}
         {/volist}
         <div class="tips fs28 color_9 goCoupons">
-            <div style="display: flex;"><span>热销{$goods.sale_count}</span>
+            <div style="display: flex;display: none;"><span>热销{$goods.sale_count}</span>
                 <p class="hide">运费10元</p></div>
             <div class="goCouponsBtn" style="display: none;"><span class="fs28 fw_b color_3">领券</span><img src="__STATIC__/mobile/default//images/rightIcon.png" alt="" class="threeRight"></div>
         </div>
     </div>
     {eq name="goods.is_spec" value='1'}
     <div class="cell">
-        <span class="fs32 fw_b color_3">选择规格</span>
-        <div class="size"><p class="fs28 color_6 selSkuName">请选择规格</p><img
-                src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+        <span class="fs26 fw_b color_9">选择规格</span>
+        <div class="size">
+            <p class="fs28 color_r selSkuName">请选择规格</p>
+            <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight">
+        </div>
     </div>
     {/eq}
     <!-- 店铺 -->
@@ -103,34 +109,35 @@
         <img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight">
     </div>
    <!-- 评论 -->
-        {eq name="setting.shop_goods_comment_show" value='1'}
-        <div class="comment ">
-           <a class="top" href="{:url('comment',['goods_id'=>$goods['goods_id']])}">
-              <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 commentNum">(0)</p></div>
-              <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
-           </a>
-           <div class="commentBox">
-              <div class="user">
-                <img src="" alt="">
-                <div class="info">
-                  <p class="fs28 color_3 uname"></p>
-                  <span class="fs24 color_9 time"></span>
-                </div>
-              </div>
-              <div class="comtext fs28 color_3 line_twe content">
-                  
-              </div>
-              <div class="comimg">
-              </div>              
-           </div>
+    {eq name="setting.shop_goods_comment_show" value='1'}
+    <div class="comment ">
+       <a class="top" href="{:url('comment',['goods_id'=>$goods['goods_id']])}">
+          <div class="fs32 color_3"><span class="fw_b">用户评价</span><p class="color_9 commentNum">(0)</p></div>
+          <div><span class="fs26 color_9">更多</span><img src="__STATIC__/mobile/default/images/rightIcon.png" alt="" class="threeRight"></div>
+       </a>
+       <div class="commentBox">
+          <div class="user">
+            <img src="" alt="">
+            <div class="info">
+              <p class="fs28 color_3 uname"></p>
+              <span class="fs24 color_9 time"></span>
+            </div>
+          </div>
+          <div class="comtext fs28 color_3 line_twe content">
+              
+          </div>
+          <div class="comimg">
+          </div>              
+       </div>
+    </div>
+    {/eq}
+    <!-- 图文 -->
+    <div class="imgText">
+        <div class="title fw_b fs26 color_9">
+            <span class="dashedline"></span> 商品详情<span class="dashedline"></span>
         </div>
-        {/eq}
-        <!-- 图文 -->
-        <div class="imgText">
-          <div class="title fw_b fs32 color_3">商品详情</div>
-          {$goods.m_goods_desc|raw}
-        </div>
-
+      {$goods.m_goods_desc|raw}
+    </div>
 </div>
 
 <!-- 弹出规格选择 -->
@@ -142,17 +149,21 @@
 <!-- 底部 -->
 <div class="page-ft">
     <div class="left">
-        <a href="/"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span
-                class="fs22 color_6">首页</span></a>
-        <div v5_href><img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt=""><span class="fs22 color_6" >客服</span>
-        </div>
-        <a href="{:url('flow/cart')}"><em class="BGcolor_r fs22 color_w cartNum">{$cartInfo.num|intval}</em><img
-                src="__STATIC__/mobile/default/images/bottom_icon04.png" alt=""><span
-                class="fs22 color_6">购物车</span></a>
+        <!-- <a href="/"><img src="__STATIC__/mobile/default/images/bottom_icon01.png" alt=""><span class="fs22 color_6">首页</span></a> -->
+        <a href="{:url('shop/index/index_new')}"><img src="__STATIC__/unique/images/bottom_icon02.png" alt=""><span class="fs22 color_6">商城首页</span></a>
+        <!-- <div v5_href>
+            <img src="__STATIC__/mobile/default/images/goodsIcon02.png" alt="">
+            <span class="fs22 color_6" >客服</span>
+        </div> -->
+        <a href="{:url('flow/cart')}">
+            <em class="BGcolor_r fs22 color_w cartNum">{$cartInfo.num|intval}</em>
+            <img src="__STATIC__/unique/images/bottom_icon04.png" alt="">
+            <span class="fs22 color_6">购物车</span>
+        </a>
     </div>
     <div class="right">
-        <div class="fs28 color_w fw_b BGcolor_3 buyBtn" data-type="show">加入购物车</div>
-        <div class="fs28 color_w fw_b BGcolor_r butt buyBtn" data-type="show"> <span class="fs28 color_w fw_b buy_m">立即购买</span></div>
+        <div class="fs28 color_w fw_b BGcolor_3 butt buyBtn" data-type="show">加入购物车</div>
+        <div class="fs28 color_w fw_b BGcolor_r butt buyBtn butt2" data-type="show">立即购买</div>
     </div>
     <input type="hidden" name="goods_id" value="{$goods['goods_id']}">
     <input type="hidden" name="sku_id" value="">
@@ -207,7 +218,6 @@ $(function () {
 	// 滚动出现tab
 	$('#goods').scroll(function(){
 	  var scrolltop=$(this).scrollTop()
-	  // console.log($('.comment').offset().top,scrolltop)
 	  if(scrolltop>100){
 		$('.header-title').css('display','flex');
 		$('.header-left').removeClass('back')
@@ -337,13 +347,11 @@ function initActivity() {
     });
     if(sku.length>0){
         var _sku = sku.join(":");
-        console.log(_sku);
         arr.sku_id=sub_goods[_sku].sku_id;
     }
     //获取相关活动
     jq_ajax("{:url('shop/api.goods/checkActivity')}", arr,function (res) {
        if(res.code==1){
-           console.log(res);
            activityTheme(res.data);
        }
     });
@@ -415,7 +423,7 @@ function buyBTnTheme(data,status){
     if(status==0){
         $('#prom_type').val(0);
         $('#prom_id').val(0);
-        $('.butt ').html('<span class="fs28 color_w fw_b buy_m">立即购买</span>');
+        $('.butt2 ').html('立即购买');
     }else{
         $('#prom_type').val(data.prom_type);
         $('#prom_id').val(data.prom_id);
@@ -423,7 +431,7 @@ function buyBTnTheme(data,status){
         var shop_price = data.goods_info.market_price*1;
         var html='<span class="fs28 color_w fw_b buy_m">购买￥'+goods_price+'</span>';
         html+='<span><del class="fs24 color_f o_5">￥'+shop_price+'</del></span>';
-        $('.butt ').html(html);
+        $('.butt2 ').html(html);
     }
 }
 

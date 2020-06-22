@@ -1,64 +1,76 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/goodslist.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/goodslist.css" />
+<style type="text/css">
+    .get_list_tip {
+        line-height: 30px;
+        margin-top: 20px;
+        text-align: center;
+        width: 100%;
+        font-size: 120%;
+        color: #333;
+    }
+</style>
 {/block}
 {block name="main" }
 
 <div class="page-bd">
         <!-- 页面内容-->
-        <div class="scrollBox">
-        <div class="top">
-        	<a href="{:url('index/search')}">
-            <div class="inputBox"><img src="__STATIC__/mobile/default/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" name="keyword" id="keyword"  value="{$keyword}" placeholder="{$setting.shop_index_search_text}"></form></div>
-           </a>
-           <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span>
-        </div>
-        <div class="selectBox">
-               <div class="color_3 fs30 rank rank_active" data-type="complex">综合</div>
-               <div class="color_3 fs30 rank " data-type="sales"><span>销量</span><img src="__STATIC__/mobile/default/images/goodslist01.png" alt="" data-type="1"></div>
-               <div class="color_3 fs30 bor_R rank" data-type="price"><span>价格</span><img src="__STATIC__/mobile/default/images/goodslist01.png" alt="" data-type="1"></div>
-               <div class="color_3 fs30 select"><span>筛选</span><img src="__STATIC__/mobile/default/images/goodslist04.png" alt=""></div>
-        </div>
-        <div class="goodslist">
-
-        </div>
-        </div>
-      </div>
-      <!-- 弹出规格选择 -->
-      <div class="model">
-          <div class="modelcover"></div>
-          <div class="modelContent">
-            <div class="cantre">
-                <div class="block">
-                    <div class="title"><p class="fs32 fw_b color_3">价格区间</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
-                    <div class="list moneyBox">
-                      <div><input type="text" class="fs30 color_3" id="min_price" placeholder="最低价"></div>
-                      <em class="fs28 color_3"></em>
-                      <div><input type="text" class="fs30 color_3"  id="max_price" placeholder="最高价"></div>
-                    </div>
-                  </div>
-              <div class="block">
-                  <div class="title"><p class="fs32 fw_b color_3">分类</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
-                <div class="list class_list">
-                    {volist name="classList" id="class" }
-                        <span class="fs28 color_3 " data-type="class" data-cid="{$class.id}">{$class.name}</span>
-                    {/volist}
-
-                </div>
-              </div>
-              <div class="brandlist">
-
-              </div>
-
+    <div class="scrollBox" style="display: flex;flex-direction: column;height: 100%;">
+        <div class="top" onclick="goSearch()">
+            <div class="inputBox">
+                <img src="__STATIC__/unique/images/selech01.png" alt="">
+                <form action="{:url('goods/index')}">
+                    <input class="fs28 color_3" type="text" name="keyword" id="keyword"  value="{$keyword}" placeholder="{$setting.shop_index_search_text}">
+                </form>
             </div>
-            <div class="buttBox">
-              <span class="fs28 fw_b color_w BGcolor_3" data-type="clear">清除</span>
-              <span class="fs28 fw_b color_w BGcolor_r" data-type="confirm">确定</span>
+            <div class="search-btn">搜索</div>
+        </div>
+        <div style="width: 100%;height: 0.6rem;">
+            <div class="selectBox">
+                <div class="color_3 fs30 rank rank_active" data-type="complex">综合</div>
+                <div class="color_3 fs30 rank" data-type="is_new"><span>新品</span><img src="__STATIC__/mobile/default/images/goodslist01.png" alt="" data-type="1"></div>
+                <div class="color_3 fs30 rank" data-type="sales"><span>销量</span><img src="__STATIC__/mobile/default/images/goodslist01.png" alt="" data-type="1"></div>
+                <div class="color_3 fs30 bor_R rank" data-type="price"><span>价格</span><img src="__STATIC__/mobile/default/images/goodslist01.png" alt="" data-type="1"></div>
+                <div class="color_3 fs30 select"><span>筛选</span><img src="__STATIC__/mobile/default/images/goodslist04.png" alt=""></div>
+            </div>
+        </div>
+        <div class="goodslist"></div>
+    </div>
+</div>
+<!-- 弹出规格选择 -->
+<div class="model">
+  <div class="modelcover"></div>
+  <div class="modelContent">
+    <div class="cantre">
+        <div class="block">
+            <div class="title"><p class="fs32 fw_b color_3">价格区间</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
+            <div class="list moneyBox">
+              <div><input type="text" class="fs30 color_3" id="min_price" placeholder="最低价"></div>
+              <em class="fs28 color_3"></em>
+              <div><input type="text" class="fs30 color_3"  id="max_price" placeholder="最高价"></div>
             </div>
           </div>
+      <div class="block">
+          <div class="title"><p class="fs32 fw_b color_3">分类</p><img src="__STATIC__/mobile/default/images/goodslist05.png" alt="" data-type="0"></div>
+        <div class="list class_list">
+            {volist name="classList" id="class" }
+                <span class="fs28 color_3 " data-type="class" data-cid="{$class.id}">{$class.name}</span>
+            {/volist}
+
+        </div>
+      </div>
+      <div class="brandlist">
+
       </div>
 
-
+    </div>
+    <div class="buttBox">
+      <span class="fs28 fw_b color_w BGcolor_3" data-type="clear">清除</span>
+      <span class="fs28 fw_b color_w BGcolor_r" data-type="confirm">确定</span>
+    </div>
+  </div>
+</div>
 {/block}
 {block name="footer"}
 <script type="text/html" id="brand">
@@ -73,7 +85,21 @@
 </script>
 <script type="text/html" id="goods">
     {{each list as item index}}
-    <div class="Box">
+    <a href='{:_url("goods/info",["id"=>"[[item.goods_id]]"])}' class="Box">
+          <img src="{{item.goods_thumb}}" alt="">
+          <div class="info">
+            <span class="fs30 color_3">{{item.short_name?item.short_name:item.goods_name}}</span>
+            <div class="color_r fs24 num money">
+              <div class="moneytext">
+                <p class="fw_b fm_p fw_b">￥</p><em class="fs36">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p>
+              </div>
+              <p class="color_9">已售{{item.sale_count}}</p>
+            </div>
+            <div class="ratio fs20 mt10">自购返8%</div>
+          </div>
+        </a>
+
+  <!--   <div class="Box">
         <a href='{:_url("goods/info",["id"=>"[[item.goods_id]]"])}'>
         <img src="{{item.goods_thumb}}" alt="">
         <div class="info">
@@ -82,12 +108,14 @@
             <div class="fs24 color_9 tips"><em>￥{{item.market_price}}</em><div>已售 {{item.sale_count}}</div></div>
         </div>
         </a>
-    </div>
+    </div> -->
     {{/each}}
 </script>
 <script>
     var nowPage = 1,getAgain = false,isLoadend = false;
     var postData = {$input|json_encode|raw};
+    if ($.isArray(postData)) var postData = {};
+
     $(function(){
         $('.page-bd').scroll(function(){
             var box_h=$(this).height()
@@ -242,5 +270,8 @@
             }
         })
     })
+    function goSearch() {
+        window.location.href = "{:url('shop/index/search')}";
+    }
 </script>
 {/block}

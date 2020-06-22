@@ -84,17 +84,20 @@ class Goods extends ApiController
 
             switch ($sqlOrder){
                 case 'sales':
-                    $this->sqlOrder = "virtual_sale $sort_by,goods_id DESC";
+                    // $this->sqlOrder = "virtual_sale $sort_by,goods_id DESC";
+                    $this->sqlOrder = "sale_num $sort_by,goods_id DESC";
                     break;
                 case 'price':
                     $this->sqlOrder = "shop_price $sort_by,goods_id DESC";
                     break;
+                case 'is_new':
+                    $this->sqlOrder = "is_new $sort_by,goods_id DESC";
+                    break;
                 default:
-                    $this->sqlOrder = "sort_order $sort_by,virtual_sale $sort_by,virtual_collect $sort_by,is_best $sort_by,goods_id DESC";
+                    $this->sqlOrder = "sort_order $sort_by,sale_num $sort_by,virtual_collect $sort_by,is_best $sort_by,goods_id DESC";
                     break;
             }           
         }
-        
         $data = $this->getPageList($this->Model, $where,'goods_id',10);
         foreach ($data['list'] as $key=>$goods){
             $goods = $this->Model->info($goods['goods_id']);
