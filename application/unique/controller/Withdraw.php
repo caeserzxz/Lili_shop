@@ -19,6 +19,14 @@ class Withdraw  extends ClientbaseController{
 		return $this->fetch('index');
 	}
     /*------------------------------------------------------ */
+    //-- 提现记录
+    /*------------------------------------------------------ */
+    public function lists(){
+        $this->assign('title', '提现记录');
+        $this->assign('withdraw_account_type', config('config.withdraw_account_type'));
+        return $this->fetch();
+    }
+    /*------------------------------------------------------ */
     //-- 绑定手机
     /*------------------------------------------------------ */
     public function bindMobile(){

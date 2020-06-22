@@ -24,10 +24,13 @@
         <td>{$fee_types[$vo.fee_type]}</td>
         <td>
             {if condition="$vo['account_type']=='bank'"}
-            {$vo.account_info.bank_name}<br>{$vo.account_infobank_cardholder} - {$vo.account_info.bank_card_number} -
-            {$vo.account_info.bank_location_outlet} - {$vo.account_info.bank_branch_name}
-            {else/}
             {$withdraw_account_type[$vo['account_type']]}
+            {$vo.account_info.bank_name}<br>{$vo.account_info.bank_cardholder} - {$vo.account_info.bank_card_number} -
+            {$vo.account_info.bank_location_outlet} - {$vo.account_info.bank_branch_name}
+            {elseif condition="$vo['account_type']=='alipay'"/}
+            {$withdraw_account_type[$vo['account_type']]} - {$vo.account_info.alipay_user_name} - {$vo.account_info.alipay_account}
+            {else/}
+            {$withdraw_account_type[$vo['account_type']]} - <a href="{$vo.account_info.ecode_url}" target="_blank">[收款码]</a>
             {/if}
         </td>
         <td>{$userWithdrawType[$vo['status']]['name']}</td>

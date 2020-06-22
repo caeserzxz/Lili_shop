@@ -1,113 +1,92 @@
-{extend name="layouts@base" /}
+{extend name="layouts@base_unique" /}
 {block name="head"}
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/wallet.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/wallet.css"/>
 {/block}
-{block name='pageType'}chongzhi takeOut{/block}
+{block name='pageType'}chongzhi{/block}
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
     <div class="inputBlock">
-        <div class="tips fs24 color_9">提现金额(元)</div>
-        <input type="text" class="fs60 num textBox" id="amount" value="0">
-        
+        <div class="tips fs28 color_3">提现金额</div>
+        <div class="input">
+            <div class="input-left">
+                <em class="fs48 fw_b color_9 mr10">¥</em>
+                <input type="text" class="fs60 num textBox" id="amount" value="0">
+            </div>
+            <span class="fs24 fw_b color_3" style="display: block">手续费<em class="withdraw_fee">0</em>元</span>
+        </div>
+        <div class="money">
+            <div class="fs26 color_9">余额：<span class="color_3 num balance_money">{$userInfo['account']['balance_money']}</span></div>
+            <p class="fs24 fw_b color_r tag_actives">全部提现</p>
+        </div>
     </div>
 
-    <div class="money">
-        <div class="fs26 color_9">可提现金额￥<span class="color_3 balance_money">{$userInfo['account']['balance_money']}</span></div>
-        <span class="fs24 fw_b color_3">手续费<em class="withdraw_fee">0</em>元</span>
-        <p class="fs24 tag_active">全部提现</p>
+    <div class="cells withdraw">
+        <div class="cell current">
+            <div class="cell_hd">
+                <span class="fs28 color_3">提现至：</span>
+                <img src="__STATIC__/unique/images/AliPay.png" alt="">
+            </div>
+            <div class="cell_bd">
+                <span class="fs30 color_3">支付宝</span>
+                <span class="fs26 color_9"></span>
+            </div>
+            <div class="cell_ft arrowright"></div>
+        </div>
+        <a href="{:url('unique/withdraw/bankadd')}" class="cell">
+            <div class="cell_hd"><img src="__STATIC__/unique/images/icon_add.png" alt=""></div>
+            <div class="cell_bd"><span class="fs30 color_r">添加收款账户</span></div>
+        </a>
     </div>
-    <div class="cells">
-		<div class="cell inputpwd">
-				<div class="tips fs28 fw_b color_3">支付密码</div>
-				<input type="password" class="fs28 textBox" id="pay_password" placeholder="请输入支付密码">
-		</div>
 
-    </div>
+
+    <div class="button fs32 fw_b color_w BGcolor_r postBtn">提现</div>
+    <a href="{:url('lists')}"><div class="fs32 text_c color_9 mb30"><span>提现记录</span></div></a>
+
+</div>
+<!-- 提现方式 弹窗 -->
+<div class="modal">
     <div class="paytype">
-        <div class="title fs34 color_3 fw_b ">
-            {volist name="withdraw_account_type" id="val"}
-            <label><span class="iconBox"><input class="check" type="radio" name="account_type" value="{$key}" checked><i class="icon_checked"></i> {$val}</span></label>
-            {/volist}
+        <div class="title fs34 color_3 fw_b">请选择提现方式</div>
+        <div class="cells banklist">
         </div>
-        <div class="cells" id="bank_box">
-        	<div class="banklist">
-
-           </div>
-            <a href="{:url('bankAdd')}" class="cell">
-                <div class="cell_hd"><img src="__STATIC__/mobile/default/images/add.png" alt=""></div>
-                <div class="cell_bd"><span class="fs30 color_3 fw_b add_type">添加银行卡</span></div>
-            </a>
-        </div>
-        <div class="cells hide" id="file_box">
-            <div class="uploading">
-                <div class="title fs32 fw_b color_3">上传收款二维码</div>
-                <div class="uploadBox" >
-
-                    <div class="Box" id="upload_qrcode_box">
-                        <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
-                        <input type="file" class="uploadInput" >
-                    </div>
-                    <div></div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-    <div class="button fs32 fw_b color_w BGcolor_r postBtn">确认提现</div>
-
-    <!-- 支付方式 -->
-    <div class="model">
-        <div class="modelBg"></div>
-        <div class="modelContent">
-            <div class="closeBox"><img src="__STATIC__/mobile/default/images/close_icon.png" alt=""></div>
-            <div class="title fs36 color_3 fw_b">请选择账号类型</div>
-            <div class="cantre">
-                <label for="s12">
-                    <div class="block">
-                        <div class="payType"><img src="__STATIC__/mobile/default/images/offlinePay.png" alt=""><div><span class="fs30 color_3">银行卡账号</span></div></div>
-                        <div class="iconBox">
-                            <input type="radio" class="check" name="radiobox" id="s12">
-                            <i class="icon_checked"></i>
-                        </div>
-                    </div>
-                </label>
-                <label for="s13">
-                    <div class="block">
-                        <div class="payType"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""><div><span class="fs30 color_3">支付宝账号</span></div></div>
-                        <div class="iconBox">
-                            <input type="radio" class="check" name="radiobox" id="s13" >
-                            <i class="icon_checked"></i>
-                        </div>
-                    </div>
-                </label>
-            </div>
-        </div>
+        <div class="modal-btn">完成</div>
     </div>
 </div>
+
+
 {literal}
 <script type="text/html" id="liTpl">
 {{each list as item index}}
-
 <div class="cell">
-	
-	{{if item.type == 'bank'}}
-		<div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""></label></div>
-		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">{{item.bank_name}}({{item.bank_card_number}})</span></label></div>		
-	{{/if}}	
-	{{if item.type == 'alipay'}}
-		<div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""></label></div>
-		<div class="cell_bd"><label for="s_{{item.account_id}}"><span class="fs30 color_3">支付宝({{item.alipay_account}})</span></label></div>
-	{{/if}}
-
-	<div class="cell_ft">
-	<label for="s_{{item.account_id}}">
-		<div class="iconBox">
-			<input type="radio" class="check" value="{{item.account_id}}" name="account_id" id="s_{{item.account_id}}" >
-			<i class="icon_checked"></i>
-		</div>
-	</label>
-	</div>
+    {{if item.type == 'bank'}}
+    <div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/{{item.bank_code}}Bank.png" alt=""></label></div>
+    <div class="cell_bd">
+        <label for="s_{{item.account_id}}"><span class="fs30 color_3">{{item.bank_name}}</span></label>
+        <label for="s_{{item.account_id}}"><span class="fs30 color_9">({{item.bank_card_number}})</span></label>
+    </div>
+    {{/if}}
+    {{if item.type == 'alipay'}}
+    <div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/AliPay.png" alt=""></label></div>
+    <div class="cell_bd">
+        <label for="s_{{item.account_id}}"><span class="fs30 color_3">支付宝</span></label>
+        <label for="s_{{item.account_id}}"><span class="fs30 color_9">({{item.alipay_account}})</span></label>
+    </div>
+    {{/if}}
+    {{if item.type == 'wxpay'}}
+    <div class="cell_hd"><label for="s_{{item.account_id}}"><img src="__STATIC__/mobile/default/images/weixinPay.png" alt=""></label></div>
+    <div class="cell_bd">
+        <label for="s_{{item.account_id}}"><span class="fs30 color_3">微信</span></label>
+    </div>
+    {{/if}}
+    <div class="cell_ft">
+        <label for="s_{{item.account_id}}">
+            <div class="iconBox">
+                <input type="radio" class="check" value="{{item.account_id}}" name="account_id" id="s_{{item.account_id}}" >
+                <i class="icon_checked"></i>
+            </div>
+        </label>
+    </div>
 </div>
 {{/each}}
 </script>
@@ -119,20 +98,7 @@
 var fd = new FormData();
 
 $(function() {
-   /* $('.add_type').on('click',function(){
-        $('.model').show();
-    })
-    $('.closeBox').on('click',function(){
-        $('.model').hide();
-    })
-    $('.model label').on('click',function(){
-        var index=$(this).index();
-        if(index==0){
-            window.location.href='{:url("bankAdd")}'
-        }else{
-            window.location.href='{:url("alipayAdd")}'
-        }
-    })*/
+    FastClick.attach(document.body);
     $('.paytype .title input').click(function (){
         $('.paytype .cells').addClass('hide');
         var paytype = $(this).val();
@@ -142,26 +108,56 @@ $(function() {
         }else{
             $('#bank_box').removeClass('hide');
         }
-    })
 
+    })
     //加载列表
-	jq_ajax('{:url("member/api.withdraw/getList")}','',function(res){
+	jq_ajax('{:url("api.withdraw/getList")}','',function(res){
 		if (res.code == 0){
 			_alert(res.msg);
 			return false;
 		}
-		$('.banklist').html(template('liTpl', res));
-		container();
+		if(res.list.length >= 1){
+            // console.log(res.list[0])
+
+            $('.banklist').html(template('liTpl', res));
+            container();
+            // $('.modal .cell .modal-btn').eq(0).trigger('click');
+            var parentCell = $('.modal .cell').eq(0);
+            var imgSrc = parentCell.find('img').attr('src')
+            var cell_bd = parentCell.find('.cell_bd').html()
+            $('.withdraw .current').find('img').attr('src', imgSrc)
+            $('.withdraw .current').find('.cell_bd').html(cell_bd)
+            parentCell.find('input[name=account_id]').attr('checked','checked');
+        }else{
+            _alert('请先添加收款方式',"{:url('unique/withdraw/bankadd')}");
+        }
 	});
 
+    $(".withdraw").on("click", '.current', function () {
+        $(".modal").show();
+    })
+    //选择提现方式
+    $('.modal .modal-btn').on('click', function() {
+        $('.modal input').each(function() {
+            if ($(this).prop('checked')) {
+                var parentCell = $(this).parents('.modal .cell')
+                var imgSrc = parentCell.find('img').attr('src')
+                var cell_bd = parentCell.find('.cell_bd').html()
+
+                $('.withdraw .current').find('img').attr('src', imgSrc)
+                $('.withdraw .current').find('.cell_bd').html(cell_bd)
+                $('.modal').hide()
+            }
+        })
+    })
 	//验证提现
 	function evalFee(){
 		var amount = $('#amount').val();
 		if (amount < 0){
 			$('.withdraw_fee').html(0);
-			return false;	
+			return false;
 		}
-		jq_ajax('{:url("member/api.withdraw/checkWithdraw")}','amount='+amount,function(res){
+		jq_ajax('{:url("api.withdraw/checkWithdraw")}','amount='+amount,function(res){
 			if (res.code == 0){
 				_alert(res.msg);
 				return false;
@@ -173,9 +169,10 @@ $(function() {
 	$('#amount').change(function(){
 		evalFee();
 	})
-	$('.tag_active').click(function(){
+	$('.tag_actives').click(function(){
 		$('#amount').val($('.balance_money').html()).trigger('click');
 		evalFee();
+        // alert($('.balance_money').html());
 	})
 	//end
     var isPost = false;
@@ -188,28 +185,28 @@ $(function() {
 		var arr = new Object();
 		arr.account_id = $('input[name="account_id"]:checked').val();
 		arr.amount = $('#amount').val();
-		arr.pay_password = $('#pay_password').val();
-        arr.account_type = $('input[name="account_type"]:checked').val();
+		// arr.pay_password = $('#pay_password').val();
+        // arr.account_type = $('input[name="account_type"]:checked').val();
 		if (arr.amount < 1){
 			_alert('请输入提现金额.');
-			return false;	
+			return false;
 		}
-        if (arr.pay_password.length != 6){
-            _alert('请写6位长度的支付密码.');
-            return false;
-        }
-		if (arr.account_type == 'bank' && arr.account_id < 1){
-			_alert('请选择提现银行卡.');
+        // if (arr.pay_password.length != 6){
+        //     _alert('请写6位长度的支付密码.');
+        //     return false;
+        // }
+		if (arr.account_id < 1 || arr.account_id == undefined){
+			_alert('请选择提现账户.');
 			return false;
 		}
 
         fd.append("account_id", arr.account_id);
         fd.append("amount", arr.amount);
-        fd.append("pay_password", arr.pay_password);
-        fd.append("account_type", arr.account_type);
+        // fd.append("pay_password", arr.pay_password);
+        // fd.append("account_type", arr.account_type);
         isPost = true;
         $.ajax({
-            url: '{:url("member/api.withdraw/postWithdraw")}',
+            url: '{:url("api.withdraw/postWithdraw")}',
             type: 'post',
             processData: false,
             contentType: false,
@@ -220,7 +217,7 @@ $(function() {
                 if (res.code == 0){
                     return false;
                 }
-                _alert(res.msg,'{:url("member/wallet/index")}')
+                _alert(res.msg,'{:url("member/index")}')
             }
         })
 	})
@@ -236,9 +233,9 @@ $(function() {
                    $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg" data-type="one"></div>');
                    $('#upload_qrcode_box').css('visibility','hidden');
                    //$(_listenSelector).hide();
-            } 
+            }
     })
 
-    
+
 </script>
 {/block}

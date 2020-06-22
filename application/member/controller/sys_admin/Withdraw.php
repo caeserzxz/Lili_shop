@@ -158,7 +158,7 @@ class Withdraw extends AdminController
         $info['openid'] = $wxInfo['wx_openid'];
         $info['send_nick_name'] = $wxInfo['wx_nickname'];
         $WeiXinMsgTplModel->send($info);//模板消息通知
-		return $this->success('操作成功.',-1);
+		return $this->success('操作成功.');
 	}
     /*------------------------------------------------------ */
     //-- 导出

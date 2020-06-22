@@ -1,0 +1,168 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/wallet.css"/>
+{/block}
+{block name='pageType'}withdrawals-record{/block}
+{block name="main" }
+
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="tips-money fs28 fw_b color_r">累计提现成功：¥<span class="sp_all">0</span></div>
+
+    <!-- 容器 -->
+    <div class="weui-tab">
+        <div class="weui-navbar">
+            <a class="weui-navbar__item weui-bar__item--on" href="#tab1">
+                申请中(<span class="sp1">0</span>)
+            </a>
+            <a class="weui-navbar__item" href="#tab2">
+                审核通过(<span class="sp2">0</span>)
+            </a>
+            <a class="weui-navbar__item" href="#tab3">
+                审核不通过(<span class="sp3">0</span>)
+            </a>
+        </div>
+        <div class="weui-tab__bd">
+            <div id="tab1" class="weui-tab__bd-item weui-tab__bd-item--active">
+                <div class="tab-a">
+
+                </div>
+                <div class="text_c color_9 is_down">已经到底啦~</div>
+            </div>
+            <div id="tab2" class="weui-tab__bd-item">
+                <div class="tab-b">
+
+                </div>
+                <div class="text_c color_9 is_down">已经到底啦~</div>
+            </div>
+            <div id="tab3" class="weui-tab__bd-item">
+                <div class="tab-c">
+
+                </div>
+                <div class="text_c color_9 is_down">已经到底啦~</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 预览图片 -->
+    <div class="weui-gallery">
+        <span class="weui-gallery__img">
+          <img src="" alt="">
+        </span>
+        <div class="weui-gallery__opr">
+            <a href="javascript:" class="weui-gallery__del">
+                <img class="close" src="__STATIC__/unique/images/orderIcon02.png" alt="">
+            </a>
+        </div>
+    </div>
+</div>
+{literal}
+<script type="text/html" id="liTpl">
+{{each list as item index}}
+
+<div class="list-item">
+    <div class="title">
+        <span>流水号:{{item.log_id}}</span>
+        {{if item.status == '0'}}
+        <span class="color_9">申请中</span>
+        {{/if}}
+        {{if item.status == '1'}}
+        <span class="color_r">不通过</span>
+        {{/if}}
+        {{if item.status == '9'}}
+        <span class="color_3">已通过</span>
+        {{/if}}
+    </div>
+    <div class="info">
+        <p class="money fw_b color_3">
+            <span class="fs28">¥</span>
+            <span class="fs36">{{item.amount}}</span>
+        </p>
+        <p class="color_9 mt20">
+            {{if item.account_type == 'bank'}}
+            提现账号:{{item.account_info.bank_name}}({{item.account_info.bank_card_number}})
+            {{/if}}
+            {{if item.account_type == 'alipay'}}
+            提现账号:支付宝({{item.account_info.alipay_account}})
+            {{/if}}
+            {{if item.account_type == 'wxpay'}}
+            提现账号:微信收款码
+            <span data-imgsrc="{{item.account_info.ecode_url}}" class="gallery color_r">(点击查看图片)</span>
+            {{/if}}
+        </p>
+        <p class="color_9 mt10">提现时间：{{item.add__time}}</p>
+    </div>
+</div>
+{{/each}}
+</script>
+{/literal}
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    function getList(){
+        var arr = new Object;
+        arr.type = '{$type|default=all}';
+        jq_ajax('{:url("api.Withdraw/getwithdraw")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            var res_item = new Object();
+            if (typeof(res.list_applying) == 'undefined'){
+                $('.tab-a').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab1 .is_down').hide();
+            }else{
+                res_item.list = res.list_applying;
+                $('.tab-a').html(template('liTpl', res_item));
+                $('#tab1 .is_down').show();
+            }
+            if (typeof(res.list_passed) == 'undefined'){
+                $('.tab-b').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab2 .is_down').hide();
+            }else{
+                res_item.list = res.list_passed;
+                $('.tab-b').html(template('liTpl', res_item));
+                $('#tab2 .is_down').show();
+            }
+            if (typeof(res.list_rejected) == 'undefined'){
+                $('.tab-c').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('#tab3 .is_down').hide();
+            }else{
+                res_item.list = res.list_rejected;
+                $('.tab-c').html(template('liTpl', res_item));
+                $('#tab3 .is_down').show();
+            }
+            $('.sp1').html(res.applying_num);
+            $('.sp2').html(res.passed_num);
+            $('.sp3').html(res.rejected_num);
+            load_gallery();
+        });
+    }
+    $(function(){
+        getList();
+        jq_ajax('{:url("api.Withdraw/getWithdrawNum")}',[],function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            $('.sp_all').html(res.num_all);
+        });
+    })
+    function load_gallery(){
+        $('.gallery').on('click', function () {
+            var imgSrc = $(this).data('imgsrc')
+            $('.weui-gallery').show()
+            $('.weui-gallery').find('.weui-gallery__img img').attr('src', imgSrc)
+        })
+        $('.weui-gallery__opr .close').on('click', function() {
+            $('.weui-gallery').hide()
+        })
+    }
+
+</script>
+{/block}

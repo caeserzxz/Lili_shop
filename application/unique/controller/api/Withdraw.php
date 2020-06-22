@@ -35,7 +35,8 @@ class Withdraw extends ApiController
     //-- 添加银行卡
     /*------------------------------------------------------ */
     public function addBank()
-    {		
+    {
+        $inArr['is_default'] = input('is_default',0,'trim');
 		$inArr['bank_name'] = input('bank_name','','trim');
 		$inArr['bank_code'] = input('bank_code','','trim');
 		$inArr['bank_cardholder'] = input('bank_cardholder','','trim');
@@ -71,6 +72,9 @@ class Withdraw extends ApiController
      	$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['type'] = 'bank';
 		$inArr['add_time'] = time();
+        if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
+            $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
+        }
 		$res = $this->Model->save($inArr);
 		if ($res < 1){
 			return $this->error('添加银行卡失败.');
@@ -125,6 +129,7 @@ class Withdraw extends ApiController
     //-- 添加支付宝
     /*------------------------------------------------------ */
     public function addAlipay(){
+       $inArr['is_default'] = input('is_default',0,'trim');
        $inArr['alipay_user_name'] = input('alipay_user_name','','trim');
 	   $inArr['alipay_account'] = input('alipay_account','','trim');
 	   if (empty($inArr['alipay_user_name'])){
@@ -136,6 +141,9 @@ class Withdraw extends ApiController
 		$inArr['user_id'] = $this->userInfo['user_id'];
 		$inArr['type'] = 'alipay';
 		$inArr['add_time'] = time();
+        if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
+            $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
+        }
 		$res = $this->Model->save($inArr);
 		if ($res < 1){
 			return $this->error('添加支付宝失败.');
@@ -147,23 +155,34 @@ class Withdraw extends ApiController
     //-- 微信
     /*------------------------------------------------------ */
     public function addWeixin(){
-        $inArr['alipay_user_name'] = input('alipay_user_name','','trim');
-        $inArr['alipay_account'] = input('alipay_account','','trim');
-        if (empty($inArr['alipay_user_name'])){
-            return $this->error('请输入账户姓名.');
+        $inArr['is_default'] = input('is_default',0,'trim');
+        $qrcodefile = input('qrcodefile','','trim');
+        if (empty($qrcodefile)){
+            return $this->error('请上传收款二给码.');
         }
-        if (empty($inArr['alipay_account'])){
-            return $this->error('请输入支付宝账号.');
+        /////处理图片/////
+        $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
+        makeDir($file_path);
+        $extend = getFileExtend($qrcodefile);
+        if ($extend == false){
+            return $this->error('未能识别图片，请尝试更换图片上传.');
         }
+        $file_name = $file_path.random_str(12).'.'.$extend[1];
+        file_put_contents($file_name,$extend[0]);
+        $inArr['ecode_url'] = trim($file_name,'.');
+        /////处理图片/////
         $inArr['user_id'] = $this->userInfo['user_id'];
-        $inArr['type'] = 'alipay';
+        $inArr['type'] = 'wxpay';
         $inArr['add_time'] = time();
+        if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
+            $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
+        }
         $res = $this->Model->save($inArr);
         if ($res < 1){
-            return $this->error('添加支付宝失败.');
+            return $this->error('添加微信失败.');
         }
         $this->Model->cleanMemcache($this->userInfo['user_id']);
-        return $this->success('添加支付宝成功.');
+        return $this->success('添加微信成功.');
     }
 	/*------------------------------------------------------ */
     //-- 验证是否满足提现，并返回手续费
@@ -269,9 +288,9 @@ class Withdraw extends ApiController
 //             return $this->error('支付密码错误，请核实.');
 //        }
 		$inArr['withdraw_fee'] = $this->checkWithdraw($inArr['amount'],true);
-        $inArr['account_type'] = input('account_type','','trim');
+//        $inArr['account_type'] = input('account_type','','trim');
 		$inArr['account_id'] = input('account_id') * 1;
-		if ($inArr['account_type'] == 'bank' && $inArr['account_id'] < 1){
+		if ($inArr['account_id'] < 1){
 			return $this->error('请选择提现银行卡.');
 		}
 		$WithdrawModel = new WithdrawModel();
@@ -308,25 +327,26 @@ class Withdraw extends ApiController
 
 
         //微信、支付宝，处理图片
-        if (in_array($inArr['account_type'],['wxpay','alipay'])){
-            $qrcodefile = input('qrcodefile');
-            if (empty($qrcodefile)){
-                return $this->error('请上传收款二给码.');
-            }
-            $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
-            makeDir($file_path);
-            $extend = getFileExtend($qrcodefile);
-            if ($extend == false){
-                return $this->error('未能识别图片，请尝试更换图片上传.');
-            }
-            $file_name = $file_path.random_str(12).'.'.$extend[1];
-            file_put_contents($file_name,$extend[0]);
-            $inArr['qrcode_file'] = trim($file_name,'.');
-        }else{//银行卡提现
+//        if (in_array($inArr['account_type'],['wxpay','alipay'])){
+//            $qrcodefile = input('qrcodefile');
+//            if (empty($qrcodefile)){
+//                return $this->error('请上传收款二给码.');
+//            }
+//            $file_path = config('config._upload_').'withdraw/'.date('Ymd').'/';
+//            makeDir($file_path);
+//            $extend = getFileExtend($qrcodefile);
+//            if ($extend == false){
+//                return $this->error('未能识别图片，请尝试更换图片上传.');
+//            }
+//            $file_name = $file_path.random_str(12).'.'.$extend[1];
+//            file_put_contents($file_name,$extend[0]);
+//            $inArr['qrcode_file'] = trim($file_name,'.');
+//        }else{//银行卡提现
             $account_info = $this->Model->where('account_id',$inArr['account_id'])->find()->toArray();
             $inArr['account_type'] = $account_info['type'];
+            if($inArr['account_type'] == 'weixin')$inArr['account_type'] = 'wxpay';
             $inArr['account_info'] = json_encode($account_info,JSON_UNESCAPED_UNICODE);
-        }
+//        }
 
         $AccountModel = new AccountModel();
 		Db::startTrans();//启动事务
@@ -363,4 +383,56 @@ class Withdraw extends ApiController
 
 		return $this->success('提现申请成功.');
 	}
+    //*------------------------------------------------------ */
+    //-- 获取红包
+    /*------------------------------------------------------ */
+    public function getwithdraw()
+    {
+        $type = input('type', 'all', 'trim');
+        $limit = 100;
+        $WithdrawModel = new WithdrawModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        if(in_array($type,['applying','all'])){
+            $where_unused[] = ['status', '=', '0'];
+            $rows_unused = $WithdrawModel->where($where)->where($where_unused)->order('log_id DESC')->limit($limit)->select()->toArray();
+            $return['applying_num'] = $WithdrawModel->where($where)->where($where_unused)->count();
+            foreach ($rows_unused as $key => $row) {
+                $row['add__time'] = date('m-d H:i',$row['add_time']);
+                $row['account_info'] = json_decode($row['account_info'],true);
+                $return['list_applying'][] = $row;
+            }
+        }
+        if(in_array($type,['passed','all'])){
+            $where_used[] = ['status', '=', '9'];
+            $rows_used = $WithdrawModel->where($where)->where($where_used)->order('log_id DESC')->limit($limit)->select()->toArray();
+            $return['passed_num'] = $WithdrawModel->where($where)->where($where_used)->count();
+            foreach ($rows_used as $key => $row) {
+                $row['add__time'] = date('m-d H:i',$row['add_time']);
+                $row['account_info'] = json_decode($row['account_info'],true);
+                $return['list_passed'][] = $row;
+            }
+        }
+        if(in_array($type,['rejected','all'])){
+            $where_expired[] = ['status', '=', '1'];
+            $rows_expired = $WithdrawModel->where($where)->where($where_expired)->order('log_id DESC')->limit($limit)->select()->toArray();
+            $return['rejected_num'] = $WithdrawModel->where($where)->where($where_expired)->count();
+            foreach ($rows_expired as $key => $row) {
+                $row['add__time'] = date('m-d H:i',$row['add_time']);
+                $row['account_info'] = json_decode($row['account_info'],true);
+                $return['list_rejected'][] = $row;
+            }
+        }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户总额
+    /*------------------------------------------------------ */
+    public function getWithdrawNum()
+    {
+        $WithdrawModel = new WithdrawModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['status', '=', '0'];
+        $return['num_all'] = $WithdrawModel->where($where)->sum('amount');
+        return $this->ajaxReturn($return);
+    }
 }

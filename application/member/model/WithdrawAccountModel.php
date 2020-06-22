@@ -25,7 +25,7 @@ class WithdrawAccountModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 获取列表
     /*------------------------------------------------------ */
-    public function getRows($uid = 0,$is_del = 0)
+    public function getRows($uid = 0,$is_del = 0,$order_default=1)
     {
         if ($uid < 1){
             $uid = $this->userInfo['user_id'];
@@ -36,7 +36,12 @@ class WithdrawAccountModel extends BaseModel
         if (empty($list) == false) return $list;
 		$where[] = ['user_id','=',$uid];
 		$where[] = ['is_del','=',$is_del];
-        $list = $this->where($where)->order('account_id DESC')->select()->toArray();
+		if($order_default){
+            $order = "is_default DESC,account_id DESC";
+        }else{
+            $order = "account_id DESC";
+        }
+        $list = $this->where($where)->order($order)->select()->toArray();
         Cache::set($mkey, $list, 300);
         return $list;
     }

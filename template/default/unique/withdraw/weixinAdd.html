@@ -13,7 +13,7 @@
         <div class="color_9"><a href="{:url('alipayAdd')}">支付宝</a></div>
         <div class="color_9 active"><a href="javascript:;">微信</a></div>
     </div>
-    <div class="cells">
+    <div class="cells" id="file_box">
       <div class="uploading">
           <div class="title fs32 fw_b color_3">上传收款二维码</div>
           <div class="uploadBox" >
@@ -30,8 +30,8 @@
             <div class="cell_bd">
                 <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
             <div class="cell_ft">
-                <input type="checkbox" name="is_default" id="isis_default" class="chooseBtn" />
-                <label for="isis_default" class="choose-label"></label>
+                <input type="checkbox" name="is_default" id="is_default" value="1" class="chooseBtn" />
+                <label for="is_default" class="choose-label"></label>
             </div>
         </div>
     </div>
@@ -45,29 +45,45 @@
 
 {block name="footer"}
 <script>
+var fd = new FormData();
 $(function(){
-  
-	
 	$('.postBtn').click(function (){
-		var arr = $('#alipay_from').toJson();
-		if (arr.alipay_user_name == ''){
-			_alert('请输入账户姓名.');
-			return false;	
+		if (fd.get('qrcodefile') == null){
+			_alert('请选择图片.');
+			return false;
 		}
-		if (arr.alipay_account == ''){
-			_alert('请输入支付宝账号.');
-			return false;	
-		}
-	
-		jq_ajax('{:url("unique/api.withdraw/addWeixin")}',arr,function(res){
-			if (res.code == 0){
-				_alert(res.msg);
-				return false;
-			}
-            window.location.href = '{:url("unique/withdraw/index")}';
-		});	
-		
+        var is_default = $('input[name="is_default"]:checked').val();
+        fd.delete("is_default");
+        fd.append("is_default",is_default);
+        $.ajax({
+            url: '{:url("unique/api.withdraw/addWeixin")}',
+            type: 'post',
+            processData: false,
+            contentType: false,
+            data: fd,
+            success: function (res) {
+                isPost = false;
+                _alert(res.msg);
+                if (res.code == 0){
+                    return false;
+                }
+                window.location.href = '{:url("unique/withdraw/index")}';
+            }
+        })
 	})
 })
+</script>
+<script src="__STATIC__/mobile/default/js/uploadsimage.js?v=1"></script>
+<script>
+    //处理点击改变的调用函数-做IOS兼容
+    $(_listenSelector).click(function(){
+        var that = $(this);
+        _uplocalfunction=function(base64Img){
+            fd.append("qrcodefile", base64Img);
+            $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" class="closeImg" data-type="one"></div>');
+            $('#upload_qrcode_box').css('visibility','hidden');
+            //$(_listenSelector).hide();
+        }
+    })
 </script>
 {/block}

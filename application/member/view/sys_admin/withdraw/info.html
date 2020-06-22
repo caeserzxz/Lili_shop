@@ -50,12 +50,19 @@
                         <label class="col-sm-2 control-label">提现方式：</label>
                         <div class="col-sm-8 m-t-mc">
                             {if condition="$row['account_type']=='bank'"}
-                            	{$row.account.bank_name}：{$row.account.bank_location_outlet} - {$row.account.bank_branch_name}<br>{$row.account.bank_cardholder} - {$row.account.bank_card_number} - {$row.account.bank_cardholder_phone}
-                            {else}
-                                {$withdraw_account_type[$row['account_type']]}
-                            {/if}
-                            {if condition="$row['account_type']!='bank'"}
-                                <a href="{$row['qrcode_file']}" target="_blank"><img src="{$row['qrcode_file']}" style="width: 100%;"></a>
+                            {$withdraw_account_type[$row['account_type']]}
+                            银行名称：{$row.account.bank_name}<br>
+                            持卡人：{$row.account.bank_cardholder}<br>
+                            持卡人电话：{$row.account.bank_card_number}<br>
+                            网点所在地：{$row.account.bank_location_outlet}<br>
+                            支行名称：{$row.account.bank_branch_name}
+                            {elseif condition="$row['account_type']=='alipay'"/}
+                            {$withdraw_account_type[$row['account_type']]}<br/>
+                            账户姓名：{$row.account.alipay_user_name}<br/>
+                            支付宝账号：{$row.account.alipay_account}
+                            {else/}
+                            {$withdraw_account_type[$row['account_type']]}<br/>
+                            <a href="{$row.account.ecode_url}" target="_blank"><img src="{$row.account.ecode_url}" style="width: 100%;"></a>
                             {/if}
                         </div>
                     </div>

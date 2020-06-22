@@ -74,7 +74,7 @@ a {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
 
 .page-hd {
@@ -85,7 +85,7 @@ a {
 .page-bd {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   background: #f5f5f5;
@@ -99,7 +99,7 @@ a {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   height: 0.52rem;
 }
 
@@ -107,7 +107,7 @@ a {
   text-align: center;
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   font-size: 0.213333rem;
   white-space: nowrap;
   overflow: hidden;
@@ -168,9 +168,9 @@ a {
   height: 0.653333rem;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-justify-content: space-around;
-          justify-content: space-around;
+  justify-content: space-around;
   line-height: 1em;
   position: fixed;
   left: 0;
@@ -199,14 +199,14 @@ a {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   font-weight: 400;
 }
 
@@ -267,11 +267,11 @@ a {
 }
 
 .color_r {
-  color: #F65236;
+  color: #fd0035;
 }
 
 .BGcolor_r {
-  background-color: #F65236;
+  background-color: #fd0035;
 }
 
 .BGcolor_3 {
@@ -284,11 +284,11 @@ a {
 
 .tag_active {
   border: 1px solid #f65236 !important;
-  color: #F65236;
+  color: #fd0035;
 }
 
 .rank_active {
-  color: #F65236;
+  color: #fd0035;
   font-weight: bold;
 }
 
@@ -446,9 +446,9 @@ input::-webkit-input-placeholder {
   color: #eeeeee;
   height: 200%;
   -webkit-transform-origin: left top;
-          transform-origin: left top;
+  transform-origin: left top;
   -webkit-transform: scale(0.5);
-          transform: scale(0.5);
+  transform: scale(0.5);
 }
 
 .bor_b::before {
@@ -460,9 +460,9 @@ input::-webkit-input-placeholder {
   border-bottom: 1px solid #eeeeee;
   color: #eeeeee;
   -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
+  transform-origin: 0 0;
   -webkit-transform: scale(0.5);
-          transform: scale(0.5);
+  transform: scale(0.5);
 }
 
 .bor_r,
@@ -577,7 +577,7 @@ input::-webkit-input-placeholder {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   position: relative;
   background-color: #fff;
   padding: 0 0.2rem;
@@ -586,7 +586,7 @@ input::-webkit-input-placeholder {
 .cells .cell .cell_bd {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
 }
 
 .cells .cell .cell_ft {
@@ -595,7 +595,7 @@ input::-webkit-input-placeholder {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   text-align: right;
 }
 
@@ -616,9 +616,9 @@ input::-webkit-input-placeholder {
   border-bottom: 1px solid #e5e5e5;
   color: #e5e5e5;
   -webkit-transform-origin: 0 0;
-          transform-origin: 0 0;
+  transform-origin: 0 0;
   -webkit-transform: scaleY(0.5);
-          transform: scaleY(0.5);
+  transform: scaleY(0.5);
   left: 0.2rem;
   z-index: 2;
 }
@@ -672,7 +672,7 @@ label {
   touch-action: none;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 
 label .check {
@@ -746,7 +746,7 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   width: 80vw;
   margin: 0 10vw;
   height: 2rem;
@@ -760,10 +760,10 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   text-align: center;
   padding: 0 0.533333rem;
   height: 1.413333rem;
@@ -776,10 +776,10 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
 }
 
 .layout .layoutBox .buttonBox {
@@ -792,17 +792,17 @@ label .check[type=checkbox]:checked + i:after {
 .layout .layoutBox .buttonBox span {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
 
 .error .page-bd {
@@ -812,14 +812,14 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
 }
 
 .error .page-bd img {
@@ -854,7 +854,7 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   height: 0.666667rem;
   padding: 0 0.266667rem;
 }
@@ -905,10 +905,10 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   color: #f65236;
   line-height: 1.5;
   margin-right: 0.04rem;
@@ -920,7 +920,7 @@ label .check[type=checkbox]:checked + i:after {
   left: 50%;
   top: 500%;
   -webkit-transform: translate(-50%, -50%);
-          transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
   z-index: 99999;
   padding: 0.066667rem 0.2rem;
   font-size: 0.16rem;
@@ -935,6 +935,22 @@ label .check[type=checkbox]:checked + i:after {
   display: -webkit-box;
   -webkit-box-orient: vertical;
   -webkit-line-clamp: 2;
+}
+
+.mb10 {
+  margin-bottom: 0.066667rem;
+}
+
+.mb20 {
+  margin-bottom: 0.133333rem;
+}
+
+.mb30 {
+  margin-bottom: 0.2rem;
+}
+
+.mb40 {
+  margin-bottom: 0.266667rem;
 }
 
 .mt5 {
@@ -1028,6 +1044,10 @@ label .check[type=checkbox]:checked + i:after {
 .mr30 {
   margin-right: 0.2rem;
 }
+
+.box-shadow-1px {
+  box-shadow: inset 0 -0.006667rem 0.006667rem -0.006667rem #fd0035;
+}
 .alertBox {
   position: fixed;
   top: 0;
@@ -1055,7 +1075,7 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-orient: vertical;
   -webkit-box-direction: normal;
   -webkit-flex-direction: column;
-          flex-direction: column;
+  flex-direction: column;
   width: 80vw;
   margin: 0 10vw;
   height: 2rem;
@@ -1069,10 +1089,10 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   text-align: center;
   padding: 0 0.533333rem;
   height: 1.413333rem;
@@ -1085,10 +1105,10 @@ label .check[type=checkbox]:checked + i:after {
   display: flex;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   display: none;
   position: static;
 }
@@ -1103,15 +1123,15 @@ label .check[type=checkbox]:checked + i:after {
 .alertBox .alert .buttonBox span {
   -webkit-box-flex: 1;
   -webkit-flex: 1;
-          flex: 1;
+  flex: 1;
   height: 0.533333rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
-          justify-content: center;
+  justify-content: center;
   -webkit-box-align: center;
   -webkit-align-items: center;
-          align-items: center;
+  align-items: center;
 }
