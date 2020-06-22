@@ -1,0 +1,151 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.css" />
+<link rel="stylesheet" href="__STATIC__/unique/css/shop.css" />
+    <div class="page">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">喜士多便利店</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="swiperGird" style="">
+                <div class="swiper-container swiper1" id="swiper01">
+                    <div class="swiper-wrapper">
+                        {volist name="imgs_list" id='vol'}
+                        <a href="#" class="swiper-slide"><img data-src="{$vol}"
+                                class="swiper-lazy" />
+                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                        </a>
+                        {/volist}
+                    </div>
+                    <div class="swiper-pagination pagination1"></div>
+                </div>
+            </div>
+            <!-- 店铺描述 -->
+            <div class="nearShop">
+                <div class="shop-list">
+                    <div class="list-item">
+                        <img class="shop-img" src="{$info.logo}" alt="" />
+                        <div class="shop-info">
+                            <div class="shop-name fs34 fw_b col_3">{$info.business_name}</div>
+                            <div class="shop-decs fs24 color_9">{$info.info}</div>
+                            <div class="shop-label mt15">
+                                <div>
+                                    {volist name="label" id="vol"}
+                                        <span>{$vol}</span>
+                                    {/volist}
+
+                                </div>
+                                <div class="shop-enc">
+                                    <span>鼓励金:{$profits}%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- 电话 地址 -->
+            <div class="weui-cells">
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><img src="__STATIC__/unique/images/shop_icon_01.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="fs26 color_3">电话：{$info.contact_mobile}</p>
+                    </div>
+                    <div class="weui-cell__ft"><img src="__STATIC__/unique/images/shop_icon_02.png" alt=""></div>
+                </div>
+                <div class="weui-cell">
+                    <div class="weui-cell__hd"><img src="__STATIC__/unique/images/shop_icon_03.png"></div>
+                    <div class="weui-cell__bd">
+                        <p class="fs26 color_3">
+                            地址：{$info.address}</p>
+                    </div>
+                    <div class="weui-cell__ft"><img src="__STATIC__/unique/images/shop_icon_04.png" alt=""></div>
+                </div>
+            </div>
+
+            <!-- 地图位置 -->
+            <div class="warp-map">
+                <img class="map-img" src="{$info.map_imgs}" alt="">
+                <div class="redenv">
+                    <img class="icon-imgred" src="__STATIC__/unique/images/hongbao.png" alt="">
+                    <div class="text">
+                        <p>点击</p>
+                        <p>领取</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部按钮  去买单 -->
+            <div class="botton-fixed">
+                <a href="">去买单</a>
+            </div>
+        </div>
+
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
+    <script>
+        $(function () {
+            var longitude = {$info.longitude};
+            var latitude = {$info.latitude};
+            var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
+            var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
+        });
+
+        function createSwiper(index, _direction, time, type) {
+            var swiper = new Swiper(".swiper" + index, {
+                pagination: {
+                    el: ".pagination" + index,
+                    type: type,
+                },
+                lazy: {
+                    loadPrevNext: true,
+                },
+                direction: _direction,
+                preloadImages: false,
+                paginationClickable: true,
+                loop: true,
+                autoplay: {
+                    delay: time,
+                    disableOnInteraction: false,
+                },
+                onSlideChangeEnd: function (swiper) {
+                    swiper.update(); //swiper更新
+                },
+            });
+            return swiper;
+        }
+
+        // function get_static_map(){
+        //     $.ajax({
+        //         'url':'',
+        //         'type':'post',
+        //         'data':data,
+        //         'dataType':'json',
+        //         'success':function(response){
+        //
+        //         }
+        //     });
+        // }
+
+    </script>
+</body>
+
+</html>
+{/block}

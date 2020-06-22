@@ -148,7 +148,7 @@ class Store extends AdminController
         if(empty($data['imgs_bum']['path'])==false){
             $data['imgs'] =  implode(',',$data['imgs_bum']['path']);
         }
-
+        $data['map_imgs']=$this->get_static_map($data['longitude'],$data['latitude']);
         return $data;
     }
     /*------------------------------------------------------ */
@@ -178,6 +178,7 @@ class Store extends AdminController
         if (empty($data['category_id'])){
             return $this->error('请选择行业.');
         }
+
         $data['merger_name'] = $this->getRegion($data['province'],$data['city'],$data['district']);
         $data['live_views']   = implode(',',$data['live_views_bum']['path']);
         $data['license'] = implode(',',$data['license_bum']['path']);
@@ -191,6 +192,8 @@ class Store extends AdminController
         $count = $this->Model->where($where)->count('business_id');
         if ($count > 0) return $this->error('操作失败:已存在供应商名称，不允许重复添加！');
         $data['update_time'] = time();
+        #生成静态地图
+        $data['map_imgs']=$this->get_static_map($data['longitude'],$data['latitude']);
 
         $logInfo = '修改商家信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
         $this->_log($data['business_id'], $logInfo );
@@ -316,7 +319,6 @@ class Store extends AdminController
         $longitude = 116.405289;$latitude = 39.904987;
         if(!empty($key)){
             $url = "https://apis.map.qq.com/ws/geocoder/v1/?address=".$province.$city.$district.$input['address']."&key=".$key."&output=json&region=".$city."&sig=".$sig;
-
             if ($result=file_get_contents($url)) {
                 $result = json_decode($result,ture);
                 $longitude = $result["result"]["location"]['lng'];
@@ -331,5 +333,27 @@ class Store extends AdminController
         $this->ajaxReturn($data);
     }
 
+    /*------------------------------------------------------ */
+    //-- 静态图获取
+    /*------------------------------------------------------ */
+    public function get_static_map($longitude,$latitude){
+        $arr = [
+            'key'=>settings('tx_key'),
+            'center'=>$latitude.','.$longitude,
+            'zoom'=>16,
+            'markers'=>'color:red|label:A|'.$latitude.','.$longitude,
+            'size'=>'500*400',
+        ];
+
+        #排序
+        ksort($arr);
+        $param =http_build_query($arr);
+        $sig = md5("/ws/staticmap/v2/?".$param.settings('secret_key'));
+        #组装url
+        $url = "https://apis.map.qq.com/ws/staticmap/v2/?".$param."&sig=".$sig;
+        $result=file_get_contents($url);
+        return $url;
+
+    }
 
 }

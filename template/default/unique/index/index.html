@@ -104,7 +104,7 @@
                 <div class="shop-list" id="tab3">
                     <script type="text/html" id="listTpl3">
                         {{each list as item index}}
-                            <div class="list-item">
+                            <div class="list-item" onclick="go_detail({{item.business_id}});">
                                 <img class="shop-img" src="{{item.logo}}" alt="" />
                                 <div class="shop-info">
                                     <div class="shop-name fs28 fw_b col_3">{{item.business_name}}</div>
@@ -323,6 +323,10 @@
         //分类搜索
         function go_search(cid){
             window.location.href = '{:url("unique/index/search_result")}?cid='+cid;
+        }
+        //店铺详情
+        function go_detail(business_id){
+            window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
         }
     </script>
 </body>

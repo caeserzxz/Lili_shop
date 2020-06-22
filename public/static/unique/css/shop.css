@@ -1,3 +1,7 @@
+.page-bd {
+  padding-bottom: 0.733333rem;
+}
+
 #swiper01 .swiper-slide img {
   width: 100%;
   height: 1.866667rem;
@@ -133,6 +137,68 @@
   margin-top: 0.066667rem;
   width: 0.513333rem;
   height: 0.433333rem;
+}
+
+.warp-map {
+  position: relative;
+  margin-top: 0.133333rem;
+}
+
+.warp-map .map-img {
+  width: 100%;
+  height: auto;
+}
+
+.warp-map .redenv {
+  position: absolute;
+  right: 0.133333rem;
+  bottom: 0.266667rem;
+  width: 0.76rem;
+  height: 0.666667rem;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-pack: center;
+  -webkit-justify-content: center;
+          justify-content: center;
+}
+
+.warp-map .redenv .icon-imgred {
+  width: 100%;
+  height: 100%;
+}
+
+.warp-map .redenv .text {
+  position: absolute;
+  bottom: 0.066667rem;
+  margin-left: -0.026667rem;
+  color: #fff;
+  line-height: 0;
+}
+
+.warp-map .redenv .text > p {
+  line-height: 1;
+}
+
+.botton-fixed {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  padding: 0.066667rem 0.2rem;
+  background-color: #fff;
+}
+
+.botton-fixed > a {
+  width: 100%;
+  height: 0.533333rem;
+  line-height: 0.533333rem;
+  text-align: center;
+  font-size: 0.2rem;
+  font-weight: bold;
+  color: #fff;
+  background-color: #FD0035;
+  border-radius: 0.266667rem;
 }
 
 .weui-cells {

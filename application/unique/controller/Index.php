@@ -92,5 +92,26 @@ class Index extends ClientbaseController{
         return $this->fetch('search_result');
     }
 
+    /*------------------------------------------------------ */
+    //-- 店铺详情
+    /*------------------------------------------------------ */
+    public function detail(){
+        $UserBusinessModel = new UserBusinessModel();
+        $business_id = input('business_id');
+        #店铺信息
+        $info = $UserBusinessModel->where('business_id',$business_id)->find();
+        #店铺相册处理
+        $imgs_list = explode(',',$info['imgs']);
+        #标签处理
+        $label = explode(',',$info['label']);
+        #鼓励金处理
+        $profits = unserialize(settings('profits'))[$info['profits']]['hearten'];
 
+        $this->assign('profits',$profits);
+        $this->assign('label',$label);
+        $this->assign('imgs_list',$imgs_list);
+        $this->assign('info',$info);
+        $this->assign('title', '搜索结果');
+        return $this->fetch('detail');
+    }
 }?>
