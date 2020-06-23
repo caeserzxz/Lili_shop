@@ -1,5 +1,6 @@
 <?php
 namespace app\unique\controller\api;
+use app\unique\model\PayRecordModel;
 use think\Db;
 use think\facade\Cache;
 use app\ApiController;
@@ -301,7 +302,35 @@ class Business extends ApiController
         }
 
     }
-
+    /*------------------------------------------------------ */
+    //-- 获取商家业绩
+    /*------------------------------------------------------ */
+    public function getSales()
+    {
+        $date = input('date', date('Y-m'), 'trim');
+        $date1 = strtotime($date.'-1 '." 00:00:00");
+        $date2 = strtotime(date('Y-m-t', $date1)) + 86399;
+        $return['date'] = $date;
+        $return['code'] = 1;
+        $PayRecordModel = new PayRecordModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['add_time', 'between', array($date1, $date2)];
+        //SELECT sum(amount) all_amount,FROM_UNIXTIME(add_time,"%Y.%m.%d") addtime FROM `users_pay_record` group by addtime order by addtime asc
+        $rows = $PayRecordModel->field('sum(amount) all_amount,FROM_UNIXTIME(add_time,"%Y.%m.%d") addtime')->where($where)->group('addtime')->order('addtime ASC')->select()->toArray();
+        $return['all_amount'] = 0;
+        foreach ($rows as $key => $row) {
+            $return['all_amount'] += $row['all_amount'];
+            $return['list'][] = $row;
+        }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取商家信息
+    /*------------------------------------------------------ */
+    public function getBusinessInfo()
+    {
+        return $this->ajaxReturn($this->Model->getInfo($this->userInfo['user_id']));
+    }
     /*------------------------------------------------------ */
     //-- 添加红包
     /*------------------------------------------------------ */
@@ -317,7 +346,6 @@ class Business extends ApiController
         if(empty($data['gift_num'])) return $this->ajaxReturn(['code' => 0,'msg' => '清填写红包数量']);
         if(empty($data['start_time'])) return $this->ajaxReturn(['code' => 0,'msg' => '清选择使用开始时间']);
         if(empty($data['end_time'])) return $this->ajaxReturn(['code' => 0,'msg' => '清选择使用结束时间']);
-
         $start_time = strtotime($data['start_time']);
         $end_time  = strtotime($data['end_time'].' 23:59:59');
         if($start_time>=$end_time)return $this->ajaxReturn(['code' => 0,'msg' => '开始时间不能早于结束时间']);

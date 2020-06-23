@@ -20,9 +20,9 @@ class UserBusinessModel extends BaseModel
     }
 
 
-    function getInfo($business_id = 0,$field = '*'){
-        if(empty($business_id))return false;
-        $res = $this->get($business_id);
+    function getInfo($id = 0,$id_type = 'user_id',$field = '*'){
+        if(empty($id))return false;
+        $res = $this->where($id_type,$id)->find();
         if($field == '*'){
             return $res;
         }else{

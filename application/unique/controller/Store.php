@@ -101,6 +101,14 @@ class Store extends ClientbaseController{
         $this->assign('info',$info);
         return $this->fetch('business_set');
     }
+    /*------------------------------------------------------ */
+    //-- 商家业绩
+    /*------------------------------------------------------ */
+    public function sales(){
+        $this->assign('title', '商家业绩');
+        $this->assign('date', date('Y-m'));
+        return $this->fetch();
+    }
 
     /*------------------------------------------------------ */
     //-- 添加红包
