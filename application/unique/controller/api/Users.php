@@ -174,7 +174,7 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     //-- 获取会员帐户总额
     /*------------------------------------------------------ */
-    public function getpayRecord()
+    public function getPayRecord()
     {
         $date1 = input('date1', date('Y-m-d',strtotime("-1 month")), 'trim');
         $date2 = input('date2', date('Y-m-d'), 'trim');
@@ -189,11 +189,11 @@ class Users extends ApiController
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
 
         $where[] = ['add_time', 'between', array($date1, $date2)];
-        $rows = $PayRecordModel->where($where)->order('add_time DESC')->select();
+        $rows = $PayRecordModel->where($where)->order('add_time DESC')->select()->toarray();
         $return['expend'] = 0;
         foreach ($rows as $key => $row) {
             $return['expend'] += $row['amount'];
-            $row['business_name'] = $UserBusinessModel->getInfo($row['business_id'],'business_name');
+            $row['business_name'] = $UserBusinessModel->getInfo($row['business_id'],'business_id','business_name');
             $row['_time'] = timeTran($row['add_time']);
             $return['list'][] = $row;
         }

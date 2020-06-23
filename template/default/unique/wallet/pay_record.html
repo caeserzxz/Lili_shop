@@ -82,7 +82,7 @@
         arr.date1 = $('#date1').val();
         arr.date2 = $('#date2').val();
         arr.type = '{$type|default=0}';
-        jq_ajax('{:url("api.Users/getpayRecord")}',arr,function(res){
+        jq_ajax('{:url("api.Users/getPayRecord")}',arr,function(res){
             if (res.code == 0){
                 _alert(res.msg);
                 return false;
