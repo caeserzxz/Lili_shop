@@ -105,4 +105,17 @@ class Center  extends ClientbaseController{
         $this->assign('title', '添加银行卡');
         return $this->fetch('add_bank_card');
     }
+    /*------------------------------------------------------ */
+    //-- 我的分享二维码
+    /*------------------------------------------------------ */
+    public function myCodeNew(){
+        $DividendShareByRole = settings('DividendShareByRole');
+        if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
+            return $this->error('请升级身份后再操作.');
+        }
+        $url = url('',['share_token'=>$this->userInfo['token']],true,true);
+        $this->assign('title', '我的二维码');
+        $this->assign('url', $url);
+        return $this->fetch();
+    }
 }?>

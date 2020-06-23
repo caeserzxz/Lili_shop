@@ -1,16 +1,16 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/my.css"/>
-<link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/orderDetails.css"/>
 {/block}
-{block name='pageType'}myGroup salesRturn{/block}
+{block name='pageType'}afterOrder{/block}
 {block name="main" }
 
 <div class="page-bd">
     <div class="tab fs32 ">
         <div class="color_9 orderActive" data-type="all">全部</div>
-        <div class="color_9" data-type="fail">审核失败</div>
         <div class="color_9" data-type="success">审核成功</div>
+        <div class="color_9" data-type="fail">审核失败</div>
     </div>
     <!-- 页面内容-->
     <div class="tabBox">
@@ -18,13 +18,12 @@
             <div class="allBox"></div>
         </div>
         <div class="tabBlock box">
-            <div  class="failBox"></div>
-        </div>
-        <div class="tabBlock box">
             <div class="successBox"></div>
         </div>
+        <div class="tabBlock box">
+            <div  class="failBox"></div>
+        </div>
     </div>
-
 </div>
 
 {/block}
@@ -76,7 +75,7 @@
 
         //请求列表数据
         function getList(isagain) {
-            page = nowPage[_type]; console.log(page);
+            page = nowPage[_type];
             if (typeof(page) == 'undefined') page = 1;
             if (isLoadend[_type] == true) return false;
             if (isagain == true) {
@@ -102,12 +101,11 @@
                     }
                     nowPage[_type] = page + 1;
                     $('.' + _type + 'Box').find('.get_list_tip').remove();
-                    if (res.list) {
+                    if (res.list.length > 0) {
                         $('.' + _type + 'Box').append(template('tpl', res));
                     } else {
                         $('.' + _type + 'Box').html(template('emptyTpl'));
                     }
-
                     if (res.page_count == page) {
                         $('.' + _type + 'Box').append('<div class="get_list_tip">---我也有底线的---</div>');
                         isLoadend[_type] = true;

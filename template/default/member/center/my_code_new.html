@@ -1,0 +1,54 @@
+{extend name="layouts@base" /}
+{block name="head"}
+    <link rel="stylesheet" href="__STATIC__/unique/css/inviteFriends.css" />
+{/block}
+{block name='pageType'}invite-friends{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="invite-friends-img">
+        <img src="" id="qrcode" alt="">
+    </div>
+    <!-- button -->
+    <div class="footer-btn fs26">
+        <div class="copy-link">
+            <img src="__STATIC__/unique/images/link_icon.jpg" alt="">
+            <span onclick="copy()">复制链接</span>
+            <div style="display: none;" id="inviteCode">{$url}</div>
+        </div>
+        <div class="share-wx hide">
+            <img src="__STATIC__/unique/images/share01.png" alt="">
+            <span>分享到微信</span>
+        </div>
+    </div>
+</div>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    function getCodeImg(){
+        jq_ajax('{:_url("/member/api.users/getMyCode")}','',function (res) {
+            var img = res.substring(1);
+            $('#qrcode').attr('src',img);
+        });
+    }
+    getCodeImg();
+    function copy() {
+        var Url2 = document.getElementById("inviteCode").innerText;
+        console.log(Url2)
+        var oInput = document.createElement("input");
+        oInput.value = Url2;
+        document.body.appendChild(oInput);
+        oInput.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        oInput.className = "oInput";
+        oInput.style.display = "none";
+        _alert("复制成功");
+    }
+
+</script>
+</body>
+</html>
+{/block}
