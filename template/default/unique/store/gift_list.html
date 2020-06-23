@@ -1,0 +1,96 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/redenvMarket.css" />
+
+        <div class="page-bd">
+            <div class="wrap-list" id="tab1">
+                <script type="text/html" id="listTpl1">
+                    {{each list as item index}}
+                        <div class="list-item">
+                            <div class="info">
+                                <p class="fs28 fw_b color_3">{{item.gift_name}}</p>
+                                <p class="fs22 color_9">有效时间:{{item.valid}}</p>
+                                <p class="fs22 color_9">发放时间:{{item.add_time}}</p>
+                                <p class="fs22 color_9">发放数量:{{item.total_num}}个</p>
+                                <p class="fs22 color_9">红包类型：{{item.type_str}}</p>
+                                <p class="fs22 color_9">红包状态：{{item.status_str}}</p>
+                            </div>
+                            <div class="money num">
+                                <p class="color_r">
+                                    <span class="fs24 fw_b">¥</span>
+                                    <span class="fs42 fw_b">{{item.gift_money}}</span>
+                                </p>
+                                <a href="{:url('unique/store/gift_detail')}?id={{item.id}}" class="fs22 color_9">查看详情</a>
+                            </div>
+                        </div>
+                    {{/each}}
+                </script>
+            </div>
+
+            <div class="bottom">
+                <div class="btn">添加红包</div>
+            </div>
+        </div>
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        var page = 0;
+        $(function(){
+            get_gift_list();
+            // $('#tab1').infinite().on("infinite", function() {
+            //     console.log(11)
+            //     get_gift_list();
+            // });
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            $('.page-bd').infinite().on("infinite", function() {
+
+                // 请求数据
+                get_gift_list();
+                // setTimeout(function() {
+                //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
+                //     loading = false;
+                // }, 1500);   //模拟延迟
+            })
+        })
+
+        $('.btn').on('click',function(){
+            window.location.href = "{:url('unique/store/add_gift')}";
+        })
+        var loading = false;
+        function get_gift_list(){
+            if(loading) return;
+            loading = true;
+            $.ajax({
+                url:'{:url("unique/api.business/get_gift_list")}',// 跳转到 action
+                data:{'page':page},
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    console.log(res)
+                    if (res.list.length > 0) {
+                        $('#tab1').prepend(template('listTpl1',res));
+                        page += 1;
+                        loading = false;
+                    }else{
+                        $.toast('加载完成',"text");
+                    }
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        }
+    </script>
+</body>
+
+</html>
+{/block}

@@ -1,0 +1,286 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/addRedenv.css" />
+<style>
+    .modal-proxy {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.4);
+        z-index: 3;
+    }
+
+    .modal-proxy .modal-proxy-main {
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        padding: 0.333333rem 0;
+        width: 100%;
+        height: auto;
+        background-color: #ffffff;
+        border-radius: 0.133333rem 0.133333rem 0 0;
+    }
+
+   .modal-proxy .modal-proxy-main .title {
+        text-align: center;
+    }
+
+    .modal-proxy .modal-proxy-main .footer-btn {
+        margin: 0.533333rem 0.2rem 0;
+        height: 0.533333rem;
+        text-align: center;
+        line-height: 0.533333rem;
+        font-size: 0.213333rem;
+        color: #ffffff;
+        background-color: #fd0035;
+        border-radius: 0.266667rem;
+    }
+
+</style>
+    <div class="page my-business">
+        <div class="page-hd"></div>
+        <div class="header bor-1px-b">
+            <div class="header-left">
+                <a href="javascript:history.go(-1)" class="left-arrow"></a>
+            </div>
+            <div class="header-title">添加红包</div>
+            <div class="header-right">
+                <a href=''></a>
+            </div>
+    </div>
+        <div class="page-bd">
+            <div class="main">
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="fs28 color_3 fw_b">红包名称</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" name="gift_name" value="{$info.gift_name}" id="gift_name" placeholder="请输入红包名称">
+                        </div>
+                    </div>
+                </div>
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="fs28 color_3 fw_b">红包类型</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" class="showmodal"  placeholder="请选择红包类型" readonly>
+                        </div>
+                        <!--<div class="cell_ft arrowright"></div>-->
+                    </div>
+                </div>
+                <div class="cells">
+
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <!--<span class="redenvType">随</span>-->
+                            <span class="fs28 color_3 fw_b">红包金额</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" name="gift_money" value="{$info.gift_money}" id="gift_money" placeholder="请输入红包金额">
+                        </div>
+                        <div class="cell_ft fs28 fw_b">元</div>
+                    </div>
+                </div>
+
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <span class="fs28 color_3 fw_b">红包数量</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" name="gift_num" value="{$info.gift_num}" id="gift_num" placeholder="请输入红包数量">
+                        </div>
+                    </div>
+                </div>
+                <div class="cells">
+
+                    <div class="cell">
+                        <div class="cell_hd label">
+                            <!--<span class="redenvType">随</span>-->
+                            <span class="fs28 color_3 fw_b">满减门槛金额</span>
+                        </div>
+                        <div class="cell_bd">
+                            <input type="text" name="threshold" value="{$info.threshold}" id="threshold" placeholder="请输入满减门槛金额">
+                        </div>
+                        <div class="cell_ft fs28 fw_b">元</div>
+                    </div>
+                    <div class="text">
+                        <span class="fs24 color_9">消费达到门槛金额才能使用红包,不设置则无门槛</span>
+                    </div>
+                </div>
+                <div class="cells">
+                    <div class="cell cell-date">
+                        <div class="cell_hd">
+                            <span class="fs28 color_3 fw_b">使用时间</span>
+                        </div>
+                        <div class="cell_bd">
+                            <div class="date">
+                                <span class="datetimer-1">
+                                    <input class="fs24" type="text" name="start_time" value="" data-toggle='date' id='date1' />
+                                </span>
+                                <span>-</span>
+                                <span class="datetimer-1">
+                                    <input class="fs24" type="text" name="end_time" value="" data-toggle='date' id='date2' />
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+
+                <div class="text">
+                    <span class="fs24 color_9">时间默认是到23:59:59</span>
+                </div>
+            </div>
+
+            <div class="tip">
+                提示:红包活动<span class="color_r">只能同时进行一个</span>，请停用其他红包或红包领取
+                完毕后再添加
+            </div>
+
+            <div class="bottom">
+                <div class="btn">确认添加</div>
+            </div>
+
+            <!-- 代理弹窗 -->
+            <div class="modal-proxy">
+                <div class="modal-proxy-main">
+                    <div class="title fs30 fw_b">红包类型</div>
+                    <div class="wrap-list cells">
+                        <label class="cell">
+                            <div class="cell_bd">
+                                <span class="fs30 fw_b color_3">随机红包</span>
+                            </div>
+                            <div class="cell_ft">
+                                <div class="iconBox">
+                                    <input type="radio" class="check" name="gift_type" value="1" checked data-text="随机红包">
+                                    <i class="icon_checked"></i>
+                                </div>
+                            </div>
+                        </label>
+                        <label class="cell">
+                            <div class="cell_bd">
+                                <span class="fs30 fw_b color_3">平均红包</span>
+                            </div>
+                            <div class="cell_ft">
+                                <div class="iconBox">
+                                    <input type="radio" class="check" name="gift_type" value="2" data-text="平均红包">
+                                    <i class="icon_checked"></i>
+                                </div>
+                            </div>
+                        </label>
+                    </div>
+                    <div class="footer-btn">完成</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $(function () {
+        $('.showmodal').on('click', function () {
+            $('.modal-proxy').show()
+        })
+        $('.footer-btn').on('click', function () {
+            $('.modal-proxy').hide()
+            $('.modal-proxy-main input[type=radio]').each(function () {
+                if ($(this).prop('checked')) {
+                    // 执行操作逻辑
+                    var text = $('input[name="gift_type"]:checked').attr('data-text');
+                    $('.showmodal').val(text);
+                }
+            })
+        })
+    })
+    $("#date1").calendar();
+    $("#date2").calendar();
+</script>
+<script>
+    var  isPost = false;
+    $('.btn').on('click',function(){
+        var arr = new Object();
+
+        var gift_name = $('input[name=gift_name]').val();
+        var gift_type =  $('input[name="gift_type"]:checked').val();
+        var gift_money = $('#gift_money').val();
+        var gift_num = $('input[name=gift_num]').val();
+        var start_time = $('input[name=start_time]').val();
+        var end_time = $('input[name=end_time]').val();
+        var threshold = $('input[name=threshold]').val();
+
+        if(gift_name==''||gift_name==null){
+            _alert('请填写红包名称');
+            return false;
+        }
+        if(gift_type==''||gift_type==null){
+            _alert('请选择红包类型');
+            return false;
+        }
+        if(gift_money==''||gift_money==null){
+            _alert('请填写红包金额');
+            return false;
+        }else{
+            if(!(/^[0-9]+$/.test(gift_money))){
+                _alert("请填写正确的红包金额");
+                return false;
+            }
+        }
+        if(gift_num==''||gift_num==null){
+            _alert('请填写红包数量');
+            return false;
+        }else{
+            if(!(/^[0-9]+$/.test(gift_money))){
+                _alert("请填写正确的红包数量");
+                return false;
+            }
+        }
+        if(threshold!=''||threshold!=null){
+            if(!(/^\d+(\.{0,1}\d+){0,1}$/.test(threshold))){
+                _alert("请填写正确的门槛金额");
+                return false;
+            }
+        }
+
+        arr.gift_name = gift_name;
+        arr.gift_type = gift_type;
+        arr.gift_money = gift_money;
+        arr.gift_num = gift_num;
+        arr.start_time = start_time;
+        arr.end_time = end_time;
+        arr.threshold = threshold;
+
+        // if (isPost == true) return false;
+        // isPost = true;
+        $.ajax({
+            'url':'{:url("unique/api.business/add_gift")}',
+            'type':'post',
+            'data':arr,
+            'dataType':'json',
+            'success':function(res){
+                isPost = false;
+                if (res.code == 0){
+                    _alert(res.msg);
+                    return false;
+                }
+                _alert(res.msg,'{:url("unique/store/business")}');
+            }
+        });
+    })
+</script>
+</body>
+
+</html>
+{/block}

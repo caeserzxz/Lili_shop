@@ -57,19 +57,19 @@
       <div class="flex-grids">
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">我的业绩</p>
         </div>
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/mer_icon05.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">跨界奖金</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_gift();">
           <img class="icon" src="__STATIC__/unique/images/mer_icon06.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">红包营销</p>
         </div>
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/mer_icon07.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">我的货款</p>
         </div>
       </div>
 
@@ -117,7 +117,9 @@
         })
       })
     })
-
+    function go_gift(){
+        window.location.href = "{:url('unique/store/gift_list')}";
+    }
   </script>
 </body>
 

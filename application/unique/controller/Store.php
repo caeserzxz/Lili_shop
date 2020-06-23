@@ -10,6 +10,8 @@ use app\shop\model\SlideModel;
 use app\mainadmin\model\RegionModel;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
+use app\store\model\BusinessGiftModel;
+use app\unique\model\RedbagModel;
 
 class Store extends ClientbaseController{
     /*------------------------------------------------------ */
@@ -100,4 +102,41 @@ class Store extends ClientbaseController{
         return $this->fetch('business_set');
     }
 
+    /*------------------------------------------------------ */
+    //-- 添加红包
+    /*------------------------------------------------------ */
+    public function add_gift(){
+        $this->assign('title', '添加红包');
+        return $this->fetch('add_gift');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 红包列表
+    /*------------------------------------------------------ */
+    public function gift_list(){
+        $this->assign('title', '红包营销');
+        return $this->fetch('gift_list');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 红包详情
+    /*------------------------------------------------------ */
+    public function gift_detail(){
+        $BusinessGiftModel = new BusinessGiftModel();
+        $RedbagModel = new RedbagModel();
+        $id = input('id');
+        #红包信息
+        $info = $BusinessGiftModel->where('id',$id)->find();
+
+        #已领金额
+        $info['collected'] = $RedbagModel->where(['gift_id'=>$id,'status'=>1])->sum('price');
+        #已用金额
+        $info['used'] = $RedbagModel->where(['gift_id'=>$id,'status'=>1])->sum('price');
+        #未领金额
+        $info['unclaimed'] = $info['gift_money'] - $info['collected'] - $info['used'] ;
+
+        $this->assign('info',$info);
+        $this->assign('title', '红包详情');
+        return $this->fetch('gift_detail');
+    }
 }?>

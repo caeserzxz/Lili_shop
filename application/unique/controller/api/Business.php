@@ -8,7 +8,8 @@ use app\store\model\UserBusinessModel;
 use app\mainadmin\model\RegionModel;
 use app\agent\model\AgentModel;
 use app\member\model\UsersModel;
-
+use app\store\model\BusinessGiftModel;
+use app\unique\model\RedbagModel;
 /*------------------------------------------------------ */
 //-- 首页相关API
 /*------------------------------------------------------ */
@@ -73,7 +74,9 @@ class Business extends ApiController
         return $this->ajaxReturn($return);
     }
 
-
+    /*------------------------------------------------------ */
+    //-- 获取首页所需要定位
+    /*------------------------------------------------------ */
     public function index(){
         $lat = input('lat');
         $lng = input('lng');
@@ -299,6 +302,155 @@ class Business extends ApiController
 
     }
 
+    /*------------------------------------------------------ */
+    //-- 添加红包
+    /*------------------------------------------------------ */
+    public function add_gift(){
+        $this->checkLogin();//验证登陆
+        $data = input('post.');
+        $BusinessGiftModel = new BusinessGiftModel();
+        $UserBusinessModel = new UserBusinessModel();
 
+        if(empty($data['gift_name'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写红包名称']);
+        if(empty($data['gift_type'])) return $this->ajaxReturn(['code' => 0,'msg' => '请选择红包类型']);
+        if(empty($data['gift_money'])) return $this->ajaxReturn(['code' => 0,'msg' => '请填写红包金额']);
+        if(empty($data['gift_num'])) return $this->ajaxReturn(['code' => 0,'msg' => '清填写红包数量']);
+        if(empty($data['start_time'])) return $this->ajaxReturn(['code' => 0,'msg' => '清选择使用开始时间']);
+        if(empty($data['end_time'])) return $this->ajaxReturn(['code' => 0,'msg' => '清选择使用结束时间']);
+
+        $start_time = strtotime($data['start_time']);
+        $end_time  = strtotime($data['end_time'].' 23:59:59');
+        if($start_time>=$end_time)return $this->ajaxReturn(['code' => 0,'msg' => '开始时间不能早于结束时间']);
+
+        #商家信息
+        $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+        if(empty($business))  return $this->ajaxReturn(['code' => 0,'msg' => '商家信息出错']);
+
+        #红包活动只能同时进行一个
+        $where['business_id'] = $business['business_id'];
+        $where['status'] = 0;
+        $info = $BusinessGiftModel->where($where)->count('id');
+        if(empty($info)==false) return $this->ajaxReturn(['code' => 0,'msg' => '红包活动只能同时进行一个']);
+
+        #组装数据
+        $inArr['business_id'] = $business['business_id'];
+        $inArr['gift_name'] = trim($data['gift_name']);
+        $inArr['gift_money'] = $data['gift_money'];
+        $inArr['gift_num'] = $data['gift_num'];
+        $inArr['gift_type'] = $data['gift_type'];
+        $inArr['start_time'] = $start_time;
+        $inArr['end_time'] = $end_time;
+        $inArr['add_time'] = time();
+        $inArr['threshold'] = $data['threshold'];
+        $inArr['status'] = 0;
+        $inArr['total_num'] = $data['total_num'];
+
+        $res = $BusinessGiftModel->insert($inArr);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '添加成功']);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '添加失败']);
+        }
+
+    }
+
+    /*------------------------------------------------------ */
+    //-- 获取红包列表
+    /*------------------------------------------------------ */
+    public function get_gift_list(){
+        $this->checkLogin();//验证登陆
+        $BusinessGiftModel = new BusinessGiftModel();
+        $UserBusinessModel = new UserBusinessModel();
+        $page = input('page');
+        $page_size = 7;
+        #商家信息
+        $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+        if(empty($business))  return $this->ajaxReturn(['code' => 0,'msg' => '商家信息出错']);
+
+        $where['business_id'] = $business['business_id'];
+        $list = $BusinessGiftModel->where($where)->limit($page_size*$page,$page_size)->order('id desc')->select();
+        foreach ($list as $k=>$v){
+            #有效时间
+            $start_time = date('Y.m.d',$v['start_time']);
+            $end_time = date('Y.m.d',$v['end_time']);
+            $list[$k]['valid'] = $start_time.'-'.$end_time;
+            #发放时间
+            $list[$k]['add_time'] = date('Y.m.d H:i',$v['add_time']);
+            #红包类型
+            if($v['gift_type']==1){
+                $list[$k]['type_str'] = '随机红包';
+            }else{
+                $list[$k]['type_str'] = '平均红包';
+            }
+            #红包状态
+            if($v['status']==0){
+                $list[$k]['status_str'] = '发放中';
+            }else if($v['status']==1){
+                $list[$k]['status_str'] = '已发完';
+            }else if($v['status']==2){
+                $list[$k]['status_str'] = '已过期';
+            }else if($v['status']==3){
+                $list[$k]['status_str'] = '已停用';
+            }
+        }
+        $arr['list'] = $list;
+        return $arr;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 获取红包列表
+    /*------------------------------------------------------ */
+    public function get_gift_detail(){
+        $RedbagModel = new RedbagModel();
+        $page = input('page');
+        $type = input('type');
+        $id = input('id');
+        $page_size = 12;
+
+        if($type==1){
+            #已领取
+            $where['gift_id'] = $id;
+            $where['status'] = 0;
+        }else{
+            #已使用
+            $where['gift_id'] = $id;
+            $where['status'] = 1;
+        }
+        $list = $RedbagModel->where($where)->alias('r')->join('users u','r.user_id=u.user_id')->limit($page_size*$page,$page_size)->order('redbag_id desc')->field('r.*,u.nick_name,u.headimgurl')->select();
+
+        foreach ($list as $k=>$v){
+            $list[$k]['add_time'] = date('m-d H:i',$v['add_time']);
+            $list[$k]['update_time'] = date('m-d H:i',$v['update_time']);
+        }
+        $arr['list'] = $list;
+
+        $this->ajaxreturn($arr);
+    }
+
+    /*------------------------------------------------------ */
+    //-- 停用红包
+    /*------------------------------------------------------ */
+    public function stop_using(){
+        $BusinessGiftModel = new BusinessGiftModel();
+        $id = input('id');
+
+        $info = $BusinessGiftModel->where('id',$id)->find();
+        if($info['status']==2){
+            return $this->ajaxReturn(['code' => 0,'msg' => '红包已过期']);
+        }else if($info['status']==3){
+            return $this->ajaxReturn(['code'=> 0,'msg' => '红包已停用']);
+        }
+
+        $map['status'] = 3;
+        $map['stop_time'] = time();
+        $res = $BusinessGiftModel->where('id',$id)->update($map);
+        if($res){
+            return $this->ajaxReturn(['code' => 1,'msg' => '停用成功']);
+        }else{
+            return $this->ajaxReturn(['code' => 0,'msg' => '停用失败']);
+        }
+
+
+    }
 
 }

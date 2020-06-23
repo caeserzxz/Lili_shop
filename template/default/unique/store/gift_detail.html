@@ -1,0 +1,235 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+        <link rel="stylesheet" href="__STATIC__/unique/css/redenvDetail.css" />
+        <div class="page-bd" id="aa">
+            <div class="top">
+                <div class="red-money num color_w">
+                    <p class="fs48">{$info.gift_money}</p>
+                    <p class="fs24 color_ffc">红包金额</p>
+                </div>
+                <div class="money-info">
+                    <div class="info-item">
+                        <p class="fs36 fw_b">{$info.collected}</p>
+                        <p class="fs24 color_9">已领金额</p>
+                    </div>
+                    <div class="info-item">
+                        <p class="fs36 fw_b">{$info.unclaimed}</p>
+                        <p class="fs24 color_9">未领金额</p>
+                    </div>
+                    <div class="info-item">
+                        <p class="fs36 fw_b">{$info.used}</p>
+                        <p class="fs24 color_9">已用金额</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="data-main">
+                <div class="tab fs32">
+                    <div class="color_9 active" >已领取</div>
+                    <div class="color_9" >已使用</div>
+                </div>
+                <div class="tabBox"  >
+                    <div class="block" >
+                        <div class="cells" id="tab1" style="height: 500px; overflow: scroll;">
+                            <script type="text/html" id="listTpl1">
+                                {{each list as item index}}
+                                    <div class="cell">
+                                        <div class="cell_hd">
+                                            <img class="head-img" src="{{item.headimgurl}}" alt="">
+                                        </div>
+                                        <div class="cell_bd">
+                                            <div class="fs26 fw_b">{{item.nick_name}}</div>
+                                            <div class="fs24 color_9">领取时间:{{item.add_time}}</div>
+                                        </div>
+                                        <div class="cell_ft color_3 fw_b">
+                                            <span class="fs28">￥</span>
+                                            <span class="fs34">{{item.price}}</span>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </script>
+                            <!--<div class="cell">-->
+                                <!--<div class="cell_hd">-->
+                                    <!--<img class="head-img" src="__STATIC__/unique/images/proxy_02.png" alt="">-->
+                                <!--</div>-->
+                                <!--<div class="cell_bd">-->
+                                    <!--<div class="fs26 fw_b">埃列克斯丁</div>-->
+                                    <!--<div class="fs24 color_9">领取时间:5月23日 12:30</div>-->
+                                <!--</div>-->
+                                <!--<div class="cell_ft color_3 fw_b">-->
+                                    <!--<span class="fs28">￥</span>-->
+                                    <!--<span class="fs34">0.66</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                            <!--<div class="cell">-->
+                                <!--<div class="cell_hd">-->
+                                    <!--<img class="head-img" src="__STATIC__/unique/images/proxy_02.png" alt="">-->
+                                <!--</div>-->
+                                <!--<div class="cell_bd">-->
+                                    <!--<div class="fs26 fw_b">埃列克斯丁</div>-->
+                                    <!--<div class="fs24 color_9">领取时间:5月23日 12:30</div>-->
+                                <!--</div>-->
+                                <!--<div class="cell_ft color_3 fw_b">-->
+                                    <!--<span class="fs28">￥</span>-->
+                                    <!--<span class="fs34">0.66</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                    <div class="block box">
+                        <div class="cells" id="tab2" style="height: 500px; overflow: scroll;">
+                            <script type="text/html" id="listTpl2">
+                                {{each list as item index}}
+                                    <div class="cell">
+                                        <div class="cell_hd">
+                                            <img class="head-img" src="{{item.headimgurl}}" alt="">
+                                        </div>
+                                        <div class="cell_bd">
+                                            <div class="fs26 fw_b">{{item.nick_name}}</div>
+                                            <div class="fs24 color_9">领取时间:{{item.add_time}}</div>
+                                            <div class="fs24 color_9">使用时间:{{item.update_time}}</div>
+                                        </div>
+                                        <div class="cell_ft color_3 fw_b">
+                                            <span class="fs28">￥</span>
+                                            <span class="fs34">{{item.price}}</span>
+                                        </div>
+                                    </div>
+                                {{/each}}
+                            </script>
+                            <!--<div class="cell">-->
+                                <!--<div class="cell_hd">-->
+                                    <!--<img class="head-img" src="__STATIC__/unique/images/proxy_02.png" alt="">-->
+                                <!--</div>-->
+                                <!--<div class="cell_bd">-->
+                                    <!--<div class="fs26 fw_b">埃列克斯丁</div>-->
+                                    <!--<div class="fs24 color_9">领取时间:5月23日 12:30</div>-->
+                                    <!--<div class="fs24 color_9">使用时间:5月24日 12:56</div>-->
+                                <!--</div>-->
+                                <!--<div class="cell_ft color_3 fw_b">-->
+                                    <!--<span class="fs28">￥</span>-->
+                                    <!--<span class="fs34">0.66</span>-->
+                                <!--</div>-->
+                            <!--</div>-->
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom">
+                <div class="btn">停用红包</div>
+            </div>
+        </div>
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        var page_1 = 0;
+        var page_2 = 0;
+        var loading_1 = false;
+        var loading_2 = false;
+
+        $('#tab1').infinite().on("infinite", function() {
+            get_redbag1();
+        });
+        $('#tab2').infinite().on("infinite", function() {
+            get_redbag1();
+        });
+        var id={$info.id};
+        $('.tab div').on('click', function () {
+            var index = $(this).index();
+            $(this).addClass('active')
+            $(this).siblings().removeClass('active')
+            $('.block').eq(index).show();
+            $('.block').eq(index).siblings().hide();
+            var aa = $('#aa').height();
+
+            console.log(aa);
+        })
+        $(function(){
+            get_redbag1();
+            get_redbag2();
+        })
+
+        function get_redbag1(){
+            var aa = $('#aa').height();
+
+            // console.log(aa);
+            if(loading_1) return;
+            loading_1 = true;
+            $.ajax({
+                url:'{:url("unique/api.business/get_gift_detail")}',// 跳转到 action
+                data:{'page':page_1,'type':1,'id':id},
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    console.log(res);
+                    if (res.list.length > 0) {
+                        $('#tab1').prepend(template('listTpl1',res));
+                        page_1 += 1;
+                        loading_1 = false;
+                    }else{
+                        $.toast('加载完成',"text");
+                    }
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        }
+        function get_redbag2(){
+            if(loading_2) return;
+            loading_2 = true;
+            $.ajax({
+                url:'{:url("unique/api.business/get_gift_detail")}',// 跳转到 action
+                data:{'page':page_2,'type':2,'id':id},
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    if (res.list.length > 0) {
+                        $('#tab2').prepend(template('listTpl2',res));
+                        page_2 += 1;
+                        loading_2 = false;
+                    }else{
+                        $.toast('加载完成',"text");
+                    }
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        }
+        var isPost = false;
+        $('.btn').on('click',function(){
+            if(isPost) return;
+            isPost = true;
+            $.ajax({
+                url:'{:url("unique/api.business/stop_using")}',// 跳转到 action
+                data:{'id':id},
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    if (res.code == 0){
+                        _alert(res.msg);
+                        return false;
+                    }
+                    _alert(res.msg,'{:url("unique/store/gift_list")}');
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        })
+    </script>
+</body>
+
+</html>
+{/block}
