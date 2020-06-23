@@ -9,7 +9,7 @@
                 <p class="text">鼓励金(元)</p>
             </div>
         </div>
-        <a href="{:url('member/withdraw/index')}" class="right btn">提现</a>
+        <a href="{:url('withdraw/index')}" class="right btn">提现</a>
     </div>
 
     <div class="date-type">
@@ -132,7 +132,7 @@
         var arr = new Object;
         arr.date1 = $('#date1').val();
         arr.date2 = $('#date2').val();
-        arr.type = '{$type|default=balance}';
+        arr.type = '{$type|default=0}';
         arr.flag = $("input[name='flag']").attr('data-values');
         jq_ajax('{:url("api.Users/getAccountLog")}',arr,function(res){
             if (res.code == 0){

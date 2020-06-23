@@ -36,4 +36,13 @@ class Wallet extends ClientbaseController{
         $this->assign('date2', date('Y-m-d'));
         return $this->fetch('mylog');
     }
+    /*------------------------------------------------------ */
+    //-- 消费记录
+    /*------------------------------------------------------ */
+    public function payRecord(){
+        $this->assign('title', '门店消费记录');
+        $this->assign('date1', date('Y-m-d',strtotime("-1 month")));
+        $this->assign('date2', date('Y-m-d'));
+        return $this->fetch();
+    }
 }?>

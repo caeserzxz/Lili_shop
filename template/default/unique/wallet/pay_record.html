@@ -1,0 +1,108 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/shopExpRec.css"/>
+{/block}
+{block name='pageType'}{/block}
+{block name="main" }
+<div class="page-bd">
+    <div class="date-type">
+        <div class="date">
+            <span class="fs28 fw_b color_3 mr10">时间:</span>
+            <span class="datetimer-1">
+                <input type="text" value="{$date1}" data-toggle='date' id='date1' />
+            </span>
+            <span>-</span>
+            <span class="datetimer-1">
+                <input type="text" value="{$date2}" data-toggle='date' id='date2' />
+            </span>
+        </div>
+    </div>
+    <!-- 数据列表 -->
+    <div class="data-info">
+        <div class="title color_r fs24">
+            <span>支出: ¥<em class="b_expend">0</em></span>
+        </div>
+        <div class="wrap-list list">
+            <div style="text-align:center; line-height: 100px;">加载中...</div>
+        </div>
+    </div>
+    <!-- 没有更多了 -->
+    <div class="text_c color_9 mt20 mb20 is_down">已经到底啦~</div>
+</div>
+</div>
+{literal}
+<script type="text/html" id="logTpl">
+    {{each list as item index}}
+    <div class="list-item">
+        <div class="item-left">
+            <p>
+                <span class="fs28 fw_b color_3">{{item.business_name}}</span>
+            </p>
+            <p class="fs24 color_9">{{item._time}}</p>
+        </div>
+        <div class="item-right fs28 fw_b color_3">
+            <p>-{{item.amount}}</p>
+        </div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $("#date1").calendar({
+        onClose(p){
+            var date = new Date(p.value[0]);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear();
+            var M = date.getMonth()+1;
+            var D = date.getDate();
+            $('#date1').val(Y + '-' + M + '-' + D);
+            getList();
+        }
+    });
+    $("#date2").calendar({
+        onClose(p){
+            var date = new Date(p.value[0]);//时间戳为10位需*1000，时间戳为13位的话不需乘1000
+            var Y = date.getFullYear();
+            var M = date.getMonth()+1;
+            var D = date.getDate();
+            $('#date2').val(Y + '-' + M + '-' + D);
+            getList();
+        }
+    });
+
+    function getList(){
+        var arr = new Object;
+        arr.date1 = $('#date1').val();
+        arr.date2 = $('#date2').val();
+        arr.type = '{$type|default=0}';
+        jq_ajax('{:url("api.Users/getpayRecord")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            if (typeof(res.list) == 'undefined'){
+                $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('.is_down').hide();
+            }else{
+                $('.list').html(template('logTpl', res));
+                $('.is_down').show();
+            }
+            $('#nowValue').val(res.time);
+            $('.b_expend').html(res.expend);
+            $('.b_income').html(res.income);
+        });
+    }
+    $(function () {
+        getList();
+    })
+</script>
+</body>
+</html>
+{/block}

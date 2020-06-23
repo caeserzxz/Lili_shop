@@ -431,7 +431,7 @@ class Withdraw extends ApiController
     {
         $WithdrawModel = new WithdrawModel();
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
-        $where[] = ['status', '=', '0'];
+        $where[] = ['status', '=', '9'];
         $return['num_all'] = $WithdrawModel->where($where)->sum('amount');
         return $this->ajaxReturn($return);
     }

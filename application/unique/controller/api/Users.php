@@ -7,6 +7,7 @@ use app\member\model\AccountLogModel;
 use app\member\model\UsersBindSuperiorModel;
 use app\member\model\UsersModel;
 use app\store\model\UserBusinessModel;
+use app\unique\model\PayRecordModel;
 use app\unique\model\RedbagModel;
 use think\facade\Cache;
 
@@ -168,6 +169,34 @@ class Users extends ApiController
         }
         $return['limit_start'] = $limit_start + $limit;
         $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取会员帐户总额
+    /*------------------------------------------------------ */
+    public function getpayRecord()
+    {
+        $date1 = input('date1', date('Y-m-d',strtotime("-1 month")), 'trim');
+        $date2 = input('date2', date('Y-m-d'), 'trim');
+        $flag = input('flag','all','trim');
+        $date1 = strtotime($date1." 00:00:00");
+        $date2 = strtotime($date2." 23:59:59");
+        $return['date1'] = $date1;
+        $return['date2'] = $date2;
+        $return['code'] = 1;
+        $UserBusinessModel = new UserBusinessModel();
+        $PayRecordModel = new PayRecordModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+
+        $where[] = ['add_time', 'between', array($date1, $date2)];
+        $rows = $PayRecordModel->where($where)->order('add_time DESC')->select();
+        $return['expend'] = 0;
+        foreach ($rows as $key => $row) {
+            $return['expend'] += $row['amount'];
+            $row['business_name'] = $UserBusinessModel->getInfo($row['business_id'],'business_name');
+            $row['_time'] = timeTran($row['add_time']);
+            $return['list'][] = $row;
+        }
         return $this->ajaxReturn($return);
     }
 }
