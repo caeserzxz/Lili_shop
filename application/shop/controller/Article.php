@@ -36,9 +36,14 @@ class Article extends ClientbaseController
         $upData['click'] = ['inc', 1];
         $where[] = ['id', '=', $id];
         $this->Model->upInfo($upData, $where);
-        $this->assign('title', '文章详情');
         $this->assign('info', $info);
-        return $this->fetch('info_new');
+        if ($info['cid'] == 21) {
+            $this->assign('title', '问题详情');
+            return $this->fetch('problem_info');
+        }else{
+            $this->assign('title', '文章详情');
+            return $this->fetch('info_new');
+        }
     }
     /*------------------------------------------------------ */
     //-- 注册协议
@@ -138,8 +143,15 @@ class Article extends ClientbaseController
         $this->assign('info', $info['article']);
         return $this->fetch('info');
     }
+    /*------------------------------------------------------ */
+    //-- 常见问题列表
+    /*------------------------------------------------------ */
+    public function problem(){
+        $list = $this->Model->where(['cid' => 21,'is_show' => 1])->select();
+        $this->assign('list', $list);
 
-
+        $this->assign('title', '常见问题');
+        return $this->fetch();
+    }
 }
-
 ?>

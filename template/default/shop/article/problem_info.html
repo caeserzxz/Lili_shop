@@ -1,0 +1,26 @@
+{extend name="layouts@base_unique" /}
+{block name="head" }
+<link rel="stylesheet" href="__STATIC__/unique/css/serverCenter.css" />
+{/block}
+{block name='pageType'}questioninfo{/block}
+{block name="main" }
+<div class="page-bd">
+    <div class="context">
+        <div class="title fs36 fw_b">{$info.title}</div>
+        <div class="text fs26 mt45">
+            <p>{$info.content}</p>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+</script>
+</body>
+</html>
+{/block}

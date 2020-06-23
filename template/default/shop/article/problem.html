@@ -1,0 +1,33 @@
+{extend name="layouts@base_unique" /}
+{block name="head" }
+<link rel="stylesheet" href="__STATIC__/unique/css/serverCenter.css" />
+{/block}
+
+{block name="main" }
+<div class="page-bd">
+    <div class="cells">
+        {volist name="list" id="v"}
+        <a href="{:url('shop/article/info',['id' => $v.id])}">
+            <div class="cell">
+                <div class="cell_hd"></div>
+                  <div class="cell_bd">
+                      <span class="fs30 fw_b color_3">{$v.title}</span>
+                  </div>
+                <div class="cell_ft arrowright"></div>
+            </div>
+        </a>
+        {/volist}
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+</script>
+</body>
+</html>
+{/block}

@@ -28,6 +28,8 @@ class Center  extends ClientbaseController{
     //-- 我的分享二维码
     /*------------------------------------------------------ */
     public function myCode(){
+        $this->redirect('member/center/myCodeNew');
+
         $DividendShareByRole = settings('DividendShareByRole');
         if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
             return $this->error('请升级身份后再操作.');
