@@ -55,7 +55,7 @@
       </div>
 
       <div class="flex-grids">
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_sales();">
           <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
           <p class="fs28 color_3 mt20">我的业绩</p>
         </div>
@@ -117,6 +117,11 @@
         })
       })
     })
+    //红包营销
+    function go_sales(){
+        window.location.href = "{:url('unique/store/sales')}";
+    }
+    //我的业绩
     function go_gift(){
         window.location.href = "{:url('unique/store/gift_list')}";
     }
