@@ -48,7 +48,7 @@ class Business extends ApiController
 
         $search['page'] = input('page',0,'int');
 
-        $limit = $search['page']*20 . ',' . 20;
+        $limit = $search['page']*7 . ',' . 7;
         $longitude = input('longitude');
         $latitude = input('latitude');
         //获取商家信息

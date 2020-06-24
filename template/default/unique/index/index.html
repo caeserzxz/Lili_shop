@@ -189,17 +189,15 @@
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
             var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
         });
-
+        var arr = new Object();
         //sdk 回调wxLoginCallback函数
         function GetLocCallBack(lat,lng){
-            var arr = new Object();
             arr.lat = lat;
             arr.lng = lng;
             jq_ajax("{:url('unique/api.business/index')}",arr,function (res) {
                 $('#city').text(res.city);
                 $('#address').text(res.address);
                 //提交ajax
-                var arr = new Object();
                 arr.city = window.city = res.city_id;
                 arr.page = window.page = 0;
                 arr.latitude  = window.lat = lat;
@@ -244,18 +242,19 @@
         $('.page-bd').infinite(100);
         var loading = false;  //状态标记
         $('.page-bd').infinite().on("infinite", function() {
-            if(loading) return;
             // loading = true;
             // 请求数据
-
+            getList(arr);
             // setTimeout(function() {
             //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
             //     loading = false;
             // }, 1500);   //模拟延迟
         })
 
+        var loading = false;
         function getList(arr){
-            console.log(arr);
+            if(loading) return;
+            loading = true;
             $.ajax({
                 url:'{:url("unique/api.business/getList")}',// 跳转到 action
                 data:arr,
@@ -267,9 +266,10 @@
                     console.log(res)
                     if (res.list.length > 0) {
                         $('#tab3').prepend(template('listTpl3',res));
-                        window.page += 1;
+                        arr.page += 1;
+                        loading = false;
                     }else{
-                        $.toast('加载完成',"text");
+                        $.toast('加载完成');
                     }
                 },error : function(res) {
                     $.toast(res.msg);
