@@ -1,0 +1,51 @@
+<form class="form-horizontal form-validate " method="post" action="{:url('info')}">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">反馈意见</h4>
+            </div>
+            <div class="modal-body">
+        		<div class="form-group">
+                    <label class="col-sm-2 control-label"> 用户信息</label>
+                    <div class="col-sm-6" style="margin-top: .6rem">
+                        {$row.user_id}-{$row.user_id|userInfo}
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 内容</label>
+                    <div class="col-sm-6" style="margin-top: .6rem">
+                        {$row.content}
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 图片</label>
+                        <div class="col-sm-8 m-t-mc">
+                        {volist name='row.imgArr' id="img"}
+                        <a href="{$img}" target="_blank">
+                            <img src="{$img}" style="width: 30%;border: 1px dashed #ddd;padding: .3rem;margin: .1rem">
+                        </a>
+                        {/volist}
+                    </div>
+                </div> 
+                <div class="form-group">
+                    <label class="col-sm-2 control-label"> 回复</label>
+                    <div class="col-sm-10" style="margin-top: .6rem">
+                        {if condition="$row.reply == ''"}
+                        <textarea rows="4" style="width: 80%" name="reply" placeholder="请输入回复内容"></textarea>
+                        {else/}
+                        {$row.reply}
+                        {/if}
+                    </div>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <input type="hidden" name="id" value="{$row.id|intval}"/>
+                {if condition="$row.reply == ''"}
+                <button type="submit" class="btn btn-primary" data-loading-text="保存中..." disabled>保存</button>
+                {/if}
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+            </div>
+        </div>
+    </div>
+</form>

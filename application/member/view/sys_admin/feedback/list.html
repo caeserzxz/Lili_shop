@@ -1,0 +1,39 @@
+<table class="table  table-hover  m-b-none">
+<thead>
+<tr>
+  <th>编号</th>
+  <th>用户</th>
+  <th width="25%">内容</th>
+  <th width="25%">回复</th>
+  <th >添加时间</th>
+  <th >更新时间</th>
+  <th>操作</th>
+</tr>
+</thead>
+<tbody>
+
+{volist name="data.list" id="vo" }
+<tr>
+    <td>{$vo.id}</td>
+    <td>{$vo.user_id}-{$vo.user_id|userInfo}</td>
+    <td>{$vo.content}</td>
+    <td>{$vo.reply}</td>
+    <td>{$vo.create_time|dateTpl}</td>
+    <td>{$vo.update_time|dateTpl}</td>
+    <td>  
+        <a href="{:url('info',array('id'=>$vo['id']))}" data-toggle="ajaxModal" class="m-xs" title="编辑">
+            <i class="fa fa-edit text-muted"></i>
+        </a>
+        <!-- <a href="{:url('delete',array('level_id'=>$vo['level_id']))}" data-toggle="ajaxRemove" data-msg="确定删除 {$vo.level_name}" class="m-xs" title="删除">
+            <i class="fa fa-trash-o text-muted"></i>
+        </a> -->
+    </td>
+</tr>
+{/volist} 
+</tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+ 	<tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}  

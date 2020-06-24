@@ -1,0 +1,97 @@
+{extend name="layouts@base_unique" /}
+{block name="head" }
+  <link rel="stylesheet" href="__STATIC__/unique/css/historyReply.css" />
+{/block}
+{block name="main" }
+<div class="page-bd">
+    <div class="wrap-list listBox"></div>
+</div>
+<script id="tpl" type="text/html">
+{{each list as item index}}
+    <div class="list-item">
+        <div class="feedback">
+            <p class="fs28">{{item.content}}</p>
+            <p class="text_r fs24 color_9">{{item.create_data}}</p>
+        </div>
+        {literal}
+        {{if item.reply}}
+        <div class="mt30">
+            <span class="reply-btn fs22">回复</span>
+        </div>
+        <div class="mt20">
+            <p class="fs28 color_3">{{item.reply}}</p>
+            <p class="fs24 text_r color_9">{{item.update_data}}</p>
+        </div>
+        {{/if}}
+        {/literal}
+    </div>
+{{/each}}
+</script>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    $(function () {
+        getList();
+    })
+    $('.page-bd').scroll(function () {
+        var box_h = $(this).height()
+        var content_h = $('.scrollBox').height()
+        var scroll_h = $(this).scrollTop();
+        if (content_h - box_h - scroll_h < 20) {
+            getList();
+        }
+    })
+    var page = 1;
+    var isLoadend = false;
+    //请求列表数据
+    function getList(isagain) {
+        if (typeof(page) == 'undefined') page = 1;
+        if (isLoadend == true) return false;
+    
+        $('.listBox').append('<div class="text_c color_9 get_list_tip">加载数据中~</div>');
+        
+        isLoadend = true;
+        $.ajax({
+            url: '{:_url("unique/api.users/getFeedbackList",["p"=>"【page】"])}',// 跳转到 action
+            data: {},
+            type: 'post',
+            cache: false,
+            dataType: 'json',
+            success: function (res) {
+                isLoadend = false;
+                if (res.code == 0) {
+                    _alert(res.msg);
+                    $('.listBox').find('.get_list_tip').html('加载失败，点击重新加载.');
+                    return false;
+                }
+                $('.listBox').find('.get_list_tip').remove();
+                if (res.list.length > 0) {
+                    $('.listBox').append(template('tpl', res));
+                } else {
+                    $('.listBox').html(template('emptyTpl'));
+                }
+                if (res.page_count == page) {
+                    $('.listBox').append('<div class="text_c color_9">已经到底了~</div>');
+                    isLoadend = true;
+                }
+                page++;
+            }, error: function () {
+                isLoadend = false;
+                $('.listBox').find('.get_list_tip').html('加载失败，点击重新加载.');
+            }
+        });
+    }
+
+    //重新请求数据
+    $(document).on('click', '.get_list_tip', function () {
+        getList();
+    })
+</script>
+</body>
+</html>
+{/block}

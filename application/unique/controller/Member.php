@@ -159,4 +159,23 @@ class Member extends ClientbaseController{
         $this->assign('title', '我的会员');
         return $this->fetch();
     }
+    /*------------------------------------------------------ */
+    //-- 意见反馈
+    /*------------------------------------------------------ */
+    public function feedback(){
+        $this->assign('rightText', '反馈记录');
+        $this->assign('rightUrl', url('unique/member/feedbackList'));
+        $this->assign('title', '意见反馈');
+        return $this->fetch();
+    }
+    /*------------------------------------------------------ */
+    //-- 意见反馈记录
+    /*------------------------------------------------------ */
+    public function feedbackList(){
+        $this->assign('rightText', '添加反馈');
+        $this->assign('rightUrl', url('unique/member/feedback'));
+        $this->assign('title', '反馈及回复');
+        return $this->fetch();
+    }
+    
 }?>

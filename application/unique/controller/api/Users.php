@@ -226,4 +226,55 @@ class Users extends ApiController
         $return['info'] = $info;
         return $this->ajaxReturn($return);
     }
+    /*------------------------------------------------------ */
+    //-- 添加意见反馈
+    /*------------------------------------------------------ */
+    public function postFeedback(){
+        $inArr['content'] = input('content','','trim');
+        if (empty($inArr['content'])) return $this->error('请输入反馈内容.');
+        
+        $imgfile = input('imgfile');
+        if (empty($imgfile)) return $this->error('请上传图片.');
+
+        $file_path = config('config._upload_').'feedback/'.date('Ymd').'/';
+        makeDir($file_path);
+        foreach ($imgfile as $file){
+            $extend = getFileExtend($file);
+            if ($extend == false){
+                return $this->error('未能识别图片，请尝试更换图片上传.');
+            }
+            $file_name = $file_path.random_str(12).'.'.$extend[1];
+            file_put_contents($file_name,$extend[0]);
+            $imgArr[] = substr($file_name,1);           
+        }
+        $inArr['imgurl'] = serialize($imgArr);
+        $inArr['user_id'] = $this->userInfo['user_id'];
+        $inArr['create_time'] = time();
+
+        $FeedbackModel = new \app\unique\model\FeedbackModel();
+        $res = $FeedbackModel->create($inArr);
+
+        if ($res['id']) $this->success('添加成功.',url("unique/member/feedbackList"));
+        $this->error('添加失败.'); 
+    }
+    /*------------------------------------------------------ */
+    //-- 获取意见反馈列表
+    /*------------------------------------------------------ */
+    public function getFeedbackList(){
+        $FeedbackModel = new \app\unique\model\FeedbackModel();
+
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+        $data = $this->getPageList($FeedbackModel, $where);
+
+        foreach ($data['list'] as $key => $value) {
+            $_value = $value;
+            $_value['imgArr'] = unserialize($value['imgurl']);
+            $_value['create_data'] = date('Y.m.d H:i',$value['create_time']);
+            $_value['update_date'] = date('Y.m.d H:i',$value['update_time']);
+
+            $data['list'][$key] = $_value;
+        } 
+        $data['code'] = 1;
+        return $this->ajaxReturn($data);    
+    }
 }
