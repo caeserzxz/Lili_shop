@@ -29,10 +29,12 @@
     <!-- 没有更多了 -->
     <div class="text_c color_9 mt20 mb20 is_down">已经到底啦~</div>
 </div>
-</div>
 {literal}
 <script type="text/html" id="logTpl">
     {{each list as item index}}
+    {/literal}
+    <a href="{:url('unique/wallet/payRecordInfo')}?id={{item.log_id}}">
+    {literal}
     <div class="list-item">
         <div class="item-left">
             <p>
@@ -44,11 +46,11 @@
             <p>-{{item.amount}}</p>
         </div>
     </div>
+    </a>
     {{/each}}
 </script>
 {/literal}
 {/block}
-
 {block name="footer"}
 <script>
     $(function() {

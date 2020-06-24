@@ -172,7 +172,7 @@ class Users extends ApiController
         return $this->ajaxReturn($return);
     }
     /*------------------------------------------------------ */
-    //-- 获取会员帐户总额
+    //-- 获取会员消费记录
     /*------------------------------------------------------ */
     public function getPayRecord()
     {
@@ -187,9 +187,8 @@ class Users extends ApiController
         $UserBusinessModel = new UserBusinessModel();
         $PayRecordModel = new PayRecordModel();
         $where[] = ['user_id', '=', $this->userInfo['user_id']];
-
         $where[] = ['add_time', 'between', array($date1, $date2)];
-        $rows = $PayRecordModel->where($where)->order('add_time DESC')->select()->toarray();
+        $rows = $PayRecordModel->where($where)->order('add_time DESC,log_id DESC')->select()->toarray();
         $return['expend'] = 0;
         foreach ($rows as $key => $row) {
             $return['expend'] += $row['amount'];
@@ -197,6 +196,35 @@ class Users extends ApiController
             $row['_time'] = timeTran($row['add_time']);
             $return['list'][] = $row;
         }
+        return $this->ajaxReturn($return);
+    }
+    /*------------------------------------------------------ */
+    //-- 获取账单详情
+    /*------------------------------------------------------ */
+    public function getPayRecordInfo()
+    {
+        $id = input('id','0','trim');
+        if(empty($id)){
+            $return['code'] = 1;
+            $return['msg'] = '参数错误';
+            return $this->ajaxReturn($return);
+        }
+        $return['code'] = 1;
+        $UserBusinessModel = new UserBusinessModel();
+        $PayRecordModel = new PayRecordModel();
+        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $where[] = ['log_id', '=', $id];
+        $info = $PayRecordModel->where($where)->find();
+        if(empty($info)){
+            $return['code'] = 1;
+            $return['msg'] = '找不到记录';
+            return $this->ajaxReturn($return);
+        }
+        $business = $UserBusinessModel->getInfo($info['business_id'],'business_id');
+        $info['business_name'] = $business['business_name'];
+        $info['pay_type_str'] = PayRecordModel::$type_str[$info['pay_type']];
+        $info['addtime'] = date('Y-m-d H:i',$info['add_time']);
+        $return['info'] = $info;
         return $this->ajaxReturn($return);
     }
 }

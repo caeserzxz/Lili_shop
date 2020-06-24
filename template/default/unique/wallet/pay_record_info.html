@@ -1,0 +1,92 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/payment.css"/>
+{/block}
+{block name='pageType'}orderDetail{/block}
+{block name="main" }
+
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+        <img src="__STATIC__/unique/images/myIcon20.png" alt="">
+        <div class="color_3 fs72  num money amount"></div>
+        <span class="fs24 color_9 success">
+            <img src="__STATIC__/unique/images/suc_icon.png" alt="">
+            交易成功
+        </span>
+    </div>
+    <div class="cellBox">
+        <div class="line"></div>
+        <div class="cell">
+            <span class="fs28 color_9">门店名称</span>
+            <div class="color_3 fs28 num money business_name"></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">鼓励金比例</span>
+            <div class="color_3 fs28 num money balance_proportion">0%</div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">订单编号</span>
+            <div class="color_3 fs28 num money order_sn"></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">订单属性</span>
+            <div class="color_3 fs28 num money">线下门店订单</div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">下单时间</span>
+            <div class="color_3 fs28 num money addtime"></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">支付方式</span>
+            <div class="color_3 fs28 num money pay_type_str"></div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">订单金额</span>
+            <div class="color_3 fs28 num money amount">0</div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">实付</span>
+            <div class="color_3 fs28 num money amount_actual">0</div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">鼓励金抵扣</span>
+            <div class="color_3 fs28 num money balance_amount">0</div>
+        </div>
+        <div class="cell">
+            <span class="fs28 color_9">红包抵扣</span>
+            <div class="color_3 fs28 num money redbag_amount">0</div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    function getList(){
+        var arr = new Object;
+        arr.id = '{$id|default=0}';
+        jq_ajax('{:url("api.Users/getPayRecordInfo")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+
+            $('.business_name').html(res.info.business_name);
+            $('.balance_proportion').html(res.info.balance_proportion+'%');
+            $('.order_sn').html(res.info.order_sn);
+            $('.addtime').html(res.info.addtime);
+            $('.pay_type_str').html(res.info.pay_type_str);
+            $('.amount').html(res.info.amount);
+            $('.amount_actual').html(res.info.amount-res.info.balance_amount-res.info.redbag_amount);
+            $('.balance_amount').html(res.info.balance_amount);
+            $('.redbag_amount').html(res.info.redbag_amount);
+        });
+    }
+    $(function () {
+        FastClick.attach(document.body);
+        getList();
+    })
+</script>
+</body>
+</html>
+{/block}

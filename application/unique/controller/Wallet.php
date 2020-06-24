@@ -45,4 +45,14 @@ class Wallet extends ClientbaseController{
         $this->assign('date2', date('Y-m-d'));
         return $this->fetch();
     }
+    /*------------------------------------------------------ */
+    //-- 账单详情
+    /*------------------------------------------------------ */
+    public function payRecordInfo(){
+        $id = input('id');
+        if(empty($id))$this->error('参数错误');
+        $this->assign('title', '账单详情');
+        $this->assign('id', $id);
+        return $this->fetch();
+    }
 }?>
