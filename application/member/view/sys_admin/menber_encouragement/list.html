@@ -1,0 +1,31 @@
+<table class="table  table-hover  m-b-none">
+    <thead>
+    <tr>
+        <th width="90" class="th-sortable" data-sort-name="u.user_id">UID</th>
+        <th width="120">注册手机</th>
+        <th width="100">昵称</th>
+        <th width="120">鼓励金总累计</th>
+        <th width="150">已提现累计</th>
+        <th width="100">已抵扣累计</th>
+        <th width="130">当前可提现</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.user_id}</td>
+        <td>{$vo.mobile}</td>
+        <td>{$vo.nick_name}</td>
+        <td>{$vo.all_balance_money}</td>
+        <td>{$vo.all_withdraw_money}</td>
+        <td>{$vo.all_pay_money}</td>
+        <td>{$vo.balance_money}</td>
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+    <tr><td height="300" colspan="8" align="center" valign="middle" >没有相关数据！</td></tr>
+</table>
+{/empty}

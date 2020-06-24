@@ -26,7 +26,7 @@
                 </div>
              
                 <div class="form-group m-b-md">
-                <label class="col-sm-3 control-label">帐户金币</label>
+                <label class="col-sm-3 control-label">余额（鼓励金）</label>
                 <div class="col-sm-8">
                     <select name="balance_money_type"  style="width: 80px;" data-toggle="select2" >
                         <option value="add"  >增加</option>
@@ -37,30 +37,30 @@
                 </div>
             </div>
 
-                 <div class="form-group m-b-md">
-                    <label class="col-sm-3 control-label">消费积分</label>
-                    <div class="col-sm-8">
-                      <select name="use_integral_type"  style="width: 80px;" data-toggle="select2" >
-                             <option value="add"  >增加</option>
-                             <option value="del"  >减少</option>
-                       </select>
-                       <input type="text" class="input-ssmall"  name="use_integral" value="0" >
-                       当前值：{$account.use_integral|intval} 
-                    </div>
-                </div>
-               
-                <div class="form-group m-b-md">
-                    <label class="col-sm-3 control-label">历史总积分</label>
-                    <div class="col-sm-8">
-                      <select name="total_integral_type"  style="width: 80px;" data-toggle="select2" >
-                             <option value="add"  >增加</option>
-                             <option value="del"  >减少</option>
-                       </select>
-                       <input type="text" class="input-ssmall"  name="total_integral" value="0" >
-                       当前值：{$account.total_integral|intval} 
-                    </div>
-                </div>
-               
+                 <!--<div class="form-group m-b-md">-->
+                    <!--<label class="col-sm-3 control-label">消费积分</label>-->
+                    <!--<div class="col-sm-8">-->
+                      <!--<select name="use_integral_type"  style="width: 80px;" data-toggle="select2" >-->
+                             <!--<option value="add"  >增加</option>-->
+                             <!--<option value="del"  >减少</option>-->
+                       <!--</select>-->
+                       <!--<input type="text" class="input-ssmall"  name="use_integral" value="0" >-->
+                       <!--当前值：{$account.use_integral|intval} -->
+                    <!--</div>-->
+                <!--</div>-->
+               <!---->
+                <!--<div class="form-group m-b-md">-->
+                    <!--<label class="col-sm-3 control-label">历史总积分</label>-->
+                    <!--<div class="col-sm-8">-->
+                      <!--<select name="total_integral_type"  style="width: 80px;" data-toggle="select2" >-->
+                             <!--<option value="add"  >增加</option>-->
+                             <!--<option value="del"  >减少</option>-->
+                       <!--</select>-->
+                       <!--<input type="text" class="input-ssmall"  name="total_integral" value="0" >-->
+                       <!--当前值：{$account.total_integral|intval} -->
+                    <!--</div>-->
+                <!--</div>-->
+               <!---->
             </div>
             <div class="modal-footer">
                 <input  type="hidden" name="user_id" value="{$account.user_id}"/>

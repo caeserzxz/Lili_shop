@@ -43,20 +43,21 @@ class AccountLog extends AdminController
 		if ($this->search['change_type'] > 0 ){
 			$where[] = ['change_type','=',$this->search['change_type']];	
 		}
-		switch ($this->search['account_type']) {
-			case 'balance_money':
-				$where[] = ['balance_money','<>',0];	
-				break;
-			case 'use_integral':
-				$where[] = ['use_integral','<>',0];	
-				break;
-			case 'total_dividend':
-				$where[] = ['total_dividend','<>',0];	
-				break;
-			case 'total_integral':
-				$where[] = ['total_integral','<>',0];	
-				break;
-		}		
+//		switch ($this->search['account_type']) {
+//			case 'balance_money':
+//				$where[] = ['balance_money','<>',0];
+//				break;
+//			case 'use_integral':
+//				$where[] = ['use_integral','<>',0];
+//				break;
+//			case 'total_dividend':
+//				$where[] = ['total_dividend','<>',0];
+//				break;
+//			case 'total_integral':
+//				$where[] = ['total_integral','<>',0];
+//				break;
+//		}
+        $where[] = ['balance_money','<>',0];
 		
 		if (empty($reportrange) == false){
 			$dtime = explode('-',$reportrange);

@@ -26,13 +26,13 @@
                    <option value="3">交易减免</option>
                    <option value="4">获得佣金</option>
               </select>
-              <select name="account_type"  style="width: 130px;" data-toggle="select2"  data-chang="submit">
-                   <option value="">所有变动记录</option>
-                   <option value="balance_money">余额变动</option>
-                   <option value="use_integral">可用积分变动</option>
-                   <option value="total_dividend">总佣金变动</option>
-                   <option value="total_integral">总积分变动</option>
-              </select>
+              <!--<select name="account_type"  style="width: 130px;" data-toggle="select2"  data-chang="submit">-->
+                   <!--<option value="">所有变动记录</option>-->
+                   <!--<option value="balance_money">鼓励金变动</option>-->
+                   <!--<option value="use_integral">可用积分变动</option>-->
+                   <!--<option value="total_dividend">总佣金变动</option>-->
+                   <!--<option value="total_integral">总积分变动</option>-->
+              <!--</select>-->
             </div> 
         <a class="text-muted pull-right pointer p-r m-t-md m-l" data-toggle="back" title="返回"><i class="fa fa-reply"></i></a>
         <a href="javascript:;" data-remote="{:url('manage',array('user_id'=>$account['user_id']))}" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-mc m-r"><i class="fa fa-edit"></i>调节会员帐户</a>
@@ -46,10 +46,10 @@
   <tr>
     <td>用户ID：{$account.user_id}</td>
     <td>注册手机：{$account.mobile}</td>
-    <td>帐户余额（金币）：{$account.balance_money|priceFormat=true}</td>
-    <td>历史总佣金：{$account.total_dividend|priceFormat=true}</td>
-    <td>历史总积分：{$account.total_integral|intval}</td>
-    <td>消费积分：{$account.use_integral|intval}</td>
+    <td>帐户余额（鼓励金）：{$account.balance_money|priceFormat=true}</td>
+    <!--<td>历史总佣金：{$account.total_dividend|priceFormat=true}</td>-->
+    <!--<td>历史总积分：{$account.total_integral|intval}</td>-->
+    <!--<td>消费积分：{$account.use_integral|intval}</td>-->
   </tr>
 </table>
  </div>

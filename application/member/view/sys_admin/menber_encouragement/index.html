@@ -1,0 +1,34 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>鼓励金列表</strong>
+                    <strong>鼓励金累计总额:{$res.all_balance_money}</strong>
+                    <strong>当前可提总额:{$res.all_balance_moneys}</strong>
+                    <strong>使用鼓励金抵扣累计总额:{$res.all_withdraw_money}</strong>
+                    <strong>已提现累计总额:{$res.all_pay_money}</strong>
+                </li>
+            </ul>
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="会员ID/帐号/手机号码" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+            <!--<a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出列表</a>-->
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/menber_encouragement/list" /}
+        </div>
+    </section>
+</section>
+<script>
+    function ExportLog(){
+        $('#forms').submit();
+    }
+</script>
+{/block}
