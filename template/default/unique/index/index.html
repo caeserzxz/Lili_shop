@@ -121,9 +121,13 @@
                                 </div>
                                 <div class="shop-distance">
                                     <div class="text_c color_9">{{item.distance}}</div>
-                                    <div>
-                                        <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
-                                    </div>
+                                    {literal}
+                                        {{if item.gift_id > 0}}
+                                            <div>
+                                                <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                                            </div>
+                                        {{/if}}
+                                    {/literal}
                                 </div>
                             </div>
                         {{/each}}

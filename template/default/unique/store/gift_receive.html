@@ -1,0 +1,58 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+    <link rel="stylesheet" href="__STATIC__/unique/css/redEnvelope.css" />
+    <div class="page-bd">
+      <!-- 获得现金红包 -->
+      {if condition="$type eq 1"}
+        <div class="get-redenv">
+          <img src="__STATIC__/unique/images/red_env_03.png" alt="">
+          <div class="content">
+            <div class="fs32 fw_b color_3">恭喜获得现金红包</div>
+            <div class="fs120 fw_b color_r">35.00</div>
+            <div class="fs24 color_9">
+              <p>红包已发放到您的 <span class="color_3" onclick="go_wallet();">[个人中心-商家红包]</span></p>
+              <p>可消费时选择抵扣使用</p>
+            </div>
+          </div>
+        </div>
+      {/if}
+      <!-- 红包已领完 -->
+      {if condition="$type eq 2"}
+        <div class="redenv-over " style="display: block;">
+          <img src="__STATIC__/unique/images/kry.png" alt="">
+          <div>
+            <p class="fs34 color_3">红包领完了</p>
+            <p class="fs24 color_9">红包已经领完了！下次要早点来~</p>
+          </div>
+        </div>
+      {/if}
+      <!-- 活动结束 -->
+      {if condition="$type eq 3"}
+        <div class="active-over" style="display: block;">
+          <img class="active-over-img" src="__STATIC__/unique/images/groupOrder09.png" alt="">
+          <div>
+            <p class="fs34 color_3">活动结束</p>
+            <p class="fs24 color_9">对不起!该活动已经结束啦~</p>
+          </div>
+        </div>
+      {/if}
+    </div>
+
+  </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+  <script>
+    function go_wallet(){
+      window.location.href = '{:url("unique/wallet/redbag")}';
+    }
+  </script>
+</body>
+
+</html>
+{/block}

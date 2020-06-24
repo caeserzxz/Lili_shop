@@ -30,6 +30,7 @@ class Business extends ApiController
     //-- 获取商家数据
     /*------------------------------------------------------ */
     public function getList(){
+        $BusinessGiftModel = new BusinessGiftModel;
         $where[] = ['status', '=', 1];
         $where[] = ['is_ban', '=', 0];
 
@@ -68,6 +69,9 @@ class Business extends ApiController
             #鼓励金处理
             $profits = unserialize(settings('profits'));
             $storeInfo[$key]['hearten'] = intval($profits[$val['profits']]['hearten']);
+            #是否存在红包
+            $gift_info = $BusinessGiftModel->where(['business_id'=>$val['business_id'],'status'=>0])->find();
+            $storeInfo[$key]['gift_id'] = $gift_info['id'];
 
         }
         $return['list'] = $storeInfo;
@@ -364,6 +368,7 @@ class Business extends ApiController
         $inArr['business_id'] = $business['business_id'];
         $inArr['gift_name'] = trim($data['gift_name']);
         $inArr['gift_money'] = $data['gift_money'];
+        $inArr['surplus_money'] = $data['gift_money'];
         $inArr['gift_num'] = $data['gift_num'];
         $inArr['gift_type'] = $data['gift_type'];
         $inArr['start_time'] = $start_time;
@@ -480,5 +485,65 @@ class Business extends ApiController
 
 
     }
+    /*------------------------------------------------------ */
+    //-- 领取红包
+    /*------------------------------------------------------ */
+    public function  receive_redbag(){
+        $this->checkLogin();//验证登陆
+        $RedbagModel = new RedbagModel();
+        $BusinessGiftModel = new BusinessGiftModel();
+        $gift_id = input('gift_id');
 
+        #用户的红包信息
+        $info = $RedbagModel->where(['gift_id'=>$gift_id,'user_id'=>$this->userInfo['user_id']])->find();
+        if(empty($info)==false)  return $this->ajaxReturn(['code' => 0,'msg' => '已领取过该红包,请勿重复领取']);
+
+        #商家的红包信息
+        $gift_info = $BusinessGiftModel->where(['id'=>$gift_id])->find();
+        if(empty($gift_info)) return $this->ajaxReturn(['code' => 0,'msg' => '红包不存在']);
+        #是否结束
+        if($gift_info['status']==3){
+            return $this->ajaxReturn(['code' => -1,'msg' => '活动已结束','url'=> url('store/gift_receive',array('type'=>3))]);
+        }
+        #是否发完
+        if($gift_info['gift_num']==0) return $this->ajaxReturn(['code' => -1,'msg' => '红包已发完','url'=> url('store/gift_receive',array('type'=>2))]);
+
+        #计算前抢到的红包金额
+        if($gift_info['gift_type']==1){
+            #随机红包
+            $price = getPack($gift_info['surplus_money'],$gift_info['gift_num'],0.01);
+        }else{
+            #平均红包
+            $price =  sprintf("%.2f",$gift_info['gift_money']/$gift_info['total_num']);
+        }
+
+        $inArr['user_id'] = $this->userInfo['user_id'];
+        $inArr['gift_id'] = $gift_info['id'];
+        $inArr['business_id'] = $gift_info['business_id'];
+        $inArr['price'] = $price;
+        $inArr['threshold'] = $gift_info['threshold'];
+        $inArr['status'] = 0;
+        $inArr['add_time'] = time();
+        $inArr['start_time'] = $gift_info['start_time'];
+        $inArr['expire_time'] = $gift_info['end_time'];
+        Db::startTrans();
+        $res = $RedbagModel->insertGetId($inArr);
+        if($res){
+            #更新红包的剩余数量与剩余金额
+            $map['gift_num'] = $gift_info['gift_num']-1;
+            $map['surplus_money'] = $gift_info['surplus_money']-$price;
+            $res1 = $BusinessGiftModel->where('id',$gift_info['id'])->update($map);
+            if(!$res1){
+                $this->ajaxReturn(['code' => 0,'msg' => '更新红包有误']);
+                Db::rollback();
+            }
+            Db::commit();
+            return $this->ajaxReturn(['code' => 1,'msg' => '领取成功','url'=> url('store/gift_receive',array('type'=>1,'id'=>$res))]);
+
+        }else{
+            Db::rollback();
+            return $this->ajaxReturn(['code' => 0,'msg' => '领取失败']);
+        }
+
+    }
 }

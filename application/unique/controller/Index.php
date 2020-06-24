@@ -11,6 +11,7 @@ use app\mainadmin\model\RegionModel;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\unique\model\SearchRecordsModel;
+use app\store\model\BusinessGiftModel;
 
 class Index extends ClientbaseController{
 
@@ -97,6 +98,7 @@ class Index extends ClientbaseController{
     /*------------------------------------------------------ */
     public function detail(){
         $UserBusinessModel = new UserBusinessModel();
+        $BusinessGiftModel = new BusinessGiftModel();
         $business_id = input('business_id');
         #店铺信息
         $info = $UserBusinessModel->where('business_id',$business_id)->find();
@@ -106,6 +108,8 @@ class Index extends ClientbaseController{
         $label = explode(',',$info['label']);
         #鼓励金处理
         $profits = unserialize(settings('profits'))[$info['profits']]['hearten'];
+        #是否有红包活动
+        $info['gift_id'] = $BusinessGiftModel->where(['business_id'=>$info['business_id'],'status'=>0])->value('id');
 
         $this->assign('profits',$profits);
         $this->assign('label',$label);

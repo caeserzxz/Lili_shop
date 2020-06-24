@@ -147,4 +147,23 @@ class Store extends ClientbaseController{
         $this->assign('title', '红包详情');
         return $this->fetch('gift_detail');
     }
+
+    /*------------------------------------------------------ */
+    //-- 红包领取结果
+    //-- $type 1领取成功  2已发完  3红包活动已结束
+    /*------------------------------------------------------ */
+    public function gift_receive(){
+        $type = input('type');
+        if($type==1){
+            $RedbagModel = new RedbagModel();
+            #领取成功
+            $id = input('id');
+            $money = $RedbagModel->where('redbag_id',$id)->value('redbag_id');
+            $this->assign('money',$money);
+        }
+        $this->assign('type',$type);
+        $this->assign('title', '领取红包');
+        return $this->fetch('gift_receive');
+    }
+
 }?>

@@ -75,13 +75,15 @@
             <!-- 地图位置 -->
             <div class="warp-map">
                 <img class="map-img" src="{$info.map_imgs}" alt="">
+                {if condition="$info.gift_id neq ''"}
                 <div class="redenv">
                     <img class="icon-imgred" src="__STATIC__/unique/images/hongbao.png" alt="">
-                    <div class="text">
+                    <div class="text" onclick="receive_redbag({$info.gift_id});">
                         <p>点击</p>
                         <p>领取</p>
                     </div>
                 </div>
+                {/if}
             </div>
 
             <!-- 底部按钮  去买单 -->
@@ -144,6 +146,31 @@
         //     });
         // }
 
+        //领取红包
+        var isPost = false;
+        function receive_redbag(gift_id){
+            if(isPost) return;
+            isPost = true;
+            $.ajax({
+                url:'{:url("unique/api.business/receive_redbag")}',// 跳转到 action
+                data:{'gift_id':gift_id},
+                type:'post',
+                cache:false,
+                async: false,
+                dataType:'json',
+                success:function(res) {
+                    if (res.code == 0){
+                        _alert(res.msg,res.url);
+                        return false;
+                    }
+                    window.location.href = res.url
+                    // _alert(res.msg,res.url);
+                    // _alert(res.msg,'{:url("unique/store/gift_list")}');
+                },error : function(res) {
+                    $.toast(res.msg);
+                }
+            });
+        }
     </script>
 </body>
 

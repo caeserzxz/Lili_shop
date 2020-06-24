@@ -832,3 +832,60 @@ function uploadimage($base_img,$img_type){
 
     return $return;
 }
+
+/** 获取区间内随机红包（符合正态分布）
+ * @param $min 红包最小值
+ * @param $max 红包最大值
+ * @param $num 红包个数
+ * @param $total 红包金额
+ * @return array
+ */
+function rand_section ($min,$max,$num,$total){
+
+    $data = array();
+    if ($min * $num > $total) {
+        return array();
+    }
+    if($max*$num < $total){
+        return array();
+    }
+    while ($num >= 1) {
+        $num--;
+        $kmix = max($min, $total - $num * $max);
+        $kmax = min($max, $total - $num * $min);
+        $kAvg = $total / ($num + 1);
+        //获取最大值和最小值的距离之间的最小值
+        $kDis = min($kAvg - $kmix, $kmax - $kAvg);
+        //获取0到1之间的随机数与距离最小值相乘得出浮动区间，这使得浮动区间不会超出范围
+        $r = ((float)(rand(1, 10000) / 10000) - 0.5) * $kDis * 2;
+        $k = sprintf("%.2f", $kAvg + $r);
+        $total -= $k;
+        $data[] = $k;
+    }
+    return $data;
+}
+
+//红包结果
+function getPack($total,$num,$min)
+{
+    for ($i=1;$i<$num;$i++)
+    {
+        $safe_total=($total-($num-$i)*$min)/($num-$i);//随机安全上限
+        $money=mt_rand($min*100,$safe_total*100)/100;
+        $total=$total-$money;
+        //红包数据
+        $readPack[]= [
+            'money'=>$money,
+            'balance'=>$total,
+        ];
+    }
+    //最后一个红包，不用随机
+    $readPack[] = [
+        'money'=>$total,
+        'balance'=>0,
+    ];
+    //返回结果
+    return $readPack[array_rand($readPack,1)]['money'];
+    return $readPack;
+}
+
