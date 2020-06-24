@@ -205,7 +205,7 @@ class Users extends ApiController
     {
         $id = input('id','0','trim');
         if(empty($id)){
-            $return['code'] = 1;
+            $return['code'] = 0;
             $return['msg'] = '参数错误';
             return $this->ajaxReturn($return);
         }
@@ -216,12 +216,11 @@ class Users extends ApiController
         $where[] = ['log_id', '=', $id];
         $info = $PayRecordModel->where($where)->find();
         if(empty($info)){
-            $return['code'] = 1;
+            $return['code'] = 0;
             $return['msg'] = '找不到记录';
             return $this->ajaxReturn($return);
         }
-        $business = $UserBusinessModel->getInfo($info['business_id'],'business_id');
-        $info['business_name'] = $business['business_name'];
+        $info['business_name'] = $UserBusinessModel->getInfo($info['business_id'],'business_id','business_name');
         $info['pay_type_str'] = PayRecordModel::$type_str[$info['pay_type']];
         $info['addtime'] = date('Y-m-d H:i',$info['add_time']);
         $return['info'] = $info;
