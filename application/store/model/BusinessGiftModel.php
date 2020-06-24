@@ -18,4 +18,15 @@ class BusinessGiftModel extends BaseModel
         Cache::rm($this->mkey);
     }
 
+    /*------------------------------------------------------ */
+    //-- 商家红包自动过期
+    /*------------------------------------------------------ */
+    public function gift_overdue(){
+        #获取当前所有过期的
+        $where[] = ['status','=',0];
+        $where[] = ['end_time','<',time()];
+        $map['status'] = 3;
+        $res = $this->where($where)->update($map);
+        return $res;
+    }
 }

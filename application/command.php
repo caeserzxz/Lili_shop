@@ -9,4 +9,6 @@
 // | Author: yunwuxin <448901948@qq.com>
 // +----------------------------------------------------------------------
 
-return [];
+return [
+    'RedBagOverdue' => 'app\\unique\\command\\RedBagOverdue',//商家红包和用户领的红包,自动过期定时任务  每天:00:00:01执行
+];

@@ -166,4 +166,12 @@ class Store extends ClientbaseController{
         return $this->fetch('gift_receive');
     }
 
+    /*------------------------------------------------------ */
+    //-- 去买单
+    /*------------------------------------------------------ */
+    public function pay_bill(){
+        $this->assign('title', '去买单');
+        return $this->fetch('pay_bill');
+    }
+
 }?>
