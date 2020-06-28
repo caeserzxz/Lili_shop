@@ -170,6 +170,12 @@ class Store extends ClientbaseController{
     //-- 去买单
     /*------------------------------------------------------ */
     public function pay_bill(){
+        $business_id = input('business_id');
+        #商家信息
+        $info = $this->Model->where('business_id',$business_id)->find();
+        #用户信息
+        $this->assign('info',$info);
+        $this->assign('userInfo',$this->userInfo);
         $this->assign('title', '去买单');
         return $this->fetch('pay_bill');
     }

@@ -1,0 +1,192 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+<link rel="stylesheet" href="__STATIC__/unique/css/pay.css" />
+    <div class="page chongzhi payment_coupons">
+        <div class="page-hd">
+            <div class="header bor-1px-b">
+    <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">付款</div>
+    <div class="header-right">
+        <a href=''></a>
+    </div>
+</div>
+        </div>
+
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="shop-name">
+                <div class="fs34 color_3">{$info.business_name}</div>
+                <div><img src="{$info.logo}" alt=""></div>
+            </div>
+            <div class="inputBlock">
+                <div class="tips fs26 fw_b color_3">消费金额</div>
+                <span class="fs52 fw_b color_9" style="display: inline-block;">￥</span>
+                <input type="number" id="money" class="fs60 num textBox" placeholder="请输入金额">
+            </div>
+            <div class="paytype">
+                <div class="title fs34 color_3 fw_b">请选择支付方式</div>
+                <div class="cells">
+                    <div class="cell">
+                        <div class="cell_hd"></div>
+                        <div class="cell_bd"><span class="fs28 fw_b color_3">店铺红包</span></div>
+                        <div class="cell_ft" onclick="showCoupons()">
+                            <span class="mainjian" >不使用优惠券</span>
+                            <span><img src="__STATIC__/unique/images/rightIcon.png" alt=""></span>
+                        </div>
+                    </div>
+                    <div class="cell">
+                        <div class="cell_hd"></div>
+                        <div class="cell_bd"><span class="fs28 fw_b color_3">鼓励金</span></div>
+                        <div class="cell_ft fs26">
+                            <span>鼓励金剩余:</span>
+                            <span class="color_r">{$userInfo.account.balance_money}</span>
+                            <label for="s12">
+                                <div class="iconBox">
+                                    <input type="checkbox" class="check" name="checkbox" id="s12">
+                                    <i class="icon_checked"></i>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 抢第2件半价 -->
+            <div class="rush-buy" style="display: none;">
+                <img src="__STATIC__/unique/images/fuk.png" alt="">
+            </div>
+
+            <div class="button fs32 fw_b color_w BGcolor_r">确认付款</div>
+
+        </div>
+        <!-- 弹出使用优惠券 -->
+        <div class="model getCoupons" style="display: none">
+            <div class="modelContent">
+                <div class="title fs36 fw_b color_3">请选择优惠券</div>
+                <div class="list useTicket">
+                    <label for="r11">
+                        <div class="ticketInfo">
+                            <div class="fs30 fw_b color_3 title_str">不使用优惠券</div>
+                        </div>
+
+                        <div class="iconBox">
+                            <input type="radio" class="check" name="radiobox" id="r11" checked value="0" data-str="不使用优惠券">
+                            <i class="icon_checked"></i>
+                        </div>
+                    </label>
+                    <div class="lineBox">
+                        <p></p>
+                        <span class="fs24 color_9" id="used_num">可使用</span>
+                    </div>
+                    <div class="scrllBox" id="tab1">
+                        <script type="text/html" id="listTpl1">
+                            {{each used as item index}}
+                            <label for="r{{index}}">
+                                <div class="ticketInfo">
+                                    <div class="fs30 fw_b color_3"><span class="fw_b fs28 " >￥</span><em
+                                            class="fs40 num">{{item.price}}</em>{{item.title}}</div>
+                                    <p>{{item.time_str}}</p>
+                                    <p >满{{item.threshold}}元可用</p>
+                                </div>
+                                <div class="iconBox">
+                                    <input type="radio" class="check" name="radiobox" id="r{{index}}" data-id="{{item.redbag_id}}"  data-str="{{item.title}}">
+                                    <i class="icon_checked"></i>
+                                </div>
+                            </label>
+                            {{/each}}
+                        </script>
+                    </div>
+
+                    <div class="lineBox">
+                        <p></p>
+                        <span class="fs24 color_9" id="not_used_num">不可使用</span>
+                    </div>
+                    <div class="scrllBox" id="tab2">
+                        <script type="text/html" id="listTpl2">
+                            {{each not_used as item index}}
+                                <label for="l{{item.index}}">
+                                    <div class="ticketInfo noUse">
+                                        <div class="fs30 fw_b color_3"><span class="fw_b fs28">￥</span><em
+                                                class="fs40 num">{{item.price}}</em>{{item.title}}</div>
+                                        <p>{{item.time_str}}</p>
+                                        <p>满{{item.threshold}}元可用</p>
+                                    </div>
+
+                                </label>
+                            {{/each}}
+                        </script>
+                    </div>
+
+                </div>
+                <div class="closeBtn fs32 fw_b color_w BGcolor_r" onclick="hideCoupons()">完成</div>
+            </div>
+        </div>
+
+    </div>
+
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        var  business_id = {$info.business_id};
+        $(function(){
+
+        })
+        function showCoupons() {
+
+            $('.getCoupons').show()
+        }
+        function hideCoupons() {
+            var str =  $("input[name=radiobox]:checked").attr('data-str');
+            $('.mainjian').css('display','block');
+            $('.mainjian').html(str);
+
+            $('.getCoupons').hide()
+        }
+        $('#money').on('change',function(){
+            $('.mainjian').html('不使用优惠券');
+            $('.mainjian').css('display','none');
+            $('#r11').attr('checked');
+
+            var  money =$('#money').val();
+            var money_reg = '/((^[1-9]\\d*)|^0)(\\.\\d{0,2}){0,1}$/';
+
+            if(!(/((^[1-9]\d*)|^0)(\.\d{0,2}){0,1}$/.test(money))) {
+                _alert("请填写正确的金额");
+                return false;
+            }
+            //获取使用红包
+            get_used();
+        })
+        function get_used(type){
+            var money = $('#money').val();
+            $.ajax({
+                'url':'{:url("unique/api.business/get_user_redbag")}',
+                'type':'post',
+                'data': {'business_id':business_id,'money':money},
+                'dataType':'json',
+                'success':function(res) {
+                    if (res.used.length > 0) {
+                        $('#tab1').append(template('listTpl1',res));
+                    }
+                    if (res.used.length > 0) {
+                        $('#tab2').append(template('listTpl2',res));
+                    }
+
+                    $('#used_num').html('可使用('+res.used_num+')');
+                    $('#not_used_num').html('可使用('+res.not_used_num+')');
+                }
+            });
+        }
+
+    </script>
+</body>
+
+</html>
+{/block}

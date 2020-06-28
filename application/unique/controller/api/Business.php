@@ -546,4 +546,53 @@ class Business extends ApiController
         }
 
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取用户的商家红包
+    /*------------------------------------------------------ */
+    public function get_user_redbag(){
+        $RedbagModel = new RedbagModel();
+        $UserBusinessModel = new UserBusinessModel();
+        $business_id = input('business_id');
+        $money = input('money');
+
+        $time = time();
+        $where[] = ['user_id','=',$this->userInfo['user_id']];
+        $where[] = ['business_id','=',$business_id];
+        $where[] = ['status','=',0];
+
+        $arr = [
+            'used'=>[],
+            'not_used'=>[]
+        ];
+        $list = $RedbagModel->where($where)->select();
+        foreach ($list as $k=>$v){
+            $business = $UserBusinessModel->where('business_id',$v['business_id'])->find();
+            $v['title'] = $business['business_name'];
+            $v['time_str'] = date('Y-m-d',$v['start_time']).'-'.date('Y-m-d',$v['expire_time']);
+            #查看时间是否可使用
+            if($time>$v['start_time']&&$time<$v['expire_time']){
+                #查看是否存在门槛
+                if($v['threshold']>0){
+                    if($money>=$v['threshold']){
+                        #可使用
+                        array_push($arr['used'],$v);
+                    }else{
+                        #不可使用
+                        array_push($arr['not_used'],$v);
+                    }
+                }else{
+                    #可使用
+                    array_push($arr['used'],$v);
+                }
+            }else{
+                #不使用
+                array_push($arr['not_used'],$v);
+            }
+
+        }
+        $arr['used_num'] = count($arr['used']);
+        $arr['not_used_num'] = count($arr['not_used']);
+        $this->ajaxReturn($arr);
+    }
 }
