@@ -44,7 +44,7 @@
                             <span class="color_r">{$userInfo.account.balance_money}</span>
                             <label for="s12">
                                 <div class="iconBox">
-                                    <input type="checkbox" class="check" name="checkbox" id="s12">
+                                    <input type="checkbox" class="check" name="checkbox" id="s12" value="1">
                                     <i class="icon_checked"></i>
                                 </div>
                             </label>
@@ -58,7 +58,7 @@
                 <img src="__STATIC__/unique/images/fuk.png" alt="">
             </div>
 
-            <div class="button fs32 fw_b color_w BGcolor_r">确认付款</div>
+            <div class="button fs32 fw_b color_w BGcolor_r" onclick="pay();">确认付款</div>
 
         </div>
         <!-- 弹出使用优惠券 -->
@@ -72,7 +72,7 @@
                         </div>
 
                         <div class="iconBox">
-                            <input type="radio" class="check" name="radiobox" id="r11" checked value="0" data-str="不使用优惠券">
+                            <input type="radio" class="check" name="radiobox" id="r11" checked value="0" data-str="不使用优惠券" data-id="-1">
                             <i class="icon_checked"></i>
                         </div>
                     </label>
@@ -173,10 +173,10 @@
                 'dataType':'json',
                 'success':function(res) {
                     if (res.used.length > 0) {
-                        $('#tab1').append(template('listTpl1',res));
+                        $('#tab1').html(template('listTpl1',res));
                     }
                     if (res.used.length > 0) {
-                        $('#tab2').append(template('listTpl2',res));
+                        $('#tab2').html(template('listTpl2',res));
                     }
 
                     $('#used_num').html('可使用('+res.used_num+')');
@@ -185,6 +185,33 @@
             });
         }
 
+        function pay(){
+            var arr = new Object();
+            arr.money = $('#money').val();
+            arr.red_id = $("input[name=radiobox]:checked").attr('data-id');
+            arr.business_id = business_id;
+            var is_hearten = $("input[name=checkbox]:checked").val()
+            if(is_hearten==1){
+                //选中
+                arr.is_hearten = 1;
+            }
+
+            if(money==''||money==null){
+                $.toast('请输入消费金额');
+            }
+
+            $.ajax({
+                'url':'{:url("unique/api.business/add_order")}',
+                'type':'post',
+                'data': arr,
+                'dataType':'json',
+                'success':function(res) {
+                    console.log(res);
+                }
+            });
+
+
+        }
     </script>
 </body>
 
