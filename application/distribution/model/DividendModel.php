@@ -227,12 +227,15 @@ class DividendModel extends BaseModel
             $buyWhere[] = ['pay_status', '=', 1];
             $buyWhere[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $ogrow['goods_id'] . "',buy_goods_id)")];
             $buy_order_id = $OrderModel->where($buyWhere)->value('order_id');
+
             if ($buy_order_id < 1 && strstr($ogrow['buy_brokerage_type'], 'first_buy')) {//首购复购
-                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
                 continue;
             }
             if ($buy_order_id > 0 && strstr($ogrow['buy_brokerage_type'], 'repeat_buy')) {//限制复购
-                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
                 continue;
             }
         }
@@ -270,7 +273,9 @@ class DividendModel extends BaseModel
     {
 
         if ($orderInfo['buy_brokerage_amount'] > 0) {
-            $inArr['dividend_amount'] = $orderInfo['buy_brokerage_amount'];
+            $buy_brokerage_amount += $orderInfo['buy_brokerage_amount'] * 0.01 * $orderInfo['order_amount'];
+
+            $inArr['dividend_amount'] = $buy_brokerage_amount;
             $inArr['order_type'] = 'role_order_buy_back';
             $inArr['order_id'] = $orderInfo['order_id'];
             $inArr['order_sn'] = $orderInfo['order_sn'];

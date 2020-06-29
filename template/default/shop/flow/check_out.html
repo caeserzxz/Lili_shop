@@ -42,7 +42,7 @@
             <span class="fs28">运费</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">￥</p><em class="fs34 shippingFee">0.00</em></div>
         </div>
-        <div class="color_3 cell use_integral hide fw_b">
+        <div class="color_3 cell use_integral fw_b" style="display: none;">
             <span class="fs28">积分：</span>
             <div class="color_3 fs28 num money"><p class="fw_b fm_p">-</p><em class="fs34 integralTotal"></em></div>
         </div>
@@ -69,7 +69,7 @@
     <div class="left"><span class="fs28 color_9">实付款</span>
         <div class="color_3 fs30 num money payTotal"><p class="fw_b fm_p">￥</p><em class="fs52">00</em><span>.00</span>
         </div>
-        <span class="color_9 fs28 num money use_integral hide"> + 积分<i class="color_3 fs52 integralTotal"></i></span>
+        <span class="color_9 fs28 num money use_integral" style="display: none;"> + 积分<i class="color_3 fs52 integralTotal"></i></span>
     </div>
     <div class="gopay fs28 fw_b color_w BGcolor_r">立即支付</div>
 </div>
@@ -179,7 +179,7 @@
             $('.totalGoodsPrice').html(res.cartInfo.totalGoodsPrice);
             $('.totalDiscount').html(res.cartInfo.totalDiscount);
             if (res.cartInfo.integralTotal > 0) {
-                $('.use_integral').removeClass('hide');
+                $('.use_integral').show();
                 $('.integralTotal').html(res.cartInfo.integralTotal);
             }
             orderTotal = res.cartInfo.orderTotal;
