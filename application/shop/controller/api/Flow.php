@@ -239,6 +239,8 @@ class Flow extends ApiController
         if (empty($address)) return $this->error('相关收货地址不存在.');
         $used_bonus_id = input('used_bonus_id', 0, 'intval');
 
+        $balanceDeduction = input('balanceDeduction'); // 鼓励金抵扣金额
+
 		$recids = input('recids', '', 'trim');
         $cartList = $this->Model->getCartList(1, true,$recids,false,false);
 
@@ -372,8 +374,9 @@ class Flow extends ApiController
             $inArr['use_bonus'] = $cartList['use_bonus_goods_amount'];
         }
         $inArr['order_amount'] = $cartList['orderTotal'] + $inArr['shipping_fee'] - $inArr['use_bonus'];
+        $inArr['order_amount'] -= $balanceDeduction;
 
-        if ($inArr['order_amount'] > 0){
+        /*if ($inArr['order_amount'] > 0){
             $pay_id = input('pay_id', 0, 'intval');
             if ($pay_id < 0) return $this->error('请选择支付方式.');
             $PaymentModel = new PaymentModel();
@@ -383,15 +386,28 @@ class Flow extends ApiController
             $payment['pay_code'] = 'integral';
             $payment['is_pay'] = 1;
             $payment['pay_name'] = '积分兑换';
-
+        }*/
+        if ($this->is_integral == 1){
+            $payment['pay_code'] = 'integral';
+            $payment['is_pay'] = 1;
+            $payment['pay_name'] = '积分兑换';
+        }else{//积分支付
+            $pay_id = input('pay_id', 0, 'intval');
+            if ($pay_id < 0) return $this->error('请选择支付方式.');
+            $PaymentModel = new PaymentModel();
+            $paymentList = $PaymentModel->getRows();
+            $payment = $paymentList[$pay_id];
         }
+
         if (empty($payment)) return $this->error('相关支付方式不存在或已停用.');
 
-        if ($payment['pay_code'] == 'balance') {//如果使用余额，判断用户余额是否足够
-            if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
+        // if ($payment['pay_code'] == 'balance') {//如果使用余额，判断用户余额是否足够
+            // if ($inArr['order_amount'] > $this->userInfo['account']['balance_money']) {
+            if ($balanceDeduction > $this->userInfo['account']['balance_money']) {
                 return $this->error('余额不足，请使用其它支付方式.');
             }
-        }
+        // }
+        $inArr['balance_deduction'] = $balanceDeduction;
         $inArr['order_type'] = $this->is_integral;//订单类型，0普通订单,1积分订单
 
         if($use_integral > 0){
@@ -399,7 +415,6 @@ class Flow extends ApiController
                 return $this->error('积分不足无法兑换，你的积分余额为：'.$this->userInfo['account']['use_integral']);
             }
             $inArr['use_integral'] = $use_integral;
-
         }
 
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
@@ -502,6 +517,9 @@ class Flow extends ApiController
     /*------------------------------------------------------ */
     public function addOrderGoods($order_id, $cartList, $bonus)
     {
+        $OrderModel = new OrderModel();
+        $orderInfo = $OrderModel->info($order_id);
+
         $orderGoods = [];
         $cart_ids = [];
         $add_time = time();
@@ -537,6 +555,9 @@ class Flow extends ApiController
                     }
                 }
             }
+            if ($orderInfo['balance_deduction']) {
+                $balance_deduction = $og['sale_price'] / $orderInfo['goods_amount'] * $orderInfo['balance_deduction'];
+            }
 
             $goods = array(
                 'order_id' => $order_id,
@@ -568,7 +589,8 @@ class Flow extends ApiController
                 'bonus_after_price' => $bonus_after_price,
                 'usd_bonus_price' => $usd_bonus_price,
                 'buy_brokerage_type' => $og['buy_brokerage_type'],
-                'buy_brokerage_amount' => $og['buy_brokerage_amount']
+                'buy_brokerage_amount' => $og['buy_brokerage_amount'],
+                'balance_deduction' => $balance_deduction
             );
             $orderGoods[] = $goods;
         }

@@ -310,6 +310,19 @@ class OrderModel extends BaseModel
                     return '订单退还积分失败.';
                 }
             }//end
+            //退还订单鼓励金（余额）抵扣 未完成付款情况即非全额抵扣还需要支付现金在订单直接退回余额，全额抵扣订单取消订单后需要平台操作对款
+            if ($orderInfo['balance_deduction'] > 0 && $orderInfo['pay_status'] === $this->config['PS_UNPAYED']) {
+                $inData['balance_money'] = $orderInfo['balance_deduction'];
+                $inData['change_type'] = 3;
+                $inData['by_id'] = $orderInfo['order_id'];
+                $inData['change_desc'] = '订单退还鼓励金:' . $orderInfo['balance_deduction'];
+                $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
+
+                if ($res != true) {
+                    Db::rollback();//回滚
+                    return '订单退还鼓励金失败.';
+                }
+            }//end
             if ($orderInfo['is_stock'] == 1) {//执行商品库存和销量处理
                 $orderGoods = $this->orderGoods($order_id);
                 if ($orderInfo['order_type'] == 1) {//积分订单
@@ -348,13 +361,16 @@ class OrderModel extends BaseModel
                 return '佣金处理失败.';
             }
         } elseif ($upData['pay_status'] == $this->config['PS_RUNPAYED']) {//退款，退回帐户余额
-            if ($orderInfo['money_paid'] > 0) {
-                $refund_amount = $orderInfo['money_paid'] - $orderInfo['tuikuan_money'];//实付金额减去已退金额
+            // if ($orderInfo['money_paid'] > 0) {
+                // $refund_amount = $orderInfo['money_paid'] - $orderInfo['tuikuan_money'];//实付金额减去已退金额
+                $refund_amount = $orderInfo['order_amount'] - $orderInfo['tuikuan_money'];//实付金额减去已退金额
                 if (in_array($orderInfo['pay_code'] ,['balance','offline'])) {//线下打款和余额支付，退回余额
-                    $inData['balance_money'] = $refund_amount;
+                    // $inData['balance_money'] = $refund_amount;
+                    $inData['balance_money'] = $orderInfo['balance_deduction'];
                     $inData['change_type'] = 3;
                     $inData['by_id'] = $orderInfo['order_id'];
-                    $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
+                    // $inData['change_desc'] = '订单退款到余额:' . $orderInfo['money_paid'];
+                    $inData['change_desc'] = '订单退款到余额:' . $orderInfo['balance_deduction'];
                     $res = $AccountLogModel->change($inData, $orderInfo['user_id']);
                     if ($res != true) {
                         Db::rollback();//回滚
@@ -376,8 +392,7 @@ class OrderModel extends BaseModel
                         return '请求退款接口失败：' . $res;
                     }
                 }
-            }
-
+            // }
         } elseif ($upData['shipping_status'] == $this->config['SS_SHIPPED'] && $orderInfo['shipping_status'] == $this->config['SS_UNSHIPPED']) {//发货
             $sendMsg = true;
             $res = $this->distribution($orderInfo, 'shipping');//提成处理

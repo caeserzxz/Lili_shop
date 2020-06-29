@@ -49,17 +49,17 @@
     </div>
     <div class="cellBox">
         <div class="color_3 cell fw_b">
-            <label for="s15" style="width: auto;">
+            <label for="is_balance_deduction" style="width: auto;">
                 <div class="iconBox">
-                    <input type="checkbox" class="check" name="checkbox1" id="s15" checked="checked">
+                    <input type="checkbox" class="check" name="is_balance_deduction" id="is_balance_deduction" checked="checked">
                     <i class="icon_checked"></i>
                 </div>
                 <span class="fs28" >鼓励金抵扣</span>
-                <span class="fs24 color_9">(余额：<span class="color_r">400.00</span>)</span>
+                <span class="fs24 color_9">(余额：<span class="color_r">{$userInfo.account.balance_money}</span>)</span>
             </label>
 
             <div class="color_3 fs28 num money">
-                <p class="fw_b fm_p">-￥</p><em class="fs28">10.00</em>
+                <p class="fw_b fm_p">-￥</p><em class="fs28 balanceDeduction">00.00</em>
             </div>
         </div>
     </div>
@@ -189,17 +189,37 @@
                 supplyerShippingFee = res.shippingFee.supplyerShippingFee;
                 $('.bonusInfo .ticket').show();
                 $('.bonusInfo .usdinfo').html('')
-                getBonusList();
+                if({$setting.shop_used_bonus} == 1) getBonusList();
             }
             evalPrice();
             return true;
         })
     }
     //计算支付金额
+    var balanceDeduction = 0.00;
+    var finalPayTotal = 0.00;
     function evalPrice() {
+
         var payTotal = parseFloat(orderTotal) + parseFloat(shippingFee) - parseFloat(bonus_money);
+
+        var is_balance_deduction = $("#is_balance_deduction").is(':checked');
+        if (is_balance_deduction == true) {
+            // 鼓励金（余额）抵扣
+            if ({$userInfo.account.balance_money} >= payTotal) {
+                balanceDeduction = payTotal;
+            }else{
+                balanceDeduction = {$userInfo.account.balance_money};  
+            }
+        }else{
+            balanceDeduction = 0.00;
+        }
+        $(".balanceDeduction").html(balanceDeduction);
+        payTotal -= balanceDeduction;
+        finalPayTotal = payTotal;
+
         payTotal = payTotal.toFixed(2);
         payTotal = payTotal.split(".");
+
         $('.payTotal').find('em').html(payTotal[0]);
         $('.payTotal').find('span').html('.' + payTotal[1]);
         $('.shippingFee').html(shippingFee);
@@ -238,21 +258,33 @@
         $('.closeBox').on('click', function () {
             $('.model').hide();
         });
+        $("#is_balance_deduction").change(function() {
+            evalPrice();
+        });
         //下单
         $('.buttBox span').on('click', function () {
             var arr = new Object();
             arr.used_bonus_id = used_bonus_id;
             arr.buy_msg = $('#buyMsg').val();
             arr.address_id = $('#address_id').val();
+            arr.balanceDeduction = balanceDeduction;
             if (arr.address_id < 1) {
                 _alert('请设置收货地址后，再操作.');
                 return false;
             }
             arr.pay_id = $("input[name='pay_id']:checked").val();
-            if (typeof(arr.pay_id) == 'undefined' || arr.pay_id < 1) {
+            if (finalPayTotal > 0 && (typeof(arr.pay_id) == 'undefined' || arr.pay_id < 1)) {
                 _alert('请选择支付方式.');
                 return false;
             }
+            if (finalPayTotal == 0 ) {
+                if (arr.pay_id > 0) {
+                    _alert('鼓励金全额抵扣无需选择支付方式.');
+                    return false;
+                }
+                arr.pay_id = 2;// 当鼓励金全额抵扣时固定选择余额抵扣
+            }
+
             if (rec_id != '') {
                 arr.recids = rec_id;
             }
