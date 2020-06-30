@@ -12,6 +12,8 @@ use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\store\model\BusinessGiftModel;
 use app\unique\model\RedbagModel;
+use app\unique\model\PayRecordModel;
+use app\mainadmin\model\PaymentModel;
 
 class Store extends ClientbaseController{
     /*------------------------------------------------------ */
@@ -180,4 +182,34 @@ class Store extends ClientbaseController{
         return $this->fetch('pay_bill');
     }
 
+    /*------------------------------------------------------ */
+    //-- 下单完成
+    /*------------------------------------------------------ */
+    public function done(){
+        $log_id = input('log_id',0,'intval');
+        $type = input('type','','trim');
+        $this->assign('title', '订单支付');
+        $PayRecordModel = new PayRecordModel();
+        $orderInfo = $PayRecordModel->where('log_id',$log_id)->find();
+        if (empty($orderInfo) || $orderInfo['user_id'] != $this->userInfo['user_id']){
+            return $this->error('订单不存在.');
+        }
+        if ($orderInfo['status'] == 9){
+            return $this->error('订单已作废.');
+        }
+        $goPay = 0;
+        $orderInfo['is_pay'] = 1;
+        $payment = (new PaymentModel)->where('pay_id', $orderInfo['pay_id'])->find();
+        if ($type == 'add' && $orderInfo['status'] == 0){
+            if ($orderInfo['is_pay'] == 1){
+                $goPay = 1;
+            }
+        }
+        $this->assign('settings',settings());
+        $this->assign('payment', $payment);
+        $this->assign('goPay', $goPay);
+        $this->assign('orderInfo', $orderInfo);
+        $this->assign('balance_money',$this->userInfo['account']['balance_money']);
+        return $this->fetch('done');
+    }
 }?>

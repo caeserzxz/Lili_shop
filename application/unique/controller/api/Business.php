@@ -12,6 +12,7 @@ use app\member\model\UsersModel;
 use app\store\model\BusinessGiftModel;
 use app\unique\model\RedbagModel;
 use app\member\model\AccountLogModel;
+use app\mainadmin\model\PaymentModel;
 
 /*------------------------------------------------------ */
 //-- 首页相关API
@@ -610,6 +611,10 @@ class Business extends ApiController
         $red_id = input('red_id');
         $is_hearten = input('is_hearten');
         $business_id = input('business_id');
+        $pay_id = input('pay_id');
+        $PaymentModel = new PaymentModel();
+        $paymentList = $PaymentModel->getRows();
+        $payment = $paymentList[$pay_id];
         $business = $this->Model->where('business_id',$business_id)->find();
         #红包金额
         $red_price = 0;
@@ -636,6 +641,7 @@ class Business extends ApiController
                 $balance_amount = $money-$red_price;
             }
         }
+
         #鼓励金比例处理
         $profits = unserialize(settings('profits'));
         $profit = intval($profits[$business['profits']]['hearten']);
@@ -643,13 +649,15 @@ class Business extends ApiController
         $inArr['order_sn'] = $PayRecordModel->getOrderSn();
         $inArr['business_id'] = $business_id;
         $inArr['user_id'] = $this->userInfo['user_id'];
-        $inArr['pay_type'] = $business_id;
+        $inArr['pay_type'] = $payment['pay_code'];
+        $inArr['pay_code'] = $payment['pay_code'];
         $inArr['amount'] = $money;
         $inArr['amount_actual'] = $money-$red_price-$balance_amount;
         $inArr['redbag_amount'] = $red_price;
         $inArr['balance_amount'] = $balance_amount;
         $inArr['balance_proportion'] = $business_id;
         $inArr['status'] = 0;
+        $inArr['pay_id'] = $payment['pay_id'];
         $inArr['add_time'] = $time;
 
         Db::startTrans();
@@ -685,7 +693,7 @@ class Business extends ApiController
         }
         Db::commit();
 
-        $return['order_id'] = $res;
+        $return['log_id'] = $res;
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }

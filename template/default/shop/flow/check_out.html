@@ -304,6 +304,8 @@
             //     }
 
             // }
+            console.log(arr)
+            return;
             jq_ajax('{:url("shop/api.flow/addOrder")}', arr, function (res) {
                 if (res.code == 0) {
                     _alert(res.msg);
