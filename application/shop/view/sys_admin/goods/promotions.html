@@ -1,11 +1,11 @@
-<div class="form-group">
+<div class="form-group hide">
     <label class="col-sm-2 control-label">返还类型：</label>
     <div class="col-sm-8" >
         <label><input type="checkbox" name="buy_brokerage_type[]" value="first_buy"  {:in_array('first_buy',$row['buy_brokerage_type'])?'checked':'';}> 首次购买</label>
         <label><input type="checkbox" name="buy_brokerage_type[]" value="repeat_buy"  {:in_array('repeat_buy',$row['buy_brokerage_type'])?'checked':'';}> 重复购买</label>
     </div>
 </div>
-<div class="form-group">
+<div class="form-group hide">
     <label class="col-sm-2 control-label">购买返还：</label>
     <div class="col-sm-8" >
         <input type="text" class="input-mini" name="buy_brokerage_amount" data-rule-min="0" data-rule-max="9999" data-rule-number="true" value="{$row['buy_brokerage_amount']|intval}"> %

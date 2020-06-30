@@ -65,7 +65,7 @@
                     {/if}
                 {/eq}
             </div>
-            <span class="fs20 color_w BGcolor_r ratio">自购返{$goods.buy_brokerage_amount}%</span>
+            <span class="fs20 color_w BGcolor_r ratio">自购返{:settings('shop_self_buy_prize')}%</span>
 
            <span class="fs22 color_w BGcolor_r {$goods['is_promote']==0?'hide':''}" id="is_prom_price">活动价</span>
         </div>

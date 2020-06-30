@@ -211,34 +211,43 @@ class DividendModel extends BaseModel
     /*------------------------------------------------------ */
     public function buyBrokerageByOrder(&$orderInfo, $status)
     {
+        // 是否是消费者身份
         $where[] = ['order_id', '=', $orderInfo['order_id']];
         $where[] = ['order_type', '=', 'order_buy_back'];
         $log_id = $this->where($where)->value('log_id');
         $buy_brokerage_amount = 0;
-        $OrderModel = new OrderModel();
-        $ogrows = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select()->toArray();
-        foreach ($ogrows as $ogrow) {
-            if ($ogrow['buy_brokerage_amount'] <= 0) {
-                continue;
-            }
-            $buyWhere = [];
-            $buyWhere[] = ['user_id', '=', $orderInfo['user_id']];
-            $buyWhere[] = ['order_status', '=', 1];
-            $buyWhere[] = ['pay_status', '=', 1];
-            $buyWhere[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $ogrow['goods_id'] . "',buy_goods_id)")];
-            $buy_order_id = $OrderModel->where($buyWhere)->value('order_id');
+        // $OrderModel = new OrderModel();
+        // $ogrows = (new OrderGoodsModel)->where('order_id', $orderInfo['order_id'])->select()->toArray();
+        // foreach ($ogrows as $ogrow) {
+        //     if ($ogrow['buy_brokerage_amount'] <= 0) {
+        //         continue;
+        //     }
+        //     $buyWhere = [];
+        //     $buyWhere[] = ['user_id', '=', $orderInfo['user_id']];
+        //     $buyWhere[] = ['order_status', '=', 1];
+        //     $buyWhere[] = ['pay_status', '=', 1];
+        //     $buyWhere[] = ['', 'exp', Db::raw("FIND_IN_SET('" . $ogrow['goods_id'] . "',buy_goods_id)")];
+        //     $buy_order_id = $OrderModel->where($buyWhere)->value('order_id');
 
-            if ($buy_order_id < 1 && strstr($ogrow['buy_brokerage_type'], 'first_buy')) {//首购复购
-                // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
-                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
-                continue;
-            }
-            if ($buy_order_id > 0 && strstr($ogrow['buy_brokerage_type'], 'repeat_buy')) {//限制复购
-                // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
-                $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
-                continue;
-            }
-        }
+        //     if ($buy_order_id < 1 && strstr($ogrow['buy_brokerage_type'], 'first_buy')) {//首购复购
+        //         // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+        //         $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
+        //         continue;
+        //     }
+        //     if ($buy_order_id > 0 && strstr($ogrow['buy_brokerage_type'], 'repeat_buy')) {//限制复购
+        //         // $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * $ogrow['goods_number'];
+        //         $buy_brokerage_amount += $ogrow['buy_brokerage_amount'] * 0.01 * $ogrow['shop_price'] * $ogrow['goods_number'];
+        //         continue;
+        //     }
+        // }
+        // 自购返基数 商品总额+物流费 避免鼓励金（余额）抵扣导致基数对不上
+        $totalAmount = $orderInfo['goods_amount'] + $orderInfo['shipping_fee'] - $orderInfo['tuikuan_money'];
+        $prize = settings('shop_self_buy_prize');
+        // 计算可自返金额
+        $buy_brokerage_amount = round($totalAmount / 100 * $prize,2);
+        $UsersModel = new UsersModel();
+        $userInfo = $UsersModel->info($orderInfo['user_id']);
+
         if ($buy_brokerage_amount > 0) {
             if ($log_id > 0) {
                 $upArr['dividend_amount'] = $buy_brokerage_amount;
@@ -253,9 +262,12 @@ class DividendModel extends BaseModel
                 $inArr['order_id'] = $orderInfo['order_id'];
                 $inArr['order_sn'] = $orderInfo['order_sn'];
                 $inArr['buy_uid'] = $orderInfo['user_id'];
-                $inArr['order_amount'] = $orderInfo['order_amount'];
+                // $inArr['order_amount'] = $orderInfo['order_amount'];
+                $inArr['order_amount'] = $totalAmount;
                 $inArr['dividend_uid'] = $orderInfo['user_id'];
                 $inArr['award_name'] = '自购返还';
+                $inArr['role_id'] = $userInfo['role_id'];
+                $inArr['role_name'] = $userInfo['role']['role_name'];
                 $inArr['status'] = $status;
                 $inArr['add_time'] = time();
                 $res = $this->save($inArr);

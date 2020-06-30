@@ -15,7 +15,7 @@
                                 <em class="fs52"></em><p></p>
                             </div>
                         {/eq}
-                        <span class="fs20 color_w BGcolor_r ratio">自购返{$goods.buy_brokerage_amount}%</span>
+                        <span class="fs20 color_w BGcolor_r ratio">自购返{:settings('shop_self_buy_prize')}%</span>
                         {gt name="goods.use_integral" value="0"}
                             <p class="fw_b fm_p"> + </p><em class="fs32 color_r">{$goods.use_integral}</em>积分
                         {/gt}

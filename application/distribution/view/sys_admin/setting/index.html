@@ -107,10 +107,14 @@
                         <div class="col-sm-8 controls">
                             <strong>{$shop_after_sale_limit==0?'订单签收到帐':$shop_after_sale_limit.'天'}</strong>
                             <span class="help-inline">（与订单申请售后时间一致，即签收后过了此时间即到帐，如需修改请前往【商城-商城设置】中修改）</span>
-
                         </div>
                     </div>
-
+                    <div class="form-group" >
+                        <label class="col-sm-3 control-label">[消费者]自购奖：</label>
+                        <div class="controls">
+                            <input type="text" name="setting[shop_self_buy_prize]" data-rule-required="true" class="input-small" value="{$setting.shop_self_buy_prize}" placeholder=""> <span class="help-inline">% 线上商城自购返奖</span>
+                        </div>
+                    </div>
                 </div>
                 <div class="tab-pane " id="bydividend">
                     <div class="form-group">
