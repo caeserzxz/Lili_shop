@@ -245,40 +245,36 @@ EOF;
     public function getCode2()
     {
         header("Content-type:text/html;charset=utf-8");
-        // 修改订单的支付方式
+        //修改订单的支付方式
         $log_id = input('log_id/d'); // 订单id
         $PayRecordModel = new PayRecordModel();
         $order = $PayRecordModel->where("log_id", $log_id)->find();
-        dump($order);die;
-        $returnDoneUrl = 'unique/flow/done';
-        $returnErrorUrl = 'shop/order/info';
+        $returnDoneUrl = 'unique/store/done';
+        $returnErrorUrl = 'unique/wallet/payrecordinfo';
 
         if ($order['status'] == 1) {
-            return $this->error('此订单，已完成支付.', url($returnDoneUrl, ['order_id' => $order_id]));
+            return $this->error('此订单，已完成支付.', url($returnDoneUrl, ['log_id' => $log_id]));
         }
-        if ($order['status'] == 2) {
-            return $this->error('此订单，已取消不能执行支付.', url($returnErrorUrl, ['order_id' => $order_id]));
+        if ($order['status'] == 9) {
+            return $this->error('此订单，已取消不能执行支付.', url($returnErrorUrl, ['id' => $log_id]));
         }
 
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
-        // if ($this->pay_code == 'balance') {//如果使用余额，判断用户余额是否足够
-        if ($order['balance_deduction']) { //鼓励金抵扣
+        if ($order['balance_amount']>=($order['amount']-$order['redbag_amount'])) { //全额鼓励金抵扣
             Db::startTrans();//启动事务
             if ($order['user_id'] != $this->userInfo['user_id']){
                 return $this->error('此订单你无权操作.');
             }
-            // if ($order['order_amount'] > $this->userInfo['account']['balance_money']) {
-            if ($order['balance_deduction'] > $this->userInfo['account']['balance_money']) {
-                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['order_id' => $order_id]));
+            if (($order['amount']-$order['redbag_amount']) > $this->userInfo['account']['balance_money']) {
+                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['id' => $log_id]));
             }
-            $upData['money_paid'] = $order['order_amount'];
+            $upData['money_paid'] = $order['amount'];
             $upData['pay_time'] = time();
-            // $changedata['change_desc'] = '订单余额支付';
-            $changedata['change_desc'] = '鼓励金抵扣';
-            $changedata['change_type'] = 3;
-            $changedata['by_id'] = $order_id;
-            // $changedata['balance_money'] = $order['order_amount'] * -1;
-            $changedata['balance_money'] = $order['balance_deduction'] * -1;
+            #更新账户余额
+            $changedata['change_desc'] = '线下消费,鼓励金抵扣';
+            $changedata['change_type'] = 16;
+            $changedata['by_id'] = $log_id;
+            $changedata['balance_money'] = $order['balance_amount'] * -1;
             $res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
             if ($res !== true) {
                 Db::rollback();// 回滚事务
@@ -289,36 +285,29 @@ EOF;
                 Db::rollback();// 回滚事务
                 return $this->error('支付失败，扣减余额失败.');
             }
-            if ($this->pay_code == 'balance') { // 余额支付 说明要鼓励金全额抵扣 订单支付
+
+            if ($this->pay_code == 'balance'&&($order['balance_amount']>=($order['amount']-$order['redbag_amount']))) { // 余额支付 说明要鼓励金全额抵扣 订单支付
                 //余额完成支付
-                $upArr['order_id'] = $order_id;
                 $upArr['pay_code'] = $this->pay_code;
                 $upArr['pay_id'] = $payment['pay_id'];
                 $upArr['pay_name'] = $payment['pay_name'];
-                $upArr['money_paid'] = $order['order_amount'];
-                $res = $OrderModel->updatePay($upArr, '余额支付成功.');
-                if ($res !== true) {
+                $upArr['status'] = 1;
+                $upArr['pay_time'] = time();
+                $res = $PayRecordModel->where('log_id',$log_id)->update($upArr);
+                if (!$res) {
                     Db::rollback();// 回滚事务
                     return $this->error($res);
                 }
             }
+            #分佣
+
             Db::commit();// 提交事务
             if ($this->pay_code == 'balance') { // 订单支付完成跳转
-                return $this->redirect($returnDoneUrl, ['order_id' => $order_id]);
+                return $this->redirect($returnDoneUrl, ['log_id' => $log_id]);
             }
-        }
-        if ($order['use_integral'] > 0 && $order['order_amount'] == 0) {//积分支付，订单金额为零时直接支付成功
-            $upArr['order_id'] = $order_id;
-            $upArr['pay_code'] = 'use_integral';
-            $upArr['pay_id'] = 0;
-            $upArr['pay_name'] = '积分支付';
-            $res = $OrderModel->updatePay($upArr, '积分支付成功.');
-            if ($res !== true) {
-                return $this->error($res);
-            }
-            return $this->redirect($returnDoneUrl, ['order_id' => $order_id]);
         }
 
+        dump(11);die;
         $OrderModel->where("order_id", $order_id)->update(['is_pay' => $payment['is_pay'], 'pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name']]);
 
         // 订单支付提交
