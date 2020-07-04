@@ -300,13 +300,13 @@ EOF;
                 }
             }
             #分佣
-
+            $PayRecordModel->sub_commission($log_id);
             Db::commit();// 提交事务
             if ($this->pay_code == 'balance') { // 订单支付完成跳转
                 return $this->redirect($returnDoneUrl, ['log_id' => $log_id]);
             }
         }
-
+        #这里是因为还没有支付宝和微信支付才打的断点
         dump(11);die;
         $OrderModel->where("order_id", $order_id)->update(['is_pay' => $payment['is_pay'], 'pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name']]);
 
