@@ -26,7 +26,7 @@ class PayRecordModel extends BaseModel
         /* 选择一个随机的方案 */
         mt_srand((double)microtime() * 1000000);
         $date = date('Ymd');
-        $order_sn = $date . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
+        $order_sn = 'sn'.$date . str_pad(mt_rand(1, 99999), 5, '0', STR_PAD_LEFT);
         $where[] = ['order_sn', '=', $order_sn];
         $where[] = ['add_time', '>', strtotime($date)];
         $count = $this->where($where)->count('	log_id');
@@ -116,5 +116,19 @@ class PayRecordModel extends BaseModel
         $AccountLogModel = new AccountLogModel();
         $res1 = $AccountLogModel->change($changedata, $user_id, false);
         return $res1;
+    }
+
+    /*------------------------------------------------------ */
+    //-- 订单支付时, 获取商家名称
+    //-- $order_id int 订单ID
+    /*------------------------------------------------------ */
+    public function getPayBody($log_id)
+    {
+        if (empty($log_id)) return "订单ID参数错误";
+        $order_info = $this->where('log_id', $log_id)->find();
+        $business_name = (new UserBusinessModel)->where('business_id', $order_info['business_id'])->column('business_name');
+        $gns = implode($business_name, ',');
+        $payBody = getSubstr($gns, 0, 18);
+        return $payBody;
     }
 }

@@ -264,29 +264,29 @@ EOF;
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
         if ($order['balance_amount']>=($order['amount']-$order['redbag_amount'])) { //全额鼓励金抵扣
             Db::startTrans();//启动事务
-//            if ($order['user_id'] != $this->userInfo['user_id']){
-//                return $this->error('此订单你无权操作.');
-//            }
-//            if (($order['amount']-$order['redbag_amount']) > $this->userInfo['account']['balance_money']) {
-//                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['id' => $log_id]));
-//            }
+            //if ($order['user_id'] != $this->userInfo['user_id']){
+            //    return $this->error('此订单你无权操作.');
+            //}
+            //if (($order['amount']-$order['redbag_amount']) > $this->userInfo['account']['balance_money']) {
+            //    return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['id' => $log_id]));
+            //}
             $upData['money_paid'] = $order['amount'];
             $upData['pay_time'] = time();
-//            #更新账户余额
-//            $changedata['change_desc'] = '线下消费,鼓励金抵扣';
-//            $changedata['change_type'] = 16;
-//            $changedata['by_id'] = $log_id;
-//            $changedata['balance_money'] = $order['balance_amount'] * -1;
-//            $res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
-//            if ($res !== true) {
-//                Db::rollback();// 回滚事务
-//                return $this->error('支付失败，扣减余额失败.');
-//            }
-//            $balance_money = (new AccountModel)->where('user_id',$order['user_id'])->value('balance_money');
-//            if ($balance_money < 0){
-//                Db::rollback();// 回滚事务
-//                return $this->error('支付失败，扣减余额失败.');
-//            }
+            #更新账户余额
+            //$changedata['change_desc'] = '线下消费,鼓励金抵扣';
+            //$changedata['change_type'] = 16;
+            //$changedata['by_id'] = $log_id;
+            //$changedata['balance_money'] = $order['balance_amount'] * -1;
+            //$res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
+            //if ($res !== true) {
+            //    Db::rollback();// 回滚事务
+            //    return $this->error('支付失败，扣减余额失败.');
+            //}
+            //$balance_money = (new AccountModel)->where('user_id',$order['user_id'])->value('balance_money');
+            //if ($balance_money < 0){
+            //    Db::rollback();// 回滚事务
+            //    return $this->error('支付失败，扣减余额失败.');
+            //}
 
             if ($this->pay_code == 'balance'&&($order['balance_amount']>=($order['amount']-$order['redbag_amount']))) { // 余额支付 说明要鼓励金全额抵扣 订单支付
                 //余额完成支付
@@ -308,13 +308,12 @@ EOF;
                 return $this->redirect($returnDoneUrl, ['log_id' => $log_id]);
             }
         }
-        #这里是因为还没有支付宝和微信支付才打的断点
-        dump(11);die;
-        $OrderModel->where("order_id", $order_id)->update(['is_pay' => $payment['is_pay'], 'pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name']]);
+
+        $PayRecordModel->where("log_id", $log_id)->update(['pay_code' => $this->pay_code, 'pay_id' => $payment['pay_id'], 'pay_name' => $payment['pay_name'],'pay_time'=>time()]);
 
         // 订单支付提交
         $config = parseUrlParam($this->pay_code); // 类似于 pay_code=alipay&bank_code=CCB-DEBIT 参数
-        $config['body'] = $OrderModel->getPayBody($order_id);
+        $config['body'] = $PayRecordModel->getPayBody($log_id);
         $wxInfo = session('wxInfo');
         if ($this->pay_code == 'weixin') {
             if (strstr($_SERVER['HTTP_USER_AGENT'], 'MicroMessenger')){
@@ -327,8 +326,8 @@ EOF;
                     $go_url = url('distribution/role_goods/done',array('order_id'=>$order['order_id']));
                     $back_url = $go_url;
                 }else{
-                    $go_url = url('shop/order/info',array('order_id'=>$order['order_id']));
-                    $back_url = url('shop/flow/done',array('order_id'=>$order['order_id']));
+                    $go_url = url('unique/wallet/payrecordinfo',array('id'=>$order['log_id']));
+                    $back_url = url('unique/store/done',array('log_id'=>$order['log_id']));
                 }
                 $html = <<<EOF
 	<script type="text/javascript">
@@ -375,7 +374,7 @@ EOF;
                 //微信H5支付
                 $return = $this->payment->get_H5code($order, $config);
                 if ($return['status'] != 1) {
-                    $this->error($return['msg'], url($returnDoneUrl, ['order_id' => $order_id]));
+                    $this->error($return['msg'], url($returnDoneUrl, ['log_id' => $log_id]));
                 }
                 $this->assign('deeplink', $return['result']);
             }
@@ -395,7 +394,7 @@ EOF;
         }elseif($this->pay_code == 'offline'){//线下支付
             $payment['pay_config'] = json_decode(urldecode($payment['pay_config']),true);
             $this->assign('payment', $payment);
-            $this->assign('order_id', $order_id);
+            $this->assign('log_id', $log_id);
             return $this->fetch('offline');
         } else {
             //其他支付（支付宝、银联...）
@@ -406,7 +405,7 @@ EOF;
         }
 
         $this->assign('code_str', $code_str);
-        $this->assign('order_id', $order_id);
+        $this->assign('log_id', $log_id);
         return $this->fetch('payment');  // 分跳转 和不 跳转
     }
     /**

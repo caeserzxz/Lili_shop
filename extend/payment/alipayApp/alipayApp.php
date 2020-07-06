@@ -87,6 +87,7 @@ class alipayApp
             // empty($store_name) ? $store_name = "shop" : $store_name = $store_name.'订单';
             // FIXME: 请求的时间无法设置
             // dump($order);die;
+        
             $bizParameters = [
                 'subject'         => '商品订单',
                 'body'            => '商品订单',
