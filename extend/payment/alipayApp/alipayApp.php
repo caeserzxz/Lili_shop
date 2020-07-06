@@ -185,24 +185,24 @@ EOF;
      */
     public function response(){
 
-        //验签
-        $res = $this->aopClient->rsaCheckV1($_POST,'','RSA2');
-        if(!$res){
-            echo 'fail';die;
-        }
-        if ($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
-            $data['order_sn'] =  $_POST['out_trade_no']; //商户订单号
-            $data['total_fee'] = $_POST['price'] * 100;//支付金额
-            $data['transaction_id'] = $_POST['trade_no'];//支付宝交易号
-            $res = (new UpdatePayModel)->update($data);
-        }
-
-        if ($res == true) {
-            echo "success"; // 告诉支付宝处理成功
-        } else {
-            echo "fail"; //验证失败
-        }
+    //验签
+    $res = $this->aopClient->rsaCheckV1($_POST,'','RSA2');
+    if(!$res){
+        echo 'fail';die;
     }
+    if ($_POST['trade_status'] == 'TRADE_FINISHED' || $_POST['trade_status'] == 'TRADE_SUCCESS') {
+        $data['order_sn'] =  $_POST['out_trade_no']; //商户订单号
+        $data['total_fee'] = $_POST['price'] * 100;//支付金额
+        $data['transaction_id'] = $_POST['trade_no'];//支付宝交易号
+        $res = (new UpdatePayModel)->update($data);
+    }
+
+    if ($res == true) {
+        echo "success"; // 告诉支付宝处理成功
+    } else {
+        echo "fail"; //验证失败
+    }
+}
 
     /**
      * 退款

@@ -259,32 +259,34 @@ EOF;
             return $this->error('此订单，已取消不能执行支付.', url($returnErrorUrl, ['id' => $log_id]));
         }
 
+
+
         $payment = (new PaymentModel)->where('pay_code', $this->pay_code)->find();
         if ($order['balance_amount']>=($order['amount']-$order['redbag_amount'])) { //全额鼓励金抵扣
             Db::startTrans();//启动事务
-            if ($order['user_id'] != $this->userInfo['user_id']){
-                return $this->error('此订单你无权操作.');
-            }
-            if (($order['amount']-$order['redbag_amount']) > $this->userInfo['account']['balance_money']) {
-                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['id' => $log_id]));
-            }
+//            if ($order['user_id'] != $this->userInfo['user_id']){
+//                return $this->error('此订单你无权操作.');
+//            }
+//            if (($order['amount']-$order['redbag_amount']) > $this->userInfo['account']['balance_money']) {
+//                return $this->error('余额不足，请使用其它支付方式.', url($returnErrorUrl, ['id' => $log_id]));
+//            }
             $upData['money_paid'] = $order['amount'];
             $upData['pay_time'] = time();
-            #更新账户余额
-            $changedata['change_desc'] = '线下消费,鼓励金抵扣';
-            $changedata['change_type'] = 16;
-            $changedata['by_id'] = $log_id;
-            $changedata['balance_money'] = $order['balance_amount'] * -1;
-            $res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
-            if ($res !== true) {
-                Db::rollback();// 回滚事务
-                return $this->error('支付失败，扣减余额失败.');
-            }
-            $balance_money = (new AccountModel)->where('user_id',$order['user_id'])->value('balance_money');
-            if ($balance_money < 0){
-                Db::rollback();// 回滚事务
-                return $this->error('支付失败，扣减余额失败.');
-            }
+//            #更新账户余额
+//            $changedata['change_desc'] = '线下消费,鼓励金抵扣';
+//            $changedata['change_type'] = 16;
+//            $changedata['by_id'] = $log_id;
+//            $changedata['balance_money'] = $order['balance_amount'] * -1;
+//            $res = (new AccountLogModel)->change($changedata, $order['user_id'], false);
+//            if ($res !== true) {
+//                Db::rollback();// 回滚事务
+//                return $this->error('支付失败，扣减余额失败.');
+//            }
+//            $balance_money = (new AccountModel)->where('user_id',$order['user_id'])->value('balance_money');
+//            if ($balance_money < 0){
+//                Db::rollback();// 回滚事务
+//                return $this->error('支付失败，扣减余额失败.');
+//            }
 
             if ($this->pay_code == 'balance'&&($order['balance_amount']>=($order['amount']-$order['redbag_amount']))) { // 余额支付 说明要鼓励金全额抵扣 订单支付
                 //余额完成支付

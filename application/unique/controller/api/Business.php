@@ -603,7 +603,6 @@ class Business extends ApiController
     //-- 下单
     /*------------------------------------------------------ */
     public function add_order(){
-        $this->checkLogin();//验证登录
         $PayRecordModel = new PayRecordModel();
         $RedbagModel = new RedbagModel();
 
@@ -665,7 +664,7 @@ class Business extends ApiController
         if($res){
             if($balance_amount>0){
                 #更新账户鼓励金
-                $changedata['change_desc'] = '线下消费';
+                $changedata['change_desc'] = '线下消费,鼓励金抵扣';
                 $changedata['change_type'] = 16;
                 $changedata['by_id'] = $res;
                 $changedata['balance_money'] = -$balance_amount;

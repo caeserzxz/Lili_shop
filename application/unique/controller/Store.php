@@ -175,8 +175,8 @@ class Store extends ClientbaseController{
         $business_id = input('business_id');
         #商家信息
         $info = $this->Model->where('business_id',$business_id)->find();
-        #用户信息
         $this->assign('info',$info);
+        #用户信息
         $this->assign('userInfo',$this->userInfo);
         $this->assign('title', '去买单');
         return $this->fetch('pay_bill');

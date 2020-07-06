@@ -25,6 +25,7 @@ class ClientbaseController extends BaseController{
         'fightgroup',//拼团相关
         'second',//秒杀相关
         'publics/download',//app下载
+        'unique/store/pay_bill',// 下单页面
     ];
 
     /* @var array $notLayoutAction 无需全局layout */

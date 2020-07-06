@@ -27,30 +27,33 @@
             </div>
             <div class="paytype">
                 <div class="title fs34 color_3 fw_b">请选择支付方式</div>
-                <div class="cells">
-                    <div class="cell">
-                        <div class="cell_hd"></div>
-                        <div class="cell_bd"><span class="fs28 fw_b color_3">店铺红包</span></div>
-                        <div class="cell_ft" onclick="showCoupons()">
-                            <span class="mainjian" >不使用优惠券</span>
-                            <span><img src="__STATIC__/unique/images/rightIcon.png" alt=""></span>
+                {if condition="$userInfo.user_id neq ''"}
+                    <div class="cells">
+                        <div class="cell">
+                            <div class="cell_hd"></div>
+                            <div class="cell_bd"><span class="fs28 fw_b color_3">店铺红包</span></div>
+                            <div class="cell_ft" onclick="showCoupons()">
+                                <span class="mainjian" >不使用优惠券</span>
+                                <span><img src="__STATIC__/unique/images/rightIcon.png" alt=""></span>
+                            </div>
+                        </div>
+                        <div class="cell">
+                            <div class="cell_hd"></div>
+                            <div class="cell_bd"><span class="fs28 fw_b color_3">鼓励金</span></div>
+                            <div class="cell_ft fs26">
+                                <span>鼓励金剩余:</span>
+                                <span class="color_r">{$userInfo.account.balance_money}</span>
+                                <label for="s12">
+                                    <div class="iconBox">
+                                        <input type="checkbox" class="check" name="checkbox" id="s12" value="1">
+                                        <i class="icon_checked"></i>
+                                    </div>
+                                </label>
+                            </div>
                         </div>
                     </div>
-                    <div class="cell">
-                        <div class="cell_hd"></div>
-                        <div class="cell_bd"><span class="fs28 fw_b color_3">鼓励金</span></div>
-                        <div class="cell_ft fs26">
-                            <span>鼓励金剩余:</span>
-                            <span class="color_r">{$userInfo.account.balance_money}</span>
-                            <label for="s12">
-                                <div class="iconBox">
-                                    <input type="checkbox" class="check" name="checkbox" id="s12" value="1">
-                                    <i class="icon_checked"></i>
-                                </div>
-                            </label>
-                        </div>
-                    </div>
-                </div>
+                {/if}
+                <input type="hidden" name="user_balance" id="user_balance" value="{$userInfo.account.balance_money}">
             </div>
 
             <!-- 抢第2件半价 -->
@@ -226,7 +229,8 @@
 
         //选择支付方式
         $('.gopay').on('click', function () {
-            jq_ajax('{:url("publics/api.pay/getList")}', '', function (res) {
+            var pay_type = IsWeixinOrAlipay();
+            jq_ajax('{:url("publics/api.pay/getList")}', {'pay_type':pay_type}, function (res) {
                 if (res.code == 0) {
                     _alert(res.msg);
                     return false;
@@ -246,16 +250,10 @@
             arr.business_id = business_id;
             arr.pay_id = $("input[name='pay_id']:checked").val();
 
-            // if (finalPayTotal == 0 ) {
-            //     if (arr.pay_id > 0) {
-            //         _alert('鼓励金全额抵扣无需选择支付方式.');
-            //         return false;
-            //     }
-            //     arr.pay_id = 2;// 当鼓励金全额抵扣时固定选择余额抵扣
-            // }
+
             var is_hearten = $("input[name=checkbox]:checked").val();
             var price = $("input[name=radiobox]:checked").attr('data-price');
-            var balance = {$userInfo.account.balance_money};
+            var balance = $('#user_balance').val();
             if(is_hearten==1){
                 if(balance>=(arr.money-price)&&arr.pay_id >0){
                     _alert('鼓励金全额抵扣无需选择支付方式.');
@@ -295,6 +293,21 @@
 
 
         }
+
+        function IsWeixinOrAlipay(){
+            var ua = window.navigator.userAgent;
+            //判断是不是微信
+            if ( ua.indexOf("MicroMessenger") > 0 ) {
+                return "Weixin";
+            }
+            //判断是不是支付宝
+            if (ua.indexOf("Alipayclient") > 0) {
+                return "Alipay";
+            }
+            //哪个都不是
+            return "false";
+        }
+
     </script>
 </body>
 

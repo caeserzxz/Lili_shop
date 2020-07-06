@@ -29,6 +29,25 @@ class Pay extends ApiController{
                 }
             }
         }
+
+        $pay_type = input('pay_type','','trim');
+        if(empty($pay_type)==false){
+            if($pay_type=='Weixin'){
+                foreach ($payList as $key=>$pay){
+                   if($key!='weixin'&&$key!='miniAppPay'&&$key!='appWeixinPay'){
+                       unset($payList[$key]);
+                   }
+                }
+            }else if($pay_type=='Alipay'){
+                foreach ($payList as $key=>$pay){
+                    if($key!='alipayApp'&&$key!='alipayMobile'){
+                        unset($payList[$key]);
+                    }
+                }
+            }
+
+        }
+
         $return['data'] = $payList;
         $return['balance_money'] = $this->userInfo['account']['balance_money'];
 		$return['code'] = 1;
