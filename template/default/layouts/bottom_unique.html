@@ -1,34 +1,34 @@
 <div class="bottom-tabbar-wrapper">
     <div class="bottom-tabbar">
-        <a href="{:url('unique/index/index')}" class="bottom-tabbar__item ">
+        <a href="{:url('unique/index/index')}" class="bottom-tabbar__item {$routeUri=='index/index'?'active':''} ">
             <span class="icon">
                 <img src="__STATIC__/unique/images/bottom_icon01.png"/>
                 <img class="lhimg" src="__STATIC__/unique/images/bottom_icon01_lh.png"/>
             </span>
           <p class="label">首页</p>
         </a>
-        <a href="{:url('shop/index/index_new')}" class="bottom-tabbar__item ">
+        <a href="{:url('shop/index/index_new')}" class="bottom-tabbar__item {$routeUri=='index/index_new'?'active':''} ">
             <span class="icon">
                 <img src="__STATIC__/unique/images/bottom_icon02.png"/>
                 <img class="lhimg" src="__STATIC__/unique/images/bottom_icon02_lh.png"/>
             </span>
           <p class="label">商城</p>
         </a>
-        <a href="/shop/index/allsort" class="bottom-tabbar__item ">
+        <a href="/shop/index/allsort" class="bottom-tabbar__item {$routeUri=='index/allsort'?'active':''}">
             <span class="icon">
                 <img src="__STATIC__/unique/images/bottom_icon03.png"/>
                 <img class="lhimg" src="__STATIC__/unique/images/bottom_icon03_lh.png"/>
             </span>
           <p class="label">分类</p>
         </a>
-        <a href="/shop/flow/cart" class="bottom-tabbar__item ">
+        <a href="/shop/flow/cart" class="bottom-tabbar__item {$routeUri=='flow/cart'?'active':''}">
             <span class="icon">
                 <img src="__STATIC__/unique/images/bottom_icon04.png"/>
                 <img class="lhimg" src="__STATIC__/unique/images/bottom_icon04_lh.png"/>
             </span>
           <p class="label">购物车</p>
         </a>
-        <a href="/unique/member/index" class="bottom-tabbar__item">
+        <a href="/unique/member/index" class="bottom-tabbar__item {$routeUri=='member/index'?'active':''}">
             <span class="icon">
                 <img src="__STATIC__/unique/images/bottom_icon05.png"/>
                 <img class="lhimg" src="__STATIC__/unique/images/bottom_icon05_lh.png"/>
@@ -48,13 +48,14 @@
             }
         });
     }
-    $(function (){
-        var curUrl = window.location.href;
-        setSelect(curUrl);
-        if(index==-1){
-            var referrer = document.referrer;
-            setSelect(referrer);
-        }
-        $('.bottom-tabbar a').eq(index).addClass('active');
-    })
+    // $(function (){
+    //     var curUrl = window.location.href;
+    //     console.log(curUrl);
+    //     setSelect(curUrl);
+    //     if(index==-1){
+    //         var referrer = document.referrer;
+    //         setSelect(referrer);
+    //     }
+    //     $('.bottom-tabbar a').eq(index).addClass('active');
+    // })
 </script>
