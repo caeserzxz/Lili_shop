@@ -60,6 +60,16 @@ class alipayMobile
         $shop_info = settings();
         $store_name = $shop_info['shop_title'] . '订单';
 
+        if(strstr($order['order_sn'],'sn')){
+            #线下消费
+            $order_amount = $order['amount_actual'];
+            $order_id = $order['log_id'];
+        }else{
+            #商城消费
+            $order_amount = $order['order_amount'];
+            $order_id = $order['order_id'];
+        }
+
         // 接口类型
         $service = array(
             1 => 'create_partner_trade_by_buyer', //使用担保交易接口
@@ -83,7 +93,7 @@ class alipayMobile
             "_input_charset" => trim(strtolower($this->alipay_config['input_charset'])), //字符编码格式 目前支持 gbk 或 utf-8
             "out_trade_no" => $order['order_sn'], //商户订单号
             "subject" => $store_name, //订单名称，必填
-            "total_fee" => $order['order_amount'], //付款金额
+            "total_fee" => $order_amount, //付款金额
             "show_url" => config('config.host_path'), //收银台页面上，商品展示的超链接，必填
             "app_pay" => 'Y'
         );

@@ -38,9 +38,20 @@ class appWeixinPay
     function get_code($order, $config_value)
     {
         $notify_url = _url('publics/Payment/notifyUrl',['pay_code'=>'appWeixinPay'],true,true);  // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
-        $return_url = _url('shop/flow/done',['order_id'=>$order['order_id']],true,true);  //页面跳转同步通知页面路径
 
-        $order_amount = $order['order_amount']*100;
+        if(strstr($order['order_sn'],'sn')){
+            #线下消费
+            $return_url = _url('unique/store/done',['log_id'=>$order['log_id']],true,true);  //页面跳转同步通知页面路径
+            $order_amount = $order['amount_actual']*100;
+            $order_id = $order['log_id'];
+        }else{
+            #商城消费
+            $return_url = _url('shop/flow/done',['order_id'=>$order['order_id']],true,true);  //页面跳转同步通知页面路径
+            $order_amount = $order['order_amount']*100;
+            $order_id = $order['order_id'];
+        }
+
+
         // $order_amount = 1;
         $input = new \WxPayUnifiedOrder();
         $input->SetBody("支付订单：".$order['order_sn']);
@@ -50,7 +61,7 @@ class appWeixinPay
         $input->SetTrade_type("APP");
   
         $inputObj = \WxPayApi::unifiedOrderApp($input);  //还需要签名
-        $appJson = $this->appJson($inputObj,$order['order_id']);
+        $appJson = $this->appJson($inputObj,$order_id);
         $html = <<<EOF
     <script src="/static/js/ios.js"></script>
 	<script type="text/javascript">

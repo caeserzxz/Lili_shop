@@ -87,16 +87,24 @@ class alipayApp
             // empty($store_name) ? $store_name = "shop" : $store_name = $store_name.'订单';
             // FIXME: 请求的时间无法设置
             // dump($order);die;
-        
+            if(strstr($order['order_sn'],'sn')){
+                #线下消费
+                $order_sn = $order['order_sn'];
+                $order_amount = $order['amount_actual'];
+            }else{
+                #商城消费
+                $order_sn = $order['order_sn'];
+                $order_amount = $order['order_amount'];
+            }
+
             $bizParameters = [
                 'subject'         => '商品订单',
                 'body'            => '商品订单',
-                'out_trade_no'    => $order['order_sn'],
-                'total_amount'    => $order['order_amount'],// 单位元
+                'out_trade_no'    => $order_sn,
+                'total_amount'    => $order_amount,// 单位元
                 'timeout_express' => '5m',// 单位转换成分钟
                 'product_code'    => 'QUICK_MSECURITY_PAY',
             ];
-             
             $request->setBizContent(json_encode($bizParameters));
 
             // 这里和普通的接口调用不同，使用的是sdkExecute

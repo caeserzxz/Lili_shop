@@ -26,6 +26,8 @@ class ClientbaseController extends BaseController{
         'second',//秒杀相关
         'publics/download',//app下载
         'unique/store/pay_bill',// 下单页面
+        'unique/store/done',// 下单页面
+        'publics/pament/getCode2',// 线下付款
     ];
 
     /* @var array $notLayoutAction 无需全局layout */

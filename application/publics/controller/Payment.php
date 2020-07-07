@@ -287,22 +287,22 @@ EOF;
             //    Db::rollback();// 回滚事务
             //    return $this->error('支付失败，扣减余额失败.');
             //}
-
             if ($this->pay_code == 'balance'&&($order['balance_amount']>=($order['amount']-$order['redbag_amount']))) { // 余额支付 说明要鼓励金全额抵扣 订单支付
                 //余额完成支付
+                $upArr['log_id'] = $log_id;
                 $upArr['pay_code'] = $this->pay_code;
                 $upArr['pay_id'] = $payment['pay_id'];
                 $upArr['pay_name'] = $payment['pay_name'];
                 $upArr['status'] = 1;
                 $upArr['pay_time'] = time();
-                $res = $PayRecordModel->where('log_id',$log_id)->update($upArr);
+
+                $res = $PayRecordModel->updatePay($upArr, '余额支付成功.');
                 if (!$res) {
                     Db::rollback();// 回滚事务
                     return $this->error($res);
                 }
             }
-            #分佣
-            $PayRecordModel->sub_commission($log_id);
+
             Db::commit();// 提交事务
             if ($this->pay_code == 'balance') { // 订单支付完成跳转
                 return $this->redirect($returnDoneUrl, ['log_id' => $log_id]);
@@ -400,7 +400,7 @@ EOF;
             //其他支付（支付宝、银联...）
             $code_str = $this->payment->get_code($order, $config);
             if ($code_str === false){
-                return $this->error('暂不能使用当前支付方式，请使用其它支付方式.',url($returnErrorUrl, ['order_id' => $order_id]));
+                return $this->error('暂不能使用当前支付方式，请使用其它支付方式.',url($returnErrorUrl, ['log_id' => $log_id]));
             }
         }
 
@@ -550,6 +550,15 @@ EOF;
             else
                 return $this->fetch('recharge_error');
         }
+        if (stripos($result['order_sn'], 'sn') !== false) {
+            $PayRecordModel = new PayRecordModel();
+            $orderInfo = $PayRecordModel->where("order_sn", $result['order_sn'])->find();
+            $this->assign('orderInfo', $orderInfo);
+            if ($result['status'] == 1)
+                return $this->fetch('sn_success');
+            else
+                return $this->fetch('sn_error');
+        }
         $this->assign('title','支付结果');
         $OrderModel = new OrderModel();
         $orderInfo = $OrderModel->where("order_sn", $result['order_sn'])->find();
@@ -558,6 +567,6 @@ EOF;
             return $this->fetch('success');
         else
             return $this->fetch('error');
-    }
+        }
 
 }

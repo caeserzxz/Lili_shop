@@ -205,7 +205,6 @@ class Store extends ClientbaseController{
                 $goPay = 1;
             }
         }
-
         $this->assign('settings',settings());
         $this->assign('payment', $payment);
         $this->assign('goPay', $goPay);

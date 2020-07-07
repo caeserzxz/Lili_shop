@@ -642,8 +642,8 @@ class Business extends ApiController
         }
 
         #鼓励金比例处理
-        $profits = unserialize(settings('profits'));
-        $profit = intval($profits[$business['profits']]['hearten']);
+//        $profits = unserialize(settings('profits'));
+//        $profit = intval($profits[$business['profits']]['hearten']);
 
         $inArr['order_sn'] = $PayRecordModel->getOrderSn();
         $inArr['business_id'] = $business_id;
@@ -662,6 +662,9 @@ class Business extends ApiController
         Db::startTrans();
         $res = $PayRecordModel->insertGetId($inArr);
         if($res){
+            $orderInfo = $PayRecordModel->where('log_id',$res)->find();
+            $PayRecordModel->_log($orderInfo,'生成订单.');
+
             if($balance_amount>0){
                 #更新账户鼓励金
                 $changedata['change_desc'] = '线下消费,鼓励金抵扣';

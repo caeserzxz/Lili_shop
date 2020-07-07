@@ -49,11 +49,19 @@ class weixin
     {
         $notify_url = SITE_URL . '/index.php/publics/payment/notifyUrl/pay_code/'.$this->pay_code; // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
 
+        if(strstr($order['order_sn'],'sn')){
+            #线下消费
+            $order_amount = $order['amount_actual']*100;
+        }else{
+            #商城消费
+            $order_amount = $order['order_amount']*100;
+        }
+
         $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
         $input->SetAttach("weixin"); // 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
         $input->SetOut_trade_no($order['order_sn'] . time()); // 商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
-        $input->SetTotal_fee($order['order_amount'] * 100); // 订单总金额，单位为分，详见支付金额
+        $input->SetTotal_fee($order_amount * 100); // 订单总金额，单位为分，详见支付金额
         $input->SetNotify_url($notify_url); // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         $input->SetTrade_type("NATIVE"); // 交易类型   取值如下：JSAPI，NATIVE，APP，详细说明见参数规定    NATIVE--原生扫码支付
         $input->SetProduct_id("123456789"); // 商品ID trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
@@ -80,11 +88,19 @@ class weixin
             ]
         ], JSON_UNESCAPED_UNICODE);
 
+        if(strstr($order['order_sn'],'sn')){
+            #线下消费
+            $order_amount = $order['amount_actual']*100;
+        }else{
+            #商城消费
+            $order_amount = $order['order_amount']*100;
+        }
+
         $input = new \WxPayUnifiedOrder();
         $input->SetBody($config['body']); // 商品描述
         $input->SetAttach("weixinH5"); // 附加数据，在查询API和支付通知中原样返回，该字段主要用于商户携带订单的自定义数据
         $input->SetOut_trade_no($order['order_sn'] . time()); // 商户系统内部的订单号,32个字符内、可包含字母, 其他说明见商户订单号
-        $input->SetTotal_fee($order['order_amount'] * 100); // 订单总金额，单位为分，详见支付金额
+        $input->SetTotal_fee($order_amount * 100); // 订单总金额，单位为分，详见支付金额
         $input->SetTrade_type("MWEB"); // 交易类型   取值如下：JSAPI，NATIVE，APP，MWEB 详细说明见参数规定    MWEB--H5wap支付
         $input->SetNotify_url($notify_url); // 接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数。
         $input->SetSceneInfo($sceneInfo);

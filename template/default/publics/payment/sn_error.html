@@ -1,0 +1,27 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/payment.css" />
+{/block}
+{block name='pageType'}payResult payment{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="paType">
+
+        <p class="fs34 fw_b color_3">抱歉支付失败 </p>
+        <div class="color_3 fs72 num money">{$order.amount}</div>
+        <span class="fs24 color_9">待支付订单金额</span>
+    </div>
+
+    <div class="button">
+        <a href="{:url('unique/store/pay_bil',array('business_id'=>$order['business_id'])}">返回选择其他支付方式</a>
+    </div>
+</div>
+
+
+
+{/block}
+{block name="footer"}
+
+{/block}
+
