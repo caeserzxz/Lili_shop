@@ -5,9 +5,7 @@
 /*------------------------------------------------------ */
 namespace app\unique\controller;
 use app\ClientbaseController;
-use app\member\model\UsersModel;
-use app\shop\model\SlideModel;
-use app\mainadmin\model\RegionModel;
+use app\store\model\BusinessQrcodeModel;
 use app\store\model\CategoryModel;
 use app\store\model\UserBusinessModel;
 use app\store\model\BusinessGiftModel;
@@ -211,5 +209,49 @@ class Store extends ClientbaseController{
         $this->assign('orderInfo', $orderInfo);
         $this->assign('balance_money',$this->userInfo['account']['balance_money']);
         return $this->fetch('done');
+    }
+    /*------------------------------------------------------ */
+    //-- 扫收款码
+    /*------------------------------------------------------ */
+    public function qrcode()
+    {
+        $id = input('id', 0, 'intval');
+        if (empty($id) || $id <= 0) {
+            return $this->error('参数错误');
+        }
+        $BusinessQrcodeModel = new BusinessQrcodeModel();
+        if ($this->userInfo['user_id']) {
+            $BusinessQrcodeInfo = $BusinessQrcodeModel->where('id', $id)->find();
+            if ($BusinessQrcodeInfo['is_del'] == '1') {
+                $this->error('该付款码已作废');
+            }
+            if (empty($BusinessQrcodeInfo['bussiness_id'])) {
+                $UserBusinessModel = new UserBusinessModel();
+                $businessInfo = $UserBusinessModel->getInfo($this->userInfo['user_id']);
+                if (!empty($businessInfo)) {
+                    $qrnum = $BusinessQrcodeModel->where('bussiness_id', $businessInfo['business_id'])->where('is_del', 0)->count();
+                    if ($qrnum <= 0) {
+                        //去绑定
+                        $this->assign('id', $id);
+                        $this->assign('ecode_url', $BusinessQrcodeInfo['ecode_url']);
+                        $this->assign('title', '绑定');
+                        return $this->fetch('binding');
+                    }
+                }
+                $this->error('该付款码暂未绑定商家');
+            }
+        }
+        //跳转去付款页
+        $this->redirect(url('unique/store/pay_bill', ['business_id' => $BusinessQrcodeInfo['bussiness_id']]));
+    }
+    /*------------------------------------------------------ */
+    //-- 扫收款码
+    /*------------------------------------------------------ */
+    public function myqrcode()
+    {
+        $this->assign('title', '收款码');
+        $BusinessQrcodeModel = new BusinessQrcodeModel();
+        $BusinessQrcodeInfo = $BusinessQrcodeModel->where('id', $id)->find();
+        $this->assign('ecode_url', $BusinessQrcodeInfo['ecode_url']);
     }
 }?>
