@@ -9,6 +9,7 @@ use app\member\model\AccountLogModel;
 use app\store\model\UserBusinessModel;
 use app\agent\model\AgentModel;
 use app\unique\model\PayLogModel;
+use app\unique\model\RedbagModel;
 
 /*------------------------------------------------------ */
 //-- 付款记录
@@ -216,15 +217,42 @@ class PayRecordModel extends BaseModel
         $orderInfo = $this->where('log_id', $log_id)->find();
         if (empty($orderInfo)) return '订单不存在.';
         $orderInfo = $orderInfo->toArray();
-
+        Db::startTrans();//启动事务
+        $RedbagModel = new RedbagModel();
+        $AccountLogModel = new AccountLogModel();
+        $BusinessGiftModel = new BusinessGiftModel();
         if($upData['status']==$this->config['XX_PAYED']){
             //支付成功,暂无逻辑
 
+        }
+        if($upData['status']==$this->config['XX_CANCEL']){
+            //取消订单
+            //退还抵扣的鼓励金
+            if($orderInfo['balance_amount']>0){
+                $changedata['change_desc'] = '退还鼓励金';
+                $changedata['change_type'] = 16;
+                $changedata['by_id'] = $orderInfo['log_id'];
+                $changedata['balance_money'] = $orderInfo['balance_amount'];
+                $res1 = $AccountLogModel->change($changedata, $orderInfo['user_id'], false);
+                if(!$res1){
+                    Db::rollback();// 回滚事务
+                    return '退还鼓励金失败.';
+                }
+            }
+            //如果选用了红包,退还红包
+            if($orderInfo['redbag_id']>0){
+               $red_res = $RedbagModel->where('redbag_id',$orderInfo['redbag_id'])->update(['status'=>0]);
+               if($red_res!=true){
+                   Db::rollback();//回滚
+                   return '退还红包失败.';
+               }
+            }
         }
         $res = $this->where('log_id', $log_id)->update($upData);
         if ($res < 1) {
             return '订单更新失败.';
         }
+        Db::commit();// 提交事务
         return true;
     }
 

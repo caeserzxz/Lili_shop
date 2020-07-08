@@ -55,7 +55,7 @@
         <a href="{:url('unique/wallet/payrecordinfo',['id'=>$orderInfo['log_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
         <a href="{:url('unique/index/index')}" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
         {if condition="$orderInfo.is_pay == 1 && $orderInfo.status == 0" }
-        <a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>
+        <!--<a href="javascript:;" class="color_w fs28 BGcolor_r fw_b gopay">立即支付</a>-->
         {/if}
     </div>
 </div>

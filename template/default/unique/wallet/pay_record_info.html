@@ -11,8 +11,8 @@
         <img src="__STATIC__/unique/images/myIcon20.png" alt="">
         <div class="color_3 fs72  num money amount"></div>
         <span class="fs24 color_9 success">
-            <img src="__STATIC__/unique/images/suc_icon.png" alt="">
-            交易成功
+            <img id="status_img" src="" alt="">
+            <span id="status_str"> </span>
         </span>
     </div>
     <div class="cellBox">
@@ -57,6 +57,10 @@
             <span class="fs28 color_9">红包抵扣</span>
             <div class="color_3 fs28 num money redbag_amount"></div>
         </div>
+        <input type="hidden" id="log_id" >
+        <div class="button">
+            <span class="fs28 fw_b color_3 bor_e" data-type="cancel" id="cancel" style="display: none;">取消订单</span>
+        </div>
     </div>
 </div>
 {/block}
@@ -70,6 +74,18 @@
                 _alert(res.msg,"{:url('unique/wallet/payRecord')}");
                 return false;
             }
+            if(res.info.status==0){
+                $('#status_img').attr('src','__STATIC__/unique/images/wait.png');
+                $('#status_str').html('待支付');
+                $('#cancel').css('display','block');
+            }else if(res.info.status==1){
+                $('#status_img').attr('src','__STATIC__/unique/images/suc_icon.png');
+                $('#status_str').html('交易成功');
+            }else if(res.info.status==9){
+                $('#status_img').attr('src','__STATIC__/unique/images/close_icon.png');
+                $('#status_str').html('已取消');
+            }
+            $('#log_id').val(res.info.log_id);
             $('.business_name').html(res.info.business_name);
             $('.balance_proportion').html(res.info.balance_proportion+'%');
             $('.order_sn').html(res.info.order_sn);
@@ -85,6 +101,36 @@
         FastClick.attach(document.body);
         getList();
     })
+
+    //订单操作
+    $('.button').on('click','span',function(res){
+        var _this = $(this);
+        var arr = new Object();
+        arr.log_id = $('#log_id').val();
+        arr.type = _this.data('type');
+        console.log(arr);
+        if (arr.type == 'cancel'){
+            _alert('确定取消此订单？',function(){action(arr)});
+            return false;
+        }else if(arr.type == 'refund'){
+            _alert('确定申请取消订单？',function(){
+                arr.type = 'cancel';
+                action(arr)
+            });
+            return false;
+        }
+        return action(arr);
+    })
+
+    function action(arr){
+        jq_ajax('{:url("unique/api.pay_record/action")}',arr,function(res){
+            if(res.code  == 0 ){
+                _alert(res.msg);
+                return false;
+            }
+            window.location.reload();
+        })
+    }
 </script>
 </body>
 </html>

@@ -22,6 +22,7 @@
                     <li><a href="#kefu" data-toggle="tab">客服中心</a></li>
                     <li><a href="#t_map" data-toggle="tab">腾讯地图</a></li>
                     <li><a href="#profits" data-toggle="tab">返佣设置</a></li>
+                    <li><a href="#business" data-toggle="tab">商家设置</a></li>
                 </ul>
             </header>
 
@@ -285,6 +286,18 @@
                             </span>
                         </div>
                     {/volist}
+                </div>
+                <div class="tab-pane " id="business">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商家订单：</label>
+                        <div class="controls">
+                            <input type="number" data-rule-maxlength="25" class="input-max" name="setting[pay_over_time]"
+                                   value="{$setting.pay_over_time}"/>
+
+                        </div>
+                        分钟未支付,则自动取消
+                    </div>
+
                 </div>
             </div>
 

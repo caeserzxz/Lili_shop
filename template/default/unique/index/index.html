@@ -265,7 +265,7 @@
                 success:function(res) {
                     console.log(res)
                     if (res.list.length > 0) {
-                        $('#tab3').prepend(template('listTpl3',res));
+                        $('#tab3').append(template('listTpl3',res));
                         arr.page += 1;
                         loading = false;
                     }else{

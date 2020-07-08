@@ -250,8 +250,8 @@ EOF;
         $PayRecordModel = new PayRecordModel();
         $order = $PayRecordModel->where("log_id", $log_id)->find();
         $returnDoneUrl = 'unique/store/done';
-        $returnErrorUrl = 'unique/wallet/payrecordinfo';
-
+//        $returnErrorUrl = 'unique/wallet/payrecordinfo';
+        $returnErrorUrl = 'unique/store/pay_bill';
         if ($order['status'] == 1) {
             return $this->error('此订单，已完成支付.', url($returnDoneUrl, ['log_id' => $log_id]));
         }
@@ -400,7 +400,7 @@ EOF;
             //其他支付（支付宝、银联...）
             $code_str = $this->payment->get_code($order, $config);
             if ($code_str === false){
-                return $this->error('暂不能使用当前支付方式，请使用其它支付方式.',url($returnErrorUrl, ['log_id' => $log_id]));
+                return $this->error('暂不能使用当前支付方式，请使用其它支付方式.',url($returnErrorUrl, ['business_id' => $order['business_id']]));
             }
         }
 
