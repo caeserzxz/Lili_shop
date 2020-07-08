@@ -141,4 +141,35 @@ class Qrcode extends AdminController
         }
         return $this->fetch();
     }
+    /*------------------------------------------------------ */
+    //-- 下载未绑定收款码
+    /*------------------------------------------------------ */
+    public function downloadzip(){
+        $pathname = config('config._upload_') . "./bqrcode";
+        $pathzipname = config('config._upload_') . "./bqrcodezip";
+        $filename = "allbqrcode.zip";
+        $filenameaddr = config('config._upload_').'/bqrcodezip/' . $filename;
+        if(!is_dir($pathzipname)) { //若目录不存在则创建之
+            mkdir($pathzipname);
+        }else{
+            if(file_exists($filenameaddr)) { //若文件存在则删除之
+                unlink($filenameaddr);
+            }
+        }
+        $where[] = ['bussiness_id','=',null];
+        $where[] = ['is_del','=',0];
+        $list = $this->Model->where($where)->select()->toArray();
+        if($list){
+            $zip = new \ZipArchive();
+            $zip->open($filenameaddr,$zip::CREATE);
+            foreach ($list as $item){
+                $ad = $pathname . "/qrcode_" . $item['id'] . ".png";     //打开压缩包
+                $zip->addFile($ad,basename($item['id'] . ".png"));   //向压缩包中添加文件
+            }
+            $zip->close();  //关闭压缩包
+        }else{
+            return $this->error('下载失败,没有未绑定的收款码');
+        }
+        $this->redirect('/upload/bqrcodezip/allbqrcode.zip');
+    }
 }
