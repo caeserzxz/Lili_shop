@@ -249,9 +249,12 @@ class Store extends ClientbaseController{
     /*------------------------------------------------------ */
     public function myqrcode()
     {
-        $this->assign('title', '收款码');
+        $UserBusinessModel = new UserBusinessModel();
+        $businessInfo = $UserBusinessModel->getInfo($this->userInfo['user_id']);
         $BusinessQrcodeModel = new BusinessQrcodeModel();
-        $BusinessQrcodeInfo = $BusinessQrcodeModel->where('id', $id)->find();
+        $BusinessQrcodeInfo = $BusinessQrcodeModel->where('bussiness_id', $businessInfo['business_id'])->find();
+        $this->assign('title', '收款码');
         $this->assign('ecode_url', $BusinessQrcodeInfo['ecode_url']);
+        return $this->fetch();
     }
 }?>

@@ -1,0 +1,39 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/collectCode.css" />
+{/block}
+{block name="pageType"}{/block}
+{block name="main" }
+<div class="page">
+  <div class="page-hd">
+    <div class="header box-shadow-1px">
+      <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+      </div>
+      <div class="header-title">收款码</div>
+      <div class="header-right">
+        <a href=''></a>
+      </div>
+    </div>
+  </div>
+  <div class="page-bd">
+    <div class="box">
+      <div class="fs36 fw_b color_3">收款二维码</div>
+      <div class="fs26 color_9 mt30">扫一扫就可以向我付款了哦~</div>
+      <div class="code mt40">
+        <img src="{$ecode_url}" alt="">
+      </div>
+    </div>
+  </div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/unique/js/page.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+</body>
+</html>
+{/block}
