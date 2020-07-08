@@ -285,7 +285,32 @@ class AfterSale extends AdminController
         }
         $OrderModel = new OrderModel();
         $orderInfo = $OrderModel->info($asInfo['order_id']);
-        if ($orderInfo['money_paid'] > 0) {
+        // ====================== 退款逻辑重写 鼓励金+现金退款方式 ==========================
+        if ($asInfo['return_balance']) {
+            $inData['balance_money'] = $asInfo['return_balance'];
+            $inData['change_type'] = 9;
+            $inData['by_id'] = $asInfo['as_id'];
+            $inData['change_desc'] = '售后退款到余额:' . $asInfo['return_balance'];
+            $res = (new AccountLogModel)->change($inData, $asInfo['user_id']);
+            if ($res != true) {
+                Db::rollback();//回滚
+                return $this->error('退款到余额失败，请重试.');
+            }
+        }
+        if ($asInfo['return_online']) {//在线退款
+            $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
+            $payment = new $code();
+            $orderInfo['refund_amount'] = $asInfo['return_online'];
+            $orderInfo['money_paid'] = $asInfo['return_online'];
+            $res = $payment->refund($orderInfo);
+            if ($res !== true) {
+                Db::rollback();//回滚
+                return $this->error('请求退款接口失败：'. $res);
+            }
+        }
+        // ============================== END 20-7-8 ================================
+
+        /*if ($orderInfo['money_paid'] > 0) {
             if ($orderInfo['pay_code'] == 'balance') {
                 $inData['balance_money'] = $asInfo['return_money'];
                 $inData['change_type'] = 9;
@@ -312,8 +337,7 @@ class AfterSale extends AdminController
                     return '请求退款接口失败：' . $res;
                 }
             }
-
-        }
+        }*/
         if ($isForce==true){
             $log = '强制执行-确定收到退货，并打款给用户';
         }else{

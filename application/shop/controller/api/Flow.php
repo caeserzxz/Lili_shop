@@ -416,7 +416,6 @@ class Flow extends ApiController
             }
             $inArr['use_integral'] = $use_integral;
         }
-
         $inArr['buyer_message'] = input('buy_msg', '', 'trim');
         $inArr['consignee'] = $address['consignee'];
         $inArr['address'] = $address['address'];
@@ -555,10 +554,6 @@ class Flow extends ApiController
                     }
                 }
             }
-            if ($orderInfo['balance_deduction']) {
-                $balance_deduction = $og['sale_price'] / $orderInfo['goods_amount'] * $orderInfo['balance_deduction'];
-            }
-
             $goods = array(
                 'order_id' => $order_id,
                 'brand_id' => $og['brand_id'],
@@ -589,8 +584,7 @@ class Flow extends ApiController
                 'bonus_after_price' => $bonus_after_price,
                 'usd_bonus_price' => $usd_bonus_price,
                 'buy_brokerage_type' => $og['buy_brokerage_type'],
-                'buy_brokerage_amount' => $og['buy_brokerage_amount'],
-                'balance_deduction' => $balance_deduction
+                'buy_brokerage_amount' => $og['buy_brokerage_amount']
             );
             $orderGoods[] = $goods;
         }

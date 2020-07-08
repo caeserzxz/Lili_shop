@@ -81,19 +81,31 @@ class AfterSale extends ClientbaseController{
             return $this->error('此订单不能申请售后，请联系客服.');
         }
 
-
         $usd_bonus_price = $goods['usd_bonus_price'];
         $one_bonus_price = priceFormat($usd_bonus_price / $goods['goods_number'],false,6);
         $return_bouns_money = $goods['after_sale_num'] * $one_bonus_price;
         $return_price = $goods['sale_price'] - $one_bonus_price;//单价退款金额
         $end_return_all = $goods['sale_price'] * $goods['return_num'] - ($usd_bonus_price - $return_bouns_money);//全退金额
+        $goods['exp_prcie'] = explode('.',$goods['sale_price']);
+
+        // 可退现金        可退鼓励金(余额)
+        $return_online = $return_balance = 0;
+        // 优先从现金里去掉运费
+        if ($orderInfo['order_amount'] > $orderInfo['shipping_fee']) {
+            $return_online = $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
+            $return_balance = $orderInfo['balance_deduction'];
+        }else{
+            // 在线支付不足运费 从鼓励金抵扣补上
+            $return_balance = $orderInfo['balance_deduction'] + $orderInfo['order_amount'] - $orderInfo['shipping_fee'];
+        }
+        // 多商品 商品单价*数量/订单商品总额*可退金额
+        $return_online = round(($goods['sale_price'] * $goods['goods_number']) / $orderInfo['goods_amount'] * $return_online,2);
+        $return_balance = round(($goods['sale_price'] * $goods['goods_number']) / $orderInfo['goods_amount'] * $return_balance,2);
+        $this->assign('return_online', $return_online);
+        $this->assign('return_balance', $return_balance);
 
         $this->assign('end_return_all', $end_return_all);
         $this->assign('return_price', $return_price);
-
-        $this->assign('return_price', $return_price);
-        //end
-        $goods['exp_prcie'] = explode('.',$goods['sale_price']);
         $this->assign('goods',$goods);
         $this->assign('title','申请售后');
 		return $this->fetch('add');

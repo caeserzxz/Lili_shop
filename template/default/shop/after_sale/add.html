@@ -12,19 +12,28 @@
             <div class="goodsinfo">
                 <p class="fs28 color_3">{$goods['goods_name']}</p>
                 <div class="appleBox"><span class="fs28 color_9">{$goods['sku_name']}</span></div>
-                <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">￥</p><em class="fs36">{$goods['exp_prcie'][0]}</em><p>.{$goods['exp_prcie'][1]}</p></div>
-                    <em class="fs28 color_3">x{$goods['goods_number']}</em></div>
-                <div class="money"><div class="color_3 fs24 num"><p class="fw_b fm_p">使用红包金额</p></div>
-                    <em class="fs28 color_3">￥{$goods['usd_bonus_price']}</em></div>
+                <div class="money">
+                    <div class="color_3 fs24 num">
+                        <p class="fw_b fm_p">￥</p>
+                        <em class="fs36">{$goods['exp_prcie'][0]}</em>
+                        <p>.{$goods['exp_prcie'][1]}</p>
+                    </div>
+                    <em class="fs28 color_3">x{$goods['goods_number']}</em>
+                </div>
+                <div class="money">
+                    <div class="color_3 fs24 num">
+                        <p class="fw_b fm_p">使用红包金额</p>
+                    </div>
+                    <em class="fs28 color_3">￥{$goods['usd_bonus_price']}</em>
+                </div>
             </div>
-
         </a>
         <div class="title selectBox">
             <div class="fs28 fw_b color_3">服务类型</div>
-            <span class="fs28 color_3 tag_active" data-type="return_goods" data-sale_price="{$goods.sale_price}">退货</span>
+            <span class="fs28 color_3 tag_active" data-type="return_goods" data-sale_price="{$goods.sale_price}" style="margin-bottom: .2rem">退货</span>
             <span class="fs28 color_3 hide" data-type="change_goods" data-sale_price="0">换货</span>
         </div>
-        <div class="number">
+        <div class="number hide">
             <span class="fw_b color_3 fs28">申请退换货数量</span>
             <div class="inputBox">
                 <img src="__STATIC__/mobile/default/images/goodsIcon05.png" alt="" class="minus">
@@ -36,6 +45,7 @@
     <div class="inputBlock animateBox">
         <div class="tips fs38 fw_b color_9" style="font-size: 0.173333rem; top: 0.2rem;">退款金额(元)</div>
         <input type="text" name="return_money" id="return_money" readonly data-return_money="{$return_price}" value="{$end_return_all}" data-end_return_all='{$end_return_all}'  class="fs38 num textBox">
+        <span class="fs28 fw_b color_9" style="margin-top: .35rem;margin-left: -1.9rem">(鼓励金{$return_balance}+现金{$return_online})</span>
     </div>
     <div class="textBlock animateBox">
         <div class="tips fs38 fw_b color_9">退换/退款原因</div>
@@ -50,7 +60,6 @@
             </div>
         </div>
     </div>
-
     <div class="button fs32 fw_b color_w BGcolor_r postBtn">提交申请</div>
 </div>
 {/block}
@@ -141,6 +150,9 @@
         fd.append("goods_number", $('#goods_number').val());
         fd.append("return_desc", $('#return_desc').val());
         fd.append("rec_id", {$goods['rec_id']});
+        fd.append("rec_id", {$goods['rec_id']});
+        fd.append("return_online", {$return_online});
+        fd.append("return_balance", {$return_balance});
         isPost = true;
         $.ajax({
             url: '{:url("shop/api.afterSale/add")}',
@@ -154,7 +166,6 @@
                     _alert(res.msg);
                     return false;
                 }
-
                 window.location.href = '{:_url("shop/after_sale/index")}';
             }
         })
@@ -164,17 +175,16 @@
 <script>
     //处理点击改变的调用函数-做IOS兼容
     $(_listenSelector).click(function(){
-            var that = $(this);
-            _uplocalfunction= function(base64Img){
-                if ($('.appendBox').length >= 6){
-                    _alert('最多允许上传6张图片.');
-                    return false;
-                }
-                _imgNum++;
-                fd.append("imgfile["+_imgNum+"]", base64Img);
-                $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum+'" class="closeImg"></div>');
+        var that = $(this);
+        _uplocalfunction= function(base64Img){
+            if ($('.appendBox').length >= 6){
+                _alert('最多允许上传6张图片.');
+                return false;
             }
-           
+            _imgNum++;
+            fd.append("imgfile["+_imgNum+"]", base64Img);
+            $(that).parent().before('<div class="Box"><img src="'+base64Img+'" alt="" class="imgBox appendBox"><img src="__STATIC__/mobile/default/images/closeImg.png" alt="" data-imgnum="'+_imgNum+'" class="closeImg"></div>');
+        }   
     })
 </script>
 {/block}

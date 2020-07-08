@@ -797,6 +797,13 @@ class OrderModel extends BaseModel
                 $inArr['diy_discount'] = $orderInfo['diy_discount'] * $scale;
             }
             $inArr['order_amount'] = $inArr['goods_amount'] - $inArr['use_bonus'] - $inArr['diy_discount'] + $inArr['shipping_fee'];
+
+            // 计算该订单鼓励金(余额)抵扣 当前订单总额/主订单商品总额+运费*总抵扣金额
+            $inArr['balance_deduction'] = 0;
+            if ($orderInfo['balance_deduction']) {
+                $inArr['balance_deduction'] = round($inArr['order_amount'] / ($orderInfo['goods_amount'] + $orderInfo['shipping_fee']) * $orderInfo['balance_deduction'],2);
+            }
+            $inArr['order_amount'] -= $inArr['balance_deduction'];
             $inArr['money_paid'] = $inArr['order_amount'];
             //end
             $res = $this->create($inArr);

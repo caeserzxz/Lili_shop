@@ -246,6 +246,10 @@
         countTxtEvent("buyMsg", "wordNum", 140);
         //选择支付方式
         $('.gopay').on('click', function () {
+            if (finalPayTotal == 0 ) {
+                $('.buttBox span').trigger('click');
+                return;
+            }
             jq_ajax('{:url("publics/api.pay/getList")}', '', function (res) {
                 if (res.code == 0) {
                     _alert(res.msg);
@@ -302,7 +306,6 @@
             //         _alert('请上传支付凭证.');
             //         return false;
             //     }
-
             // }
             jq_ajax('{:url("shop/api.flow/addOrder")}', arr, function (res) {
                 if (res.code == 0) {
