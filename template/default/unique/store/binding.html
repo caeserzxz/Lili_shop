@@ -1,0 +1,47 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/addRedenv.css" />
+{/block}
+{block name="pageType"}{/block}
+{block name="main" }
+<div class="page my-business">
+  <div class="page-hd"></div>
+  <div class="header bor-1px-b">
+    <div class="header-left">
+      <a href="javascript:history.go(-1)" class="left-arrow"></a>
+    </div>
+    <div class="header-title">绑定收款码</div>
+    <div class="header-right">
+      <a href=''></a>
+    </div>
+  </div>
+  <div class="page-bd">
+
+    <img src="{$ecode_url}" alt="" width="100%">
+    <div class="main">
+    <div class="bottom">
+      <div class="btn">确认绑定</div>
+    </div>
+  </div>
+</div>
+</div>
+{/block}
+{block name="footer"}
+<script src="__STATIC__/unique/js/page.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+        $('.btn').on('click',function(){
+            jq_ajax('{:_url("unique/api.store/binding")}','id='+{$id},function(res){
+                if(res.code  == 0 ){
+                    _alert(res.msg)
+                    return false;
+                }
+                _alert(res.msg,res.url)
+            });
+        })
+    });
+</script>
+</body>
+</html>
+{/block}
