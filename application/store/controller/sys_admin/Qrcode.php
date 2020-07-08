@@ -37,11 +37,17 @@ class Qrcode extends AdminController
         $where = [];
         $where[] = ['is_del','=','0'];
         $search['keyword'] = input('keyword','','trim');
+        $search['type'] = input('type','','intval');
         $UserBusinessModel = new UserBusinessModel();
         if (empty($search['keyword']) == false){
             $uids = $UserBusinessModel->where(" business_name LIKE '%".$search['keyword']."%' OR business_id = '".$search['keyword']."'")->column('business_id');
             $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效
             $where[] = ['bussiness_id','in',$uids];
+        }
+        if($search['type'] == '1'){
+            $where[] = ['bussiness_id','=',null];
+        }else if($search['type'] == '2'){
+            $where[] = ['bussiness_id','>',0];
         }
         $data = $this->getPageList($this->Model, $where);
 
@@ -107,7 +113,7 @@ class Qrcode extends AdminController
     }
 
     /*------------------------------------------------------ */
-    //-- 调节会员帐号
+    //-- 增发收款码
     /*------------------------------------------------------ */
     public function addcode(){
         if ($this->request->isPost()){

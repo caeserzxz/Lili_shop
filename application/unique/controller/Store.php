@@ -223,7 +223,7 @@ class Store extends ClientbaseController{
         if ($this->userInfo['user_id']) {
             $BusinessQrcodeInfo = $BusinessQrcodeModel->where('id', $id)->find();
             if ($BusinessQrcodeInfo['is_del'] == '1') {
-                $this->error('该付款码已作废');
+                $this->error('该收款码已作废');
             }
             if (empty($BusinessQrcodeInfo['bussiness_id'])) {
                 $UserBusinessModel = new UserBusinessModel();
@@ -238,14 +238,14 @@ class Store extends ClientbaseController{
                         return $this->fetch('binding');
                     }
                 }
-                $this->error('该付款码暂未绑定商家');
+                $this->error('该收款码暂未绑定商家');
             }
         }
         //跳转去付款页
         $this->redirect(url('unique/store/pay_bill', ['business_id' => $BusinessQrcodeInfo['bussiness_id']]));
     }
     /*------------------------------------------------------ */
-    //-- 扫收款码
+    //-- 我的收款码
     /*------------------------------------------------------ */
     public function myqrcode()
     {
@@ -253,6 +253,9 @@ class Store extends ClientbaseController{
         $businessInfo = $UserBusinessModel->getInfo($this->userInfo['user_id']);
         $BusinessQrcodeModel = new BusinessQrcodeModel();
         $BusinessQrcodeInfo = $BusinessQrcodeModel->where('bussiness_id', $businessInfo['business_id'])->find();
+        if (empty($BusinessQrcodeInfo)) {
+            $this->error('暂未绑定收款码');
+        }
         $this->assign('title', '收款码');
         $this->assign('ecode_url', $BusinessQrcodeInfo['ecode_url']);
         return $this->fetch();
