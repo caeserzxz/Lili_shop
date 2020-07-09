@@ -9,7 +9,7 @@
                 <p class="text">鼓励金(元)</p>
             </div>
         </div>
-        <a href="{:url('withdraw/index')}" class="right btn">提现</a>
+        <a href="{:url('withdraw/index')}?type={$type}" class="right btn">提现</a>
     </div>
 
     <div class="date-type">
@@ -78,7 +78,12 @@
         </div>
         <div class="item-bot mt20 fs24 color_9">
             <p><span>{{item._time}}</span></p>
-            <p>余额{{item.balance_remaining}}</p>
+            {{if item.change_type == 17}}
+                <p>货款{{item.pill_remaining}}</p>
+            {{else/}}
+                <p>余额{{item.pill_remaining}}</p>
+            {{/if}}
+
         </div>
     </div>
     {{/each}}
@@ -142,6 +147,7 @@
         arr.type = '{$type|default=0}';
         arr.flag = $("input[name='flag']").attr('data-values');
         jq_ajax('{:url("api.Users/getAccountLog")}',arr,function(res){
+            console.log(res);
             if (res.code == 0){
                 _alert(res.msg);
                 return false;
@@ -160,11 +166,20 @@
     }
     $(function () {
         jq_ajax('{:url("member/api.users/getcenterinfo")}',[],function(res){
+            console.log(res);
             if (res.code == 0){
                 _alert(res.msg);
                 return false;
             }
-            $('.balance_money').html(res.userInfo.account.balance_money);
+            if({$type}==17){
+                $('.balance_money').html(res.userInfo.account.bill_money);
+                $('.text').html('货款(元)');
+
+            }else{
+                $('.balance_money').html(res.userInfo.account.balance_money);
+                $('.text').html('鼓励金(元)');
+            }
+
             if(res.userInfo.headimgurl){
                 $('.headimg').attr('src', res.userInfo.headimgurl);
             }

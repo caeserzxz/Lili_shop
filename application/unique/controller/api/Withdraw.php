@@ -313,7 +313,7 @@ class Withdraw extends ApiController
 			//内扣
 			$withdraw_money =  $inArr['amount'];
 		}
-        
+
 		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
             return $this->error('余额不足，请核实提现金额.');
         }

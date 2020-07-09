@@ -115,6 +115,7 @@ class Users extends ApiController
             }
             $row['_time'] = timeTran($row['change_time']);
             $row['balance_remaining'] = $row['old_balance_money'] + $row['balance_money'];
+            $row['pill_remaining'] = $row['old_bill_money'] + $row['bill_money'];
             $return['list'][] = $row;
         }
         return $this->ajaxReturn($return);
