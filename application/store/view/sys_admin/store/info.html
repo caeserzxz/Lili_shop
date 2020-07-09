@@ -121,7 +121,7 @@
                 <div class="form-group">
                     <label class="control-label">联系地址：</label>
                     <div class="col-sm-7" >
-                        <input type="text" class="input-max" data-rule-maxlength="50"  name="address" value="{$row.address}" >
+                        <input type="text" class="input-max address" data-rule-maxlength="50"  name="address" value="{$row.address}" >
                     </div>
                 </div>
             <div class="form-group">
@@ -272,7 +272,7 @@
             window.location.reload();
         })
     });
-   $('.lon_lat').click(function () {
+   $('.address').blur(function () {
      // var lat = $("input[name='latitude']").val();
      // var lon = $("input[name='longitude']").val();
      // if(lat == '' || lon == ''){
@@ -283,6 +283,7 @@
        arr.district = $('#district').val();
        if(arr.address != '' && arr.province != '' && arr.city != '' && arr.district != ''){
          jq_ajax('{:url("getLatLon")}',arr,function (res) {
+             console.log(res);
            if (res.code == 0){
              return _alert('获取经纬度失败，请稍后再试或者手动填写');
            }

@@ -192,7 +192,12 @@ class PayRecordModel extends BaseModel
         $business = $UserBusinessModel->where('business_id',$orderInfo['business_id'])->find();
         //让利后的货款
         $return_money = $orderInfo['amount'] - ($orderInfo['amount']*$business['profits']/100);
-        $res = $this->change_data($business['user_id'],17,'货款',$return_money,$orderInfo['log_id']);
+        $return_changedata['change_desc'] = '货款';
+        $return_changedata['change_type'] = 17;
+        $return_changedata['by_id'] = $return_money;
+        $return_changedata['balance_money'] = $orderInfo['log_id'];
+        $AccountLogModel = new AccountLogModel();
+        $res = $AccountLogModel->change($return_changedata, $business['user_id'], false);
         if($res==false){
             Db::rollback();// 回滚事务
             $this->_log($orderInfo,'返还商家货款失败');

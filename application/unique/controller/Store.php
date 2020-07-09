@@ -74,6 +74,7 @@ class Store extends ClientbaseController{
     //-- 商家管理
     /*------------------------------------------------------ */
     public function business(){
+        $this->assign('userInfo',$this->userInfo);
         $this->assign('title', '商家管理');
         return $this->fetch('business');
     }

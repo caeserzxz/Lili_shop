@@ -304,7 +304,7 @@ class Store extends AdminController
         return $merger_name;
     }
     /**
-     * 百度后台获取经纬度
+     * 后台获取经纬度
      */
     public function getLatLon(){
         $input = input();

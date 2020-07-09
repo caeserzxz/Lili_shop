@@ -9,11 +9,16 @@
         <div class="user">
           <div class="user-info">
             <div class="head-img">
-              <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+              {if condition="$userInfo.headimgurl eq ''"}
+                <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+              {else /}
+                <img src="{$userInfo.headimgurl}" alt="">
+              {/if}
+
             </div>
             <div class="info">
               <div class="nickname fs32 fw_b">
-                <span>巴啦魔小仙女</span>
+                <span>{$userInfo.nick_name}</span>
                 <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
               </div>
               <div class="address mt10">广东省广州市天河区棠东毓敏路12号</div>
