@@ -79,7 +79,7 @@ class Users extends ApiController
     public function getAccountLog()
     {
         $type = input('type', '0', 'trim');
-        if($type < 11 || $type > 15)$type = 0;
+        if($type < 11 || $type > 17)$type = 0;
         $date1 = input('date1', date('Y-m-d',strtotime("-1 month")), 'trim');
         $date2 = input('date2', date('Y-m-d'), 'trim');
         $flag = input('flag','all','trim');

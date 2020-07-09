@@ -72,7 +72,7 @@
           <img class="icon" src="__STATIC__/unique/images/mer_icon06.png" alt="">
           <p class="fs28 color_3 mt20">红包营销</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_order_money();">
           <img class="icon" src="__STATIC__/unique/images/mer_icon07.png" alt="">
           <p class="fs28 color_3 mt20">我的货款</p>
         </div>
@@ -132,7 +132,11 @@
     }
     //跨界奖金
     function go_mylog(){
-        window.location.href = "{:url('unique/wallet/mylog')}?type=2";
+        window.location.href = "{:url('unique/wallet/mylog')}?type=12";
+    }
+    //我的货款
+    function go_order_money(){
+        window.location.href = "{:url('unique/wallet/mylog')}?type=17";
     }
   </script>
 </body>

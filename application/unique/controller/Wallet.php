@@ -27,7 +27,7 @@ class Wallet extends ClientbaseController{
     /*------------------------------------------------------ */
     public function mylog(){
         $type = input('type', 0, 'trim');
-        if($type >= 11 && $type <= 15)
+        if($type >= 11 && $type <= 17)
             $title = AccountLogModel::$type_desc[$type];
         $title = $title ? $title : '钱包';
         $this->assign('title', $title);
