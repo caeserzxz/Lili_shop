@@ -7,12 +7,17 @@
             <li>
                 <i class="fa fa-ellipsis-v"></i>
                 <strong>收款码列表</strong>
-            </li>                                  
+            </li>
         </ul>
-         <input type="hidden" name="type" value="1">
+         <select name="type" style="width: 150px;" data-toggle="select2" data-chang="submit">
+         <option value="0">所有收款码</option>
+         <option value="1">未绑定</option>
+         <option value="2">已绑定</option>
+         </select>
         <input type="text" class="form-control input-large" value="" name="keyword" placeholder="商家名称/商家ID" data-rule-required="true" />
         <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
-         <a href="javascript:;" data-remote="{:url('addcode')}" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-mc m-r"><i class="fa fa-edit"></i>增发收款码</a>
+        <a href="javascript:;" data-remote="{:url('addcode')}" data-toggle="ajaxModal" class="btn btn-sm btn-default fr m-t-mc m-r"><i class="fa fa-plus m-r-xs"></i>增发收款码</a>
+         <a href="{:url('downloadzip')}"  title="下载未绑定二维码" class="btn btn-sm btn-default fr m-t-md m-r">下载未绑定收款码</a>
         </div>
     </form>
 </header>

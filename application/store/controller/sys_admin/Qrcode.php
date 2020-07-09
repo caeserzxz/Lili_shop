@@ -37,11 +37,17 @@ class Qrcode extends AdminController
         $where = [];
         $where[] = ['is_del','=','0'];
         $search['keyword'] = input('keyword','','trim');
+        $search['type'] = input('type','','intval');
         $UserBusinessModel = new UserBusinessModel();
         if (empty($search['keyword']) == false){
             $uids = $UserBusinessModel->where(" business_name LIKE '%".$search['keyword']."%' OR business_id = '".$search['keyword']."'")->column('business_id');
             $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效
             $where[] = ['bussiness_id','in',$uids];
+        }
+        if($search['type'] == '1'){
+            $where[] = ['bussiness_id','=',null];
+        }else if($search['type'] == '2'){
+            $where[] = ['bussiness_id','>',0];
         }
         $data = $this->getPageList($this->Model, $where);
 
@@ -107,7 +113,7 @@ class Qrcode extends AdminController
     }
 
     /*------------------------------------------------------ */
-    //-- 调节会员帐号
+    //-- 增发收款码
     /*------------------------------------------------------ */
     public function addcode(){
         if ($this->request->isPost()){
@@ -134,5 +140,59 @@ class Qrcode extends AdminController
             return $this->success('操作成功','reload');
         }
         return $this->fetch();
+    }
+    /*------------------------------------------------------ */
+    //-- 下载未绑定收款码
+    /*------------------------------------------------------ */
+    public function downloadzip(){
+        $pathname = config('config._upload_') . "./bqrcode";
+        $pathzipname = config('config._upload_') . "./bqrcodezip";
+        $filename = "allbqrcode.zip";
+        $filenameaddr = config('config._upload_').'/bqrcodezip/' . $filename;
+        if(!is_dir($pathzipname)) { //若目录不存在则创建之
+            mkdir($pathzipname);
+        }else{
+            if(file_exists($filenameaddr)) { //若文件存在则删除之
+                unlink($filenameaddr);
+            }
+        }
+        $where[] = ['bussiness_id','=',null];
+        $where[] = ['is_del','=',0];
+        $list = $this->Model->where($where)->select()->toArray();
+        if($list){
+            $zip = new \ZipArchive();
+            $zip->open($filenameaddr,$zip::CREATE);
+            foreach ($list as $item){
+                $ad = $pathname . "/qrcode_" . $item['id'] . ".png";     //打开压缩包
+                $zip->addFile($ad,basename($item['id'] . ".png"));   //向压缩包中添加文件
+            }
+            $zip->close();  //关闭压缩包
+        }else{
+            return $this->error('下载失败,没有未绑定的收款码');
+        }
+        $this->redirect('/upload/bqrcodezip/allbqrcode.zip');
+    }
+    /*------------------------------------------------------ */
+    //-- 重新生成图片
+    /*------------------------------------------------------ */
+    public function regenerate(){
+        if ($this->request->isPost()){
+            $id = input('id', 0, 'intval');
+            if(empty($id) || $id <= 0){
+                return $this->error('参数错误');
+            }
+            $time = time();
+            $web_path = config('config.host_path');
+            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
+            $QRcode = new \phpqrcode\QRcode();//实例化二维码类
+            $url = $web_path.'/unique/store/qrcode/id/'.$id.'.html';//网址或者是文本内容
+            $pathname = config('config._upload_') . "./bqrcode";
+            if(!is_dir($pathname)) { //若目录不存在则创建之
+                mkdir($pathname);
+            }
+            $ad = $pathname . "/qrcode_" . $id . ".png";
+            $QRcode->png($url, $ad, 3, 4, 2);
+            return $this->success('生成图片成功','reload');
+        }
     }
 }

@@ -23,7 +23,8 @@
     <td>{$vo.add_time|dateTpl}</td>
     <td>{$vo.update_time|dateTpl}</td>
     <td>
-        <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定将收款码{$vo.supplyer_name}删除？"  class="fa fa-trash"  title="删除收款码"></a>
+        <a href="{:url('regenerate',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定重新生成图片？" class="fa fa-rotate-right text-muted m-xs" title="重新生成图片"></a>
+        <a href="{:url('del',array('id'=>$vo['id']))}" data-toggle="ajaxRemove" data-msg="确定将收款码{$vo.supplyer_name}删除？" class="fa fa-trash m-xs" title="删除收款码"></a>
     </td>
 </tr>
 {/volist}
