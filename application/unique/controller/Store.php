@@ -252,7 +252,7 @@ class Store extends ClientbaseController{
         $UserBusinessModel = new UserBusinessModel();
         $businessInfo = $UserBusinessModel->getInfo($this->userInfo['user_id']);
         $BusinessQrcodeModel = new BusinessQrcodeModel();
-        $BusinessQrcodeInfo = $BusinessQrcodeModel->where('bussiness_id', $businessInfo['business_id'])->find();
+        $BusinessQrcodeInfo = $BusinessQrcodeModel->where('bussiness_id', $businessInfo['business_id'])->where('is_del', 0)->find();
         if (empty($BusinessQrcodeInfo)) {
             $this->error('暂未绑定收款码');
         }

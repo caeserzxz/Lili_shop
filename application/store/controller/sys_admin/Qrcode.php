@@ -172,4 +172,27 @@ class Qrcode extends AdminController
         }
         $this->redirect('/upload/bqrcodezip/allbqrcode.zip');
     }
+    /*------------------------------------------------------ */
+    //-- 重新生成图片
+    /*------------------------------------------------------ */
+    public function regenerate(){
+        if ($this->request->isPost()){
+            $id = input('id', 0, 'intval');
+            if(empty($id) || $id <= 0){
+                return $this->error('参数错误');
+            }
+            $time = time();
+            $web_path = config('config.host_path');
+            include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
+            $QRcode = new \phpqrcode\QRcode();//实例化二维码类
+            $url = $web_path.'/unique/store/qrcode/id/'.$id.'.html';//网址或者是文本内容
+            $pathname = config('config._upload_') . "./bqrcode";
+            if(!is_dir($pathname)) { //若目录不存在则创建之
+                mkdir($pathname);
+            }
+            $ad = $pathname . "/qrcode_" . $id . ".png";
+            $QRcode->png($url, $ad, 3, 4, 2);
+            return $this->success('生成图片成功','reload');
+        }
+    }
 }
