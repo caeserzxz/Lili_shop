@@ -34,6 +34,7 @@ class Wallet extends ClientbaseController{
         $this->assign('type', $type);
         $this->assign('date1', date('Y-m-d',strtotime("-1 month")));
         $this->assign('date2', date('Y-m-d'));
+        $this->assign('userInfo',$this->userInfo);
         return $this->fetch('mylog');
     }
     /*------------------------------------------------------ */

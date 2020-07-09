@@ -10,7 +10,12 @@
         <div class="page-bd">
             <!-- 页面内容-->
             <div class="selectBox">
-                <img class="headimg" src="__STATIC__/unique/images/shareCircle07.png" alt="" />
+                {if condition="$userInfo.headimgurl eq ''"}
+                    <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
+                {else /}
+                    <img class="headimg" src="{$userInfo.headimgurl}" alt="" />
+                {/if}
+
                 <a href="{:url('unique/index/region')}?city={$city_info.short_name}" class="fs28 fw_b addr">{$city_info.short_name}</a>
                 <a href="{:url('unique/index/search')}" class="selech">
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />

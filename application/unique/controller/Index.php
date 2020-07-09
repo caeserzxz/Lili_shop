@@ -33,6 +33,7 @@ class Index extends ClientbaseController{
         $this->assign('city_info', $city_info);
 
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片
+        $this->assign('userInfo',$this->userInfo);
         return $this->fetch('index');
     }
 

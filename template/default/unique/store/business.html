@@ -21,7 +21,7 @@
                 <span>{$userInfo.nick_name}</span>
                 <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
               </div>
-              <div class="address mt10">广东省广州市天河区棠东毓敏路12号</div>
+              <div class="address mt10">{$address}</div>
             </div>
           </div>
         </div>
@@ -33,11 +33,11 @@
           </div>
           <div class="flex-item">
             <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
-            <p>扫扫扫</p>
+            <p>扫一扫</p>
           </div>
           <div class="flex-item">
             <img class="icon-img" src="__STATIC__/unique/images/mer_icon03.png" alt="">
-            <p>这是啥</p>
+            <p>我的会员</p>
           </div>
         </div>
       </div>
@@ -45,17 +45,17 @@
       <div class="money num">
         <div class="money-info">
           <div class="money-month">
-            <div class="fs48">36962.00</div>
+            <div class="fs48">{$sales_count.this_month_count}</div>
             <div class="fs26 opacity08">本月业绩（元）</div>
           </div>
           <div class="money-day">
-            <div class="fs48">594.50</div>
+            <div class="fs48">{$sales_count.today_count}</div>
             <div class="fs26 opacity08">今日业绩（元）</div>
           </div>
         </div>
         <div class="mt60">
-          <span class="opacity08">数据更新与:2020.05.21</span>
-          <span class="more">查看更多></span>
+          <span class="opacity08">数据更新于:<?php echo date('Y-m-d H:i:s',$sales_count['count_time'])?></span>
+          <span class="more" onclick="go_sales();">查看更多></span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@
           <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
           <p class="fs28 color_3 mt20">我的业绩</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_mylog();">
           <img class="icon" src="__STATIC__/unique/images/mer_icon05.png" alt="">
           <p class="fs28 color_3 mt20">跨界奖金</p>
         </div>
@@ -129,6 +129,10 @@
     //我的业绩
     function go_gift(){
         window.location.href = "{:url('unique/store/gift_list')}";
+    }
+    //跨界奖金
+    function go_mylog(){
+        window.location.href = "{:url('unique/wallet/mylog')}?type=2";
     }
   </script>
 </body>

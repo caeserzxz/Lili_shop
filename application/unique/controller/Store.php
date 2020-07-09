@@ -4,6 +4,7 @@
 //-- Author: iqgmy
 /*------------------------------------------------------ */
 namespace app\unique\controller;
+use think\facade\Cache;
 use app\ClientbaseController;
 use app\store\model\BusinessQrcodeModel;
 use app\store\model\CategoryModel;
@@ -74,7 +75,37 @@ class Store extends ClientbaseController{
     //-- 商家管理
     /*------------------------------------------------------ */
     public function business(){
+        $PayRecordModel = new PayRecordModel();
         $this->assign('userInfo',$this->userInfo);
+        $business = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        #详细地址
+        $address = str_replace(' ', '', $business['merger_name']).$business['address'];
+        $this->assign('address',$address);
+        $sales_count = Cache::get('sales_mkey' . $business['business_id']);
+        if(empty($sales_count)){
+            $arr = [];
+            #本月业绩
+            $beginThismonth=mktime(0,0,0,date('m'),1,date('Y'));
+            $endThismonth=mktime(23,59,59,date('m'),date('t'),date('Y'));
+            $where1[] = ['business_id','=',$business['business_id']];
+            $where1[] = ['status','=',1];
+            $where1[] = ['add_time', 'between', array($beginThismonth, $endThismonth)];
+            $this_month_count =  $PayRecordModel->where($where1)->sum('amount');
+            #今日业绩
+            $beginToday=mktime(0,0,0,date('m'),date('d'),date('Y'));
+            $endToday=mktime(0,0,0,date('m'),date('d')+1,date('Y'))-1;
+            $where2[] = ['business_id','=',$business['business_id']];
+            $where2[] = ['status','=',1];
+            $where2[] = ['add_time', 'between', array($beginToday, $endToday)];
+            $today_count =  $PayRecordModel->where($where2)->sum('amount');
+            #更新时间
+            $arr['count_time'] = time();
+            $arr['this_month_count'] = sprintf("%.2f",$this_month_count);
+            $arr['today_count'] = sprintf("%.2f",$today_count);
+            Cache::set('sales_mkey' . $business['business_id'], $arr, 600);
+        }
+
+        $this->assign('sales_count',$sales_count);
         $this->assign('title', '商家管理');
         return $this->fetch('business');
     }
@@ -261,4 +292,5 @@ class Store extends ClientbaseController{
         $this->assign('ecode_url', $BusinessQrcodeInfo['ecode_url']);
         return $this->fetch();
     }
+
 }?>

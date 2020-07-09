@@ -43,6 +43,13 @@
             <a href="{:url('',['type'=>15])}"><p class="fs32 fw_b color_3 num_15">0.00</p>
             <p class="fs24 color_9">自购返收入</p></a>
         </div>
+        {if condition="$userInfo.is_business eq 1"}
+            <div>
+                <a href="{:url('',['type'=>12])}"><p class="fs32 fw_b color_3 num_15">0.00</p>
+                    <p class="fs24 color_9">跨界奖金</p></a>
+            </div>
+        {/if}
+
     </div>
     <!-- 数据列表 -->
     <div class="data-info">
