@@ -77,4 +77,33 @@ class Agent extends ClientbaseController
         return $this->fetch('sales');
     }
 
+    /*------------------------------------------------------ */
+    //-- 邀请代理
+    /*------------------------------------------------------ */
+    public function agent_token(){
+        $type = input('type');
+        $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        $token = $info['token'];
+        if($type==1){
+            $share_url = 'http://'.$_SERVER['HTTP_HOST'].'/unique/agent/add_agent/agent_token/';
+            $this->assign('title', '邀请代理');
+        }else{
+            $share_url = 'http://'.$_SERVER['HTTP_HOST'].'/unique/store/add_business/agent_token/';
+            $this->assign('title', '邀请商家');
+        }
+
+
+
+        $this->assign('share_url',$share_url);
+        $this->assign('token',$token);
+        return $this->fetch('agent_token');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 邀请商家
+    /*------------------------------------------------------ */
+    public function business_token(){
+        $this->assign('title', '邀请商家');
+        return $this->fetch('business_token');
+    }
 }

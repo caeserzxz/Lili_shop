@@ -45,11 +45,16 @@
         </div>
         {if condition="$userInfo.is_business eq 1"}
             <div>
-                <a href="{:url('',['type'=>12])}"><p class="fs32 fw_b color_3 num_15">0.00</p>
+                <a href="{:url('',['type'=>12])}"><p class="fs32 fw_b color_3 num_12">0.00</p>
                     <p class="fs24 color_9">跨界奖金</p></a>
             </div>
         {/if}
-
+        {if condition="$userInfo.is_business eq 1"}
+            <div>
+                <a href="{:url('',['type'=>13])}"><p class="fs32 fw_b color_3 num_13">0.00</p>
+                <p class="fs24 color_9">代理奖</p></a>
+            </div>
+        {/if}
     </div>
     <!-- 数据列表 -->
     <div class="data-info">
@@ -192,6 +197,8 @@
                 }
                 $('.num_all').html(res.num_all);
                 $('.num_11').html(res.num_11);
+                $('.num_12').html(res.num_12);
+                $('.num_13').html(res.num_13);
                 $('.num_15').html(res.num_15);
                 $('.money-info').show();
             });

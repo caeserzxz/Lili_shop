@@ -151,7 +151,7 @@ class Business extends ApiController
         if(empty($agent_info)==false){
             $codes = explode(",",$data['data_codes']);
             if($codes[0]!=$agent_info['province']||$codes[1]!=$agent_info['city']){
-                return $this->ajaxReturn(['code' => 0,'msg' => '代理区域不同']);
+                return $this->ajaxReturn(['code' => 0,'msg' => '代理区域与代理不同']);
             }
         }
         if(empty($agent_info)==false){

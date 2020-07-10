@@ -1,0 +1,127 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/inviteFriends.css" />
+{/block}
+{block name='pageType'}my-business{/block}
+{block name="main" }
+
+    <div class="page invite-friends">
+        <div class="page-bd">
+            <!-- 页面内容-->
+            <div class="invite-friends-img">
+                <img id="qrcode"  alt="">
+            </div>
+
+            <!-- button -->
+            <div class="footer-btn fs26">
+                <div class="copy-link" onclick="copy();">
+                    <img src="__STATIC__/unique/images/link_icon.jpg" alt="">
+                    <span>复制链接</span>
+                </div>
+                <!--<div class="share-wx">-->
+                    <!--<img src="__STATIC__/unique/images/share01.png" alt="">-->
+                    <!--<span>分享到微信</span>-->
+                <!--</div>-->
+            </div>
+            <input type="hidden" id="share_url" value="{$share_url}" />
+            <input type="hidden" id="token" value="{$token}">
+        </div>
+
+    </div>
+
+{/block}
+
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+    <script>
+        $(function () {
+            // 当用户滚动到页面底部的时候加载更多内容。
+            $('.page-bd').infinite(100);
+            var loading = false;  //状态标记
+            $('.page-bd').infinite().on("infinite", function () {
+                if (loading) return;
+                loading = true;
+                // 请求数据
+                setTimeout(function () {
+                    $(".bulletin-list").append("<p> 我是新加载的内容 </p>");
+                    loading = false;
+                }, 1500);   //模拟延迟
+            })
+        })
+    </script>
+<script>
+    var num = 0;
+    function getCodeImg(){
+
+        var token = "{$token}";
+        jq_ajax('{:_url("/member/api.users/getMyCode")}','',function (res) {
+            var code_url = res.substr(1);
+            $("#token").html(token);
+            $('#qrcode').attr('src',code_url);
+        });
+    }
+
+    // 将二维码的内容字符串转换成UTF-8格式，js转换
+    function qrcodeToUtf8(str) {
+        var out, i, len, c;
+        out = "";
+        len = str.length;
+        for (i = 0; i < len; i++) {
+            c = str.charCodeAt(i);
+            if ((c >= 0x0001) && (c <= 0x007F)) {
+                out += str.charAt(i);
+            } else if (c > 0x07FF) {
+                out += String.fromCharCode(0xE0 | ((c >> 12) & 0x0F));
+                out += String.fromCharCode(0x80 | ((c >> 6) & 0x3F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            } else {
+                out += String.fromCharCode(0xC0 | ((c >> 6) & 0x1F));
+                out += String.fromCharCode(0x80 | ((c >> 0) & 0x3F));
+            }
+        }
+        return out;
+    }
+    //创建二维码
+    function createQRCode(id, url, width, height, src) {
+        $('#' + id).empty();
+        jQuery('#' + id).qrcode({
+            render: 'canvas',
+            text: "https://www.baidu.com",
+            width: width, //二维码的宽度
+            height: height, //二维码的高度
+            imgWidth: width / 4, //图片宽
+            imgHeight: height / 4, //图片高
+            src: "" //图片中央的二维码
+        });
+    }
+    $(function() {
+        getCodeImg();
+    });
+    // function init() {
+    //     getCodeImg();
+    //     // createQRCode("qrcode", "测试",  "");
+    // }
+    function copy() {
+        var Url2 = document.getElementById("token").innerText;
+        var share_url = $('#share_url').val();
+        Url2 = share_url + Url2;
+        var oInput = document.createElement("input");
+        oInput.value = Url2;
+        document.body.appendChild(oInput);
+        oInput.select(); // 选择对象
+        document.execCommand("Copy"); // 执行浏览器复制命令
+        oInput.className = "oInput";
+        oInput.style.display = "none";
+        $.toast('复制成功','text');
+        // msg("复制成功");
+
+    }
+</script>
+</body>
+
+</html>
+{/block}

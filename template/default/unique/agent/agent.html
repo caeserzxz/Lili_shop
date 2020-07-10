@@ -56,11 +56,11 @@
       </div>
 
       <div class="flex-grids">
-        <div class="grids-item">
+        <div class="grids-item" onclick="agent_token(2);">
           <img class="icon" src="__STATIC__/unique/images/proxy_01.png" alt="">
           <p class="fs28 color_3 mt20">邀请商家</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="agent_token(1);">
           <img class="icon" src="__STATIC__/unique/images/proxy_02.png" alt="">
           <p class="fs28 color_3 mt20">邀请代理</p>
         </div>
@@ -68,7 +68,7 @@
           <img class="icon" src="__STATIC__/unique/images/proxy_03.png" alt="">
           <p class="fs28 color_3 mt20">我的商家</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_mylog();">
           <img class="icon" src="__STATIC__/unique/images/proxy_04.png" alt="">
           <p class="fs28 color_3 mt20">我的钱包</p>
         </div>
@@ -125,6 +125,14 @@
     //我的业绩
     function go_sales(){
         window.location.href = "{:url('unique/agent/sales')}";
+    }
+    //我的钱包
+    function go_mylog(){
+        window.location.href = "{:url('unique/wallet/mylog')}";
+    }
+    //邀请代理 商家
+    function agent_token(type){
+        window.location.href = "{:url('unique/agent/agent_token')}?type="+type;
     }
   </script>
 </body>

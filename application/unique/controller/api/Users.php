@@ -130,6 +130,8 @@ class Users extends ApiController
         $where[] = ['balance_money' ,'>' ,0];
         $return['num_all'] = $AccountLogModel->where($where)->sum('balance_money');
         $return['num_11']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,11]])->sum('balance_money');
+        $return['num_12']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,12]])->sum('balance_money');
+        $return['num_13']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,13]])->sum('balance_money');
         $return['num_15']  = $AccountLogModel->where($where)->where([['change_type' ,'=' ,15]])->sum('balance_money');
         return $this->ajaxReturn($return);
     }
