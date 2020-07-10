@@ -5,7 +5,7 @@
     // 连接服务端
     function connect() {
         // 创建websocket
-        ws = new WebSocket("ws://<?=$_SERVER['SERVER_NAME']?>:2346");
+        ws = new WebSocket("ws://<?=$_SERVER['SERVER_NAME']?>:8787");
         ws.onopen = onopen;
         // 当有消息时根据消息类型显示不同信息
         ws.onmessage = onmessage;

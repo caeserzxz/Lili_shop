@@ -16,7 +16,7 @@ use think\facade\Env;
 return [
     // 扩展自身需要的配置
     'host'                  => '0.0.0.0', // 监听地址
-    'port'                  => 2346, // 监听端口
+    'port'                  => 8787, // 监听端口
     'root'                  => '', // WEB 根目录 默认会定位public目录
     'app_path'              => '', // 应用目录 守护进程模式必须设置（绝对路径）
     'file_monitor'          => false, // 是否开启PHP文件更改监控（调试模式下自动开启）
