@@ -35,6 +35,8 @@ class Agent extends ClientbaseController
     //-- 代理管理
     /*------------------------------------------------------ */
     public function agent(){
+        $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        $this->assign('info',$info);
         $this->assign('title', '代理管理');
         return $this->fetch('agent');
     }

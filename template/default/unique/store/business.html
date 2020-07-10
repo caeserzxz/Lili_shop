@@ -35,7 +35,7 @@
             <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
             <p>扫一扫</p>
           </div>
-          <div class="flex-item">
+          <div class="flex-item" onclick="go_my_team();">
             <img class="icon-img" src="__STATIC__/unique/images/mer_icon03.png" alt="">
             <p>我的会员</p>
           </div>
@@ -137,6 +137,10 @@
     //我的货款
     function go_order_money(){
         window.location.href = "{:url('unique/wallet/mylog')}?type=17";
+    }
+    //我的会员
+    function go_my_team(){
+        window.location.href = "{:url('unique/store/my_team')}";
     }
   </script>
 </body>

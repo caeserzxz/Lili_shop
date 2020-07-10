@@ -599,7 +599,37 @@ class Business extends ApiController
         $this->ajaxReturn($arr);
     }
 
+    /*------------------------------------------------------ */
+    //-- 获取商家的会员
+    /*------------------------------------------------------ */
+    public function getmyteam(){
+        $limit = 12;
+        $limit_start = input('limit_start', 0, 'trim');
+//        $page = input('page');
+        $UsersModel = new UsersModel();
+        $user_id = $this->userInfo['user_id'];
+        $info = $this->Model->where('user_id',$user_id)->find();
+        $where[] = ['first_business_id','=',$info['business_id']];
+        $rows = $UsersModel->field("*,FROM_UNIXTIME(first_business_time, '%Y-%m-%d' ) as _time")->where($where)->order('user_id DESC')->limit($limit_start,$limit)->select()->toArray();
+        if(count($rows) < $limit){
+            $return['is_over'] = 1;
+        }
+        $return['list'] = $rows;
+        $return['limit_start'] = $limit_start + $limit;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 
-
-
+    /*------------------------------------------------------ */
+    //-- 获取商家的会员总数
+    /*------------------------------------------------------ */
+    public function getteamnum(){
+        $UsersModel = new UsersModel();
+        $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        $where[] = ['first_business_id','=',$info['business_id']];
+        $allnum = $UsersModel->where($where)->count();
+        $return['allnum'] = $allnum;
+        $return['code'] = 1;
+        return $this->ajaxReturn($return);
+    }
 }

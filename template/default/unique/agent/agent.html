@@ -9,18 +9,32 @@
         <div class="user">
           <div class="user-info">
             <div class="head-img">
-              <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+              {if condition="$userInfo.headimgurl eq ''"}
+                <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+              {else /}
+                <img src="{$userInfo.headimgurl}" alt="">
+              {/if}
             </div>
             <div class="info">
-              <div class="nickname fs32 fw_b">巴啦魔小仙女</div>
-              <div class="iphone-num">15923698569</div>
+              <div class="nickname fs32 fw_b">{$userInfo.nick_name}</div>
+              <div class="iphone-num">{$userInfo.mobile}</div>
               <div class="proxy">
                 <img src="__STATIC__/unique/images/proxy_01.jpg" alt="">
-                省级代理
+                {if condition="$info.agent_level eq 2"}
+                  市级代理
+                {elseif condition="$info.agent_level eq 4"/}
+                  省级代理
+                {/if}
+
               </div>
             </div>
           </div>
-          <div class="proxy-label">省级代理 </div>
+          {if condition="$info.agent_level eq 2"}
+            <div class="proxy-label">市级代理 </div>
+          {elseif condition="$info.agent_level eq 4"/}
+            <div class="proxy-label">省级代理 </div>
+          {/if}
+
         </div>
       </div>
 
@@ -48,15 +62,15 @@
         </div>
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/proxy_02.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">邀请代理</p>
         </div>
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/proxy_03.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">我的商家</p>
         </div>
         <div class="grids-item">
           <img class="icon" src="__STATIC__/unique/images/proxy_04.png" alt="">
-          <p class="fs28 color_3 mt20">邀请商家</p>
+          <p class="fs28 color_3 mt20">我的钱包</p>
         </div>
       </div>
 

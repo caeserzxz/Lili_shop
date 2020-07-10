@@ -170,6 +170,7 @@ class PayRecordModel extends BaseModel
             if(empty($userInfo['first_business_id'])){
                 #绑定第一次消费的商家
                 $updata_user['first_business_id'] = $orderInfo['business_id'];
+                $updata_user['first_business_time'] = time();
                 $user_res = $UsersModel->where('user_id',$orderInfo['user_id'])->update($updata_user);
                 if($user_res==false){
                     Db::rollback();// 回滚事务

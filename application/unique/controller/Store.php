@@ -293,4 +293,11 @@ class Store extends ClientbaseController{
         return $this->fetch();
     }
 
+    /*------------------------------------------------------ */
+    //-- 我的会员
+    /*------------------------------------------------------ */
+    public function my_team(){
+        $this->assign('title', '我的会员');
+        return $this->fetch();
+    }
 }?>
