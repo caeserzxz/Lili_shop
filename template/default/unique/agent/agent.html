@@ -41,17 +41,17 @@
       <div class="money num">
         <div class="money-info">
           <div class="money-month">
-            <div class="fs48">36962.00</div>
+            <div class="fs48" id="money-month">0</div>
             <div class="fs26 opacity08">本月业绩（元）</div>
           </div>
           <div class="money-day">
-            <div class="fs48">594.50</div>
+            <div class="fs48" id="money-day">0</div>
             <div class="fs26 opacity08">今日业绩（元）</div>
           </div>
         </div>
         <div class="mt60">
-          <span class="opacity08">数据更新与:2020.05.21</span>
-          <span class="more">查看更多></span>
+          <span class="opacity08">数据更新与:<em id="count_time"></em></span>
+          <span class="more" onclick="go_sales();">查看更多></span>
         </div>
       </div>
 
@@ -64,7 +64,7 @@
           <img class="icon" src="__STATIC__/unique/images/proxy_02.png" alt="">
           <p class="fs28 color_3 mt20">邀请代理</p>
         </div>
-        <div class="grids-item">
+        <div class="grids-item" onclick="go_my_team();">
           <img class="icon" src="__STATIC__/unique/images/proxy_03.png" alt="">
           <p class="fs28 color_3 mt20">我的商家</p>
         </div>
@@ -95,6 +95,8 @@
       });
     })
     $(function () {
+      getAchievement();
+
       $('.showmodal').on('click', function () {
         $('.modal-proxy').show()
       })
@@ -108,6 +110,22 @@
       })
     })
 
+    //获取今日业绩 本月业绩
+    function getAchievement(){
+        jq_ajax('{:url("api.agent/getAchievement")}',[],function(res){
+            $('#money-month').html(res.this_month_count);
+            $('#money-day').html(res.today_count);
+            $('#count_time').html(res.count_time);
+        });
+    }
+    //我的商家
+    function go_my_team(){
+        window.location.href = "{:url('unique/agent/my_team')}";
+    }
+    //我的业绩
+    function go_sales(){
+        window.location.href = "{:url('unique/agent/sales')}";
+    }
   </script>
 </body>
 

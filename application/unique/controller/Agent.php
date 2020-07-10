@@ -49,6 +49,7 @@ class Agent extends ClientbaseController
         return $this->fetch('agent_review');
     }
 
+
     /*------------------------------------------------------ */
     //-- 审核未通过
     /*------------------------------------------------------ */
@@ -57,5 +58,23 @@ class Agent extends ClientbaseController
         return $this->fetch('agent_fail');
     }
 
+    /*------------------------------------------------------ */
+    //-- 我的商家
+    /*------------------------------------------------------ */
+    public function my_team(){
+        $this->assign('title', '我的商家');
+        return $this->fetch('my_team');
+    }
+
+    /*------------------------------------------------------ */
+    //-- 我的业绩
+    /*------------------------------------------------------ */
+    public function sales(){
+        $this->assign('date', date('Y-m'));
+        $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        $this->assign('info',$info);
+        $this->assign('title', '我的业绩');
+        return $this->fetch('sales');
+    }
 
 }

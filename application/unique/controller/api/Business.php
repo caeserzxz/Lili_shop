@@ -320,7 +320,8 @@ class Business extends ApiController
         $return['date'] = $date;
         $return['code'] = 1;
         $PayRecordModel = new PayRecordModel();
-        $where[] = ['user_id', '=', $this->userInfo['user_id']];
+        $business = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        $where[] = ['business_id', '=', $business['business_id']];
         $where[] = ['add_time', 'between', array($date1, $date2)];
         //SELECT sum(amount) all_amount,FROM_UNIXTIME(add_time,"%Y.%m.%d") addtime FROM `users_pay_record` group by addtime order by addtime asc
         $rows = $PayRecordModel->field('sum(amount) all_amount,FROM_UNIXTIME(add_time,"%Y.%m.%d") addtime')->where($where)->group('addtime')->order('addtime ASC')->select()->toArray();
@@ -603,9 +604,8 @@ class Business extends ApiController
     //-- 获取商家的会员
     /*------------------------------------------------------ */
     public function getmyteam(){
-        $limit = 12;
+        $limit = 20;
         $limit_start = input('limit_start', 0, 'trim');
-//        $page = input('page');
         $UsersModel = new UsersModel();
         $user_id = $this->userInfo['user_id'];
         $info = $this->Model->where('user_id',$user_id)->find();

@@ -1,0 +1,89 @@
+{extend name="layouts@base_unique" /}
+{block name="main" }
+
+<div class="page-bd my-totalMer">
+    <input type="hidden" id="limit_start" value="0">
+    <!-- 页面内容-->
+    <div class="total-mer">
+        <p class="fs48 num teamnum">0</p>
+        <p class="fs24 opacity08">会员总数</p>
+    </div>
+    <div class="wrap-list team-list">
+
+    </div>
+    <div class="text_c color_9 is_down">已经到底啦~</div>
+    <div class="text_c color_9 down_load">加载更多</div>
+</div>
+</div>
+
+{literal}
+<script type="text/html" id="teamTpl">
+    {{each list as item index}}
+    <div class="list-item">
+        <div class="item-left">
+            {{if item.logo == ''}}
+                <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
+            {{else /}}
+                <img class="headimg" src="{{item.logo}}" alt="">
+            {{/if}}
+
+            <span class="fs26 fw_b color_3">{{item.business_name}}</span>
+        </div>
+        <div class="item-right fs24 color_9">绑定时间:{{item._time}}</div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+
+<link rel="stylesheet" href="__STATIC__/unique/css/index.css" />
+<script src="__STATIC__/unique/js/lib/jquery-2.1.4.js"></script>
+<script src="__STATIC__/unique/js/lib/fastclick.js"></script>
+<script src="__STATIC__/unique/js/jquery-weui.min.js"></script>
+<script src="__STATIC__/unique/js/art-template.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    function getList(){
+        var arr = new Object;
+        arr.limit_start = $('#limit_start').val();
+        jq_ajax('{:url("api.agent/getmyteam")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            if (typeof(res.list) == 'undefined' && arr.limit_start == 0){
+                $('.team-list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+            }else{
+                $('.team-list').append(template('teamTpl', res));
+                if (typeof(res.is_over) == 'undefined'){
+                    $('.down_load').show();
+                }else{
+                    $('.down_load').hide();
+                    $('.is_down').show();
+                }
+
+            }
+            $('#limit_start').val(res.limit_start);
+        });
+    }
+    $(function(){
+        jq_ajax('{:url("api.agent/getteamnum")}',[],function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            $('.teamnum').html(res.allnum);
+        });
+        getList();
+        $('.header-left').find('a').attr('href',"{:url('unique/agent/agent')}");
+        $('.down_load').on('click',function () {
+            getList();
+        })
+    })
+</script>
+</body>
+</html>
+{/block}

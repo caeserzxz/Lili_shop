@@ -1,0 +1,114 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/mobile/default/css/picker.css"/>
+<link rel="stylesheet" href="__STATIC__/unique/css/performance.css"/>
+{/block}
+{block name='pageType'}my-business{/block}
+{block name="main" }
+<div class="page-bd">
+    <!-- 页面内容-->
+    <div class="shop">
+        <div>
+            <div class="fs30 fw_b color_3 business_name">{$info.agent_user_name}</div>
+            <div class="fs24 color_9 merger_address">{$info.merger_name}</div>
+        </div>
+
+        {if condition="$userInfo.headimgurl eq ''"}
+            <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+        {else /}
+            <img src="{$userInfo.headimgurl}" alt="">
+        {/if}
+    </div>
+
+    <div class="money num">
+        <div>
+            <div class="fs48" id="all_amount">0</div>
+            <div class="fs26 opacity08 mt10">我的业绩（元）</div>
+        </div>
+        <div class="time">
+            <span class="opacity08">时间:</span>
+            <span class="datetimer-1">
+                <input type="text" value="{$date}" data-toggle='date' id='date' readonly />
+            </span>
+        </div>
+    </div>
+
+    <div class="info">
+        <div class="flex-btw">
+            <div class="flex-left fs28 fw_b">日期</div>
+            <div class="flex-right fs28 fw_b">业绩</div>
+        </div>
+        <div class="data-list list">
+
+        </div>
+    </div>
+    <div class="text_c fs24 color_9 mb20">已经到底啦~</div>
+</div>
+{literal}
+<script type="text/html" id="logTpl">
+    {{each list as item index}}
+    <div class="flex-btw">
+        <div class="flex-left bg_w fs26">{{item.addtime}}</div>
+        <div class="flex-right bg_w fs26">￥{{item.all_amount}}</div>
+    </div>
+    {{/each}}
+</script>
+{/literal}
+{/block}
+
+{block name="footer"}
+<script src="__STATIC__/mobile/default/js/datePicker.js"></script>
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+<script>
+    getList();
+    function getList(){
+        var arr = new Object;
+        arr.date = $('#date').val();
+        // arr.type = '{$type|default=0}';
+        jq_ajax('{:url("api.agent/getSales")}',arr,function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            if (typeof(res.list) == 'undefined'){
+                $('.list').html('<div style="text-align:center; line-height: 100px;">暂无没有相关数据.</div>');
+                $('.is_down').hide();
+            }else{
+                $('.list').html(template('logTpl', res));
+                $('.is_down').show();
+            }
+            $('#all_amount').html(res.all_amount);
+        });
+    }
+    $('#date').on('click',function(){
+        demoClick()
+    })
+    // 日期选择器
+    function demoClick() {
+        var nowValue = document.getElementById('date');
+        var reg = new RegExp("年|月","g");
+        var nowval=nowValue.value.replace(reg,"-").substring(0,7);
+        new DatePicker({
+            "type": "1",//0年, 1年月, 2月日, 3年月日
+            "title": '请选择年月',//标题(可选)
+            "maxYear": "2030",//最大年份（可选）
+            "minYear": "2015",//最小年份（可选）
+            "separator": "-",//分割符(可选)
+            "defaultValue": nowval,//默认值（可选）
+            "callBack": function (val) {
+                //回调函数（val为选中的日期）
+                var arr=val.split('-');
+                val=arr[0]+'-'+arr[1]
+                nowValue.value = val;
+                getList();
+            }
+        });
+    }
+</script>
+</body>
+</html>
+{/block}
