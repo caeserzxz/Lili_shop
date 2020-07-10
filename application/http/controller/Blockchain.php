@@ -7,7 +7,7 @@ use think\facade\Cache;
 class Blockchain extends Server
 {
     protected $host = '0.0.0.0';
-    protected $port = 2346;
+    protected $port = 8787;
     protected $connection;
     public function __construct()
     {
