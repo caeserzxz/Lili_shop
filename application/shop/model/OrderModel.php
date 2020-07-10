@@ -379,7 +379,8 @@ class OrderModel extends BaseModel
                 } else {//在线退款
                     $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
                     $payment = new $code();
-                    $orderInfo['refund_amount'] = $refund_amount;//实付金额减去已退金额
+                    // $orderInfo['refund_amount'] = $refund_amount;//实付金额减去已退金额
+                    $orderInfo['refund_amount'] = $orderInfo['order_amount'];//实付金额 即在线支付金额
                     if ($orderInfo['pid'] > 0){
                         $poWhere[] = ['order_id','=',$orderInfo['pid']];
                         $poWhere[] = ['is_split','=',2];
