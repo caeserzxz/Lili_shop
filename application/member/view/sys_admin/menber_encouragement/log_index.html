@@ -1,0 +1,55 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getAccountList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>鼓励金流水</strong>
+                </li>
+            </ul>
+            <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
+                <i class="fa fa-calendar fa-lg"></i>                      
+                <span></span> <b class="caret"></b>
+                <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange"/>
+            </a>
+            <select name="change_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                <option value="0">选择类型</option>
+                <option value="1">鼓励金奖励</option>
+                <option value="2">鼓励金抵扣</option>
+                <option value="3">鼓励金提现</option>
+            </select>
+            <select name="search_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选">
+                <option value="0">选择流水号</option>
+                <option value="1">商城订单号</option>
+                <option value="2">线下订单号</option>
+            </select>
+            <input type="hidden" value="0" name="export">
+            <input type="hidden" value="{$user_id}" name="user_id">
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="商城订单号/线下订单号" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+            <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出列表</a>
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+     <div class="alert">
+          <p>会员id：{$outline.user_id}&nbsp;&nbsp;&nbsp; 会员名称：{$outline.nick_name} &nbsp;&nbsp; 会员手机：{$outline.mobile}</p>
+          <p>鼓励金累计总额：{$outline.total_money}元 &nbsp;&nbsp;&nbsp; 鼓励金抵扣累计总额：{$outline.total_money_deduction}元</p>
+          <p>当前可提总额：{$outline.balance_money}元  &nbsp;&nbsp;&nbsp;  已提现累计总额：{$outline.with_money}元</p>
+    </div>
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/menber_encouragement/log_list" /}
+        </div>
+    </section>
+</section>
+<script>
+    function ExportLog(){
+        $('input[name="export"]').val('1');
+        $('#forms').submit();
+        $('input[name="export"]').val('0');
+    }
+</script>
+{/block}

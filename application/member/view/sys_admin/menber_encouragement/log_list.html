@@ -1,0 +1,25 @@
+<table class="table  table-hover  m-b-none">
+    <thead>
+    <tr>
+        <th width="90">流水号</th>
+        <th width="120">类型</th>
+        <th width="100">金额</th>
+        <th width="120">变动时间</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.log_id}-{$vo.order_sn}</td>
+        <td>{$vo.typeText}</td>
+        <td>{if condition="$vo.balance_money > 0"}+{/if}{$vo.balance_money}</td>
+        <td>{$vo.change_time|dateTpl}</td>
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%" >
+    <tr><td height="300" colspan="8" align="center" valign="middle">没有相关数据！</td></tr>
+</table>
+{/empty}

@@ -8,6 +8,7 @@
         <th width="150">已提现累计</th>
         <th width="100">已抵扣累计</th>
         <th width="130">当前可提现</th>
+        <th width="90">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -20,6 +21,7 @@
         <td>{$vo.all_withdraw_money}</td>
         <td>{$vo.all_pay_money}</td>
         <td>{$vo.balance_money}</td>
+        <td><a href="{:url('member/sys_admin.menber_encouragement/log',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看流水"><i class="fa fa-search"></i></a></td>
     </tr>
     {/volist}
     </tbody>
