@@ -8,6 +8,8 @@ use app\ClientbaseController;
 use app\member\model\UsersModel;
 use app\store\model\UserBusinessModel;
 use app\agent\model\AgentModel;
+use think\cache\driver\Redis;
+use app\unique\model\PayRecordModel;
 
 class Member extends ClientbaseController{
   
@@ -156,6 +158,15 @@ class Member extends ClientbaseController{
     //-- 我的团队
     /*------------------------------------------------------ */
     public function my_team(){
+//        $redis = new Redis();
+//        $id = input('id');
+//        $PayRecordModel = new PayRecordModel();
+//        $orderInfo = $PayRecordModel->where('log_id',$id)->find();
+//        $str_arr = ['log_id'=>$orderInfo['log_id'],'business_id'=>$orderInfo['business_id']];
+//        $str = json_encode($str_arr);
+//        #将抢购id存入队列
+//        $res = $redis->rPush('broadcast',$str);
+
         $this->assign('title', '我的会员');
         return $this->fetch();
     }
@@ -172,6 +183,19 @@ class Member extends ClientbaseController{
     //-- 意见反馈记录
     /*------------------------------------------------------ */
     public function feedbackList(){
+//        $redis = new Redis();
+//        $buyCount = $redis->lSize('broadcast');
+//        $data['data'] = [];
+//        for ($i=0;$i<=$buyCount-1;$i++){
+//            $str = $redis->lGet('broadcast',$i);
+//
+////            $id = $redis->rPop('buyHandle');
+//            array_push($data['data'],json_decode($str));
+//        }
+//        $data['timestamp'] =
+//        $data_json =  json_encode($data,JSON_UNESCAPED_SLASHES);
+//        echo ($data_json);
+//        die;
         $this->assign('rightText', '添加反馈');
         $this->assign('rightUrl', url('unique/member/feedback'));
         $this->assign('title', '反馈及回复');

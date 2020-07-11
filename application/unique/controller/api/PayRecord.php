@@ -89,6 +89,7 @@ class PayRecord extends ApiController
         $inArr['status'] = 0;
         $inArr['pay_id'] = $payment['pay_id'];
         $inArr['add_time'] = $time;
+        $inArr['profits'] =  $business['profits'];
 
         Db::startTrans();
         $res = $PayRecordModel->insertGetId($inArr);
