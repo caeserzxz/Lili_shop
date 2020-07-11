@@ -166,7 +166,7 @@ class MemberPayRecord extends AdminController
     public function getOrderList($runData = false){
 
         $user_id = input('user_id');
-        $where[] = ['user_id','=',$user_id];
+        if ($user_id) $where[] = ['user_id','=',$user_id];
 
         $reportrange = input('reportrange');
         if (empty($reportrange) == false){
@@ -190,7 +190,6 @@ class MemberPayRecord extends AdminController
             $_value['bill_money'] = round($value['amount'] - $_value['profits_money'],2);
             $data['list'][$key] = $_value;
         }
-
         $this->assign("data", $data);
         $this->assign("search",$this->search);
         if ($runData == false) {

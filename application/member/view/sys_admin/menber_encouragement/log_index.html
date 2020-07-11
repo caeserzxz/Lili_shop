@@ -34,7 +34,7 @@
     </form>
 </header>
 <section class="scrollable wrapper w-f ">
-     <div class="alert">
+     <div class="alert {if $user_id < 1} hide {/if}">
           <p>会员id：{$outline.user_id}&nbsp;&nbsp;&nbsp; 会员名称：{$outline.nick_name} &nbsp;&nbsp; 会员手机：{$outline.mobile}</p>
           <p>鼓励金累计总额：{$outline.total_money}元 &nbsp;&nbsp;&nbsp; 鼓励金抵扣累计总额：{$outline.total_money_deduction}元</p>
           <p>当前可提总额：{$outline.balance_money}元  &nbsp;&nbsp;&nbsp;  已提现累计总额：{$outline.with_money}元</p>

@@ -130,7 +130,7 @@ class MenberEncouragement extends AdminController
         $AccountLogModel = new AccountLogModel();
 
         $user_id = input('user_id');
-        $where[] = ['user_id','=',$user_id];
+        if ($user_id) $where[] = ['user_id','=',$user_id];
         $where[] = ['balance_money','<>',0];
 
         $reportrange = input('reportrange');
@@ -186,14 +186,18 @@ class MenberEncouragement extends AdminController
     /*------------------------------------------------------ */
     //-- 导出单用户鼓励金流水
     /*------------------------------------------------------ */
-    public function exportAccountList($where,$user_id){
+    public function exportAccountList($where,$user_id = 0){
         $OrderModel = new OrderModel();
         $PayRecordModel = new PayRecordModel();
         $AccountLogModel = new AccountLogModel();
 
         $count = $AccountLogModel->where($where)->count();
         if ($count < 1) return $this->error('没有找到可导出的日志资料！');
-        $filename = '鼓励金流水_'.$user_id.'_' . date("YmdHis") . '.xls';
+        if ($user_id) {
+            $filename = '鼓励金流水_'.$user_id.'_' . date("YmdHis") . '.xls';
+        }else{
+            $filename = '鼓励金流水_' . date("YmdHis") . '.xls';
+        }
         $export_arr['流水号'] = 'order_sn';
         $export_arr['类型'] = 'typeText';
         $export_arr['金额'] = 'balance_money';

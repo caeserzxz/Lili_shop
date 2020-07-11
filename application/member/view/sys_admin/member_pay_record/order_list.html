@@ -26,7 +26,7 @@
         <td>{$vo.bill_money}</td>
         <td>{$vo.add_time|dateTpl}</td>
         <td>
-            <a href="{:url('member/sys_admin.member_pay_record/rebate_log',array('log_id'=>$vo['log_id']))}" class="m-xs" title="查看订单">【点击查看】</a>
+            <a href="{:url('member/sys_admin.menber_encouragement/log',array('search_type' => 2,'keyword' => $vo.order_sn))}" class="m-xs" title="查看订单">【点击查看】</a>
         </td>
     </tr>
     {/volist}
