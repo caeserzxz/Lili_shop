@@ -162,7 +162,7 @@ class Member extends ClientbaseController{
 //        $id = input('id');
 //        $PayRecordModel = new PayRecordModel();
 //        $orderInfo = $PayRecordModel->where('log_id',$id)->find();
-//        $str_arr = ['log_id'=>$orderInfo['log_id'],'business_id'=>$orderInfo['business_id']];
+//        $str_arr = ['log_id'=>$orderInfo['log_id'],'business_id'=>$orderInfo['business_id'],'order_amount'=>$orderInfo['amount']];
 //        $str = json_encode($str_arr);
 //        #将抢购id存入队列
 //        $res = $redis->rPush('broadcast',$str);
@@ -184,18 +184,17 @@ class Member extends ClientbaseController{
     /*------------------------------------------------------ */
     public function feedbackList(){
 //        $redis = new Redis();
-//        $buyCount = $redis->lSize('broadcast');
+//        $buyCount = $redis->Llen('broadcast');
 //        $data['data'] = [];
 //        for ($i=0;$i<=$buyCount-1;$i++){
-//            $str = $redis->lGet('broadcast',$i);
+//            $str = $redis->Lindex('broadcast',$i);
 //
-////            $id = $redis->rPop('buyHandle');
+////            $id = $redis->rPop('broadcast');
 //            array_push($data['data'],json_decode($str));
 //        }
 //        $data['timestamp'] =
 //        $data_json =  json_encode($data,JSON_UNESCAPED_SLASHES);
-//        echo ($data_json);
-//        die;
+
         $this->assign('rightText', '添加反馈');
         $this->assign('rightUrl', url('unique/member/feedback'));
         $this->assign('title', '反馈及回复');

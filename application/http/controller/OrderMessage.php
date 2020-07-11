@@ -20,9 +20,10 @@ class OrderMessage extends Server
     // 启动执行
     public function onWorkerStart($worker) {
         // 每N秒执行一次
-        $time_interval = 3;
+        $time_interval = 5;
         Timer::add($time_interval, function()use($worker,$time_interval){
             $data = $this->getBroadcast();
+
             foreach($worker->connections as $connection) {
                 $connection->send($data);
             }
@@ -41,7 +42,7 @@ class OrderMessage extends Server
             // 登录
             case 'login':
                 $data = $this->getBroadcast();
-                $connection->send($data);
+            // $connection->send($data);
         }
 
     }
@@ -64,16 +65,18 @@ class OrderMessage extends Server
     //获取当前需要语音播报的订单
     public function getBroadcast(){
         $redis = new Redis();
-        $buyCount = $redis->lSize('broadcast');
+        $buyCount = $redis->Llen('broadcast');
+
         $data['data'] = [];
         for ($i=0;$i<=$buyCount-1;$i++){
-//            $str = $redis->lGet('broadcast',$i);
+            $str = $redis->Lindex('broadcast',$i);
 
-            $str = $redis->rPop('broadcast');
+//            $id = $redis->rPop('broadcast');
             array_push($data['data'],json_decode($str));
         }
         $data['timestamp'] = time();
         $data_json =  json_encode($data,JSON_UNESCAPED_SLASHES);
         return $data_json;
+
     }
 }
