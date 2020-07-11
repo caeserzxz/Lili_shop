@@ -269,4 +269,6 @@ class PayRecordModel extends BaseModel
         $PayLogModel = new PayLogModel();
         return $PayLogModel->_log($order, $logInfo);
     }
+
+
 }
