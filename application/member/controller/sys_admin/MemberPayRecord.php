@@ -135,4 +135,123 @@ class MemberPayRecord extends AdminController
         echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
         exit;
     }
+
+    /*------------------------------------------------------ */
+    //-- 单个用户鼓励金流水
+    /*------------------------------------------------------ */
+    public function log(){
+        $user_id = input('user_id', 0, 'intval');
+        $this->assign('user_id',$user_id);
+        $this->assign("start_date", date('Y/m/d', strtotime("-1 months")));
+        $this->assign("end_date", date('Y/m/d'));
+        $this->getOrderList(true);
+
+        $UsersModel = new UsersModel();
+        $userInfo = $UsersModel->info($user_id);
+        $outline['user_id'] = $user_id;
+        $outline['nick_name'] = $userInfo['nick_name'];
+        $outline['mobile'] = $userInfo['mobile'];
+        // 实付款金额
+        $where[] = ['user_id','=',$user_id];
+        $where[] = ['status','=',1];
+        $outline['amount_actual'] = $this->Model->where($where)->sum('amount_actual');
+       
+        $this->assign("outline", $outline);
+        return $this->fetch('order_index');
+    }
+    /*------------------------------------------------------ */
+    //-- 获取列表
+    //-- $runData boolean 是否返回模板
+    /*------------------------------------------------------ */
+    public function getOrderList($runData = false){
+
+        $user_id = input('user_id');
+        $where[] = ['user_id','=',$user_id];
+
+        $reportrange = input('reportrange');
+        if (empty($reportrange) == false){
+            $dtime = explode('-',$reportrange);
+            $where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+        }else{
+            $where[] = ['add_time','between',[strtotime("-1 months"),time()]];
+        }
+        $keyword = input('keyword');
+        if ($keyword) $where[] = ['order_sn','=',$keyword];
+
+        $this->order_by = 'log_id';
+        $this->sort_by = 'DESC';
+        $export = input('export', 0, 'intval');
+        if ($export > 0) return $this->exportOrderList($where,$user_id);
+        $data = $this->getPageList($this->Model, $where);
+
+        foreach ($data['list'] as $key => $value) {  
+            $_value = $value;      
+            $_value['profits_money'] = round($value['amount'] * $value['profits'] / 100,2);
+            $_value['bill_money'] = round($value['amount'] - $_value['profits_money'],2);
+            $data['list'][$key] = $_value;
+        }
+
+        $this->assign("data", $data);
+        $this->assign("search",$this->search);
+        if ($runData == false) {
+            $data['content'] = $this->fetch('sys_admin/member_pay_record/order_list')->getContent();
+            return $this->success('', '', $data);
+        }
+        return true;
+    }
+    /*------------------------------------------------------ */
+    //-- 导出单用户鼓励金流水
+    /*------------------------------------------------------ */
+    public function exportOrderList($where,$user_id){
+
+        $count = $this->Model->where($where)->count();
+        if ($count < 1) return $this->error('没有找到可导出的日志资料！');
+        $filename = '会员实付流水_'.$user_id.'_' . date("YmdHis") . '.xls';
+
+        $export_arr['下单用户ID'] = 'user_id';
+        $export_arr['订单流水号'] = 'order_sn';
+        $export_arr['订单金额'] = 'amount';
+        $export_arr['红包优惠'] = 'redbag_amount';
+        $export_arr['订单实付金额'] = 'amount_actual';
+        $export_arr['鼓励金抵扣'] = 'balance_amount';
+        $export_arr['让利率'] = 'profits';
+        $export_arr['货款'] = 'bill_money';
+        $export_arr['下单时间'] = 'add_time';
+
+        $export_field = $export_arr;
+        $page = 0;
+        $page_size = 500;
+        $page_count = 100;
+
+        $title = join("\t", array_keys($export_arr)) . "\t";
+        $field = join(",", $export_field);
+        $data = '';
+        do {
+            $rows = $this->Model->where($where)->limit($page * $page_size, $page_size)->select();
+            if (empty($rows))return;
+            foreach ($rows as $row) {
+                foreach ($export_arr as $val) {
+                    $profits_money = round($row['amount'] * $row['profits'] / 100,2);
+
+                    if (strstr($val, '_time')) {
+                        $data .= dateTpl($row[$val]) . "\t";
+                    } elseif($val == 'profits'){
+                        $data .= $row['profits'] . '%（'.$profits_money.'元）'. "\t";
+                    } elseif($val == 'bill_money'){
+                        $data .= round($row['amount'] - $profits_money,2). "\t";
+                    } else {
+                        $data .= str_replace(array("\r\n", "\n", "\r"), '', strip_tags($row[$val])) . "\t";
+                    }
+                }
+                $data .= "\n";
+            }
+            $page++;
+        } while ($page <= $page_count);
+
+        $filename = iconv('utf-8', 'GBK//IGNORE', $filename);
+        header("Content-type: application/vnd.ms-excel; charset=utf-8");
+        header("Content-Disposition: attachment; filename=$filename");
+        echo iconv('utf-8', 'GBK//IGNORE', $title . "\n" . $data) . "\t";
+        exit;
+    }
 }

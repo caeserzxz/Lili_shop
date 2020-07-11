@@ -1,4 +1,4 @@
-<table class="table  table-hover  m-b-none">
+<table class="table table-hover m-b-none">
     <thead>
     <tr>
         <th>会员ID</th>
@@ -6,6 +6,7 @@
         <th>会员手机</th>
         <th>消费实付总计</th>
         <th>订单金额总计</th>
+        <th width="90">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -16,6 +17,7 @@
         <td>{$vo.user_id}</td>
         <td>{$vo.amount_actuals}</td>
         <td>{$vo.amounts}</td>
+        <td><a href="{:url('member/sys_admin.member_pay_record/log',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看订单"><i class="fa fa-search"></i></a></td>
     </tr>
     {/volist}
     </tbody>
