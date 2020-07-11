@@ -31,9 +31,9 @@ class ManagementAward extends Command
         Db::startTrans();//启动事务
         $AgentModel = new AgentModel();
         $AccountLogModel = new AccountLogModel();
-        #本月起始时间
-        $beginThismonth=mktime(0,0,0,date('m'),1,date('Y'));
-        $endThismonth=mktime(23,59,59,date('m'),date('t'),date('Y'));
+        #上个月起始时间
+        $begin_time = strtotime(date('Y-m-01 00:00:00',strtotime('-1 month')));
+        $end_time = strtotime(date("Y-m-d 23:59:59", strtotime(-date('d').'day')));
         #获取所有代理
         $agent_list = $AgentModel->where('status',1)->select();
         #管理奖分佣比例
@@ -45,7 +45,7 @@ class ManagementAward extends Command
             $where= [];
             $where[] = ['change_type','=',13];
             $where[] = ['user_id','in',$agent_lower];
-            $where[] = ['change_time', 'between', array($beginThismonth, $endThismonth)];
+            $where[] = ['change_time', 'between', array($begin_time, $end_time)];
             $amount = $AccountLogModel->where($where)->sum('balance_money');
             $money_award =  sprintf("%.2f",$amount*$award/100);
             if($money_award>0){

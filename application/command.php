@@ -12,5 +12,5 @@
 return [
     'RedBagOverdue' => 'app\\unique\\command\\RedBagOverdue',//商家红包和用户领的红包,自动过期定时任务  每天:00:00:01执行
     'PayRecordOverdue' => 'app\\unique\\command\\PayRecordOverdue',//线下订单,多长时间未支付就自动取消
-    'ManagementAward' => 'app\\unique\\command\\ManagementAward',//代理管理奖
+    'ManagementAward' => 'app\\unique\\command\\ManagementAward',//代理管理奖  1号结算上个月的管理奖
 ];
