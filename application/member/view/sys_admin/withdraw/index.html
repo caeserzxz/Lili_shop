@@ -14,11 +14,17 @@
              <option value="-1">所有状态</option>
              {$userWithdrawTypeOpt|raw}
             </select>
-            <select name="type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
+            <select name="account_type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
              <option value="">提现方式</option>
-             <option value="bank" {$search['type']=='bank'?'selected':''}>银行卡提现</option>
-             <option value="alipay" {$search['type']=='alipay'?'selected':''}>支付宝提现</option>
+             <option value="bank" {$search['account_type']=='bank'?'selected':''}>银行卡提现</option>
+             <option value="alipay" {$search['account_type']=='alipay'?'selected':''}>支付宝提现</option>
+             <option value="wxpay" {$search['account_type']=='wxpay'?'selected':''}>微信提现</option>
             </select>
+         <select name="type"  style="width: 150px;" data-toggle="select2" data-chang="submit"  >
+             <option value="">提现类型</option>
+             <option value="1" {$search['type']=='1'?'selected':''}>鼓励金提现</option>
+             <option value="17" {$search['type']=='17'?'selected':''}>货款提现</option>
+         </select>
            <div class="form-group">
                 <a class="btn btn-default " data-toggle="reportrange" data-change="submit">
                     <i class="fa fa-calendar fa-lg"></i>

@@ -39,7 +39,8 @@ class Withdraw extends AdminController
 		$this->userWithdrawType = $this->getDict('UserWithdrawType');	
 		$search['keyword'] = input('keyword','','trim');
 		$search['status'] = input('status',0,'intval');
-		$search['type'] = input('type','','trim');
+		$search['account_type'] = input('account_type','','trim');
+        $search['type'] = input('type','','trim');
 		$reportrange = input('reportrange');
 		$where = [];
 		if (empty($reportrange) == false){
@@ -57,9 +58,12 @@ class Withdraw extends AdminController
 			 $uids[] = -1;//增加这个为了以上查询为空时，限制本次主查询失效			 
 			 $where[] = ['user_id','in',$uids];
 		}
-		if (empty($search['type']) == false){
-			$where[] = ['account_type','=',$search['type']];
+		if (empty($search['account_type']) == false){
+			$where[] = ['account_type','=',$search['account_type']];
 		}
+        if (empty($search['type']) == false){
+            $where[] = ['type','=',$search['type']];
+        }
         $is_export =  input('is_export',0,'intval');
         if ($is_export > 0) {
             return $this->export($where);
@@ -67,8 +71,10 @@ class Withdraw extends AdminController
 		$viewObj = $this->Model->where($where);
 
         $data = $this->getPageList($this->Model,$viewObj);
+        $type_arr = [1=>'鼓励金提现',17=>'货款提现'];
         foreach ($data['list'] as $key=>$row){
             $row['account_info'] = json_decode($row['account_info'],true);
+            $row['type_str'] = $type_arr[$row['type']];
             $data['list'][$key] = $row;
         }
 		$this->assign("userWithdrawType", $this->userWithdrawType);

@@ -208,11 +208,14 @@ class Withdraw extends ApiController
 		}elseif ($settings['withdraw_fee_max'] > 0 && $withdraw_fee > $settings['withdraw_fee_max']){
 			$withdraw_fee = $settings['withdraw_fee_max'];
 		}
-		
+
+        $type = input('type','','trim');
+		$money_type = $type == 17 ? 'bill_money' : 'balance_money';
+        if($type == 17)$withdraw_fee = 0;
 		//外扣
-		if ($settings['fee_type'] == 0 && ($this->userInfo['account']['balance_money'] < $amount + $withdraw_fee)){
+		if ($settings['fee_type'] == 0 && ($this->userInfo['account'][$money_type] < $amount + $withdraw_fee)){
 			return $this->error('帐户余额不足.');
-		}else if($this->userInfo['account']['balance_money'] < $amount){
+		}else if($this->userInfo['account'][$money_type] < $amount){
 			//内扣
 			return $this->error('帐户余额不足.');
 		}
@@ -306,6 +309,8 @@ class Withdraw extends ApiController
 			}
 		}
 
+        $type = input('type','','trim');
+        if($type == 17)$inArr['withdraw_fee'] = 0;
 		if($settings['fee_type'] == 0){
 			//外扣
 			$withdraw_money =  $inArr['amount'] + $inArr['withdraw_fee'];
@@ -314,10 +319,13 @@ class Withdraw extends ApiController
 			$withdraw_money =  $inArr['amount'];
 		}
 
-		if ($this->userInfo['account']['balance_money'] < $withdraw_money){
+        $money_type = $type == 17 ? 'bill_money' : 'balance_money';
+
+		if ($this->userInfo['account'][$money_type] < $withdraw_money){
             return $this->error('余额不足，请核实提现金额.');
         }
 
+        $inArr['type'] = $type;
         $inArr['fee_type'] = $settings['fee_type'];
         $inArr['arrival_money'] = $settings['fee_type']==0?$inArr['amount']:$inArr['amount']-$inArr['withdraw_fee'];
 		$inArr['user_id'] = $this->userInfo['user_id'];
@@ -352,7 +360,7 @@ class Withdraw extends ApiController
 		Db::startTrans();//启动事务
 		//加锁查询 select for update
 		$tmpUser = $AccountModel->lock(true)->where(['user_id'=>$this->userInfo['user_id']])->find();
-		if($tmpUser && $tmpUser['balance_money'] < $withdraw_money){
+		if($tmpUser && $tmpUser[$money_type] < $withdraw_money){
 			Db::rollback();// 回滚事务释放锁
 			return $this->error('余额不足.');
 		}
@@ -365,7 +373,7 @@ class Withdraw extends ApiController
 	    $changedata['change_desc'] = '提现扣除';
 		$changedata['change_type'] = 5;
 		$changedata['by_id'] = $WithdrawModel->log_id;
-		$changedata['balance_money'] = $withdraw_money * -1;
+		$changedata[$money_type] = $withdraw_money * -1;
 		$res = $AccountLogModel->change($changedata, $this->userInfo['user_id'], false);
 		if ($res !== true) {
 			Db::rollback();// 回滚事务

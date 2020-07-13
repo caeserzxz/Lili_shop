@@ -78,7 +78,8 @@
             <span class="fs28">¥</span>
             <span class="fs36">{{item.amount}}</span>
         </p>
-        <p class="color_9 mt20">
+        <p class="color_9 mt20">{{if item.type == '17'}}货款提现{{else/}}鼓励金提现{{/if}}</p>
+        <p class="color_9 mt10">
             {{if item.account_type == 'bank'}}
             提现账号:{{item.account_info.bank_name}}({{item.account_info.bank_card_number}})
             {{/if}}

@@ -16,7 +16,7 @@
             <span class="fs24 fw_b color_3" style="display: block">手续费<em class="withdraw_fee">0</em>元</span>
         </div>
         <div class="money">
-            <div class="fs26 color_9">余额：<span class="color_3 num balance_money">{$userInfo['account']['balance_money']}</span></div>
+            <div class="fs26 color_9">{if condition="$type eq 17"}货款{else/}余额{/if}：<span class="color_3 num balance_money">{if condition="$type eq 17"}{$userInfo['account']['bill_money']}{else/}{$userInfo['account']['balance_money']}{/if}</span></div>
             <p class="fs24 fw_b color_r tag_actives">全部提现</p>
         </div>
     </div>
@@ -111,7 +111,7 @@ $(function() {
 
     })
     //加载列表
-	jq_ajax('{:url("api.withdraw/getList")}','',function(res){
+	jq_ajax('{:url("api.withdraw/getList")}','type={$type}',function(res){
 		if (res.code == 0){
 			_alert(res.msg);
 			return false;
@@ -157,7 +157,7 @@ $(function() {
 			$('.withdraw_fee').html(0);
 			return false;
 		}
-		jq_ajax('{:url("api.withdraw/checkWithdraw")}','amount='+amount,function(res){
+		jq_ajax('{:url("api.withdraw/checkWithdraw")}','type={$type}&amount='+amount,function(res){
 			if (res.code == 0){
 				_alert(res.msg);
 				return false;
@@ -202,6 +202,7 @@ $(function() {
 
         fd.append("account_id", arr.account_id);
         fd.append("amount", arr.amount);
+        fd.append("type", '{$type}');
         // fd.append("pay_password", arr.pay_password);
         // fd.append("account_type", arr.account_type);
         isPost = true;

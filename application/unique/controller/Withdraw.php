@@ -14,7 +14,9 @@ class Withdraw  extends ClientbaseController{
 	    if (empty($this->userInfo['mobile']) == true){//没有注册手机，须绑定手机后才能操作提现
             return $this->redirect('bindMobile');
         }
-        $this->assign('title', '提现管理');
+        $type = input('type','','trim');
+        $this->assign('type', input('type','','trim'));
+        $this->assign('title', '提现');
         $this->assign('withdraw_account_type', config('config.withdraw_account_type'));
 		return $this->fetch('index');
 	}
