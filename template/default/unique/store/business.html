@@ -83,12 +83,16 @@
           <div class="cell_bd">
             <span class="fs28 fw_b color_3">APP语音播报开关</span></div>
           <div class="cell_ft">
-            <input type="checkbox" name="sex" id="male" class="chooseBtn" />
+            {if condition="$business.is_play eq 1"}
+              <input type="checkbox" name="is_play" id="male" value="2" class="chooseBtn" />
+            {else /}
+              <input type="checkbox" name="is_play" id="male" value="1" checked class="chooseBtn" />
+            {/if}
             <label for="male" class="choose-label"></label>
           </div>
         </div>
       </div>
-
+      <input type="hidden" id="business_id" value="{$business.business_id}">
     </div>
 
 
@@ -104,6 +108,8 @@
     });
 </script>
   <script>
+      var  isPost = false;
+      var appType = "{$appType}";
     $(function () {
       $("#city-picker").cityPicker({
         title: "请选择省市区"
@@ -121,7 +127,44 @@
           }
         })
       })
+        if (isPost == true) return false;
+        isPost = true;
+      $('.chooseBtn').on('change',function(){
+         var business_id = $('#business_id').val();
+          $.ajax({
+              'url':'{:url("unique/api.business/play_voice")}',
+              'type':'post',
+              'data':{'business_id':business_id},
+              'dataType':'json',
+              'success':function(res){
+                  isPost = false;
+                  if(res.code){
+                      $.toast(res.msg,'text');
+                      return false;
+                  }
+                  //传递商家ID到APP,便于后面做APP语音播报
+                  if(res.is_play==2){
+                      if(appType=='Android'){
+                          window.auc.getMerchantID(res.business_id);
+                      }else if(appType=='IOS'){
+                          window.app.getMerchantID(res.business_id);
+                      }
+                  }else{
+                      if(appType=='Android'){
+                          window.auc.getMerchantID(0);
+                      }else if(appType=='IOS'){
+                          window.app.getMerchantID(0);
+                      }
+                  }
+
+                  $.toast(res.msg,'text');
+                  return false;
+              }
+          });
+      })
     })
+
+
     //红包营销
     function go_sales(){
         window.location.href = "{:url('unique/store/sales')}";

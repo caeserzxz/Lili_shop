@@ -22,6 +22,7 @@ class Passport  extends ClientbaseController{
 	//-- 登陆
 	/*------------------------------------------------------ */
 	public function login(){
+        $this->assign('appType',session('appType'));
         $this->assign('sign_logo',settings('logo'));
         $this->assign('title', '会员登录');
 		$this->assign('register_status',settings('register_status'));		

@@ -26,8 +26,16 @@ class Index extends ClientbaseController{
 
         //城市
         $city = input('city','');
+        if(empty($city)){
+            $city = session('city');
+            if(empty($city)){
+                $city = '北京';
+            }
+
+        }else{
+            session('city',$city);
+        }
         $this->assign('city', $city);
-        empty($city) && $city = "北京";
         $regionModel = new RegionModel();
         $city_info = $regionModel->where('short_name',$city)->find();
         $this->assign('city_info', $city_info);

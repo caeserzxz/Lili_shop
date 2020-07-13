@@ -104,7 +104,8 @@ class Store extends ClientbaseController{
             $arr['today_count'] = sprintf("%.2f",$today_count);
             Cache::set('sales_mkey' . $business['business_id'], $arr, 600);
         }
-
+        $this->assign('appType',session('appType'));
+        $this->assign('business',$business);
         $this->assign('sales_count',$sales_count);
         $this->assign('title', '商家管理');
         return $this->fetch('business');

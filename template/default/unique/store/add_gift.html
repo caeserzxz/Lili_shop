@@ -262,8 +262,8 @@
         arr.end_time = end_time;
         arr.threshold = threshold;
 
-        // if (isPost == true) return false;
-        // isPost = true;
+        if (isPost == true) return false;
+        isPost = true;
         $.ajax({
             'url':'{:url("unique/api.business/add_gift")}',
             'type':'post',

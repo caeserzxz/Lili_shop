@@ -632,4 +632,35 @@ class Business extends ApiController
         $return['code'] = 1;
         return $this->ajaxReturn($return);
     }
+
+    /*------------------------------------------------------ */
+    //-- 获取商家的会员总数
+    /*------------------------------------------------------ */
+    public function play_voice(){
+        $business_id = input('business_id');
+        if(empty($business_id)) return $this->ajaxReturn(['code' => 0,'msg' => '商家ID错误']);
+        $info = $this->Model->where('business_id',$business_id)->find();
+
+        if($info['is_play']==1){
+            $map['is_play'] = 2;
+            $str = '语音播报已开启';
+        }else{
+            $map['is_play'] = 1;
+            $str = '语音播报已关闭';
+        }
+
+        $res = $this->Model->where('business_id',$business_id)->update($map);
+        if($res){
+            $return['msg'] = $str;
+            $return['is_play'] = $map['is_play'];
+            $return['code'] = 1;
+            return $this->ajaxReturn($return);
+        }else{
+            $return['msg'] = '操作失败';
+            $return['is_play'] = $map['is_play'];
+            $return['code'] = 0;
+            return $this->ajaxReturn($return);
+        }
+
+    }
 }

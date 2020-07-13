@@ -5,6 +5,7 @@ namespace app\member\controller\api;
 use app\ApiController;
 
 use app\member\model\UsersModel;
+use app\store\model\UserBusinessModel;
 /*------------------------------------------------------ */
 //-- 会员登陆、注册、找回密码相关API
 /*------------------------------------------------------ */
@@ -29,6 +30,14 @@ class Passport extends ApiController
         $this->checkCode('login',input('mobile'),input('code'));//验证短信验证
         $res = $this->Model->login(input());
         if (is_array($res) == false) return $this->error($res);
+        $UserBusinessModel = new UserBusinessModel();
+        #存储商家id
+        $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+        if(empty($business)==false&&$business['is_play']==1){
+            $data['business_id'] = $business['business_id'];
+        }else{
+            $data['business_id'] = 0;
+        }
         $data['code'] = 1;
         $data['msg'] = langMsg('登录成功.','member.login.success');
         if ($res[0] == 'developers'){
