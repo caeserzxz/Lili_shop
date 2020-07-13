@@ -178,6 +178,7 @@ class Store extends AdminController
         if (empty($data['category_id'])){
             return $this->error('请选择行业.');
         }
+        $info = $this->Model->where('business_id',$data['business_id'])->find();
 
         $data['merger_name'] = $this->getRegion($data['province'],$data['city'],$data['district']);
         $data['live_views']   = implode(',',$data['live_views_bum']['path']);
@@ -193,7 +194,15 @@ class Store extends AdminController
         if ($count > 0) return $this->error('操作失败:已存在供应商名称，不允许重复添加！');
         $data['update_time'] = time();
         #生成静态地图
-        $data['map_imgs']=$this->get_static_map($data['longitude'],$data['latitude']);
+        if($info['longitude']!=$data['longitude']||$info['latitude']!=$data['latitude']){
+            $data['map_imgs']=$this->get_static_map($data['longitude'],$data['latitude']);
+            if(empty($data['map_imgs'])==false){
+                //删除原有静态图
+                unlink('../public'.$info['map_imgs']);
+            }
+        }
+
+
 
         $logInfo = '修改商家信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
         $this->_log($data['business_id'], $logInfo );
@@ -352,7 +361,19 @@ class Store extends AdminController
         #组装url
         $url = "https://apis.map.qq.com/ws/staticmap/v2/?".$param."&sig=".$sig;
         $result=file_get_contents($url);
-        return $url;
+        #保存图片
+        $rand = mt_rand(100000,999999);
+        $prefix='nx_';
+        $output_file = $prefix.time().$rand.'.png';
+        $img_type = 'static_map';
+        $path = '../public/upload/'.$img_type."/".date(Ymd,time()).'/'.$output_file;
+        $img = file_put_contents($path,$result);
+        if($img){
+            return '/upload/'.$img_type."/".date(Ymd,time()).'/'.$output_file;
+        }else{
+            return false;
+        }
+
 
     }
 

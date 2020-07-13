@@ -23,17 +23,17 @@ class Index extends ClientbaseController{
         //首页头条
         $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
         $this->assign('headline', $headline);
-
         //城市
         $city = input('city','');
         if(empty($city)){
-            $city = session('city');
-            if(empty($city)){
-                $city = '北京';
-            }
-
-        }else{
-            session('city',$city);
+            $city = '北京';
+//            $city = session('city');
+//            if(empty($city)){
+//                $city = '北京';
+//            }
+//
+//        }else{
+//            session('city',$city);
         }
         $this->assign('city', $city);
         $regionModel = new RegionModel();
