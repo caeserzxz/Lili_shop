@@ -36,7 +36,17 @@
                     当前值：{$account.balance_money|priceFormat}
                 </div>
             </div>
-
+                <div class="form-group m-b-md">
+                    <label class="col-sm-3 control-label">货款</label>
+                    <div class="col-sm-8">
+                        <select name="bill_money_type"  style="width: 80px;" data-toggle="select2" >
+                            <option value="add"  >增加</option>
+                            <option value="del"  >减少</option>
+                        </select>
+                        <input type="text" class="input-ssmall"  name="bill_money" value="0" >
+                        当前值：{$account.use_integral|intval}
+                    </div>
+                </div>
                  <!--<div class="form-group m-b-md">-->
                     <!--<label class="col-sm-3 control-label">消费积分</label>-->
                     <!--<div class="col-sm-8">-->

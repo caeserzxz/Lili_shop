@@ -52,7 +52,8 @@ class AccountLogModel extends BaseModel
 		$data['old_total_integral'] = $account['total_integral'];	
 		$data['old_balance_money'] = $account['balance_money'];	
 		$data['old_use_integral'] = $account['use_integral'];	
-		$data['old_bean_value'] = $account['bean_value'];	
+		$data['old_bean_value'] = $account['bean_value'];
+		$data['old_bill_money'] = $account['bill_money'];
 		$data['sign'] = $this->toKey($data);
 		$res = $this->create($data);
 
