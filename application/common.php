@@ -832,7 +832,23 @@ function uploadimage($base_img,$img_type){
 
     return $return;
 }
+function upload_img($base_img,$img_type){
+    $rand = mt_rand(100000,999999);
+    $date = date(Ymd,time());
+    //设置文件路径和文件前缀名称
+    $path = '../public/upload/'.$img_type."/".$date.'/';
+    is_dir($path) OR mkdir($path, 0777, true);
+    $prefix='nx_';
+    $output_file = $prefix.time().$rand.'.png';
+    $path = $path.$output_file;
+    $img = file_put_contents($path,$base_img);
+    if($img){
+        return '/upload/'.$img_type."/".$date.'/'.$output_file;
+    }else{
+        return false;
+    }
 
+}
 /** 获取区间内随机红包（符合正态分布）
  * @param $min 红包最小值
  * @param $max 红包最大值
