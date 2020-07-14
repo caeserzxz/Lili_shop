@@ -72,7 +72,7 @@
 .fenlei .left .boxActive {
   position: relative;
   font-weight: bold;
-  color: #f65236;
+  color: #fd0035;
   background-color: #fff;
 }
 
@@ -117,8 +117,8 @@
   left: 0;
   top: 0.22rem;
   width: 200%;
-  border-left: 6px solid #f65236;
-  color: #f65236;
+  border-left: 6px solid #fd0035;
+  color: #fd0035;
   height: 0.32rem;
   -webkit-transform-origin: left top;
           transform-origin: left top;

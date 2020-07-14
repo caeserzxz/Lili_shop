@@ -34,7 +34,8 @@
                             <img class="thumb_img" name="imagefile" src="{$row.imgurl}" style="max-height: 100px;">
                             <input class="hide" name="imgurl" value="{$row.imgurl}" type="text">
                             <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                            <span class="">选择上传幻灯片图片（建议尺寸：750 * 500）</span></div>
+                            <span class="">选择上传幻灯片图片（建议尺寸：750 * 500）</span>
+                        </div>
                     </div>
                 </div>
                 <div class="line line-dashed line-lg pull-in"></div>
@@ -42,7 +43,7 @@
                 <div class="form-group">
                     <label class="col-sm-2 control-label">所属页面</label>
                     <div class="col-sm-2 must">
-                        <select id="type" name="type" class="input-medium" style="width:200px;">
+                        <select id="type" name="type" class="input-medium" onchange="changeType();" style="width:200px;">
                             <option value="0">请选择</option>
                             {volist name="slideType" id="type" }
                             <option value="{$key}" {$row['type']==$key?'selected':''}>{$type}</option>
@@ -71,14 +72,14 @@
                 </div>
                 <div class="line line-dashed line-lg pull-in"></div>
 
-                <div class="form-group">
+                <div class="form-group bg_color">
                     <label class="col-sm-2 control-label">背景颜色：</label>
                     <div class="col-sm-2">
-                            <div id="cp1" class="input-group colorpicker-component" data-color="{$row.bg_color|default='#FFFFFF'}"  title="设置幻灯片背景颜色，默认为白色" style="width: 200px;">
-                                <input type="text" name="bg_color" class="form-control"/>
-                                <span class="input-group-addon"><i></i></span>
-                            </div>
+                        <div id="cp1" class="input-group colorpicker-component" data-color="{$row.bg_color|default='#FFFFFF'}"  title="设置幻灯片背景颜色，默认为白色" style="width: 200px;">
+                            <input type="text" name="bg_color" class="form-control"/>
+                            <span class="input-group-addon"><i></i></span>
                         </div>
+                    </div>
                 </div>
 
                 <div class="form-group">
@@ -89,7 +90,7 @@
                             是
                         </label>
                         <label class=" inline">
-                            <input type="radio" name="status" value="2" {$row['status']|tplckval=0,'checked'}/>
+                            <input type="radio" name="status" value="2" {$row['status']|tplckval=2,'checked'}/>
                             否
                         </label>
                     </div>
@@ -124,6 +125,7 @@
 
     $(function () {
         $('#cp1').colorpicker();
+        changeType();
     });
 
     function showUrlType(sel) {
@@ -148,6 +150,10 @@
         }
         $(".modal-dialog .close").trigger("click");
     }
-
+    function changeType() {
+        var type = $("#type").val();
+        $(".bg_color").hide();
+        if (type == 1) $(".bg_color").show();
+    }
 </script>
 {/block}

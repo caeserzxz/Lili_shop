@@ -719,7 +719,7 @@
 
 .youLike .navBox .divActive span {
   font-weight: bold;
-  color: #f65236;
+  color: #fd0035;
 }
 
 .youLike .navBox .divActive p {
@@ -727,7 +727,7 @@
   color: #fff;
   width: 0.733333rem;
   height: 0.213333rem;
-  background-color: #f65236;
+  background-color: #fd0035;
   border-radius: 0.106667rem;
   display: -webkit-box;
   display: -webkit-flex;

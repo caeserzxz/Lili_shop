@@ -5,7 +5,6 @@
 /*------------------------------------------------------ */
 namespace app\member\controller;
 use app\ClientbaseController;
-
 use app\member\model\UsersModel;
 
 class Center  extends ClientbaseController{
@@ -45,6 +44,7 @@ class Center  extends ClientbaseController{
     //-- 会员收货地址页
     /*------------------------------------------------------ */
     public function address(){
+        $this->assign('is_static', '1');
         $this->assign('title', '收货地址');
         return $this->fetch('address/index');
     }

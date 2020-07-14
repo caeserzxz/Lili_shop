@@ -7,11 +7,37 @@
 	<div class="page-bd">
         <!-- 页面内容-->
         <div class="top">
-        	
-          <div class="inputBox"><img src="__STATIC__/unique/images/selech01.png" alt=""><form action="{:url('goods/index')}"><input class="fs30 color_3" type="text" name="keyword" id="keyword"  placeholder="{$setting.shop_index_search_text}"></form></div>
-          <a class="search fs30" href="./搜索结果.html">搜索</a>
+          <div class="inputBox"><img src="__STATIC__/unique/images/selech01.png" alt=""><form action="{:url('goods/index')}" id="search"><input class="fs30 color_3" type="text" name="keyword" id="keyword"  placeholder="{$setting.shop_index_search_text}"></form></div>
+          <a class="search fs30" href="javascript:search();">搜索</a>
            <!-- <span class="fs30 color_3" onclick="javascript:history.go(-1);">取消</span> -->
         </div>
+        <!-- {if condition="empty($hotSearch)==false || empty($promotion) == false || empty($hotRedSearch) == false"} -->
+        {if condition="empty($hotSearch)==false"}
+            <div class="history hot">
+              <div class="title fw_b color_3 fs34">热门搜索</div>
+              {notempty name="promotion"}
+              <div class="twe" style="display: none;">
+                {volist name="promotion" id="val" }
+                    <p class="fs28 color_3 ahref">{$val}</p>
+                  {/volist}
+              </div>
+              {/notempty}
+              {notempty name="hotRedSearch"}
+              <div class="twe" style="display: none;">
+                {volist name="hotRedSearch" id="val" }
+                  <p class="fs28 color_3 ahref">{$val}</p>
+                  {/volist}
+              </div>
+              {/notempty}
+              {notempty name="hotSearch"}
+              <div class="list">
+                {volist name="hotSearch" id="val" }
+                    <span class="fs28 color_3 ahref">{$val}</span>
+                  {/volist}
+              </div>
+              {/notempty}
+            </div>
+        {/if}
         {notempty name="searchKeys"}
             <div class="history historySearch">
                 <div class="title">
@@ -27,32 +53,6 @@
               </div>
             </div>
         {/notempty}
-        {if condition="empty($hotSearch)==false || empty($promotion) == false || empty($hotRedSearch) == false"}
-        <div class="history hot">
-            <div class="title fw_b color_3 fs34">热门搜索</div>
-            {notempty name="promotion"}
-            <div class="twe">
-            	{volist name="promotion" id="val" }
-                	<p class="fs28 color_3 ahref">{$val}</p>
-                {/volist}
-            </div>
-            {/notempty}
-            {notempty name="hotRedSearch"}
-            <div class="twe">
-              {volist name="hotRedSearch" id="val" }
-                <p class="fs28 color_3 ahref">{$val}</p>
-                {/volist}
-            </div>
-            {/notempty}
-            {notempty name="hotSearch"}
-            <div class="list">
-            	{volist name="hotSearch" id="val" }
-              		<span class="fs28 color_3 ahref">{$val}</span>
-                {/volist}
-            </div>
-            {/notempty}
-          </div>
-         {/if}
       </div>
 
     </div>
@@ -75,6 +75,10 @@ function cleanHistory() {
     jq_ajax('{:url("shop/api.goods/cleanSearchGoodsHistory")}', '', function (res) {
         if (res.code == 1) $(".historySearch").remove();
     });
+}
+function search() {
+  console.log(1)
+    $("#search").submit();
 }
 </script>
 {/block}

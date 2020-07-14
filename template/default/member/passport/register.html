@@ -54,7 +54,7 @@
             </div>
             <div class="cell_ft"></div>
         </div>
-        <div class="cell {$register_invite_code==0?'hide':''}">
+        <div class="cell" style="{$register_invite_code==0?'display: none;':''}">
             <div class="cell_hd">
                 <span class="label fs28 fw_b color_3">邀请码</span>
             </div>
@@ -73,7 +73,7 @@
     <div class="protocol fs24 text_c ">
         <span class="color_9">查看</span>
         <a href="{:url('shop/article/registerAgreement')}" class="color_r">《{:settings('shop_title')}》</a>
-        <span class="color_9">用户协议</span>
+        <!-- <span class="color_9">用户协议</span> -->
         <!-- <a href="#" class="color_r">《用户协议》</a> -->
     </div>
 

@@ -23,7 +23,7 @@
 	
 		</ul>
    </div>
-    <div class="page-ft" style="position: static;width: 100vw;bottom: 0;">
+    <div class="page-ft" style="{neq name="$is_static" value="1"}position: static;{/neq}width: 100vw;bottom: 0;">
         <a href="javascript:;" class="fs32 fw_b color_w BGcolor_r add_address">新增收货地址</a>
     </div>
 </div>
@@ -132,7 +132,7 @@
                 <a href="javascript:;" class="left-arrow close_wrapper" data-type="list"></a>
             </div>
             <div class="header-title">{{if address_id }}修改地址{{else}}添加地址{{/if}}</div>
-            <div class="header-right" onclick="evalPost();">保存</div>
+            <div class="header-right" style="display: none;" onclick="evalPost();">保存</div>
         </div>
     </div>
 	<form action="" id="formAddress" style="height: 8.3rem;">
