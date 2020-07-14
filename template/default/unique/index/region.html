@@ -1,6 +1,25 @@
 {extend name="layouts@base_unique" /}
 {block name="main" }
 <link rel="stylesheet" href="__STATIC__/unique/css/chooseRegion.css" />
+<style>
+    .current-city{
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+    }
+   .current{
+        margin-top: 0.133333rem;
+        width: 0.933333rem;
+        height: 0.36rem;
+        text-align: center;
+        line-height: 0.36rem;
+        border: 0.013333rem solid #e5e5e5;
+        border-radius: 0.053333rem;
+    }
+</style>
     <div class="page sousuo">
         <div class="page-hd">
             <div class="header bor-1px-b">
@@ -27,7 +46,8 @@
                 <div class="current-city">
                     <div>
                         <img class="icon" src="__STATIC__/unique/images/current-p.png" alt="">
-                        <span class=" fs32 fw_b color_3">{$city}</span>
+                        <!--<span class=" fs32 fw_b color_3">{$city}</span>-->
+                        <span class="current" data-lat="" data-lng="">北京</span>
                     </div>
                     <div class="color_9">当前定位</div>
                 </div>
@@ -122,12 +142,31 @@
     });
 </script>
     <script>
+        var appType = "{$appType}";
+        $(function(){
+            if(appType=='Android'){
+                window.auc.getTencentLocBySDK();
+            }else if(appType=='IOS'){
+
+            }
+        })
+        function GetTencentLocCallBack(lat,lng,city){
+            $('.current').attr('data-lat',lat);
+            $('.current').attr('data-lng',lng);
+            $('.current').html(city);
+        }
+        $('.current').on('click',function(){
+            var city = $('.current').html();
+            var lat = $('.current').attr('data-lat');
+            var lng = $('.current').attr('data-lng');
+            window.location.href = '{:url("unique/index/index")}?city='+city+'&lat='+lat+'&lng='+lng;
+        })
         $(function() {
             $('.left-arrow').on('click', function () {
                 window.location.href = '{:url("unique/index/index")}';
             })
             $('.other-city span').on('click', function() {
-                $('.current-city span').text($(this).text())
+                // $('.current-city span').text($(this).text())
                 window.location.href = '{:url("unique/index/index")}?city='+$(this).text();
             });
             $('.city-name-list').on('click', function() {

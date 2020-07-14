@@ -4,6 +4,7 @@
 //-- Author: iqgmy
 /*------------------------------------------------------ */
 namespace app\unique\controller;
+use think\facade\Cache;
 use app\ClientbaseController;
 use app\member\model\UsersModel;
 use app\shop\model\SlideModel;
@@ -25,21 +26,37 @@ class Index extends ClientbaseController{
         $this->assign('headline', $headline);
         //城市
         $city = input('city','');
+        $lat = input('lat','');
+        $lng = input('lng','');
+
+        $location = session('location');
         if(empty($city)){
-            $city = '北京';
-//            $city = session('city');
-//            if(empty($city)){
-//                $city = '北京';
-//            }
-//
-//        }else{
-//            session('city',$city);
+            if(empty($location)){
+                $city = '北京';
+                $regionModel = new RegionModel();
+                $city_info = $regionModel->where('short_name',$city)->find();
+                $location['city'] = $city;
+                $location['lat'] = $city_info['lat'];
+                $location['lng'] = $city_info['lng'];
+                session('location',$location);
+            }
+        }else{
+            if(empty($lat)&&empty($lng)){
+                $regionModel = new RegionModel();
+                $city_info = $regionModel->where('short_name',$city)->find();
+                $location['city'] = $city;
+                $location['lat'] = $city_info['lat'];
+                $location['lng'] = $city_info['lng'];
+                session('location',$location);
+            }else{
+                $location['city'] = $city;
+                $location['lat'] = $lat;
+                $location['lng'] = $lng;
+                session('location',$location);
+            }
         }
         $this->assign('city', $city);
-        $regionModel = new RegionModel();
-        $city_info = $regionModel->where('short_name',$city)->find();
-        $this->assign('city_info', $city_info);
-
+        $this->assign('location', $location);
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片
         $this->assign('userInfo',$this->userInfo);
         return $this->fetch('index');
