@@ -272,28 +272,37 @@
             window.location.reload();
         })
     });
+   setTimeout(function () {
+       get_address();
+   }, 1500);
+
    $('.address').blur(function () {
-     // var lat = $("input[name='latitude']").val();
-     // var lon = $("input[name='longitude']").val();
-     // if(lat == '' || lon == ''){
+       get_address();
+   });
+   $('input[name=longitude]').click(function(){
+       get_address();
+   });
+   $('input[name=latitude]').click(function(){
+       get_address();
+   });
+   function get_address(){
        var arr = new Object();
        arr.address = $("input[name='address']").val();
        arr.province = $('#province').val();
        arr.city = $('#city').val();
        arr.district = $('#district').val();
        if(arr.address != '' && arr.province != '' && arr.city != '' && arr.district != ''){
-         jq_ajax('{:url("getLatLon")}',arr,function (res) {
-             console.log(res);
-           if (res.code == 0){
-             return _alert('获取经纬度失败，请稍后再试或者手动填写');
-           }
-           $("input[name='latitude']").val(res.latitude);
-           $("input[name='longitude']").val(res.longitude);
-           // window.location.reload();
-         })
+           jq_ajax('{:url("getLatLon")}',arr,function (res) {
+               console.log(res);
+               if (res.code == 0){
+                   return _alert('获取经纬度失败，请稍后再试或者手动填写');
+               }
+               $("input[name='latitude']").val(res.latitude);
+               $("input[name='longitude']").val(res.longitude);
+               // window.location.reload();
+           })
        }
-     // }
-   });
+   }
    var store_type = "{$row['type']}";
    if(store_type != ''){
      $('.store_type_lab').hide();
