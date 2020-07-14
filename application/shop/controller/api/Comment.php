@@ -176,7 +176,7 @@ class Comment extends ApiController
 		
 		foreach ($data['list'] as $key=>$row){
 			$row['imgs'] = $GoodsCommentImagesModel->where('comment_id',$row['id'])->select()->toArray();
-			$row['_time'] = date('Y-m-d',$row['create_time']);
+			$row['_time'] = date('Y.m.d',$row['create_time']);
 			$data['list'][$key] = $row;
 		}
 		$return['data'] = $data;

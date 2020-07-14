@@ -37,201 +37,192 @@
 {block name="main" }
 <header class="header  b-b clearfix">
      <div class="page-breadcrumbs">
-            <ul class="breadcrumb" >
-                <li>
-                    <i class="fa fa-ellipsis-v"></i>
-                    <strong>商城设置</strong>
-                </li>                                  
-            </ul>
-      </div>
+        <ul class="breadcrumb" >
+            <li>
+                <i class="fa fa-ellipsis-v"></i>
+                <strong>商城设置</strong>
+            </li>                                  
+        </ul>
+    </div>
 </header>
-<section class="scrollable  wrapper w-f">
+<section class="scrollable wrapper w-f">
     <form class="form-horizontal form-validate" id="_form" method="post" action="{:url('save')}">
         <section class="panel panel-default">
             <header>
-                 <ul class="nav nav-tabs">
-                     <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
-                     <li><a href="#return" data-toggle="tab">运费&退货</a></li>
-                     <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
-                     <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li>
-                     <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
-                     <li><a href="#share" data-toggle="tab">商品分享设置</a></li>
-                     <li><a href="#show_ordermessage" data-toggle="tab">首页订单信息轮播配置</a></li>
+                <ul class="nav nav-tabs">
+                    <li class="active"><a href="#basic" data-toggle="tab">基本配置</a></li>
+                    <li><a href="#return" data-toggle="tab">运费&退货</a></li>
+                    <li><a href="#kdnset" data-toggle="tab">快递鸟配置</a></li>
+                    <!-- <li><a href="#bonus" data-toggle="tab">优惠券设置</a></li> -->
+                    <li><a href="#favour" data-toggle="tab">限时优惠/拼团设置</a></li>
+                    <li><a href="#share" data-toggle="tab">商品分享设置</a></li>
+                    <li><a href="#show_ordermessage" data-toggle="tab">首页订单信息轮播配置</a></li>
                  </ul>
             </header>
             <div class="tab-content">
                 <div class="tab-pane active" id="basic">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">H5首页设定：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_index_tpl" value="0" {$setting['shop_index_tpl']==0?'checked':''} type="radio">默认首页
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_index_tpl" value="1" {$setting['shop_index_tpl']==1?'checked':''} type="radio" >自定义首页
-                                </label>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">H5首页设定：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shop_index_tpl" value="0" {$setting['shop_index_tpl']==0?'checked':''} type="radio">默认首页
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shop_index_tpl" value="1" {$setting['shop_index_tpl']==1?'checked':''} type="radio" >自定义首页
+                            </label>
                         </div>
-						<div class="form-group">
-                            <label class="col-sm-2 control-label">小程序首页设定：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="xcx_index_tpl" value="0" {$setting['xcx_index_tpl']==0?'checked':''} type="radio">默认首页
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="xcx_index_tpl" value="1" {$setting['xcx_index_tpl']==1?'checked':''} type="radio" >自定义首页
-                                </label>
-                            </div>
+                    </div>
+					<div class="form-group">
+                        <label class="col-sm-2 control-label">小程序首页设定：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="xcx_index_tpl" value="0" {$setting['xcx_index_tpl']==0?'checked':''} type="radio">默认首页
+                            </label>
+                            <label class="radio-inline">
+                                <input name="xcx_index_tpl" value="1" {$setting['xcx_index_tpl']==1?'checked':''} type="radio" >自定义首页
+                            </label>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">个人中心菜单显示类型：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="user_center_nav_tpl" value="0" {$setting['user_center_nav_tpl']==0?'checked':''} type="radio">网格类型
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="user_center_nav_tpl" value="1" {$setting['user_center_nav_tpl']==1?'checked':''} type="radio" >列表类型
-                                </label>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">个人中心菜单显示类型：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="user_center_nav_tpl" value="0" {$setting['user_center_nav_tpl']==0?'checked':''} type="radio">网格类型
+                            </label>
+                            <label class="radio-inline">
+                                <input name="user_center_nav_tpl" value="1" {$setting['user_center_nav_tpl']==1?'checked':''} type="radio" >列表类型
+                            </label>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">商城Title：</label>
-                            <div class="controls">
-                                <input type="text" name="shop_title"  class="input-large" value="{$setting.shop_title}"> <span class="help-line">首页 - xxxxxxxxxx</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">商城Title：</label>
+                        <div class="controls">
+                            <input type="text" name="shop_title"  class="input-large" value="{$setting.shop_title}"> <span class="help-line">首页 - xxxxxxxxxx</span>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">搜索框文字：</label>
-                            <div class="controls">
-                                <input type="text" name="shop_index_search_text"  class="input-large" data-rule-required="true" value="{$setting.shop_index_search_text}"> <span class="help-line">搜索框默认显示的搜索关键字</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">搜索框文字：</label>
+                        <div class="controls">
+                            <input type="text" name="shop_index_search_text"  class="input-large" data-rule-required="true" value="{$setting.shop_index_search_text}"> <span class="help-line">搜索框默认显示的搜索关键字</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">热门搜索：</label>
-                            <div class="controls">
-                                <input type="text" name="hot_search"  class="input-xxlarge" value="{$setting.hot_search}"> <span class="help-line">每个搜索词中间用空格隔开</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">热门搜索：</label>
+                        <div class="controls">
+                            <input type="text" name="hot_search"  class="input-xxlarge" value="{$setting.hot_search}"> <span class="help-line">每个搜索词中间用空格隔开</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">热门搜索-红色字体：</label>
-                            <div class="controls">
-                                <input type="text" name="hot_red_search"  class="input-xxlarge" value="{$setting.hot_red_search}"> <span class="help-line">每个搜索词中间用空格隔开</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">热门搜索-红色字体：</label>
+                        <div class="controls">
+                            <input type="text" name="hot_red_search"  class="input-xxlarge" value="{$setting.hot_red_search}"> <span class="help-line">每个搜索词中间用空格隔开</span>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >首页头条数量：</label>
-                            <div class="controls">
-                                <select name="headline_max_num"  >
-                                    {for start="1" end="31" name="num" }
-                                    <option value="{$num}" {$setting['headline_max_num']==$num?'selected':''}>{$num} 条</option>
-                                    {/for}
-                                </select> <span class="help-line">首页头条最多可显示的数量</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >首页头条数量：</label>
+                        <div class="controls">
+                            <select name="headline_max_num"  >
+                                {for start="1" end="31" name="num" }
+                                <option value="{$num}" {$setting['headline_max_num']==$num?'selected':''}>{$num} 条</option>
+                                {/for}
+                            </select> <span class="help-line">首页头条最多可显示的数量</span>
                         </div>
-
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">开放商品评论：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_goods_comment" value="0" {$setting['shop_goods_comment']<1?'checked':''} type="radio">关闭
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_goods_comment" value="1" {$setting['shop_goods_comment']==1?'checked':''} type="radio" >开启
-                                </label>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">开放商品评论：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shop_goods_comment" value="0" {$setting['shop_goods_comment']<1?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shop_goods_comment" value="1" {$setting['shop_goods_comment']==1?'checked':''} type="radio" >开启
+                            </label>
                         </div>
-                        <div class="form-group hide">
-                            <label class="col-sm-2 control-label">开放商品问答：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_goods_answer" value="0" {$setting['shop_goods_answer']<1?'checked':''} type="radio">关闭
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_goods_answer" value="1" {$setting['shop_goods_answer']==1?'checked':''} type="radio" >开启
-                                </label>
-                            </div>
+                    </div>
+                    <div class="form-group hide">
+                        <label class="col-sm-2 control-label">开放商品问答：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shop_goods_answer" value="0" {$setting['shop_goods_answer']<1?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shop_goods_answer" value="1" {$setting['shop_goods_answer']==1?'checked':''} type="radio" >开启
+                            </label>
                         </div>
-
-                        <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >超时取消：</label>
-                            <div class="controls">
-                                <select name="shop_order_auto_cancel"  style="width:200px;">
-                                    <option value="0" {$setting['shop_order_auto_cancel']==0?'selected':''}>不执行自动取消</option>
-                                    <option value="15" {$setting['shop_order_auto_cancel']==15?'selected':''}>15 分钟</option>
-                                    <option value="30" {$setting['shop_order_auto_cancel']==30?'selected':''}>30 分钟</option>
-                                    {for start="1" end="24" name="time" }
-                                    <option value="{$time * 60}" {$setting['shop_order_auto_cancel']==$time * 60?'selected':''}>{$time} 小时</option>
-                                    {/for}
-                                </select> <span class="help-line">下单成功后超过指定时间未支付自动取消订单</span>
-                            </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >超时取消：</label>
+                        <div class="controls">
+                            <select name="shop_order_auto_cancel"  style="width:200px;">
+                                <option value="0" {$setting['shop_order_auto_cancel']==0?'selected':''}>不执行自动取消</option>
+                                <option value="15" {$setting['shop_order_auto_cancel']==15?'selected':''}>15 分钟</option>
+                                <option value="30" {$setting['shop_order_auto_cancel']==30?'selected':''}>30 分钟</option>
+                                {for start="1" end="24" name="time" }
+                                <option value="{$time * 60}" {$setting['shop_order_auto_cancel']==$time * 60?'selected':''}>{$time} 小时</option>
+                                {/for}
+                            </select> <span class="help-line">下单成功后超过指定时间未支付自动取消订单</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >自动签收：</label>
-                            <div class="controls">
-                                <select name="shop_auto_sign_limit"  >
-                                    {for start="1" end="31" name="day" }
-                                    <option value="{$day}" {$setting['shop_auto_sign_limit']==$day?'selected':''}>{$day} 天</option>
-                                    {/for}
-                                </select> <span class="help-line">发货多少天后订单自动签收</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >自动签收：</label>
+                        <div class="controls">
+                            <select name="shop_auto_sign_limit"  >
+                                {for start="1" end="31" name="day" }
+                                <option value="{$day}" {$setting['shop_auto_sign_limit']==$day?'selected':''}>{$day} 天</option>
+                                {/for}
+                            </select> <span class="help-line">发货多少天后订单自动签收</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >快递查询接口：</label>
-                            <div class="controls">
-                                <select class="input-max" name="shop_shippping_view_fun">
-                                    <option value="">选择快递查询接口</option>
-                                    {volist name="shippingFunction" id="val"}
-                                    <option value="{$val.function}" {$setting['shop_shippping_view_fun'] == $val['function']?'selected':''} >{$val.name}</option>
-                                    {/volist}
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >快递查询接口：</label>
+                        <div class="controls">
+                            <select class="input-max" name="shop_shippping_view_fun">
+                                <option value="">选择快递查询接口</option>
+                                {volist name="shippingFunction" id="val"}
+                                <option value="{$val.function}" {$setting['shop_shippping_view_fun'] == $val['function']?'selected':''} >{$val.name}</option>
+                                {/volist}
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >申请售后：</label>
-                            <div class="controls">
-                                <select name="shop_after_sale_limit"  class="input-max">
-                                    <option value="0" {$setting['shop_after_sale_limit']==0?'selected':''}>不启用售后功能</option>
-                                    {for start="1" end="31" name="day" }
-                                    <option value="{$day}" {$setting['shop_after_sale_limit']==$day?'selected':''}>{$day} 天</option>
-                                    {/for}
-                                </select> <span class="help-line">签收后多少天内可申请售后</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >申请售后：</label>
+                        <div class="controls">
+                            <select name="shop_after_sale_limit"  class="input-max">
+                                <option value="0" {$setting['shop_after_sale_limit']==0?'selected':''}>不启用售后功能</option>
+                                {for start="1" end="31" name="day" }
+                                <option value="{$day}" {$setting['shop_after_sale_limit']==$day?'selected':''}>{$day} 天</option>
+                                {/for}
+                            </select> <span class="help-line">签收后多少天内可申请售后</span>
                         </div>
-                        <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">减库存的时机：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_reduce_stock" value="0" {$setting['shop_reduce_stock']==0?'checked':''} type="radio">下单成功时
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_reduce_stock" value="1" {$setting['shop_reduce_stock']==1?'checked':''} type="radio" >支付成功时
-                                </label>
-                            </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">减库存的时机：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shop_reduce_stock" value="0" {$setting['shop_reduce_stock']==0?'checked':''} type="radio">下单成功时
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shop_reduce_stock" value="1" {$setting['shop_reduce_stock']==1?'checked':''} type="radio" >支付成功时
+                            </label>
                         </div>
-                        <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">取消未发货订单：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="order_unshipped_cancel" value="1" {$setting['order_unshipped_cancel']>0?'checked':''} type="radio">开启
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="order_unshipped_cancel" value="0" {$setting['order_unshipped_cancel']==0?'checked':''} type="radio" >关闭
-                                </label>
-                                <span class="help-inline">订单已支付，未发货，是否允许取消</span>
-                            </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"  style="width:99%;"></div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">取消未发货订单：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="order_unshipped_cancel" value="1" {$setting['order_unshipped_cancel']>0?'checked':''} type="radio">开启
+                            </label>
+                            <label class="radio-inline">
+                                <input name="order_unshipped_cancel" value="0" {$setting['order_unshipped_cancel']==0?'checked':''} type="radio" >关闭
+                            </label>
+                            <span class="help-inline">订单已支付，未发货，是否允许取消</span>
                         </div>
-
+                    </div>
                 </div>
-
-                <div class="tab-pane " id="return">
-
+                <div class="tab-pane" id="return">
                     {if condition="$has_supplyer == 1"}
                     <div class="form-group">
                         <label class="col-sm-2 control-label">运费模板：</label>
@@ -301,209 +292,204 @@
                         </div>
                     </div>
                 </div>
-
                 <div class="tab-pane" id="kdnset">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >电商ID（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_appid" value="{$setting.kdn_appid}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >电商ID（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_appid" value="{$setting.kdn_appid}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >电商加密私钥（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_apikey" value="{$setting.kdn_apikey}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >电商加密私钥（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_apikey" value="{$setting.kdn_apikey}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >邮政编码：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_postcode" value="{$setting.kdn_postcode}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >邮政编码：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_postcode" value="{$setting.kdn_postcode}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >接口地址（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_apiurl" value="{$setting.kdn_apiurl}" style="width: 300px;">
-                                <span class="help-line"></span>
-                                <select onchange="$('input[name=kdn_apiurl]').val($(this).val());">
-                                    <option value="">请选择接口地址</option>
-                                    <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
-                                    <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >接口地址（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_apiurl" value="{$setting.kdn_apiurl}" style="width: 300px;">
+                            <span class="help-line"></span>
+                            <select onchange="$('input[name=kdn_apiurl]').val($(this).val());">
+                                <option value="">请选择接口地址</option>
+                                <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
+                                <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >寄件人名称（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_name" value="{$setting.kdn_name}"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >寄件人名称（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_name" value="{$setting.kdn_name}"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >联系电话（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_phone" value="{$setting.kdn_phone}"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >联系电话（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_phone" value="{$setting.kdn_phone}"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >地区（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_province" class="input-mini" style="text-align: center" value="{$setting.kdn_province}"> <span class="help-line">省</span>
-                                <input type="text" name="kdn_city" class="input-mini" style="text-align: center" value="{$setting.kdn_city}"> <span class="help-line">市</span>
-                                <input type="text" name="kdn_area" class="input-mini" style="text-align: center" value="{$setting.kdn_area}"> <span class="help-line">区</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >地区（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_province" class="input-mini" style="text-align: center" value="{$setting.kdn_province}"> <span class="help-line">省</span>
+                            <input type="text" name="kdn_city" class="input-mini" style="text-align: center" value="{$setting.kdn_city}"> <span class="help-line">市</span>
+                            <input type="text" name="kdn_area" class="input-mini" style="text-align: center" value="{$setting.kdn_area}"> <span class="help-line">区</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >详情地址（快递鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="kdn_address" value="{$setting.kdn_address}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >详情地址（快递鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="kdn_address" value="{$setting.kdn_address}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">打印机模式：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="kdn_print_type" value="1" {$setting['kdn_print_type']==1||empty($setting['kdn_print_type'])?'checked':''} type="radio">一联单模式
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="kdn_print_type" value="2" {$setting['kdn_print_type']==2?'checked':''} type="radio" >二联单模式
-                                </label>
-                                <span class="help-line">面单模板请在物流管理处设置模板id</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">打印机模式：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="kdn_print_type" value="1" {$setting['kdn_print_type']==1||empty($setting['kdn_print_type'])?'checked':''} type="radio">一联单模式
+                            </label>
+                            <label class="radio-inline">
+                                <input name="kdn_print_type" value="2" {$setting['kdn_print_type']==2?'checked':''} type="radio" >二联单模式
+                            </label>
+                            <span class="help-line">面单模板请在物流管理处设置模板id</span>
                         </div>
+                    </div>
                 </div>
-
                 <div class="tab-pane" id="cnset">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >电商ID（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_appid" value="{$setting.cn_appid}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >电商ID（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_appid" value="{$setting.cn_appid}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >电商加密私钥（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_apikey" value="{$setting.cn_apikey}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >电商加密私钥（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_apikey" value="{$setting.cn_apikey}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >邮政编码：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_postcode" value="{$setting.cn_postcode}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >邮政编码：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_postcode" value="{$setting.cn_postcode}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >接口地址（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_apiurl" value="{$setting.cn_apiurl}" style="width: 300px;">
-                                <span class="help-line"></span>
-                                <select onchange="$('input[name=cn_apiurl]').val($(this).val());">
-                                    <option value="">请选择接口地址</option>
-                                    <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
-                                    <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
-                                </select>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >接口地址（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_apiurl" value="{$setting.cn_apiurl}" style="width: 300px;">
+                            <span class="help-line"></span>
+                            <select onchange="$('input[name=cn_apiurl]').val($(this).val());">
+                                <option value="">请选择接口地址</option>
+                                <option value="http://api.kdniao.com/api/Eorderservice">正式地址</option>
+                                <option value="http://testapi.kdniao.com:8081/api/EOrderService">测试地址</option>
+                            </select>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >寄件人名称（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_name" value="{$setting.cn_name}"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >寄件人名称（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_name" value="{$setting.cn_name}"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >联系电话（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_phone" value="{$setting.cn_phone}"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >联系电话（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_phone" value="{$setting.cn_phone}"> <span class="help-line"></span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >地区（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_province" class="input-mini" style="text-align: center" value="{$setting.cn_province}"> <span class="help-line">省</span>
-                                <input type="text" name="cn_city" class="input-mini" style="text-align: center" value="{$setting.cn_city}"> <span class="help-line">市</span>
-                                <input type="text" name="cn_area" class="input-mini" style="text-align: center" value="{$setting.cn_area}"> <span class="help-line">区</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >地区（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_province" class="input-mini" style="text-align: center" value="{$setting.cn_province}"> <span class="help-line">省</span>
+                            <input type="text" name="cn_city" class="input-mini" style="text-align: center" value="{$setting.cn_city}"> <span class="help-line">市</span>
+                            <input type="text" name="cn_area" class="input-mini" style="text-align: center" value="{$setting.cn_area}"> <span class="help-line">区</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >详情地址（菜鸟）：</label>
-                            <div class="controls">
-                                <input type="text" name="cn_address" value="{$setting.cn_address}" style="width: 300px;"> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >详情地址（菜鸟）：</label>
+                        <div class="controls">
+                            <input type="text" name="cn_address" value="{$setting.cn_address}" style="width: 300px;"> <span class="help-line"></span>
                         </div>
+                    </div>
                 </div>
-
-                <div class="tab-pane " id="bonus">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">开放优惠券：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="shop_used_bonus" value="0" {$setting['shop_used_bonus']<1?'checked':''} type="radio">关闭
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="shop_used_bonus" value="1" {$setting['shop_used_bonus']==1?'checked':''} type="radio" >开启
-                                </label>
-                            </div>
+                <div class="tab-pane" id="bonus">
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">开放优惠券：</label>
+                        <div class="controls">
+                            <label class="radio-inline">
+                                <input name="shop_used_bonus" value="0" {$setting['shop_used_bonus']<1?'checked':''} type="radio">关闭
+                            </label>
+                            <label class="radio-inline">
+                                <input name="shop_used_bonus" value="1" {$setting['shop_used_bonus']==1?'checked':''} type="radio" >开启
+                            </label>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">注册优惠券背景：</label>
-                            <div class="controls col-sm-6">
-                                <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
-                                <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
-                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label">注册优惠券背景：</label>
+                        <div class="controls col-sm-6">
+                            <span class="help-inline">建议图片尺寸：320*320像素</span><br>
+                            <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
+                            <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
+                            <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
                         </div>
+                    </div>
                 </div>
-                <div class="tab-pane " id="favour">
-					    <header class="panel-heading bg-light">限时优惠相关</header>
-                        <div class="form-group m-t">
-                            <label class="col-sm-2 control-label">档期间隔：</label>
-                            <div class="controls col-lg-3">
-                                <select name="favour_time_cycle"  class="input-max">
-                                    <option value="1" {$setting['favour_time_cycle']==1?'selected':''}>1小时一档</option>
-                                    <option value="2" {$setting['favour_time_cycle']==2?'selected':''}>2小时一档</option>
-                                    <option value="3" {$setting['favour_time_cycle']==3?'selected':''}>3小时一档</option>
-                                </select><span class="help-line">设置一个档期为几个小时，此设置变动后，需要重新选择活动的档期，所以需谨慎操作</span>
-                            </div>
+                <div class="tab-pane" id="favour">
+				    <header class="panel-heading bg-light">限时优惠相关</header>
+                    <div class="form-group m-t">
+                        <label class="col-sm-2 control-label">档期间隔：</label>
+                        <div class="controls col-lg-3">
+                            <select name="favour_time_cycle"  class="input-max">
+                                <option value="1" {$setting['favour_time_cycle']==1?'selected':''}>1小时一档</option>
+                                <option value="2" {$setting['favour_time_cycle']==2?'selected':''}>2小时一档</option>
+                                <option value="3" {$setting['favour_time_cycle']==3?'selected':''}>3小时一档</option>
+                            </select><span class="help-line">设置一个档期为几个小时，此设置变动后，需要重新选择活动的档期，所以需谨慎操作</span>
                         </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >每日活动开始时间：</label>
-                            <div class="controls col-lg-3">
-                                <select name="favour_start_time"  class="input-max">
-                                    {for start="0" end="24" name="time" }
-                                    <option value="{$time}" {$setting['favour_start_time']==$time?'selected':''}>{$time}:00</option>
-                                    {/for}
-                                </select> <span class="help-line">*设置每天限时优惠活动的开始时间，此设置变动后，需要重新选择活动的档期，所以需谨慎操作</span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >每日活动开始时间：</label>
+                        <div class="controls col-lg-3">
+                            <select name="favour_start_time"  class="input-max">
+                                {for start="0" end="24" name="time" }
+                                <option value="{$time}" {$setting['favour_start_time']==$time?'selected':''}>{$time}:00</option>
+                                {/for}
+                            </select> <span class="help-line">*设置每天限时优惠活动的开始时间，此设置变动后，需要重新选择活动的档期，所以需谨慎操作</span>
                         </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >首页显示商品数量：</label>
-                            <div class="controls col-lg-3">
-                                <select name="favour_show_num"  class="input-max">
-                                    <option value="0" >不限制数量</option>
-                                    {for start="1" end="31" name="num" }
-                                    <option value="{$num}" {$setting['favour_show_num']==$num?'selected':''}>{$num}个</option>
-                                    {/for}
-                                </select> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-2 control-label" >首页显示商品数量：</label>
+                        <div class="controls col-lg-3">
+                            <select name="favour_show_num"  class="input-max">
+                                <option value="0" >不限制数量</option>
+                                {for start="1" end="31" name="num" }
+                                <option value="{$num}" {$setting['favour_show_num']==$num?'selected':''}>{$num}个</option>
+                                {/for}
+                            </select> <span class="help-line"></span>
                         </div>
-
-                        <div class="line line-dashed line-lg pull-in"></div>
-						<header class="panel-heading bg-light">拼团相关</header>
-                        <div class="form-group m-t">
-                            <label class="col-sm-2 control-label" >首页显示商品数量：</label>
-                            <div class="controls col-lg-3">
-                                <select name="fightgroup_show_num"  class="input-max">
-                                    <option value="0" >不限制数量</option>
-                                    {for start="1" end="31" name="num" }
-                                    <option value="{$num}" {$setting['fightgroup_show_num']==$num?'selected':''}>{$num}个</option>
-                                    {/for}
-                                </select> <span class="help-line"></span>
-                            </div>
+                    </div>
+                    <div class="line line-dashed line-lg pull-in"></div>
+					<header class="panel-heading bg-light">拼团相关</header>
+                    <div class="form-group m-t">
+                        <label class="col-sm-2 control-label" >首页显示商品数量：</label>
+                        <div class="controls col-lg-3">
+                            <select name="fightgroup_show_num"  class="input-max">
+                                <option value="0" >不限制数量</option>
+                                {for start="1" end="31" name="num" }
+                                <option value="{$num}" {$setting['fightgroup_show_num']==$num?'selected':''}>{$num}个</option>
+                                {/for}
+                            </select> <span class="help-line"></span>
                         </div>
+                    </div>
                 </div>
-                <div class="tab-pane " id="share">
+                <div class="tab-pane" id="share">
                     <div class="col-sm-6">
                     <div class="form-group">
                         <label class="col-sm-1 control-label">海报背景图片：</label>
@@ -636,87 +622,83 @@
                             <input type="text" name="share_goods_qrcode_width" data-rule-digits="true" data-rule-required="true" class="input-small" value="{$setting.share_goods_qrcode_width}" > <span class="help-line">(px)像素，只可输入数字</span>
                         </div>
                     </div>
-
                 </div>
-
-                    <div class="col-sm-6">
-                        <button type="button" class="btn btn-primary" id="show_share_img" >点击预览效果，要保存后才能生效</button>
-                        <div id="share_img_box" >
-                            <img src="{$setting.share_goods_bg}" id="share_bg_img">
-                            <div class="share_goods_img hide"><img  src="__STATIC__/share/goods.jpg" style="width: 100%; height: 100%;"></div>
-                            <div class="share_goods_name hide" style="font-weight: bold;">【屈臣氏】新碧双重保湿水感防晒露80克*2件 隔离防晒伤小金帽</div>
-                            <div class="share_goods_price hide" style="font-weight: bold;">￥99.00元</div>
-                            <div class="share_qrcode hide"><img  src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAEgAAABICAMAAABiM0N1AAAAkFBMVEUjIjP4+PeTk5pIRlYfHjD5+fkhIDJ8e4QhITEjIjReXWq9vL++vcGZmZ/8/P0kJDb////39/f////6+vkhIDL8/PsLCh8ZGCsfHjARDyS4uLxFRFLa2tzBwMQtKzzIyMxMS1nS0tUDAhOGhY5RUF44N0asrLLw8PDk5OZaWWZranWTkppjYm2dnKSjoqlzcn3upYuXAAAAEXRSTlP+rPLW1Nbz/q3Zytis1qyTrLFFhJEAAAYQSURBVFjDpViLlps4DHXPNId22rO7YIwhPIx5PwL8/9+tZBswJDTtrmZ6onGUWxBXV1LI398v7cftdvuxOmjy4zL2G/nmXxjPUs9lTRTyWngumpfkAXkZS8h3DUTOZgH5B6CLYB+A4DUMzhaRFagICiI9MHNFhD8FcwD6qoCyOD/91KEGovc6jqtGStlRDRTW59i8XoF4nJxthtQgkNvKJEkfWV2XHlW3FjlPwQsPDVDunU2sQBT+6OIiCpYVqHwKLncglUvqbi/svgK5lHpdFYTc2YHoFqw8zzkCbf8BtYHMFQXFcADagvGDJ6B5cbRJtgNRgafjPE2pTrYCYt2og5exY2cg+gi4tru3A7Em4EEmPMaouwN5Mi5UaBEn3jNQFKLx8AQURkhI6h6BAhUcvAZSbA/JEehEyBUoQj6T3weiaZznfSOFSOj/AnLbpOtET+qstJ7afwFSjz8/EvItkMpf6B+AMMddfiIkJtvH0JdAfRGhBdEBiMEVtWdCerLWwUUtn4DcdG60QZ1bhByWZZmaZhZ7shlt7zp4vrf0qUQoM2bXGhIyeiLkHkxf1JptFlCkCem6ByDbbKBLGdGEFDYhx1/ISCzONnLfJqQQ6UpIPpxj5bAC+SR7MiP+btsBISue+ebxkxfBiKCBfH620Ig/pIshIXlkCElI+BQbbuJ/3ddWQvobIS8MgKILC1CYdkKqK4qLq+iv5Of90oCZVPSPxzCl97uEP9q0uYr9Qf6iDH5e/TLknU1IxcPXwfRGvlgN5Mmhh97/OkY7N/KP6QWu99K5IyFN1lvUFI+5WlyOzo38TNNUYJi8a6dFBzLitgKcKa/yh9RAVJ0AMxk690SdpOm9U0DfYCwwekTCHrjc9pEfPqA6oC/64dKC6RtoD8KGtWKcGaoPgPxwEzZeIZd7kDEDFPLFKlEECrcuooHqKAxmpoCwaClVUsv7HYgegVoLiJ2B9BVxHsSYMmiQUYW3VkFB9MhDdAbTxPdpAocIZGaBMiDrICpmcHSymx5shrwJ/IiEk7nq+weeTFVfDRLFF51GpGJcnbLfnf6T/AU6JyOovdTT6qjUL4XLg6furYSkbILeXaMwjQF0amyZZaQc5jnw8a9ISE9A/WKnfq2QipBs0lJJvREc+DxFPbO7iALCsjsCQTJ8rZARDhGeNxeqZ8AVaQekGtIDQB46kQJiEiqzV3XQ6udDBeZIokKqZEHWxv7RD412qgUvZIbUqBPI0eNT15ppHlY9sb1MWYLC5hgnKJmVS1FD6mZwTNEaa91Xdhj9FI/2tywefXHf2W8DUdtc9aNdfZNU39pi3dr+lqgjHkxwciOf1YXlmP6tHYkxrmLllOAMmOwJhvUHnMgyz6sPLBGk4+kf/L59/KX1+Pm7LvIHhPx1X4MrwqkW8jOrEgFHlwg45eo4kbmiMBvOVq1LjXgM0EWgTYzozMZZ0CktZ/i8GCJSe9BC9YC+ZhwlIzVIuZaRYpWRVdiOvD6OfpXVaVep3YVtldp9qaEbf05LDfLQAb04Sy1bCYk82oDa1Y5AcCAr6AuOcbgCyjnhI5yImJNoAmcHog7sisqEPbBvG+QIjp7csQtJIWUZx3V/B8+BD30cp1puhMleIc6E3PpiWRz0yJqz1cp83kU0Iak3WcOkyihI7R8tNUqzgXWTIaR+wDhjgGYboIiHb5eadc5uRnh1pmbGgZt2OGeXyzKUHQA1+Na7XcQatMxO6ujJXxNStTxvJ+Q10K8JuXP4dlhFYX3kxw3yNIzGKGyq00LG4IqM0ivN3oAWUqNldXrY13A87n2zr/VhlpVqYCYZGcHpFJXh1WJ2Io211lLDNCET9ZUGbIFSJqPiYSITJOQDnxqc5B9v9n61QmTCnuFGOKkTRchAr1lLEKyERHpYxjYZOWzZShdQIQPV8g0hoffzjUf0bAdCAg+NzuBboJAABNOtIiQ6GyHDejobsN7+JmKaxpRBrTbglYuz4MlUOrvjKEKS6y+iTqso8hAff7cSMsnA2RTy9ddm14RkKyF3YVPD6IWFvyu12zB6YYaQrp6Tn4BgPGaq98N4jED/AnkJ0hgo7PTGAAAAAElFTkSuQmCC" style="width: 100%; height: 100%;"></div>
-                            <div class="share_avatar hide"><span class="{$setting['share_goods_avatar_shape']<=0?'circle':''}">头像</span></div>
-                            <div class="share_nick_name hide">邀请者昵称</div>
-                        </div>
+                <div class="col-sm-6">
+                    <button type="button" class="btn btn-primary" id="show_share_img" >点击预览效果，要保存后才能生效</button>
+                    <div id="share_img_box" >
+                        <img src="{$setting.share_goods_bg}" id="share_bg_img">
+                        <div class="share_goods_img hide"><img  src="__STATIC__/share/goods.jpg" style="width: 100%; height: 100%;"></div>
+                        <div class="share_goods_name hide" style="font-weight: bold;">【屈臣氏】新碧双重保湿水感防晒露80克*2件 隔离防晒伤小金帽</div>
+                        <div class="share_goods_price hide" style="font-weight: bold;">￥99.00元</div>
+                        <div class="share_qrcode hide"><img  src="data:image/png;base64,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" style="width: 100%; height: 100%;"></div>
+                        <div class="share_avatar hide"><span class="{$setting['share_goods_avatar_shape']<=0?'circle':''}">头像</span></div>
+                        <div class="share_nick_name hide">邀请者昵称</div>
                     </div>
                 </div>
-                <div class="tab-pane " id="show_ordermessage">
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label">开启订单轮播：</label>
-                            <div class="controls">
-                                <label class="radio-inline">
-                                    <input name="show_ordermessage_switch" value="0" {$setting['show_ordermessage_switch']<1?'checked':''} type="radio">关闭
-                                </label>
-                                <label class="radio-inline">
-                                    <input name="show_ordermessage_switch" value="1" {$setting['show_ordermessage_switch']==1?'checked':''} type="radio" >开启
-                                </label>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >显示频率/s：</label>
-                            <div class="controls">
-                                <input type="text" name="show_ordermessage_frequency" value="{$setting.show_ordermessage_frequency}"> <span class="help-line"></span>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-sm-2 control-label" >获取真订单频率/s:</label>
-                            <div class="controls">
-                                <input type="text" name="show_ordermessage_rfrequency" value="{$setting.show_ordermessage_rfrequency}"> <span class="help-line"></span>
-                            </div>
-                            <span class="help-line">秒,真订单获取频率</span>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-sm-2 control-label" >假订单命中率:</label>
-                            <div class="controls">
-                                <input type="text" name="show_ordermessage_hit" value="{$setting.show_ordermessage_hit}"> <span class="help-line"></span>
-                            </div>
-                            <span class="help-line">%,每次频率刷新显示的命中率(0~100)</span>
-                        </div>
-                         <div class="form-group">
-                            <label class="col-sm-2 control-label" >订单提示语:</label>
-                            <div class="controls">
-                                <input type="text" name="show_ordermessage_content" value="{$setting.show_ordermessage_content}"> <span class="help-line"></span>
-                            </div>
-                            <span class="help-line">xxx 刚刚下了一条订单</span>
-                        </div>
-                        <div class="form-group">
-                            注意：<br/>显示频率必须要比获取真实频率要小<br/>显示频率不能低于3秒,小于3秒会自动的转换成3秒<br/>显示频率越长，对系统越为友好
-                        </div>
-                        <!-- <div class="form-group">
-                            <label class="col-sm-2 control-label">注册优惠券背景：</label>
-                            <div class="controls col-sm-6">
-                                <span class="help-inline">建议图片尺寸：320*320像素</span><br>
-                                <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
-                                <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
-                                <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
-                            </div>
-                        </div> -->
-                </div>
             </div>
-          </section>
-</section>
-<footer class="footer bg-white b-t p-t">
-    <div class="form-group">
-        <div class="col-sm-4 col-sm-offset-1">
-            <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存
-            </button>
-            <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+            <div class="tab-pane" id="show_ordermessage">
+                <div class="form-group">
+                    <label class="col-sm-2 control-label">开启订单轮播：</label>
+                    <div class="controls">
+                        <label class="radio-inline">
+                            <input name="show_ordermessage_switch" value="0" {$setting['show_ordermessage_switch']<1?'checked':''} type="radio">关闭
+                        </label>
+                        <label class="radio-inline">
+                            <input name="show_ordermessage_switch" value="1" {$setting['show_ordermessage_switch']==1?'checked':''} type="radio" >开启
+                        </label>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" >显示频率/s：</label>
+                    <div class="controls">
+                        <input type="text" name="show_ordermessage_frequency" value="{$setting.show_ordermessage_frequency}"> <span class="help-line"></span>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" >获取真订单频率/s:</label>
+                    <div class="controls">
+                        <input type="text" name="show_ordermessage_rfrequency" value="{$setting.show_ordermessage_rfrequency}"> <span class="help-line"></span>
+                    </div>
+                    <span class="help-line">秒,真订单获取频率</span>
+                </div>
+                 <div class="form-group">
+                    <label class="col-sm-2 control-label" >假订单命中率:</label>
+                    <div class="controls">
+                        <input type="text" name="show_ordermessage_hit" value="{$setting.show_ordermessage_hit}"> <span class="help-line"></span>
+                    </div>
+                    <span class="help-line">%,每次频率刷新显示的命中率(0~100)</span>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-2 control-label" >订单提示语:</label>
+                    <div class="controls">
+                        <input type="text" name="show_ordermessage_content" value="{$setting.show_ordermessage_content}"> <span class="help-line"></span>
+                    </div>
+                    <span class="help-line">xxx 刚刚下了一条订单</span>
+                </div>
+                <div class="form-group">
+                    注意：<br/>显示频率必须要比获取真实频率要小<br/>显示频率不能低于3秒,小于3秒会自动的转换成3秒<br/>显示频率越长，对系统越为友好
+                </div>
+                <!-- <div class="form-group">
+                    <label class="col-sm-2 control-label">注册优惠券背景：</label>
+                    <div class="controls col-sm-6">
+                        <span class="help-inline">建议图片尺寸：320*320像素</span><br>
+                        <img class="thumb_img" src="{$setting.reg_bonus_bg}" style="max-height: 100px;"/><br>
+                        <input class="hide" type="text" name="reg_bonus_bg" value="{$setting.reg_bonus_bg}"/>
+                        <button class="btn btn-default" type="button" data-toggle="selectimg">选择图片</button>
+                    </div>
+                </div> -->
+            </div>
+            </div>
+        </section>
+    </section>
+    <footer class="footer bg-white b-t p-t">
+        <div class="form-group">
+            <div class="col-sm-4 col-sm-offset-1">
+                <button type="submit" class="btn btn-primary js_save_submit" data-loading-text="保存中...">保存</button>
+                <button type="button" class="btn btn-default" data-toggle="back">取消</button>
+            </div>
         </div>
-    </div>
-</footer>
+    </footer>
 </form>
 {/block}
 {block name="footer" }

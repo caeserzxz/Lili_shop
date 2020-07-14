@@ -267,11 +267,13 @@ a {
 }
 
 .color_r {
-  color: #F65236;
+  /*color: #F65236;*/
+  color: #fd0035;
 }
 
 .BGcolor_r {
-  background-color: #F65236;
+  /*background-color: #F65236;*/
+  background-color: #fd0035;
 }
 
 .BGcolor_3 {

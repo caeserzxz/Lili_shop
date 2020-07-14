@@ -201,11 +201,15 @@ class MemberPayRecord extends AdminController
     /*------------------------------------------------------ */
     //-- 导出单用户鼓励金流水
     /*------------------------------------------------------ */
-    public function exportOrderList($where,$user_id){
+    public function exportOrderList($where,$user_id = 0){
 
         $count = $this->Model->where($where)->count();
         if ($count < 1) return $this->error('没有找到可导出的日志资料！');
-        $filename = '会员实付流水_'.$user_id.'_' . date("YmdHis") . '.xls';
+        if ($user_id) {
+            $filename = '会员实付流水_'.$user_id.'_' . date("YmdHis") . '.xls';
+        }else{
+            $filename = '会员实付流水_' . date("YmdHis") . '.xls';
+        }
 
         $export_arr['下单用户ID'] = 'user_id';
         $export_arr['订单流水号'] = 'order_sn';

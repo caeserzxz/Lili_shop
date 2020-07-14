@@ -50,19 +50,17 @@ class Slide extends AdminController
 	//-- 添加前调用
 	/*------------------------------------------------------ */
 	public function beforeAdd($data){
-		if ($data['id'] < 1){
-			$data['add_time'] =  time();	
-		}
+		if ($data['id'] < 1) $data['add_time'] =  time();	
+		
 		$data['update_time'] = time();
 		$data['data'] = input('type_val','','trim');
 		if(empty($data['imgurl'])) return $this->error('幻灯片图片未选择！');
 		if(empty($data['bind_type'])) return $this->error('链接类型未选择！');
-		if(empty($data['data'])) return $this->error('链接类型绑定关联未填写！');
+		// if(empty($data['data'])) return $this->error('链接类型绑定关联未填写！');
         if(empty($data['type'])) return $this->error('所属页面未选择！');
 		if($data['bind_type'] == 'article' || $data['bind_type'] == 'product' ){
 			// 文章、商品、活动
 			if(empty($data['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
-		
 		}
 		return $data;
 	}

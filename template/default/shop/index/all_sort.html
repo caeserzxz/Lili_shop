@@ -67,6 +67,11 @@
         
         {volist name="allSort.rows" id="class" }
             <div class="rightBox" style="{if condition="empty($allSort['best']) && $i == 1"}display:block{/if}">
+                <a href="{:url("goods/index",['cid'=>$class.id])}">
+                    <div class="bigImg">
+                        <img src="{$class['pic']?$class['pic']:$class['cover']}">
+                    </div>
+                </a>
             {empty name="$class.children"}
                 <div class="block">
                     <div class="title"><i></i><span class="fs28 fw_b color_3">全部{$class['m_name']?$class['m_name']:$class['name']}</span><i></i></div>
