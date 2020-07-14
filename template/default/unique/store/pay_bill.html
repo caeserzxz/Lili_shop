@@ -118,7 +118,7 @@
                             <i class="icon_checked"></i>
                         </div>
                     </label>
-                    <div class="lineBox">
+                    <div class="lineBox used_num" style="display: none;">
                         <p></p>
                         <span class="fs24 color_9" id="used_num">可使用</span>
                     </div>
@@ -141,7 +141,7 @@
                         </script>
                     </div>
 
-                    <div class="lineBox">
+                    <div class="lineBox not_used_num" style="display: none;">
                         <p></p>
                         <span class="fs24 color_9" id="not_used_num">不可使用</span>
                     </div>
@@ -155,12 +155,14 @@
                                         <p>{{item.time_str}}</p>
                                         <p>满{{item.threshold}}元可用</p>
                                     </div>
-
                                 </label>
                             {{/each}}
                         </script>
                     </div>
-
+                    <div class="lineBox not_have" style="display: none;">
+                        <p></p>
+                        <span class="fs24 color_9" id="not_have">暂无优惠券</span>
+                    </div>
                 </div>
                 <div class="closeBtn fs32 fw_b color_w BGcolor_r" onclick="hideCoupons()">完成</div>
             </div>
@@ -177,9 +179,6 @@
 </script>
     <script>
         var  business_id = {$info.business_id};
-        $(function(){
-
-        })
         function showCoupons() {
 
             $('.getCoupons').show()
@@ -192,6 +191,7 @@
             $('.getCoupons').hide()
         }
         $('#money').on('change',function(){
+            console.log(111);
             $('.mainjian').html('不使用优惠券');
             $('.mainjian').css('display','none');
             $('#r11').attr('checked');
@@ -214,15 +214,27 @@
                 'data': {'business_id':business_id,'money':money},
                 'dataType':'json',
                 'success':function(res) {
+                    console.log(res)
                     if (res.used.length > 0) {
                         $('#tab1').html(template('listTpl1',res));
                     }
                     if (res.used.length > 0) {
                         $('#tab2').html(template('listTpl2',res));
                     }
+                    if(res.used_num>0){
+                        $('.used_num').show();
+                        $('.not_have').hide();
+                        $('#used_num').html('可使用('+res.used_num+')');
+                    }
+                    if(res.not_used_num>0){
+                        $('.not_used_num').show();
+                        $('.not_have').hide();
+                        $('#not_used_num').html('不可使用('+res.not_used_num+')');
+                    }
+                    if(res.used_num==0&&res.not_used_num==0){
+                        $('.not_have').show();
+                    }
 
-                    $('#used_num').html('可使用('+res.used_num+')');
-                    $('#not_used_num').html('可使用('+res.not_used_num+')');
                 }
             });
         }
