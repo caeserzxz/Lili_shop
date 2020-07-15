@@ -3,7 +3,6 @@
 <link rel="stylesheet" href="__STATIC__/unique/css/userData.css"/>
 <link rel="stylesheet" href="__STATIC__/unique/css/orderDetails.css" />
 {/block}
-
 {block name="main" }
 <form id="alipay_from">
 <div class="page-bd addType">
@@ -17,39 +16,76 @@
       <div class="cell">
         <div class="cell_hd"><span class="fs28 color_3 fw_b">账户姓名</span></div>
         <div class="cell_bd">
-            <input type="text" class="fs28  color_3" name="alipay_user_name" placeholder="请输入账户姓名">
+            <input type="text" class="fs28  color_3" name="alipay_user_name" placeholder="请输入账户姓名" value="{$account.alipay_user_name}">
         </div>
       </div>
       <div class="cell">
           <div class="cell_hd"><span class="fs28 color_3 fw_b">支付宝账号</span></div>
         <div class="cell_bd">
-            <input type="text" class="fs28  color_3" name="alipay_account" placeholder="请输入支付宝账号">
+            <input type="text" class="fs28  color_3" name="alipay_account" placeholder="请输入支付宝账号" value="{$account.alipay_account}">
         </div>
       </div>
+        {if condition="$sms_fun['withdraw_account']==1"}
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">验证码</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28" type="number" id="code" placeholder="请输入验证码">
+            </div>
+            <div class="cell_ft">
+                <span class="fs28 fw_b color_r send-captcha getCode" data-type="AliPay" onclick="codeButton()">发送验证码</span>
+                <span class="fs28 fw_b color_9 countdown time">60s</span>
+            </div>
+        </div>
+        {/if}
     </div>
     <div class="cells">
         <div class="cell">
             <div class="cell_bd">
                 <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
             <div class="cell_ft">
-                <input type="checkbox" name="is_default" id="is_default" value="1" class="chooseBtn" />
+                <input type="checkbox" name="is_default" id="is_default" value="1" class="chooseBtn" {if condition="$account.is_default == 1"}checked{/if}/>
                 <label for="is_default" class="choose-label"></label>
             </div>
         </div>
     </div>
     <div class="page-ft">
-        <span class="fs32 color_w fw_b BGcolor_r postBtn">确认添加</span>
+        <span class="fs32 color_w fw_b BGcolor_r postBtn">保存</span>
     </div>
 </div>
 </div>
+<input type="hidden" name="account_id" id="account_id" value="{$account_id}">
 </form>
 {/block}
 
 {block name="footer"}
 <script>
+$('.left-arrow').attr('href','{$last_withdraw_url}')
+function codeButton() {
+    var arr = new Object();
+    arr.type = 'withdraw_account';
+    jq_ajax('{:url("publics/api.sms/sendCode")}', arr, function (res) {
+        if (res.code == 0) {
+            _alert(res.msg);
+            return false;
+        }
+        var timeObj = $('.time')
+        var getCodeObj = $('.getCode')
+        getCodeObj.hide();
+        timeObj.show();
+        var time = 60;
+        var set = setInterval(function () {
+            timeObj.text("" + --time + "s");
+            if (time <= 0) {
+                timeObj.hide();
+                getCodeObj.show();
+                clearInterval(set);
+            }
+        }, 1000);
+    })
+}
 $(function(){
-  
-	
 	$('.postBtn').click(function (){
 		var arr = $('#alipay_from').toJson();
 		if (arr.alipay_user_name == ''){
@@ -60,13 +96,12 @@ $(function(){
 			_alert('请输入支付宝账号.');
 			return false;	
 		}
-	
 		jq_ajax('{:url("unique/api.withdraw/addAlipay")}',arr,function(res){
 			if (res.code == 0){
 				_alert(res.msg);
 				return false;
 			}
-            window.location.href = '{:url("unique/withdraw/index")}';
+            window.location.href = '{$last_withdraw_url}';
 		});	
 		
 	})

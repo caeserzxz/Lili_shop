@@ -36,6 +36,9 @@ class Withdraw extends ApiController
     /*------------------------------------------------------ */
     public function addBank()
     {
+        $this->checkCode('withdraw_account',$this->userInfo['user_id'],input('code'));//验证短信验证
+        $inArr['account_id'] = input('account_id',0,'trim');
+        if($inArr['account_id'] == 0)unset($inArr['account_id']);
         $inArr['is_default'] = input('is_default',0,'trim');
 		$inArr['bank_name'] = input('bank_name','','trim');
 		$inArr['bank_code'] = input('bank_code','','trim');
@@ -44,7 +47,7 @@ class Withdraw extends ApiController
 		$inArr['bank_cardholder_phone'] = input('bank_cardholder_phone','','trim');
 		$inArr['bank_location_outlet'] = input('bank_location_outlet','','trim');
 		$inArr['bank_branch_name'] = input('bank_branch_name','','trim');
-		
+
 		if (empty($inArr['bank_name'])){
 			return $this->error('请选择银行.');
 		}
@@ -75,7 +78,11 @@ class Withdraw extends ApiController
         if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
             $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
         }
-		$res = $this->Model->save($inArr);
+        if(empty($inArr['account_id'])){
+            $res = $this->Model->save($inArr);
+        }else{
+            $res = $this->Model->where('account_id',$inArr['account_id'])->update($inArr);
+        }
 		if ($res < 1){
 			return $this->error('添加银行卡失败.');
 		}
@@ -129,33 +136,43 @@ class Withdraw extends ApiController
     //-- 添加支付宝
     /*------------------------------------------------------ */
     public function addAlipay(){
-       $inArr['is_default'] = input('is_default',0,'trim');
-       $inArr['alipay_user_name'] = input('alipay_user_name','','trim');
-	   $inArr['alipay_account'] = input('alipay_account','','trim');
-	   if (empty($inArr['alipay_user_name'])){
-			return $this->error('请输入账户姓名.');
-		}
-		if (empty($inArr['alipay_account'])){
-			return $this->error('请输入支付宝账号.');
-		}
-		$inArr['user_id'] = $this->userInfo['user_id'];
-		$inArr['type'] = 'alipay';
-		$inArr['add_time'] = time();
+        $this->checkCode('withdraw_account',$this->userInfo['user_id'],input('code'));//验证短信验证
+        $inArr['account_id'] = input('account_id',0,'trim');
+        if($inArr['account_id'] == 0)unset($inArr['account_id']);
+        $inArr['is_default'] = input('is_default',0,'trim');
+        $inArr['alipay_user_name'] = input('alipay_user_name','','trim');
+        $inArr['alipay_account'] = input('alipay_account','','trim');
+        if (empty($inArr['alipay_user_name'])){
+            return $this->error('请输入账户姓名.');
+        }
+        if (empty($inArr['alipay_account'])){
+            return $this->error('请输入支付宝账号.');
+        }
+        $inArr['user_id'] = $this->userInfo['user_id'];
+        $inArr['type'] = 'alipay';
+        $inArr['add_time'] = time();
         if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
             $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
         }
-		$res = $this->Model->save($inArr);
-		if ($res < 1){
-			return $this->error('添加支付宝失败.');
-		}
-		$this->Model->cleanMemcache($this->userInfo['user_id']);
-		return $this->success('添加支付宝成功.');
+        if(empty($inArr['account_id'])){
+            $res = $this->Model->save($inArr);
+        }else{
+            $res = $this->Model->where('account_id',$inArr['account_id'])->update($inArr);
+        }
+        if ($res < 1){
+            return $this->error('添加支付宝失败.');
+        }
+        $this->Model->cleanMemcache($this->userInfo['user_id']);
+        return $this->success('添加支付宝成功.');
     }
     /*------------------------------------------------------ */
     //-- 微信
     /*------------------------------------------------------ */
     public function addWeixin(){
-        $inArr['is_default'] = input('is_default',0,'trim');
+        $this->checkCode('withdraw_account',$this->userInfo['user_id'],input('code'));//验证短信验证
+        $inArr['account_id'] = input('account_id',0,'trim');
+        if($inArr['account_id'] == 0)unset($inArr['account_id']);
+        $inArr['is_default'] = input('is_default',0,'intval');
         $qrcodefile = input('qrcodefile','','trim');
         if (empty($qrcodefile)){
             return $this->error('请上传收款二给码.');
@@ -177,7 +194,11 @@ class Withdraw extends ApiController
         if($inArr['is_default'] == 1){//如果此次添加的收款方式为默认则清除之前的默认状态
             $this->Model->where(['user_id'=>$this->userInfo['user_id']])->update(['is_default'=>0]);
         }
-        $res = $this->Model->save($inArr);
+        if(empty($inArr['account_id'])){
+            $res = $this->Model->save($inArr);
+        }else{
+            $res = $this->Model->where('account_id',$inArr['account_id'])->update($inArr);
+        }
         if ($res < 1){
             return $this->error('添加微信失败.');
         }
@@ -273,6 +294,7 @@ class Withdraw extends ApiController
     /*------------------------------------------------------ */
     public function postWithdraw()
     {
+        $this->checkCode('withdraw_account',$this->userInfo['user_id'],input('code'));//验证短信验证
     	$settings = settings();
 		$withdraw_status = settings('withdraw_status');
 		if ($withdraw_status < 1){

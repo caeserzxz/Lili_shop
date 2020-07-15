@@ -5,7 +5,7 @@
 {/block}
 
 {block name="main" }
-<form id="alipay_from">
+<form id="wxpay_from">
 <div class="page-bd addType">
   <!-- 页面内容-->
     <div class="tab fs32">
@@ -18,40 +18,87 @@
           <div class="title fs32 fw_b color_3">上传收款二维码</div>
           <div class="uploadBox" >
               <div class="Box" id="upload_qrcode_box">
-                  <img src="__STATIC__/mobile/default/images/addImg.png" alt="" class="imgBox">
+                  <img src='{$account.ecode_url|default="__STATIC__/mobile/default/images/addImg.png"}' alt="" class="imgBox">
                   <input type="file" class="uploadInput" >
               </div>
               <div></div>
           </div>
       </div>
+        {if condition="$sms_fun['withdraw_account']==1"}
+        <div class="cell">
+            <div class="cell_hd">
+                <span class="label fs28 fw_b color_3">验证码</span>
+            </div>
+            <div class="cell_bd">
+                <input class="fs28" type="number" id="code" placeholder="请输入验证码">
+            </div>
+            <div class="cell_ft">
+                <span class="fs28 fw_b color_r send-captcha getCode" data-type="AliPay" onclick="codeButton()">发送验证码</span>
+                <span class="fs28 fw_b color_9 countdown time">60s</span>
+            </div>
+        </div>
+        {/if}
     </div>
     <div class="cells">
         <div class="cell">
             <div class="cell_bd">
                 <span class="fs28 fw_b color_3">是否设为默认收款方式</span></div>
             <div class="cell_ft">
-                <input type="checkbox" name="is_default" id="is_default" value="1" class="chooseBtn" />
+                <input type="checkbox" name="is_default" id="is_default" value="1" class="chooseBtn" {if condition="$account.is_default == 1"}checked{/if}/>
                 <label for="is_default" class="choose-label"></label>
             </div>
         </div>
     </div>
     <div class="page-ft">
-        <span class="fs32 color_w fw_b BGcolor_r postBtn">确认添加</span>
+        <span class="fs32 color_w fw_b BGcolor_r postBtn">保存</span>
     </div>
 </div>
 </div>
+<input type="hidden" name="account_id" id="account_id" value="{$account_id}">
 </form>
 {/block}
 
 {block name="footer"}
 <script>
+$('.left-arrow').attr('href','{$last_withdraw_url}')
+function codeButton() {
+    var arr = new Object();
+    arr.type = 'withdraw_account';
+    jq_ajax('{:url("publics/api.sms/sendCode")}', arr, function (res) {
+        if (res.code == 0) {
+            _alert(res.msg);
+            return false;
+        }
+        var timeObj = $('.time')
+        var getCodeObj = $('.getCode')
+        getCodeObj.hide();
+        timeObj.show();
+        var time = 60;
+        var set = setInterval(function () {
+            timeObj.text("" + --time + "s");
+            if (time <= 0) {
+                timeObj.hide();
+                getCodeObj.show();
+                clearInterval(set);
+            }
+        }, 1000);
+    })
+}
 var fd = new FormData();
 $(function(){
 	$('.postBtn').click(function (){
+        fd.append("account_id",$('#account_id').val());
 		if (fd.get('qrcodefile') == null){
 			_alert('请选择图片.');
 			return false;
 		}
+        if ($('#code').length > 0) {
+            if ($('#code').val() == '') {
+                _alert('请输入验证码..');
+                return false;
+            }
+            fd.append("code",$('#code').val());
+        }
         var is_default = $('input[name="is_default"]:checked').val();
         fd.delete("is_default");
         fd.append("is_default",is_default);
@@ -67,7 +114,7 @@ $(function(){
                 if (res.code == 0){
                     return false;
                 }
-                window.location.href = '{:url("unique/withdraw/index")}';
+                window.location.href = '{$last_withdraw_url}';
             }
         })
 	})

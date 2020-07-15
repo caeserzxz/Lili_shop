@@ -5,6 +5,7 @@
 <link rel="stylesheet" href="__STATIC__/unique/css/orderDetails.css" />
 <style>
     .iconBox{ display: none}
+    .addType a{ color: #fff;}
 </style>
 {/block}
 {block name="pageType"}takeOut{/block}
@@ -15,7 +16,7 @@
   </div>
 
     <div class="addType fs32 color_w fw_b BGcolor_r">
-        <span>添加收款方式</span>
+        <span><a href='{:url("bankAdd")}'>添加收款方式</a></span>
     </div>
 </div>
       <!-- 支付方式 -->
@@ -96,7 +97,7 @@
                                     {{/if}}
                                 </div>
                             </div>
-                            <div class="block-right" style="display: none">
+                            <div class="block-right editor" data-account_id="{{item.account_id}}" data-type="{{item.type}}">
                                 <img class="right-icon" src="__STATIC__/unique/images/rightIcon.png" alt="">
                             </div>
                         </a>
@@ -120,7 +121,7 @@
 <script>
 $('.left-arrow').attr('href','{:url("unique/member/index")}')
 $(function() {
-	$('.addType').on('click',function(){
+	$('.addType_').on('click',function(){
 		$('.model').show();
 	  })
 	  $('.closeBox').on('click',function(){
@@ -134,7 +135,7 @@ $(function() {
 		window.location.href='{:url("alipayAdd")}'
 	  }else{
         window.location.href='{:url("weixinAdd")}'
-        }
+      }
 	})
 	//加载列表
 	jq_ajax('{:url("unique/api.withdraw/getList")}','',function(res){
@@ -145,6 +146,17 @@ $(function() {
 		$('.goodslist ul').html(template('liTpl', res));
 		container();
 	});
+    //修改
+    $('.goodslist').on('click','.editor',function(){
+        var obj = $(this);
+        if(obj.data('type') == 'bank'){
+            window.location.href='{:url("bankAdd")}?account_id=' + obj.data('account_id');
+        }else if(obj.data('type') == 'alipay'){
+            window.location.href='{:url("alipayAdd")}?account_id=' + obj.data('account_id');
+        }else{
+            window.location.href='{:url("weixinAdd")}?account_id=' + obj.data('account_id');
+        }
+    })
 	//删除
 	$('.goodslist').on('click','.delect',function(){
 		var obj = $(this);

@@ -1,0 +1,23 @@
+{extend name="layouts@base_unique" /}
+{block name="head"}
+<link rel="stylesheet" href="__STATIC__/unique/css/wallet.css"/>
+{/block}
+{block name='pageType'}{/block}
+{block name="main" }
+<div class="page-bd applySuccess">
+    <!-- 页面内容-->
+    <div class="success">
+        <img src="__STATIC__/unique/images/suc.jpg" alt="">
+        <p class="text_c fs34 fw_b color_3 mt20">操作成功</p>
+        <p class="text_c fs26 color_9 mt10">您的申请已提交，请耐心等待平台审核，谢谢！</p>
+        <a href='{:url("member/index")}' class="jump-my">返回个人中心</a>
+    </div>
+</div>
+{/block}
+{block name="footer"}
+<script>
+    $(function() {
+        FastClick.attach(document.body);
+    });
+</script>
+{/block}

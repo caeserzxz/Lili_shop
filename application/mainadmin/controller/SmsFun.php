@@ -42,6 +42,9 @@ class SmsFun extends AdminController
 		$data['shipping'] = input('shipping',0,'intval');
 		$data['login'] = input('login',0,'intval');
 		$data['admin_login'] = input('admin_login',0,'intval');
+        $data['admin_login'] = input('admin_login',0,'intval');
+        $data['withdraw'] = input('withdraw',0,'intval');
+        $data['withdraw_account'] = input('withdraw_account',0,'intval');
 		
 		if ($data['admin_login'] == 1){
 			$adminInfo = adminInfo(AUID,false);
