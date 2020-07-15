@@ -1,0 +1,31 @@
+<table class="table table-hover m-b-none">
+    <thead>
+    <tr>
+        <th>代理商ID</th>
+        <th>代理商名称</th>
+        <th>代理商手机</th>
+        <th>奖项总累计</th>
+        <th>业绩总累计</th>
+        <!-- <th width="90">操作</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.agent_id}</td>
+        <td>{$vo.agent_user_name}</td>
+        <td>{$vo.agent_mobile}</td>
+        <td>{$vo.bonus_total}</td>
+        <td>{$vo.achievement_total}</td>
+        <!-- <td><a href="{:url('member/sys_admin.member_pay_record/log',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看订单"><i class="fa fa-search"></i></a></td> -->
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" align="center" valign="middle">没有相关数据.</td>
+    </tr>
+</table>
+{/empty}   

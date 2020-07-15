@@ -1,0 +1,36 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header b-b clearfix">
+    <form id="forms" class="talbe-search form-inline"  method="post" action="{:url('total')}" >
+     <div class="page-breadcrumbs">
+          <ul class="breadcrumb" >
+              <li>
+                  <i class="fa fa-ellipsis-v"></i>
+                  <strong>总额列表</strong>
+              </li>                                  
+          </ul>
+          <select style="width: 130px;" name="search_type" data-toggle="select2" data-placeholder="按自定义筛选">
+              <option value="agent_user_name">代理商名称</option>
+              <option value="agent_id">代理商ID</option>
+              <option value="agent_mobile">代理商手机号</option>
+          </select>
+          <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="请输入相关内容筛选" data-rule-required="true" />
+          <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
+         <!--<button class="btn" type="submit" id="export_btn" ><i class="fa fa-cloud-download"></i>导出报表</button>-->
+    </div>
+    </form>
+</header>
+
+<section class="scrollable wrapper w-f ">
+    <div class="alert">
+          <p>平台所有代理的代理奖累计总额：{$report.achievement_sum}&nbsp;&nbsp;&nbsp; 平台所有代理的管理奖累计总额：{$report.bonus_sum} &nbsp;&nbsp; 最近统计时间：{$report.report_time}</p>
+    </div>
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/report/total_list" /}
+        </div>
+    </section>
+</section>
+<script type="text/javascript">
+</script>
+{/block}
