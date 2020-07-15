@@ -57,7 +57,7 @@
         <div class="right-info">
             <div class="fs34 fw_b color_3">{{item.business_name}}</div>
             <div class="fs24 color_9">有效期至:{{item._time}}</div>
-            <div class="text_r mt10"><span class="go-btn">去使用</span></div>
+            <div class="text_r mt10"><span class="go-btn" onclick="go_business({{item.business_id}});">去使用</span></div>
         </div>
     </div>
     {{/each}}
@@ -145,6 +145,9 @@
         getList();
         $('.header-left').find('a').attr('href',"{:url('unique/member/index')}")
     })
+    function go_business(business_id){
+        window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
+    }
 </script>
 </body>
 </html>

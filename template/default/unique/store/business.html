@@ -18,10 +18,10 @@
         <div class="user">
           <div class="user-info">
             <div class="head-img">
-              {if condition="$userInfo.headimgurl eq ''"}
+              {if condition="$business.logo eq ''"}
                 <img src="__STATIC__/unique/images/myIcon19.png" alt="">
               {else /}
-                <img src="{$userInfo.headimgurl}" alt="">
+                <img src="{$business.logo}" alt="">
               {/if}
 
             </div>
