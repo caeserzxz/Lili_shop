@@ -72,7 +72,7 @@ class Flow extends ApiController
     {
         $is_sel = input('is_sel', 0, 'intval');
 		$recids = input('recids', '', 'trim');
-        $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
+        $return['cartInfo'] = $this->Model->getCartList($is_sel,true,$recids);
         $return['shipping_fee_type'] = settings('shipping_fee_type');
         $return['code'] = 1;
         return $this->ajaxReturn($return);
