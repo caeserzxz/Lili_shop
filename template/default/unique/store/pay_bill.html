@@ -179,9 +179,10 @@
 </script>
     <script>
         var  business_id = {$info.business_id};
+        get_used();
         function showCoupons() {
-
             $('.getCoupons').show()
+
         }
         function hideCoupons() {
             var str =  $("input[name=radiobox]:checked").attr('data-str');
@@ -191,9 +192,8 @@
             $('.getCoupons').hide()
         }
         $('#money').on('change',function(){
-            console.log(111);
             $('.mainjian').html('不使用优惠券');
-            $('.mainjian').css('display','none');
+            // $('.mainjian').css('display','none');
             $('#r11').attr('checked');
 
             var  money =$('#money').val();
@@ -208,6 +208,9 @@
         })
         function get_used(type){
             var money = $('#money').val();
+            if(money==''){
+                money = 0;
+            }
             $.ajax({
                 'url':'{:url("unique/api.business/get_user_redbag")}',
                 'type':'post',

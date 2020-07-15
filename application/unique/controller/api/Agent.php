@@ -125,7 +125,7 @@ class Agent extends ApiController
         #符合条件的商家
         $where[] = ['agent_id','=',$agent['agent_id']];
         $business = $UserBusinessModel->where($where)->column('business_id');
-        $agent_sales_count = Cache::get('agent_sales_mkey' . $agent['agent_id']);
+//        $agent_sales_count = Cache::get('agent_sales_mkey' . $agent['agent_id']);
         if(empty($agent_sales_count)){
             $arr = [];
             #本月业绩
@@ -149,7 +149,7 @@ class Agent extends ApiController
             $arr['this_month_count'] = sprintf("%.2f",$this_month_count);
             $arr['today_count'] = sprintf("%.2f",$today_count);
             $agent_sales_count = $arr;
-            Cache::set('agent_sales_mkey' . $agent['agent_id'], $arr, 600);
+//            Cache::set('agent_sales_mkey' . $agent['agent_id'], $arr, 600);
         }
 
         return $agent_sales_count;
