@@ -72,8 +72,6 @@ class Flow extends ApiController
     {
         $is_sel = input('is_sel', 0, 'intval');
 		$recids = input('recids', '', 'trim');
-        # 每次载入购物车清空之前勾选
-        $this->Model->where(['user_id' => $this->userInfo['user_id']])->update(['is_select' => 0]);
         $return['cartInfo'] = $this->Model->getCartList($is_sel,false,$recids);
         $return['shipping_fee_type'] = settings('shipping_fee_type');
         $return['code'] = 1;

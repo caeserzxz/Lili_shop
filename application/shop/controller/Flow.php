@@ -7,6 +7,7 @@ namespace app\shop\controller;
 use app\ClientbaseController;
 use app\shop\model\OrderModel;
 use app\mainadmin\model\PaymentModel;
+use app\shop\model\CartModel;
 
 
 class Flow extends ClientbaseController{
@@ -14,8 +15,12 @@ class Flow extends ClientbaseController{
 	//-- 购物车页
 	/*------------------------------------------------------ */
 	public function cart(){
+        $CartModel = new CartModel();
+        # 每次载入购物车清空之前勾选
+        if ($CartModel->where(['user_id' => $this->userInfo['user_id'],'is_select' => 1])->count()) {
+            $CartModel->where(['user_id' => $this->userInfo['user_id']])->update(['is_select' => 0]);
+        }
         $this->assign('not_top_nav', true);
-        
 		$this->assign('title', '购物车');
 		return $this->fetch('index');
 	}
