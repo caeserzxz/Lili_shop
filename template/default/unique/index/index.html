@@ -23,7 +23,7 @@
                     <img class="headimg" src="{$userInfo.headimgurl}" alt="" />
                 {/if}
 
-                <a href="{:url('unique/index/region')}?city={$location.city}" class="fs28 fw_b addr">{$location.city}</a>
+                <a href="{:url('unique/index/region')}" class="fs28 fw_b addr">{$city_info.short_name}</a>
                 <a href="{:url('unique/index/search')}" class="selech">
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />
                     <span class="fs30 color_9">搜索店铺</span>
@@ -159,41 +159,14 @@
 </script>
 <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
-// (function(win){
-//     var callMobile = function (handlerInterface, handlerMethod, parameters){
-//         var dic = {'handlerInterface':handlerInterface,'function':handlerMethod,'parameters': parameters};
-//         win.webkit.messageHandlers[handlerInterface].postMessage(dic);
-//     }
-//     var init = function(){
-//         if (/(iPhone|iPad|iPod|iOS)/i.test(navigator.userAgent)){
-//             var instruct = {};
-//             if ( !win.app || typeof win.app.getLocBySDK !== 'function') {
-//                 instruct.getLocBySDK = function () {  //获取百度定位经纬度
-//                     callMobile('getLocBySDK','GetLocCallBack',{});
-//                 }
-//             }
-//             if ( !win.app || typeof win.app.Scavenging !== 'function') {
-//                 instruct.Scavenging = function () {  //获取微信开放平台code
-//                     callMobile('Scan','qr_text',{});
-//                 }
-//             }
-//             win.app = instruct;
-//         }
-//     }
-//     win.init_ISO = init;
-// })(window);
+        var apptype = "{$apptype}";
+        var input_city = "{$city}"
+        var lat = "{$city_info.lat}";
+        var lng = "{$city_info.lng}";
         $(function () {
-            var apptype = "{$apptype}";
-            // var input_city = "{$city}";
-            // if (input_city == '') {
-            //     if (apptype == 'Android') {
-            //         window.auc.getLocBySDK();
-            //     }else {
-            //         GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
-            //     }
-            // }else {
-                GetLocCallBack("{$location.lat}", "{$location.lng}");
-            // }
+            if (input_city != '') {
+                GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
+            }
 
             get_recommend_class();
             get_class();
@@ -201,6 +174,17 @@
             var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
             var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
         });
+        //安卓腾讯地图定位的回调
+        function GetTencentLocCallBack(lat_z,lng_z,city){
+           if(input_city==''||city==input_city){
+               $('.addr').html(city);
+               input_city = city;
+               lat = lat_z;
+               lng = lng_z;
+               GetLocCallBack(lat, lng);
+           }
+        }
+
         var arr = new Object();
         //sdk 回调wxLoginCallback函数
         function GetLocCallBack(lat,lng){

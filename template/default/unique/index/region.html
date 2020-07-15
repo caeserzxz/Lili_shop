@@ -47,7 +47,7 @@
                     <div>
                         <img class="icon" src="__STATIC__/unique/images/current-p.png" alt="">
                         <!--<span class=" fs32 fw_b color_3">{$city}</span>-->
-                        <span class="current" data-lat="" data-lng="">北京</span>
+                        <span class="current" style="display: none"></span>
                     </div>
                     <div class="color_9">当前定位</div>
                 </div>
@@ -99,31 +99,6 @@
 
             </div>
 
-
-            <!-- 字母索引 -->
-            <!--<div class="letter-index fs28" ontouchmove="move(this)" ontouchend="touchEnd()">-->
-                <!--<a href="#A" ontouchstart="anchorJump(this)">A</a>-->
-                <!--<a href="#B" ontouchstart="anchorJump(this)">B</a>-->
-                <!--<a href="#C" ontouchstart="anchorJump(this)">C</a>-->
-                <!--<a href="#D" ontouchstart="anchorJump(this)">D</a>-->
-                <!--<a href="#E" ontouchstart="anchorJump(this)">E</a>-->
-                <!--<a href="#F" ontouchstart="anchorJump(this)">F</a>-->
-                <!--<a href="#G" ontouchstart="anchorJump(this)">G</a>-->
-                <!--<a href="#H" ontouchstart="anchorJump(this)">H</a>-->
-                <!--<a href="#J" ontouchstart="anchorJump(this)">J</a>-->
-                <!--<a href="#K" ontouchstart="anchorJump(this)">K</a>-->
-                <!--<a href="#L" ontouchstart="anchorJump(this)">L</a>-->
-                <!--<a href="#M" ontouchstart="anchorJump(this)">M</a>-->
-                <!--<a href="#N" ontouchstart="anchorJump(this)">N</a>-->
-                <!--<a href="#Q" ontouchstart="anchorJump(this)">Q</a>-->
-                <!--<a href="#R" ontouchstart="anchorJump(this)">R</a>-->
-                <!--<a href="#S" ontouchstart="anchorJump(this)">S</a>-->
-                <!--<a href="#T" ontouchstart="anchorJump(this)">T</a>-->
-                <!--<a href="#W" ontouchstart="anchorJump(this)">W</a>-->
-                <!--<a href="#X" ontouchstart="anchorJump(this)">X</a>-->
-                <!--<a href="#Y" ontouchstart="anchorJump(this)">Y</a>-->
-                <!--<a href="#Z" ontouchstart="anchorJump(this)">Z</a>-->
-            <!--</div>-->
             <div class="letter-index fs28" >
                 <ul>
                 </ul>
@@ -151,9 +126,8 @@
             }
         })
         function GetTencentLocCallBack(lat,lng,city){
-            $('.current').attr('data-lat',lat);
-            $('.current').attr('data-lng',lng);
             $('.current').html(city);
+            $('.current').show();
         }
         $('.current').on('click',function(){
             var city = $('.current').html();

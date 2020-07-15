@@ -20,43 +20,23 @@ class Index extends ClientbaseController{
     //-- 首页
     /*------------------------------------------------------ */
     public function index(){
+        $userInfo = $this->userInfo;
         $this->assign('title', '首页');
         //首页头条
         $headline = (new \app\mainadmin\model\ArticleModel)->getHeadline();
         $this->assign('headline', $headline);
         //城市
         $city = input('city','');
-        $lat = input('lat','');
-        $lng = input('lng','');
-
-        $location = session('location');
-        if(empty($city)){
-            if(empty($location)){
-                $city = '北京';
-                $regionModel = new RegionModel();
-                $city_info = $regionModel->where('short_name',$city)->find();
-                $location['city'] = $city;
-                $location['lat'] = $city_info['lat'];
-                $location['lng'] = $city_info['lng'];
-                session('location',$location);
-            }
+        if(empty($city)==false){
+            Cache::set('city'.$userInfo['user_id'], $city);
         }else{
-            if(empty($lat)&&empty($lng)){
-                $regionModel = new RegionModel();
-                $city_info = $regionModel->where('short_name',$city)->find();
-                $location['city'] = $city;
-                $location['lat'] = $city_info['lat'];
-                $location['lng'] = $city_info['lng'];
-                session('location',$location);
-            }else{
-                $location['city'] = $city;
-                $location['lat'] = $lat;
-                $location['lng'] = $lng;
-                session('location',$location);
-            }
+            $city = Cache::get('city'.$userInfo['user_id']);
         }
+        $regionModel = new RegionModel();
+        $city_info = $regionModel->where('short_name',$city)->find();
+
         $this->assign('city', $city);
-        $this->assign('location', $location);
+        $this->assign('city_info',$city_info);
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片
         $this->assign('userInfo',$this->userInfo);
         return $this->fetch('index');
