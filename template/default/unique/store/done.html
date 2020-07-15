@@ -33,25 +33,25 @@
         <div class="cell">
             <span class="fs28 color_9">商品金额</span>
             <div class="color_3 fs28 num money">
-                <p class=" fm_p">￥</p><em class="fs34">{$orderInfo.amount|priceFormat}</em>
+                <em class="fs34">{$orderInfo.amount|priceFormat}</em><p class=" fm_p">元</p>
             </div>
         </div>
         <div class="cell">
             <span class="fs28 color_9">鼓励金抵扣</span>
             <div class="color_3 fs28 num money">
-                <p class=" fm_p">-￥</p><em class="fs34">{$orderInfo.balance_amount|priceFormat}</em>
+                <p class=" fm_p">-</p><em class="fs34">{$orderInfo.balance_amount|priceFormat}</em><p class=" fm_p">元</p>
             </div>
         </div>
         <div class="cell">
             <span class="fs28 color_9">优惠券</span>
             <div class="color_3 fs28 num money">
-                <p class="fm_p">￥</p>
                 <em class="fs34">{$orderInfo.redbag_amount}</em>
+                <p class="fm_p">元</p>
             </div>
         </div>
 
     </div>
-    <div class="button" style="margin: 0.333333rem 0.2rem 0.2rem;padding: 0">
+    <div class="button" style="margin: 0.333333rem 0.6rem 0.6rem;padding: 0;">
         <a href="{:url('unique/wallet/payrecordinfo',['id'=>$orderInfo['log_id']])}" class="color_w fs28 BGcolor_3 fw_b">查看订单</a>
         <a href="{:url('unique/index/index')}" class="color_w fs28 BGcolor_r fw_b">继续逛逛</a>
         {if condition="$orderInfo.is_pay == 1 && $orderInfo.status == 0" }

@@ -13,7 +13,40 @@
     </div>
 </div>
         </div>
+        <style>
+            .cellBox {
+                padding: 0.2rem 0.266667rem 0.2rem;
+                background-color: #fff;
+                margin-top: 0;
+            }
+            .line {
+                width: 4.466667rem;
+                height: 0.013333rem;
+                border: 0.013333rem dashed #eee3e1;
+                margin-bottom: 0.266667rem;
+            }
+             .cellBox .cell {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+                height: 0.6rem;
+                -webkit-box-pack: justify;
+                -webkit-justify-content: space-between;
+                justify-content: space-between;
+            }
 
+            .cellBox .cell .money {
+                display: -webkit-box;
+                display: -webkit-flex;
+                display: flex;
+                -webkit-box-align: center;
+                -webkit-align-items: center;
+                align-items: center;
+            }
+        </style>
         <div class="page-bd">
             <!-- 页面内容-->
             <div class="shop-name">
@@ -41,7 +74,7 @@
                             <div class="cell_hd"></div>
                             <div class="cell_bd"><span class="fs28 fw_b color_3">鼓励金</span></div>
                             <div class="cell_ft fs26">
-                                <span>鼓励金剩余:</span>
+                                <span style="color: #999;">鼓励金剩余:</span>
                                 <span class="color_r">{$userInfo.account.balance_money}</span>
                                 <label for="s12">
                                     <div class="iconBox">
@@ -61,6 +94,29 @@
                 <img src="__STATIC__/unique/images/fuk.png" alt="">
             </div>
 
+            <!--<div class="cellBox">-->
+                <!--<div class="line"></div>-->
+                <!--<div class="cell">-->
+                    <!--<span class="fs28 color_9">商品金额</span>-->
+                    <!--<div class="color_3 fs28 num money">-->
+                        <!--<p class=" fm_p">￥</p><em class="fs34">100</em>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell">-->
+                    <!--<span class="fs28 color_9">鼓励金抵扣</span>-->
+                    <!--<div class="color_3 fs28 num money">-->
+                        <!--<p class=" fm_p">-￥</p><em class="fs34">200</em>-->
+                    <!--</div>-->
+                <!--</div>-->
+                <!--<div class="cell">-->
+                    <!--<span class="fs28 color_9">优惠券</span>-->
+                    <!--<div class="color_3 fs28 num money">-->
+                        <!--<p class="fm_p">￥</p>-->
+                        <!--<em class="fs34">300</em>-->
+                    <!--</div>-->
+                <!--</div>-->
+
+            <!--</div>-->
             <div class="gopay button fs32 fw_b color_w BGcolor_r" >确认付款</div>
 
         </div>
@@ -190,6 +246,7 @@
             $('.mainjian').html(str);
 
             $('.getCoupons').hide()
+
         }
         $('#money').on('change',function(){
             $('.mainjian').html('不使用优惠券');
