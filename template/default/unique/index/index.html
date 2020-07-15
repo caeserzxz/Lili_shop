@@ -159,7 +159,7 @@
 </script>
 <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
     <script>
-        var apptype = "{$apptype}";
+        var appType = "{$apptype}";
         var input_city = "{$city}"
         var lat = "{$city_info.lat}";
         var lng = "{$city_info.lng}";
@@ -167,7 +167,11 @@
             if (input_city != '') {
                 GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
             }
+            if(appType=='Android'){
+                window.auc.getTencentLocBySDK();
+            }else if(appType=='IOS'){
 
+            }
             get_recommend_class();
             get_class();
 

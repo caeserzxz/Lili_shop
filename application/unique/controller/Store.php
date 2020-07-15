@@ -81,7 +81,7 @@ class Store extends ClientbaseController{
         #详细地址
         $address = str_replace(' ', '', $business['merger_name']).$business['address'];
         $this->assign('address',$address);
-        $sales_count = Cache::get('sales_mkey' . $business['business_id']);
+//        $sales_count = Cache::get('sales_mkey' . $business['business_id']);
         if(empty($sales_count)){
             $arr = [];
             #本月业绩
@@ -102,7 +102,8 @@ class Store extends ClientbaseController{
             $arr['count_time'] = time();
             $arr['this_month_count'] = sprintf("%.2f",$this_month_count);
             $arr['today_count'] = sprintf("%.2f",$today_count);
-            Cache::set('sales_mkey' . $business['business_id'], $arr, 600);
+            $sales_count = $arr;
+//            Cache::set('sales_mkey' . $business['business_id'], $arr, 600);
         }
         $this->assign('appType',session('appType'));
         $this->assign('business',$business);
@@ -191,7 +192,7 @@ class Store extends ClientbaseController{
             $RedbagModel = new RedbagModel();
             #领取成功
             $id = input('id');
-            $money = $RedbagModel->where('redbag_id',$id)->value('redbag_id');
+            $money = $RedbagModel->where('redbag_id',$id)->value('price');
             $this->assign('money',$money);
         }
         $this->assign('type',$type);

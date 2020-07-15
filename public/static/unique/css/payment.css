@@ -664,7 +664,7 @@
   justify-content: flex-end;
 }
  .button span,.button a {
-   margin-left: 0.066667rem;
+   /*margin-left: 0.066667rem;*/
    width: 1.066667rem;
    height: 0.373333rem;
    display: -webkit-box;
@@ -676,7 +676,7 @@
    -webkit-box-pack: center;
    -webkit-justify-content: center;
    justify-content: center;
-   margin-right: 0.006667rem;
+   /*margin-right: 0.006667rem;*/
  }
  .bor_e{
    border: 1px solid #e5e5e5 !important;

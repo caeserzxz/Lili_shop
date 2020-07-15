@@ -380,8 +380,7 @@ class Business extends ApiController
         $inArr['add_time'] = time();
         $inArr['threshold'] = $data['threshold'];
         $inArr['status'] = 0;
-        $inArr['total_num'] = $data['total_num'];
-
+        $inArr['total_num'] = $data['gift_num'];
         $res = $BusinessGiftModel->insert($inArr);
         if($res){
             return $this->ajaxReturn(['code' => 1,'msg' => '添加成功']);

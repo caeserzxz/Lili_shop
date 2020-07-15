@@ -2,8 +2,17 @@
 {block name="main" }
 <link rel="stylesheet" href="__STATIC__/unique/css/busIde.css">
   <div class="page">
-    <div class="page-hd"></div>
-
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+        <div class="header-left">
+          <a href="javascript:history.go(-1)" class="left-arrow"></a>
+        </div>
+        <div class="header-title">商家店铺</div>
+        <div class="header-right">
+          <a href=''></a>
+        </div>
+      </div>
+    </div>
     <div class="page-bd">
       <div class="top">
         <div class="user">
@@ -18,7 +27,7 @@
             </div>
             <div class="info">
               <div class="nickname fs32 fw_b">
-                <span>{$userInfo.nick_name}</span>
+                <span>{$business.business_name}</span>
                 <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
               </div>
               <div class="address mt10">{$address}</div>

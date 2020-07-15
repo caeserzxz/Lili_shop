@@ -145,8 +145,9 @@
 }
 
 .warp-map .map-img {
-  width: 100%;
+  width: 94%;
   height: auto;
+  margin: 3% 3% 3% 3%;
 }
 
 .warp-map .redenv {
