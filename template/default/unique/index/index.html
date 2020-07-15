@@ -23,7 +23,7 @@
                     <img class="headimg" src="{$userInfo.headimgurl}" alt="" />
                 {/if}
 
-                <a href="{:url('unique/index/region')}" class="fs28 fw_b addr">{$city_info.short_name}</a>
+                <a href="{:url('unique/index/region')}?city={$city}" class="fs28 fw_b addr">{$city_info.short_name}</a>
                 <a href="{:url('unique/index/search')}" class="selech">
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />
                     <span class="fs30 color_9">搜索店铺</span>

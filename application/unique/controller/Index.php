@@ -31,6 +31,9 @@ class Index extends ClientbaseController{
             Cache::set('city'.$userInfo['user_id'], $city);
         }else{
             $city = Cache::get('city'.$userInfo['user_id']);
+            if(empty($city)){
+                $city = '北京';
+            }
         }
         $regionModel = new RegionModel();
         $city_info = $regionModel->where('short_name',$city)->find();

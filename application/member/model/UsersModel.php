@@ -780,7 +780,7 @@ class UsersModel extends BaseModel
     /*------------------------------------------------------ */
     //-- 获取远程会员头像到本地
     /*------------------------------------------------------ */
-    public function getHeadImg($headimgurl = '')
+    public function getHeadImg($headimgurl = '',$type=1)
     {
         if (empty($headimgurl) == false && strstr($headimgurl, 'http')) {
             $headimgurl = strstr($headimgurl, 'https') ? str_replace("https", "http", $headimgurl) : $headimgurl;
@@ -791,8 +791,11 @@ class UsersModel extends BaseModel
             $extend = getFileExtend($headimgurl);
             $file_name .= '.' . $extend[1];
             downloadImage($headimgurl, $file_name);
-            $upArr['headimgurl'] = $headimgurl = trim($file_name, '.');
-            $this->upInfo($this->userInfo['user_id'], $upArr);
+            if($type==1){
+                $upArr['headimgurl'] = $headimgurl = trim($file_name, '.');
+                $this->upInfo($this->userInfo['user_id'], $upArr);
+            }
+
         }
         return '.' . $headimgurl;
     }

@@ -12,6 +12,7 @@ use app\mainadmin\model\MessageModel;
 use app\distribution\model\DividendModel;
 use app\shop\model\OrderModel;
 use app\shop\model\BonusModel;
+use app\agent\model\AgentModel;
 use think\Db;
 use lib\Image;
 use app\weixin\model\MiniModel;
@@ -708,14 +709,30 @@ class Users extends ApiController
     /*------------------------------------------------------ */
     //-- 获取分享二维码
     /*------------------------------------------------------ */
-    public function getMyCode()
+    public function getMyCode($type=1)
     {
         include EXTEND_PATH . 'phpqrcode/phpqrcode.php';//引入PHP QR库文件
         $QRcode = new \phpqrcode\QRcode();
         $file_path = config('config._upload_') . 'qrcode/';
         makeDir($file_path);
-        $file = $file_path .'_'.$this->userInfo['token'] . '.png';
-        $value = url('',['share_token'=>$this->userInfo['token']],true,true);
+
+        if($type==2){
+            #邀请商家
+            $AgentModel = new AgentModel();
+            $agent = $AgentModel->where('user_id',$this->userInfo['user_id'])->find();
+            $file = $file_path .'_business'.$this->userInfo['token'] . '.png';
+            $value = url('unique/store/add_business',['agent_token'=>$agent['token']],true,true);
+        }elseif($type==3){
+            #邀请代理
+            $AgentModel = new AgentModel();
+            $agent = $AgentModel->where('user_id',$this->userInfo['user_id'])->find();
+            $file = $file_path .'_agent'.$this->userInfo['token'] . '.png';
+            $value = url('unique/agent/agent_token',['agent_token'=>$agent['token']],true,true);
+        }else{
+            $file = $file_path .'_'.$this->userInfo['token'] . '.png';
+            $value = url('',['share_token'=>$this->userInfo['token']],true,true);
+        }
+
         $QRcode::png($value, $file, "L", 10, 1, 2, true);
         return $file;
     }
@@ -727,9 +744,23 @@ class Users extends ApiController
         $MergeImg = new \lib\MergeImg();
         $mun = input('num',0,'intval');
         $is_xcx = input('is_xcx',0,'intval');
-        $data['share_avatar'] = $this->Model->getHeadImg($this->userInfo['headimgurl']);
+        $type = input('type',1);
+        if($type==2){
+            #邀请商家
+            $imgurl = $this->userInfo['headimgurl'];
+
+        }elseif($type==3){
+            #邀请代理
+            $imgurl = $this->userInfo['headimgurl'];
+
+        }else{
+            #邀请好友
+            $imgurl = $this->userInfo['headimgurl'];
+        }
+
+        $data['share_avatar'] = $this->Model->getHeadImg($imgurl,$type);
         $data['share_nick_name'] = $this->userInfo['nick_name'];
-        $data['share_qrcode'] = $is_xcx == 0 ? $this->getMyCode() : $this->get_user_mini_qrcode();
+        $data['share_qrcode'] = $is_xcx == 0 ? $this->getMyCode($type) : $this->get_user_mini_qrcode();
 
         $data['share_bg'] = settings('share_bg');
         $data['share_bg'] = explode(',',$data['share_bg']);
