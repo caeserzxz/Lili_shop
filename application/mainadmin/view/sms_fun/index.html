@@ -119,6 +119,28 @@
                             <span class="fl">登陆系统后台时使用短信验证</span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="control-label">提现时：</label>
+                        <div class="col-sm-4 m-t-md">
+                            <label class="fl">
+                                <input class="checkbox-slider colored-blue rand_amount" name="withdraw"
+                                       type="checkbox" value="1" {$row['withdraw']|tplckval=1,'checked'}>
+                                <span class="text"></span>
+                            </label>
+                            <span class="fl">提现鼓励金和货款时使用短信验证</span>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="control-label">改动提现方式：</label>
+                        <div class="col-sm-4 m-t-md">
+                            <label class="fl">
+                                <input class="checkbox-slider colored-blue rand_amount" name="withdraw_account"
+                                       type="checkbox" value="1" {$row['withdraw_account']|tplckval=1,'checked'}>
+                                <span class="text"></span>
+                            </label>
+                            <span class="fl">新增和修改提现方式时使用短信验证</span>
+                        </div>
+                    </div>
                 </div>
         </section>
 </section>

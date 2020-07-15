@@ -57,7 +57,7 @@
         <div class="right-info">
             <div class="fs34 fw_b color_3">{{item.business_name}}</div>
             <div class="fs24 color_9">有效期至:{{item._time}}</div>
-            <div class="text_r mt10"><span class="go-btn" onclick="go_business({{item.business_id}});">去使用</span></div>
+            <div class="text_r mt10"><a href="/unique/store/pay_bill.html?business_id={{item.business_id}}"><span class="go-btn">去使用</span></a></div>
         </div>
     </div>
     {{/each}}
@@ -73,7 +73,7 @@
         <div class="right-info">
             <div class="fs34 fw_b color_3">{{item.business_name}}</div>
             <div class="fs24 color_9">有效期至:{{item._time}}</div>
-            <div class="text_r mt10"><span class="go-btn">使用详情</span></div>
+            <div class="text_r mt10"><a href="/unique/wallet/payrecordinfo.html?id={{item.by_id}}"><span class="go-btn">使用详情</span></a></div>
         </div>
     </div>
     {{/each}}
