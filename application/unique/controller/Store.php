@@ -31,6 +31,9 @@ class Store extends ClientbaseController{
         $CategoryModel = new CategoryModel();
         $where[] = ['pid','>',0];
         $where[] = ['status','=',1];
+        if($this->userInfo['is_business']==1){
+            return $this->error('您已是商家.');
+        }
         //分类名称
         $cate_name_list = $CategoryModel->where($where)->column('name');
         $cate_name_json = json_encode($cate_name_list,JSON_UNESCAPED_UNICODE);

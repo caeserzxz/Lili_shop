@@ -164,14 +164,17 @@
         var lat = "{$city_info.lat}";
         var lng = "{$city_info.lng}";
         $(function () {
-            if (input_city != '') {
+            if (input_city == '') {
                 GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
-            }
-            if(appType=='Android'){
-                window.auc.getTencentLocBySDK();
-            }else if(appType=='IOS'){
+            }else{
+                if(appType=='Android'){
+                    window.auc.getTencentLocBySDK();
+                }else if(appType=='IOS'){
 
+                }
+                GetLocCallBack(lat, lng);
             }
+
             get_recommend_class();
             get_class();
 
@@ -180,12 +183,11 @@
         });
         //安卓腾讯地图定位的回调
         function GetTencentLocCallBack(lat_z,lng_z,city){
-           if(input_city==''||city==input_city){
+           if(city==input_city){
                $('.addr').html(city);
                input_city = city;
                lat = lat_z;
                lng = lng_z;
-               GetLocCallBack(lat, lng);
            }
         }
 

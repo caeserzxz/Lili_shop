@@ -134,6 +134,7 @@ class Center  extends ClientbaseController{
             if(empty($agent)){
                 return $this->error('请申请代理后再操作.');
             }
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'/unique/agent/add_agent?agent_token='.$agent['token'];
             $this->assign('title', '邀请商家');
         }elseif($type==3){
             #邀请代理
@@ -142,11 +143,15 @@ class Center  extends ClientbaseController{
             if(empty($agent)){
                 return $this->error('请申请代理后再操作.');
             }
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'/unique/store/add_business?agent_token='.$agent['token'];
             $this->assign('title', '邀请代理');
         }else{
             #邀请会员
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'?share_token='.$this->userInfo['token'];
             $this->assign('title', '邀请会员');
         }
+
+        $this->assign('shareUrl',$shareUrl);
         $default_img = settings('GoodsImages');
         $arr = explode(',', $default_img);
         $default_img = $arr[0]?$arr[0]:'';
