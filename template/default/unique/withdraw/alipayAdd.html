@@ -7,11 +7,13 @@
 <form id="alipay_from">
 <div class="page-bd addType">
   <!-- 页面内容-->
+    {empty name="account_id"}
     <div class="tab fs32">
         <div class="color_9"><a href="{:url('bankAdd')}">银行卡</a></div>
         <div class="color_9 active"><a href="javascript:;">支付宝</a></div>
         <div class="color_9"><a href="{:url('weixinAdd')}">微信</a></div>
     </div>
+    {/empty}
     <div class="cells">
       <div class="cell">
         <div class="cell_hd"><span class="fs28 color_3 fw_b">账户姓名</span></div>
@@ -50,6 +52,15 @@
             </div>
         </div>
     </div>
+    {notempty name="account_id"}
+    <div class="cells">
+        <div class="cell" style="text-align: center">
+            <div class="del_account" data-account_id="{$account_id}" style=" width: 100%">
+                <span class="fs28 color_r">删除</span>
+            </div>
+        </div>
+    </div>
+    {/notempty}
     <div class="page-ft">
         <span class="fs32 color_w fw_b BGcolor_r postBtn">保存</span>
     </div>
@@ -90,11 +101,11 @@ $(function(){
 		var arr = $('#alipay_from').toJson();
 		if (arr.alipay_user_name == ''){
 			_alert('请输入账户姓名.');
-			return false;	
+			return false;
 		}
 		if (arr.alipay_account == ''){
 			_alert('请输入支付宝账号.');
-			return false;	
+			return false;
 		}
 		jq_ajax('{:url("unique/api.withdraw/addAlipay")}',arr,function(res){
 			if (res.code == 0){
@@ -102,9 +113,18 @@ $(function(){
 				return false;
 			}
             window.location.href = '{$last_withdraw_url}';
-		});	
-		
+		});
 	})
+    $('.del_account').click(function (){
+        var obj = $(this);
+        jq_ajax('{:url("unique/api.withdraw/delAccount")}','account_id='+obj.data('account_id'),function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            window.location.href = '{$last_withdraw_url}';
+        });
+    })
 })
 </script>
 {/block}

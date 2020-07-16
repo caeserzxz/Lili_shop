@@ -159,14 +159,14 @@ $(function() {
     })
 	//删除
 	$('.goodslist').on('click','.delect',function(){
-		var obj = $(this);
-		jq_ajax('{:url("unique/api.withdraw/delAccount")}','account_id='+obj.data('account_id'),function(res){
-			if (res.code == 0){
-				_alert(res.msg);
-				return false;
-			}
-			obj.parents('li').remove();		
-		});
+        var obj = $(this);
+        jq_ajax('{:url("unique/api.withdraw/delAccount")}','account_id='+obj.data('account_id'),function(res){
+            if (res.code == 0){
+                _alert(res.msg);
+                return false;
+            }
+            obj.parents('li').remove();
+        });
 	})
 })
 

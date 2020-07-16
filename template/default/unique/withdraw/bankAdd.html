@@ -9,11 +9,13 @@
 <form id="bakn_from">
   <div class="page-bd userData addType">
     <!-- 页面内容-->
+    {empty name="account_id"}
     <div class="tab fs32">
       <div class="color_9 active"><a href="javascript:;">银行卡</a></div>
       <div class="color_9"><a href="{:url('alipayAdd')}">支付宝</a></div>
       <div class="color_9"><a href="{:url('weixinAdd')}">微信</a></div>
     </div>
+    {/empty}
     <div class="cells">
       <div class="cell bankType">
         <div class="cell_hd"><span class="fs28 color_3 fw_b">开卡银行</span></div>
@@ -79,7 +81,15 @@
         </div>
       </div>
     </div>
-
+    {notempty name="account_id"}
+    <div class="cells">
+      <div class="cell" style="text-align: center">
+        <div class="del_account" data-account_id="{$account_id}" style=" width: 100%">
+          <span class="fs28 color_r">删除</span>
+        </div>
+      </div>
+    </div>
+    {/notempty}
     <div class="page-ft">
       <span class="fs32 color_w fw_b BGcolor_r postBtn">保存</span>
     </div>
@@ -148,8 +158,17 @@
         }
         window.location.href = '{$last_withdraw_url}';
       });
-
     })
+      $('.del_account').click(function (){
+          var obj = $(this);
+          jq_ajax('{:url("unique/api.withdraw/delAccount")}','account_id='+obj.data('account_id'),function(res){
+              if (res.code == 0){
+                  _alert(res.msg);
+                  return false;
+              }
+              window.location.href = '{$last_withdraw_url}';
+          });
+      })
   })
 </script>
 {/block}
