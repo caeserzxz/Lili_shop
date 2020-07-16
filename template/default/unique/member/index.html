@@ -11,8 +11,8 @@
                         </a>
                         <a href="设置.html"><img src="__STATIC__/unique/images/myIcon02.png" alt=""></a>
                     </div>
-                    <div class="info">
-                        <img class="userimg"  src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
+                    <div class="info" >
+                        <img class="userimg" onclick="go_userInfo();" src="{$userInfo['headimgurl']|default='__STATIC__/mobile/default/images/defheadimg.jpg'}" alt="">
                         <a href="{:url('member/center/userInfo')}" class="userInfo">
                             <div>
                               <p class="fs32 color_w fw_b">{$userInfo.nick_name}</p>
@@ -185,6 +185,9 @@
             window.location.href = "{:url('unique/agent/agent_review')}";
         }
     })
+    function  go_userInfo() {
+        window.location.href = "{:url('member/center/userInfo')}";
+    }
 </script>
 </body>
 </html>

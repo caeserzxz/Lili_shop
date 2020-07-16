@@ -45,7 +45,8 @@
                   {{/each}}
               </script>
           </div>
-        <div class="text_c color_9">已经到底啦~</div>
+        <div class="text_c color_9 bottom" style="display: none;">已经到底啦~</div>
+          <div class="text_c color_9 not_have" style="display: none;margin-top:88%;">没找到相关店铺~</div>
     </div>
 
     </div>
@@ -103,12 +104,18 @@
               async: false,
               dataType:'json',
               success:function(res) {
-                  console.log(res)
                   if (res.list.length > 0) {
                       $('#tab3').prepend(template('listTpl3',res));
+                      $('.bottom').show();
+                      $('.not_have').hide();
                       window.page += 1;
                   }else{
                       $.toast('加载完成',"text");
+                  }
+                  var list_length = $('.list-item').length;
+                  if(list_length==0){
+                        $('.not_have').show();
+                        $('.bottom').hide();
                   }
                   // if(res.info != ''){
                   //     info = res.info;
