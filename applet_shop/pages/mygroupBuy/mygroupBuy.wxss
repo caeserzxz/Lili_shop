@@ -48,7 +48,7 @@
   transform: translateX(-50%);
   width:24rpx;
   height:6rpx;
-  background:#f65236;
+  background:#fd0035;
 }
 
 .tab_hd .curr .text {

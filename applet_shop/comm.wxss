@@ -239,7 +239,7 @@
 }
 
 .text-red {
-    color: #f65236;
+    color: #fd0035;
 }
 
 .text-default {
@@ -247,7 +247,7 @@
 }
 
 .text-main {
-    color: #f65236;
+    color: #fd0035;
 }
 
 .text-white {
@@ -261,7 +261,7 @@
 .btn_primary {
     height: 90rpx;
     line-height: 90rpx;
-    background-color: #f65236;
+    background-color: #fd0035;
     display: block;
     text-align: center;
     font-size: 28rpx;
@@ -269,7 +269,7 @@
 }
 
 .btn_primary:active, .btn_primary:focus, .btn_primary:hover {
-    background-color: #f65236;
+    background-color: #fd0035;
     opacity: 1;
 }
 
@@ -652,13 +652,13 @@
 }
 
 .radio .wx-radio-input.wx-radio-input-checked {
-    border-color: #f65236;
-    background-color: #f65236;
+    border-color: #fd0035;
+    background-color: #fd0035;
 }
 
 .checkbox .wx-checkbox-input.wx-checkbox-input-checked {
-    border-color: #f65236;
-    background-color: #f65236;
+    border-color: #fd0035;
+    background-color: #fd0035;
 }
 
 .nodata {

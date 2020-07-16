@@ -29,6 +29,15 @@ class Pay extends ApiController{
                 }
             }
         }
+        $mode = input('mode','','trim');
+        if($mode=='offline'){
+            #屏蔽掉余额支付 线下打款  货到付款
+            foreach ($payList as $key=>$pay){
+                if($key=='cod'||$key=='balance'||$key=='offline'){
+                    unset($payList[$key]);
+                }
+            }
+        }
 
         $pay_type = input('pay_type','','trim');
         if(empty($pay_type)==false){

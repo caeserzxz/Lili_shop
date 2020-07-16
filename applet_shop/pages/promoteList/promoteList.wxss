@@ -139,7 +139,7 @@
 }
 
 .filtrate_box .item.active {
-  color: #f65236;
+  color: #fd0035;
 }
 
 .grid1 {
@@ -371,12 +371,12 @@
 
 .active .arrow.up::before {
   top: -5rpx;
-  border-color: transparent transparent #f65236 transparent;
+  border-color: transparent transparent #fd0035 transparent;
 }
 
 .active .arrow.down::after {
   bottom: -5rpx;
-  border-color: #f65236 transparent transparent transparent;
+  border-color: #fd0035 transparent transparent transparent;
 }
 
 .icon_filtrate {
@@ -417,7 +417,7 @@
 }
 
 .filtrate_popup .btns .btn2 {
-  background-color: #f65236;
+  background-color: #fd0035;
 }
 
 .ovhidden {

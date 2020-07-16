@@ -645,8 +645,8 @@ input::-webkit-input-placeholder {
 }
 
 .chooseBtn:checked + label.choose-label {
-  background-color: #f65236;
-  box-shadow: #f65236 0px 0px 0px 1px;
+  background-color: #fd0035;
+  box-shadow: #fd0035 0px 0px 0px 1px;
 }
 
 label > * {
@@ -691,7 +691,7 @@ label .check + i:after {
 
 label .check[type=radio]:checked + i:after {
   content: "\EA06";
-  color: #f65236;
+  color: #fd0035;
 }
 
 label .check[type=checkbox] + i {
@@ -705,7 +705,7 @@ label .check[type=checkbox] + i {
 
 label .check[type=checkbox]:checked + i:after {
   content: "\EA06";
-  color: #f65236;
+  color: #fd0035;
 }
 
 .layout {
@@ -897,7 +897,7 @@ label .check[type=checkbox]:checked + i:after {
   -webkit-box-align: center;
   -webkit-align-items: center;
   align-items: center;
-  color: #f65236;
+  color: #fd0035;
   line-height: 1.5;
   margin-right: 0.04rem;
 }

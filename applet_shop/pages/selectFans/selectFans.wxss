@@ -26,7 +26,7 @@
   left: 50%;
   transform: translateX(-50%);
   position: absolute;
-  background: #f65236;
+  background: #fd0035;
 }
 .h-search {
   padding: 20rpx 30rpx;

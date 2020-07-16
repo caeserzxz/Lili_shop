@@ -178,7 +178,7 @@ label .check[type="checkbox"] + i {
 
 label .check[type="checkbox"]:checked + i:after {
   content: "\EA06";
-  color: #f65236;
+  color: #fd0035;
 }
 
 .rulesBox {

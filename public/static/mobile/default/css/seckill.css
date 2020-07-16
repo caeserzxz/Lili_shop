@@ -86,7 +86,7 @@
 
 .goodsBox .info .line i {
   height: 0.066667rem;
-  background: #f65236;
+  background: #fd0035;
   border-radius: 0.066667rem;
 }
 
@@ -141,7 +141,7 @@
   position: -webkit-sticky;
   position: sticky;
   top: 0;
-  background-color: #f65236;
+  background-color: #fd0035;
 }
 
 .seckill .BGcolor_e {

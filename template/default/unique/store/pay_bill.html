@@ -301,8 +301,25 @@
 
         //选择支付方式
         $('.gopay').on('click', function () {
+            var money = $('#money').val();
+            if(money==''||money==null){
+                $.toast('请输入消费金额');
+                return false;
+            }
+
+            var is_hearten = $("input[name=checkbox]:checked").val();
+            var price = $("input[name=radiobox]:checked").attr('data-price');
+            var balance = $('#user_balance').val();
+            if(is_hearten==1){
+                //鼓励金足够的话,就直接支付
+                if(balance>=(money-price)){
+                    pay();
+                    return false;
+                }
+            }
+
             var pay_type = IsWeixinOrAlipay();
-            jq_ajax('{:url("publics/api.pay/getList")}', {'pay_type':pay_type}, function (res) {
+            jq_ajax('{:url("publics/api.pay/getList")}', {'pay_type':pay_type,'mode':'offline'}, function (res) {
                 if (res.code == 0) {
                     _alert(res.msg);
                     return false;
@@ -327,10 +344,6 @@
             var price = $("input[name=radiobox]:checked").attr('data-price');
             var balance = $('#user_balance').val();
             if(is_hearten==1){
-                if(balance>=(arr.money-price)&&arr.pay_id >0){
-                    _alert('鼓励金全额抵扣无需选择支付方式.');
-                    return false;
-                }
                 if(balance>=(arr.money-price)){
                     arr.pay_id = 2;// 当鼓励金全额抵扣时固定选择余额抵扣
                 }
@@ -343,10 +356,6 @@
             if(is_hearten==1){
                 //选中
                 arr.is_hearten = 1;
-            }
-
-            if(money==''||money==null){
-                $.toast('请输入消费金额');
             }
 
             $.ajax({

@@ -142,7 +142,7 @@ page {
   bottom: 0;
   width: 24rpx;
   height: 6rpx;
-  background-color: #f65236;
+  background-color: #fd0035;
   left: 50%;
 }
 
@@ -151,8 +151,8 @@ page {
   height: 40rpx;
   line-height: 40rpx;
   text-align: center;
-  border: 1px solid #f65236;
-  color: #f65236;
+  border: 1px solid #fd0035;
+  color: #fd0035;
   margin-top: 10rpx;
 }
 

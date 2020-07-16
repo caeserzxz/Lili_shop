@@ -42,7 +42,7 @@
           justify-content: space-between;
   padding: 0 0.2rem;
   height: 0.533333rem;
-  background-color: #f65236;
+  background-color: #fd0035;
 }
 
 .Goods .timeBox .time {
@@ -87,7 +87,7 @@
           align-items: flex-end;
   font-family: "num";
   font-size: 0.16rem;
-  color: #f65236;
+  color: #fd0035;
 }
 
 .Goods .header {
@@ -346,7 +346,7 @@
   display: flex;
   width: 0.666667rem;
   height: 0.306667rem;
-  border: 0.006667rem solid #f65236;
+  border: 0.006667rem solid #fd0035;
   -webkit-box-pack: center;
   -webkit-justify-content: center;
           justify-content: center;

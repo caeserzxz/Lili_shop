@@ -25,9 +25,9 @@ radio .wx-radio-input{
   width: 129rpx;
 	height: 46rpx;
 	background-color: #ffffff;
-	border: solid 1px #f65236;
+	border: solid 1px #fd0035;
   font-size: 24rpx;
-	color: #f65236;
+	color: #fd0035;
   text-align: center;
   line-height: 46rpx;
 }

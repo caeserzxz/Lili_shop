@@ -286,7 +286,7 @@
 
 .balanceDetail label .check[type="radio"]:checked + i:after {
   content: "\EA08";
-  color: #f65236;
+  color: #fd0035;
 }
 
 .rank .tab {
@@ -448,7 +448,7 @@
 }
 
 .rank .block .cellBox .cell:first-child p {
-  color: #f65236;
+  color: #fd0035;
 }
 
 .chongzhi .inputBlock {
@@ -932,7 +932,7 @@
 
 .takeOut label .check[type="radio"]:checked + i::after {
   content: "\EA08";
-  color: #f65236;
+  color: #fd0035;
 }
 
 .withdrawals-record.page {

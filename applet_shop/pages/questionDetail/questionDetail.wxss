@@ -3,7 +3,7 @@
 .question {
   width: 30rpx;
   height: 30rpx;
-  background: #f65236;
+  background: #fd0035;
   font-size: 20rpx;
   text-align: center;
   color: #fff;

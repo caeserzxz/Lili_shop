@@ -90,7 +90,7 @@
 }
 
 .badge {
-  background-color: #f65236;
+  background-color: #fd0035;
   color: #fff;
   line-height: 1em;
   height: 30rpx;
@@ -146,7 +146,7 @@
 .icon_wen {
   display: inline-block;
   color: #fff;
-  background-color: #f65236;
+  background-color: #fd0035;
   width: 30rpx;
   height: 30rpx;
   line-height: 30rpx;
@@ -248,7 +248,7 @@
 }
 
 .bottom_btns .right .btns .btn2 {
-  background-color: #f65236;
+  background-color: #fd0035;
 }
 
 /* 弹窗部分 */
@@ -395,12 +395,12 @@
 }
 
 .model .tag_active {
-  color: #f65236;
-  border: 1px solid #f65236;
+  color: #fd0035;
+  border: 1px solid #fd0035;
 }
 
 .model .tag_active::before {
-  border-color: #f65236;
+  border-color: #fd0035;
 }
 
 .model .cantre .block:last-child {
@@ -573,7 +573,7 @@
   justify-content: center;
   font-family: 'num';
   font-size: 30rpx;
-  color: #f65236;
+  color: #fd0035;
 }
 
 .group .goodstext {
@@ -645,5 +645,5 @@ view{
   color: #fff;
 }
 .BGcolor_r {
-  background-color: #f65236;
+  background-color: #fd0035;
 }

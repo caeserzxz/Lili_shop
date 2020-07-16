@@ -81,7 +81,7 @@
 
 .orderDetails .couponsPriceType {
   color: #ffffff;
-  background-color: #f65236;
+  background-color: #fd0035;
 }
 
 .orderDetails .buy_info {
@@ -688,8 +688,8 @@
   margin-left: -0.12rem;
   bottom: 0;
   width: 0.24rem;
-  border-bottom: 0.04rem solid #f65236;
-  color: #f65236;
+  border-bottom: 0.04rem solid #fd0035;
+  color: #fd0035;
   -webkit-transform-origin: left top;
   transform-origin: left top;
 }
@@ -919,8 +919,8 @@
   margin-left: -0.12rem;
   bottom: 0;
   width: 0.24rem;
-  border-bottom: 0.04rem solid #f65236;
-  color: #f65236;
+  border-bottom: 0.04rem solid #fd0035;
+  color: #fd0035;
   -webkit-transform-origin: left top;
   transform-origin: left top;
 }
@@ -1149,8 +1149,8 @@
   margin-left: -0.12rem;
   bottom: 0;
   width: 0.24rem;
-  border-bottom: 0.04rem solid #f65236;
-  color: #f65236;
+  border-bottom: 0.04rem solid #fd0035;
+  color: #fd0035;
   -webkit-transform-origin: left top;
   transform-origin: left top;
 }
@@ -1380,7 +1380,7 @@
 
 .addType .model label .check[type="radio"]:checked + i:after {
   content: "\EA08";
-  color: #f65236;
+  color: #fd0035;
 }
 
 .addType .tabBox {

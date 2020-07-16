@@ -247,7 +247,7 @@ class PayRecordModel extends BaseModel
             }
             //如果选用了红包,退还红包
             if($orderInfo['redbag_id']>0){
-               $red_res = $RedbagModel->where('redbag_id',$orderInfo['redbag_id'])->update(['status'=>0]);
+               $red_res = $RedbagModel->where('redbag_id',$orderInfo['redbag_id'])->update(['status'=>0,'by_id'=>'']);
                if($red_res!=true){
                    Db::rollback();//回滚
                    return '退还红包失败.';

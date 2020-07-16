@@ -90,7 +90,6 @@ class PayRecord extends ApiController
         $inArr['pay_id'] = $payment['pay_id'];
         $inArr['add_time'] = $time;
         $inArr['profits'] =  $business['profits'];
-
         Db::startTrans();
         $res = $PayRecordModel->insertGetId($inArr);
         if($res){
@@ -114,6 +113,7 @@ class PayRecord extends ApiController
                 #更新红包状态
                 $map2['status'] = 1;
                 $map2['update_time'] = $time;
+                $map2['by_id'] = $res;
                 $res2 = $RedbagModel->where('redbag_id',$red_id)->update($map2);
                 if(!$res2){
                     Db::rollback();// 回滚事务
