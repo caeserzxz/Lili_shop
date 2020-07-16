@@ -1,6 +1,26 @@
 {extend name="layouts@base" /}
 {block name="head"}
 <link rel="stylesheet" href="__STATIC__/mobile/default/css/orderDetails.css" />
+<style type="text/css">
+    .page-ft {
+        bottom: 0;
+        left: 0;
+        padding: 0.2rem 0;
+        width: 100%;
+        background-color: #fff;
+    }
+    .page-ft span {
+        margin: auto;
+        width: 4.6rem;
+        height: 0.533333rem;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        border-radius: 0.266667rem;
+    }
+</style>
 {/block}
 {block name='pageType'}afterSale{/block}
 {block name="main" }
@@ -76,7 +96,10 @@
         </select>
         <input type="text" id="shipping_no"  class="fs28 num textBox" style="margin-top: 0px;" placeholder="请输入快递单号">
     </div>
-    <div class="button fs32 fw_b color_w BGcolor_r postBtn">提交退货信息</div>
+    <div class="page-ft">
+        <span class="fs32 color_w fw_b BGcolor_r postBtn">保存</span>
+    </div>
+    <!-- <div class="button fs32 fw_b color_w BGcolor_r postBtn">提交退货信息</div> -->
     <script>
         var isPost = false
         $('.postBtn').click(function(){

@@ -1,11 +1,36 @@
 {extend name="layouts@base_unique" /}
 {block name="head" }
   <link rel="stylesheet" href="__STATIC__/unique/css/historyReply.css" />
+ <style type="text/css">
+    .page-ft {
+        bottom: 0;
+        left: 0;
+        padding: 0.2rem 0;
+        width: 100%;
+        background-color: #fff;
+    }
+    .page-ft span {
+        margin: auto;
+        width: 4.6rem;
+        height: 0.533333rem;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        border-radius: 0.266667rem;
+    }
+</style>
 {/block}
 {block name="main" }
 <div class="page-bd">
     <div class="wrap-list listBox"></div>
 </div>
+<a href="{:url('unique/member/feedback')}">
+    <div class="page-ft">
+        <span class="fs32 color_w fw_b BGcolor_r">添加反馈</span>
+    </div>
+</a>
 <script id="tpl" type="text/html">
 {{each list as item index}}
     <div class="list-item">
@@ -20,7 +45,7 @@
         </div>
         <div class="mt20">
             <p class="fs28 color_3">{{item.reply}}</p>
-            <p class="fs24 text_r color_9">{{item.update_data}}</p>
+            <p class="fs24 text_r color_9">{{item.update_date}}</p>
         </div>
         {{/if}}
         {/literal}
