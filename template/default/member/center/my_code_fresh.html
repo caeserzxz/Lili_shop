@@ -1,0 +1,214 @@
+{extend name="layouts@base" /}
+{block name="head"}
+<style>
+    .myCode .block{
+        padding:0.23rem;
+    }
+    .myCode .imgBoxZ {
+        text-align: center;
+       line-height: 5rem;
+        box-shadow: 0.006667rem 0.006667rem 0.1rem 0 rgba(0, 0, 0, 0.05);
+        background-color: #fff;
+        position: relative;
+        height: 7.2rem;
+    }
+    .myCode .page-ft {
+        width: 100%;
+        z-index: 9;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+    }
+    .myCode .page-ft div {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        height: 0.6rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        -webkit-box-pack: center;
+        -webkit-justify-content: center;
+        justify-content: center;
+    }
+    .myCode .page-ft div img {
+        width: 0.186667rem;
+        height: 0.186667rem;
+        margin-right: 0.04rem;
+    }
+    .save-btn {
+        position: fixed;
+        left: 0.2rem;
+        right: 0.2rem;
+        bottom: 0.133333rem;
+        height: 0.533333rem;
+        text-align: center;
+        line-height: 0.533333rem;
+        font-size: 0.186667rem;
+        color: #ffffff;
+        background-color: #fd0035;
+        border-radius: 0.266667rem;
+    }
+
+    .footer-btn {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 0.666667rem;
+        display: -webkit-box;
+        display: -webkit-flex;
+        display: flex;
+        -webkit-box-pack: justify;
+        -webkit-justify-content: space-between;
+        justify-content: space-between;
+        -webkit-box-align: center;
+        -webkit-align-items: center;
+        align-items: center;
+        background-color: #ffffff;
+    }
+
+    .footer-btn .copy-link,
+    .footer-btn .share-wx {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        height: 100%;
+        text-align: center;
+        line-height: 0.666667rem;
+    }
+
+    .footer-btn .copy-link img,
+    .footer-btn .share-wx img {
+        display: inline-block;
+        margin-right: 0.066667rem;
+        width: 0.32rem;
+        height: 0.32rem;
+        vertical-align: middle;
+        border-radius: 50%;
+    }
+
+    .footer-btn .copy-link {
+        border-right: 0.013333rem solid #e5e5e5;
+    }
+    .model2 { position: absolute; top: 0; left:0; width: 100%; height: 100%; z-index: 999; display: none; }
+
+    .model2 .model_p { width: 100vw; height: 100vh; background: rgba(0, 0, 0, 0.8); }
+
+    .model2 .model_c { width: 100vw; position: absolute; top: 0; bottom: 0; left: 0; right: 0; box-sizing: border-box; padding: 0.266667rem 0.133333rem; }
+
+    .model2 .model_c img { width: 100%; object-fit: contain; /height: 100%;/ }
+    .model2 .model_d  { text-align: center;line-height: 30px;color: #fff;font-size: 16px;font-weight: bold;margin-top: 5%; }
+</style>
+<script>
+var choose_img = "{$default_img}";
+</script>
+{/block}
+{block name='pageType'}myCode{/block}
+{block name="main" }
+<div class="page-bd ">
+    <!-- 页面内容-->
+        <div class="tabBox" >
+          <div class="block " >
+              <div class="imgBox ">
+                  <img id="qrcode" src="" width="100%">
+                  <!--<div id="hold" style="text-align: center; line-height: 30px;display: none;">长按图片下载</div>-->
+                  <!--<div class="text_c fs28 color_r save-btn" style="display: none;">保存</div>-->
+              </div>
+          </div>
+        </div>
+    <div class="footer-btn fs26">
+        <div class="copy-link copy" data-clipboard-action="copy" data-clipboard-text="{$shareUrl}">
+            <img src="__STATIC__/unique/images/link_icon.jpg" alt="">
+            <span>复制链接</span>
+            <!--<div style="display: none;" id="inviteCode">{$url}</div>-->
+        </div>
+        <div class="share-wx" onclick="down();">
+            <img src="__STATIC__/unique/images/shareCircle02.png" alt="">
+            <span>保存图片</span>
+        </div>
+    </div>
+    </div>
+    <div class="page-ft hide">
+      <div class="BGcolor_3 showbk"><img src="__STATIC__/mobile/default/images/myCode01.png" alt=""><span class="fs28 fw_b color_w">更换背景</span></div>
+    </div>
+
+    <div class="model2">
+        <div class="model_p"></div>
+        <div class="model_c flex">
+            <img id="model_img" src="__INDEX__/assets/images/sample.jpg" alt="">
+            <p class="model_d" style="text-align: center; line-height: 30px;">长按图片保存</p>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name="footer"}
+<script src="__STATIC__/js/clipboard.min.js"></script>
+<script type="text/javascript">
+    var num = 0;
+    var type = "{$type}";
+    var appType = "{$appType}";
+    function getCodeImg(){
+        num++;
+        var arr = new Object();
+        arr.num = num;
+        arr.type = type;
+        jq_ajax('{:_url("/member/api.users/getShareImg")}',arr,function (res) {
+            $('#qrcode').attr('src','data:image/jpg;base64,'+res.data.img);
+            $('#model_img').attr('src','data:image/jpg;base64,'+res.data.img);
+        });
+    }
+    getCodeImg();
+    $('.showbk').click(function () {
+        getCodeImg()
+    })
+
+    // function copy() {
+    //     var Url2 = document.getElementById("inviteCode").innerText;
+    //     console.log(Url2)
+    //     var oInput = document.createElement("input");
+    //     oInput.value = Url2;
+    //     document.body.appendChild(oInput);
+    //     oInput.select(); // 选择对象
+    //     document.execCommand("Copy"); // 执行浏览器复制命令
+    //     oInput.className = "oInput";
+    //     oInput.style.display = "none";
+    //     _alert("复制成功");
+    // }
+    //复制
+    var clipboard = new Clipboard('.copy');
+    clipboard.on('success', function(e) {
+        _alert('复制成功.');
+        e.clearSelection();
+    });
+    clipboard.on('error', function(e) {
+        _alert('复制失败.');
+    });
+    function down(){
+        var share_img = $('#qrcode').attr('src');
+        if(appType=='Android'){
+            window.auc.downloadPicturetToBase64(share_img);
+        }else if(appType=='IOS'){
+            window.app.SavePhoto(share_img);
+        }else{
+            $(".model2").show()
+        }
+    }
+    // 点击放大
+    $(".lookBigImg").on('click', function() {
+        $(".model2").show()
+        // $(".model_c img").attr("src", "")
+    })
+    $(".model_p").on('click', function() {
+        $(".model2").hide()
+    })
+    $(".model_c").on('click', function() {
+        $(".model2").hide()
+    })
+</script>
+
+{/block}

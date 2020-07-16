@@ -161,6 +161,7 @@
           justify-content: space-around;
   -webkit-flex-wrap: wrap;
           flex-wrap: wrap;
+  justify-content: space-between;
 }
 
 .hot-city .other-city span {

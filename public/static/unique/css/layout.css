@@ -703,7 +703,7 @@ label .check + i:after {
 
 label .check[type=radio]:checked + i:after {
   content: "\EA06";
-  color: #f65236;
+  color: #fd0035;
 }
 
 label .check[type=checkbox] + i {

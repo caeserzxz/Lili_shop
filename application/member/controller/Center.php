@@ -6,6 +6,8 @@
 namespace app\member\controller;
 use app\ClientbaseController;
 use app\member\model\UsersModel;
+use app\store\model\UserBusinessModel;
+use app\agent\model\AgentModel;
 
 class Center  extends ClientbaseController{
   
@@ -27,7 +29,7 @@ class Center  extends ClientbaseController{
     //-- 我的分享二维码
     /*------------------------------------------------------ */
     public function myCode(){
-        $this->redirect('member/center/myCodeNew');
+        $this->redirect('member/center/myCodeFresh');
 
         $DividendShareByRole = settings('DividendShareByRole');
         if ($DividendShareByRole == 1 && $this->userInfo['role_id'] < 1){
@@ -119,5 +121,43 @@ class Center  extends ClientbaseController{
         $this->assign('title', '我的二维码');
         $this->assign('url', $url);
         return $this->fetch();
+    }
+    /*------------------------------------------------------ */
+    //-- 我的分享二维码
+    /*------------------------------------------------------ */
+    public function myCodeFresh(){
+        $type = input('type','1');
+        if($type==2){
+            #邀请商家
+            $AgentModel = new AgentModel();
+            $agent = $AgentModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+            if(empty($agent)){
+                return $this->error('请申请代理后再操作.');
+            }
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'/unique/agent/add_agent?agent_token='.$agent['token'];
+            $this->assign('title', '邀请商家');
+        }elseif($type==3){
+            #邀请代理
+            $AgentModel = new AgentModel();
+            $agent = $AgentModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+            if(empty($agent)){
+                return $this->error('请申请代理后再操作.');
+            }
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'/unique/store/add_business?agent_token='.$agent['token'];
+            $this->assign('title', '邀请代理');
+        }else{
+            #邀请会员
+            $shareUrl = 'http://'.$_SERVER['SERVER_NAME'].'?share_token='.$this->userInfo['token'];
+            $this->assign('title', '邀请会员');
+        }
+
+        $this->assign('shareUrl',$shareUrl);
+        $default_img = settings('GoodsImages');
+        $arr = explode(',', $default_img);
+        $default_img = $arr[0]?$arr[0]:'';
+        $this->assign('type', $type);
+        $this->assign('default_img',$default_img);
+
+        return $this->fetch('');
     }
 }?>

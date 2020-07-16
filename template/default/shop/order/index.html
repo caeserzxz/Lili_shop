@@ -6,7 +6,7 @@
 {block name="main" }
 <div class="page-bd">
     <!-- 页面内容-->
-    <div class="tab fs32">
+    <div class="tab fs28">
         <div class="color_9 orderActive" data-type="all">全部</div>
         <div class="color_9" data-type="waitPay">待付款</div>
         <div class="color_9" data-type="waitShipping">待发货</div>
@@ -33,34 +33,37 @@
     {{each list as item index}}
     <div class="orderBox">
         <a href="{:_url('info',['order_id'=>'[[item.order_id]]'])}">
-            <div class="code fs28"><p class="color_3">订单编号:{{item.order_sn}}</p><span class="color_9 ostatus">{{item.ostatus}}</span></div>
+            {literal}
+            <div class="code fs28"><p class="color_3">订单编号:{{item.order_sn}}</p><span class="{{if item.ostatus == '待付款'}} color_r fw_b {{else}} color_9 {{/if}} ostatus">{{item.ostatus}}</span></div>
             <div class="goodslist">
-                {literal}
                 {{each item.goodsList as goods indexb}}
                 <div class="goods">
                     <img src="{{goods.pic}}" alt="">
                     <div class="goodsinfo">
                         <p class="fs28 color_3">{{goods.goods_name}}</p>
                         <span class="fs28 color_9">{{goods.sku_name}}</span>
-                        <div class="money"><div class="color_3 fs24 num">
-                           {{if item.order_type == 0}}
-                                <p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i>
-                            {{else}}
-                            <p class="fw_b fm_p">积分</p><em class="fs36">{{goods.use_integral}}</em><i></i>
-                            {{/if}}
+                        <div class="money">
+                            <div class="color_3 fs24 num">
+                                {{if item.order_type == 0}}
+                                    <p class="fw_b fm_p">￥</p><em class="fs36">{{goods.exp_price[0]}}</em><i>.{{goods.exp_price[1]}}</i>
+                                {{else}}
+                                <p class="fw_b fm_p">积分</p><em class="fs36">{{goods.use_integral}}</em><i></i>
+                                {{/if}}
+                            </div>
+                            <em class="fs28 color_3">x{{goods.goods_number}}</em>
                         </div>
-                            <em class="fs28 color_3">x{{goods.goods_number}}</em></div>
                     </div>
                 </div>
                 {{/each}}
-                {/literal}
             </div>
             <div class="payment"><span class="fs24 color_9">共{{item.allNum}}件商品 实付款</span>
                 <div class="color_3 fs28 num"><p class="fw_b fm_p">￥</p><em class="fs34">{{item.exp_price[0]}}</em><p>.{{item.exp_price[1]}}</p></div>
+                {{if item.use_integral>0}}
                 <div class="color_3 fs28 num"><p class="fw_b fm_p">，积分</p><em class="fs34">{{item.use_integral}}</em></div>
+                {{/if}}
             </div>
         </a>
-
+        {/literal}
         <div class="button">
             {literal}
             <span class="BGcolor_3 fs28 fw_b color_w hide" v5_href>联系客服</span>
@@ -68,7 +71,8 @@
             <span class="fs28 fw_b color_3 bor_e order_action" data-type="cancel" data-order_id="{{item.order_id}}">取消订单</span>
             {{/if}}
             {{if item.isSign==1}}
-            <span class="BGcolor_3 fs28 fw_b color_w order_action" data-type="sign" data-order_id="{{item.order_id}}">确认收货</span>
+            <span class="fs28 fw_b color_3 bor_e" onclick="goShipping('{{item.order_id}}')">查看物流</span>
+            <span class="BGcolor_r fs28 fw_b color_w order_action" data-type="sign" data-order_id="{{item.order_id}}">确认收货</span>
             {{/if}}
             {{if item.isPay==1}}
             {/literal}
@@ -200,5 +204,8 @@
             }
         })
     })
+    function goShipping(order_id) {
+        window.location.href = '{:_url("shippinginfo",["order_id"=>"【order_id】"])}';
+    }
 </script>
 {/block}

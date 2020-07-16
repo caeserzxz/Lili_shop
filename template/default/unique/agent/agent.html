@@ -2,7 +2,17 @@
 {block name="main" }
 <link rel="stylesheet" href="__STATIC__/unique/css/proxyPerson.css">
   <div class="page merchant">
-    <div class="page-hd"></div>
+    <div class="page-hd">
+      <div class="header bor-1px-b">
+        <div class="header-left">
+          <a href="javascript:history.go(-1)" class="left-arrow"></a>
+        </div>
+        <div class="header-title">代理</div>
+        <div class="header-right">
+          <a href=''></a>
+        </div>
+      </div>
+    </div>
 
     <div class="page-bd">
       <div class="top">
@@ -60,7 +70,7 @@
           <img class="icon" src="__STATIC__/unique/images/proxy_01.png" alt="">
           <p class="fs28 color_3 mt20">邀请商家</p>
         </div>
-        <div class="grids-item" onclick="agent_token(1);">
+        <div class="grids-item" onclick="agent_token(3);">
           <img class="icon" src="__STATIC__/unique/images/proxy_02.png" alt="">
           <p class="fs28 color_3 mt20">邀请代理</p>
         </div>
@@ -132,7 +142,7 @@
     }
     //邀请代理 商家
     function agent_token(type){
-        window.location.href = "{:url('unique/agent/agent_token')}?type="+type;
+        window.location.href = "{:url('member/center/myCodeFresh')}?type="+type;
     }
   </script>
 </body>

@@ -145,6 +145,9 @@
         getList();
         $('.header-left').find('a').attr('href',"{:url('unique/member/index')}")
     })
+    function go_business(business_id){
+        window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
+    }
 </script>
 </body>
 </html>

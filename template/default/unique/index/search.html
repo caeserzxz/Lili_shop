@@ -22,17 +22,7 @@
         <a class="search fs30" href="javascript:;">搜索</a>
       </div>
       
-      <div class="history">
-        <div class="title fw_b color_3 fs34">历史搜索</div>
-        <div class="list" id="tab3">
-          <script type="text/html" id="listTpl3">
-            {{each list as item index}}
-              <span class="fs28 color_3 hot_text" onclick="go_search('{{item.keyword}}');">{{item.keyword}}</span>
-            {{/each}}
-          </script>
 
-        </div>
-      </div>
       <div class="history hot">
         <div class="title fw_b color_3 fs34">热门搜索</div>
         <!--<div class="twe">-->
@@ -42,6 +32,17 @@
           {volist name="hot_keywords" id="vol"}
             <span class="fs28 color_3 hot_text">{$vol}</span>
           {/volist}
+        </div>
+      </div>
+      <div class="history">
+        <div class="title fw_b color_3 fs34">历史搜索</div>
+        <div class="list" id="tab3">
+          <script type="text/html" id="listTpl3">
+            {{each list as item index}}
+            <span class="fs28 color_3 hot_text" onclick="go_search('{{item.keyword}}');">{{item.keyword}}</span>
+            {{/each}}
+          </script>
+
         </div>
       </div>
 

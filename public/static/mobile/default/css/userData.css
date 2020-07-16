@@ -219,6 +219,7 @@
   -webkit-align-items: center;
           align-items: center;
           margin:  .2rem auto;
+  border-radius: 0.533333rem;
 }
 
 .userData input[disabled] {
