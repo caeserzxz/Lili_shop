@@ -1,0 +1,54 @@
+{extend name="mainadmin@layouts/base" /}
+{block name="main" }
+<header class="header  b-b clearfix">
+    <form id="forms" class="talbe-search form-inline "  method="post" action="{:url('getBonusList')}" >
+        <div class="page-breadcrumbs">
+            <ul class="breadcrumb" >
+                <li>
+                    <i class="fa fa-ellipsis-v"></i>
+                    <strong>鼓励金流水</strong>
+                </li>
+            </ul>
+            <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
+                <i class="fa fa-calendar fa-lg"></i>                      
+                <span></span> <b class="caret"></b>
+                <input type="hidden" value="{$start_date} - {$end_date}" id="reportrange" name="reportrange"/>
+            </a>
+            <select name="change_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
+                <option value="0">奖项类型</option>
+                <option value="13">代理奖</option>
+                <option value="14">管理奖</option>
+            </select>
+            <!-- <select name="search_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选">
+                <option value="0">选择流水号</option>
+                <option value="1">商城订单号</option>
+                <option value="2">线下订单号</option>
+            </select> -->
+            <input type="hidden" value="0" name="export">
+            <input type="hidden" value="{$agent_id}" name="agent_id">
+            <input type="text" class="form-control input-large hide" value="{$search.keyword}" name="keyword" placeholder="商城订单号/线下订单号" data-rule-required="true" />
+            <button class="btn btn-sm btn-default-iq" type="submit" title="筛选"><i class="fa fa-search"></i></button>
+            <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出</a>
+        </div>
+    </form>
+</header>
+<section class="scrollable wrapper w-f ">
+    <div class="alert {if $agent_id < 1} hide {/if}">
+        <p>代理商id：{$report['agent_id']}&nbsp;&nbsp;&nbsp;代理商名称：{$report['agent_name']}&nbsp;&nbsp;&nbsp;代理商手机：{$report['agent_mobile']}</p>
+        <p>代理奖累计总额：{$report['agentAwardAll']}元&nbsp;&nbsp;&nbsp;管理奖累计总额：{$report['managedAwardAll']}元</p>
+        <p>代理奖总额：<span class="agentAwardTimeAll">{$report['agentAwardTimeAll']}</span>元&nbsp;&nbsp;&nbsp;管理奖总额：<span class="managedAwardTimeAll">{$report['managedAwardTimeAll']}</span>元</p>
+    </div>
+    <section class="panel panel-default ">
+        <div class="table-responsive " id="list_box">
+            {include file="sys_admin/report/bonus_list" /}
+        </div>
+    </section>
+</section>
+<script>
+    function ExportLog(){
+        $('input[name="export"]').val('1');
+        $('#forms').submit();
+        $('input[name="export"]').val('0');
+    }
+</script>
+{/block}

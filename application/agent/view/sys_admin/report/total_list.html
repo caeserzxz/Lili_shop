@@ -6,7 +6,7 @@
         <th>代理商手机</th>
         <th>奖项总累计</th>
         <th>业绩总累计</th>
-        <!-- <th width="90">操作</th> -->
+        <th width="90">操作</th>
     </tr>
     </thead>
     <tbody>
@@ -17,7 +17,10 @@
         <td>{$vo.agent_mobile}</td>
         <td>{$vo.bonus_total}</td>
         <td>{$vo.achievement_total}</td>
-        <!-- <td><a href="{:url('member/sys_admin.member_pay_record/log',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看订单"><i class="fa fa-search"></i></a></td> -->
+        <td>
+            <a href="{:url('agent/sys_admin.report/bonus',array('agent_id'=>$vo['agent_id']))}" class="m-xs" title="查看奖项"><i class="fa fa-search"></i></a>
+            <a href="{:url('agent/sys_admin.report/chievement',array('agent_id'=>$vo['agent_id']))}" class="m-xs" title="查看业绩"><i class="fa fa-search"></i></a>
+        </td>
     </tr>
     {/volist}
     </tbody>
