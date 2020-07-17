@@ -284,9 +284,9 @@ class AfterSale extends AdminController
             return $this->error('处理失败，请重试.');
         }
         $OrderModel = new OrderModel();
-        $orderInfo = $OrderModel->info($asInfo['order_id']);
+        $orderInfo = $OrderModel->info($asInfo['order_id']);        
         // ====================== 退款逻辑重写 鼓励金+现金退款方式 ==========================
-        if ($asInfo['return_balance']) {
+        if ($asInfo['return_balance'] > 0) {
             $inData['balance_money'] = $asInfo['return_balance'];
             $inData['change_type'] = 9;
             $inData['by_id'] = $asInfo['as_id'];
@@ -297,7 +297,7 @@ class AfterSale extends AdminController
                 return $this->error('退款到余额失败，请重试.');
             }
         }
-        if ($asInfo['return_online']) {//在线退款
+        if ($asInfo['return_online'] > 0) {//在线退款
             $code = str_replace('/', '\\', "/payment/" . $orderInfo['pay_code'] . "/" . $orderInfo['pay_code']);
             $payment = new $code();
             $orderInfo['refund_amount'] = $asInfo['return_online'];
@@ -309,7 +309,6 @@ class AfterSale extends AdminController
             }
         }
         // ============================== END 20-7-8 ================================
-
         /*if ($orderInfo['money_paid'] > 0) {
             if ($orderInfo['pay_code'] == 'balance') {
                 $inData['balance_money'] = $asInfo['return_money'];

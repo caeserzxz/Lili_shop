@@ -49,7 +49,7 @@
         <div class="button fs32 fw_b color_w BGcolor_r login">登录</div>
 
         {if condition="$is_wx == 1"}
-        <a href="{:url('wxLogin')}" class="loginbutton fs32 fw_b color_w " style="background-color: #61ce74; margin-top: 0.2rem ;">微信登录</a>
+        <a href="{:url('wxLogin')}" class="loginbutton fs32 fw_b color_w" style="background-color: #61ce74;margin-top: 0.2rem;display: none;">微信登录</a>
         {/if}
         {if condition="settings('app_apk_path')"}
           <div class="fs30 goregister"><a href="{:url('publics/download/app')}" class="fw_b color_3">立即下载</a></div>

@@ -82,7 +82,7 @@ class AfterSale extends ApiController
         }
         $inArr['return_online'] = input('return_online');
         $inArr['return_balance'] = input('return_balance');
-        if (!$inArr['return_online'] || !$inArr['return_balance']) return $this->error('金额错误.');
+        if (!$inArr['return_online'] && !$inArr['return_balance']) return $this->error('金额错误.');
         //end
 
         $inArr['user_id']  = $this->userInfo['user_id'];

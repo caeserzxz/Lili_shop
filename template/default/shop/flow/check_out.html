@@ -266,6 +266,7 @@
             evalPrice();
         });
         //下单
+        var isPost = false;
         $('.buttBox span').on('click', function () {
             var arr = new Object();
             arr.used_bonus_id = used_bonus_id;
@@ -288,10 +289,8 @@
                 }
                 arr.pay_id = 2;// 当鼓励金全额抵扣时固定选择余额抵扣
             }
-
-            if (rec_id != '') {
-                arr.recids = rec_id;
-            }
+            if (rec_id != '') arr.recids = rec_id;
+            
             //线下支付
             // if (arr.pay_id == 3) {
             //     //没弹窗
@@ -307,9 +306,12 @@
             //         return false;
             //     }
             // }
+            if (isPost) return;
+            isPost = true;
             jq_ajax('{:url("shop/api.flow/addOrder")}', arr, function (res) {
                 if (res.code == 0) {
                     _alert(res.msg);
+                    isPost = false;
                     return false;
                 }
                 window.location.href = '{:_url("done",["order_id"=>"【res.order_id】","type"=>"add"])}';
