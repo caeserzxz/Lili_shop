@@ -40,6 +40,17 @@ class Agent extends ClientbaseController
     /*------------------------------------------------------ */
     public function agent(){
         $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        if(empty($info)==false){
+            if($info['status']==2){
+                $this->assign('title', '审核未通过');
+                return $this->fetch('agent_fail');
+            }else if($info['status']==0){
+                $this->assign('title', '审核中');
+                return $this->fetch('agent_review');
+            }
+        }else{
+            $this->error('您还不是代理');
+        }
         $this->assign('info',$info);
         $this->assign('title', '代理管理');
         return $this->fetch('agent');
@@ -87,6 +98,9 @@ class Agent extends ClientbaseController
     public function agent_token(){
         $type = input('type');
         $info = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        if($info['status']!=1){
+            $this->error('您还不是代理');
+        }
         $token = $info['token'];
         if($type==1){
             $share_url = 'http://'.$_SERVER['HTTP_HOST'].'/unique/agent/add_agent/agent_token/';

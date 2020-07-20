@@ -65,6 +65,7 @@ class Agent extends ApiController
         $inArr['add_time'] = time();
         $inArr['update_time'] = time();
         $inArr['status'] = 0;
+        $inArr['token'] = $this->getToken();
 
         if(empty($info)){
             $res = $this->Model->insert($inArr);
@@ -187,5 +188,15 @@ class Agent extends ApiController
         return $this->ajaxReturn($return);
     }
 
+    /*------------------------------------------------------ */
+    //-- 生成用户唯一标识,主要用于分享后身份识别
+    /*------------------------------------------------------ */
+    public function getToken()
+    {
+        $token = random_str(6);
+        $count = $this->Model->where('token', $token)->count('agent_id');
+        if ($count >= 1) return $this->getToken();
+        return $token;
+    }
 
 }

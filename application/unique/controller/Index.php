@@ -36,12 +36,14 @@ class Index extends ClientbaseController{
             }
         }
         $regionModel = new RegionModel();
+        $region = $regionModel->rawCitiesData2();
         $city_info = $regionModel->where('short_name',$city)->find();
-
+//        dump($region);die;
         $this->assign('city', $city);
         $this->assign('city_info',$city_info);
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片
         $this->assign('userInfo',$this->userInfo);
+        $this->assign('region',$region);
         return $this->fetch('index');
     }
 

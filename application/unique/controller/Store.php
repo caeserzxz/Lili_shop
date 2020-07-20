@@ -81,6 +81,18 @@ class Store extends ClientbaseController{
         $PayRecordModel = new PayRecordModel();
         $this->assign('userInfo',$this->userInfo);
         $business = $this->Model->where('user_id',$this->userInfo['user_id'])->find();
+        if(empty($business)){
+            $this->error('您还不是代理');
+        }else{
+            if($business['status']==2){
+                $this->assign('title', '商家申请不通过');
+                return $this->fetch('business_fail');
+            }else if($business['status']==0){
+                $this->assign('title', '商家申请审核中');
+                return $this->fetch('business_review');
+            }
+
+        }
         #详细地址
         $address = str_replace(' ', '', $business['merger_name']).$business['address'];
         $this->assign('address',$address);

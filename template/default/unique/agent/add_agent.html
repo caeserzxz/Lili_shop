@@ -22,7 +22,7 @@
             <span class="label fs28 fw_b color_3">邀请码</span>
           </div>
             <div class="cell_bd">
-              <input class="fs28" type="text" name="token" id="token" value="{$agent_token}" disabled placeholder="请输入邀请码">
+              <input class="fs28" type="text" name="token" id="token" value="{$agent_token}"  placeholder="请输入邀请码">
             </div>
           <div class="cell_ft"></div>
         </div>
@@ -44,15 +44,15 @@
           </div>
           <div class="cell_ft"></div>
         </div>
-        <div class="cell">
-          <div class="cell_hd">
-            <span class="label required fs28 color_3 fw_b">代理级别</span>
-          </div>
-          <div class="cell_bd">
-            <input type="text" class="fs28 color_3 showmodal" placeholder="请选择代理" readonly>
-          </div>
-          <div class="cell_ft arrowright"></div>
-        </div>
+        <!--<div class="cell">-->
+          <!--<div class="cell_hd">-->
+            <!--<span class="label required fs28 color_3 fw_b">代理级别</span>-->
+          <!--</div>-->
+          <!--<div class="cell_bd">-->
+            <!--<input type="text" class="fs28 color_3 showmodal" placeholder="请选择代理" readonly>-->
+          <!--</div>-->
+          <!--<div class="cell_ft arrowright"></div>-->
+        <!--</div>-->
         <div class="cell">
           <div class="cell_hd">
             <span class="label required fs28 color_3 fw_b">地区</span>
@@ -160,7 +160,7 @@
         var token = $('#token').val();
         var agent_user_name = $('#agent_user_name').val();
         var agent_mobile = $('#agent_mobile').val();
-        var agent_level = $('input[name="radiobox"]:checked').val();
+        var agent_level = 2;
         var reason = $('#reason').val();
         var data_code = $('#city-picker').attr('data-code');
         var data_codes = $('#city-picker').attr('data-codes');

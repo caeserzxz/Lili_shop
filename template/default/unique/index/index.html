@@ -183,6 +183,10 @@
         });
         //安卓腾讯地图定位的回调
         function GetTencentLocCallBack(lat_z,lng_z,city){
+            var re = '{$region|raw}';
+            var region = JSON.parse(re);
+            city = region[city];
+
            if(city==input_city){
                $('.addr').html(city);
                input_city = city;
@@ -204,7 +208,7 @@
                 arr.page = window.page = 0;
                 arr.latitude  = window.lat = lat;
                 arr.longitude  = window.lng = lng;
-                console.log(arr);
+                // console.log(arr);
                 getList(arr);
             });
         }
@@ -246,6 +250,11 @@
         $('.page-bd').infinite().on("infinite", function() {
             // loading = true;
             // 请求数据
+            var city = "北京市";
+            var re = '{$region|raw}';
+            console.log(re.city);
+            // var a ={$region};
+            // console.log(a);
             getList(arr);
             // setTimeout(function() {
             //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
@@ -265,7 +274,7 @@
                 async: false,
                 dataType:'json',
                 success:function(res) {
-                    console.log(res)
+                    // console.log(res)
                     if (res.list.length > 0) {
                         $('#tab3').append(template('listTpl3',res));
                         arr.page += 1;
@@ -301,7 +310,7 @@
                 'data':'',
                 'dataType':'json',
                 'success':function(res){
-                    console.log(res);
+                    // console.log(res);
                     if (res.list.length > 0) {
                         $('#tab1').prepend(template('listTpl1',res));
                     }else{

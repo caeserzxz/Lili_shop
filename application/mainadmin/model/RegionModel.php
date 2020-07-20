@@ -36,6 +36,25 @@ class RegionModel extends BaseModel
        return $pid == 100000 ? json_encode($list,JSON_UNESCAPED_UNICODE):$list;
     }
     /*------------------------------------------------------ */
+    //--  获取前端js所需的地区json 城市
+    /*------------------------------------------------------ */
+    public function rawCitiesData2(){
+//        $list = Cache::get('region_city');
+//        if (empty($list) == false) return $list;
+        $rows = $this->field('id,name,short_name')->where('level_type',2)->select()->toArray();
+        if (empty($rows)) return false;
+            $list = [];
+        foreach ($rows as $row){
+            $list[$row['name']] =  $row['short_name'];
+//            $_row = [];
+//            $_row[$row['name']] = $row['short_name'];
+//            $list[] = $_row;
+        }
+        unset($rows);
+        Cache::set('region_city',json_encode($list,JSON_UNESCAPED_UNICODE));
+        return json_encode($list,JSON_UNESCAPED_UNICODE);
+    }
+    /*------------------------------------------------------ */
     //-- 选项列表
     /*------------------------------------------------------ */
     public function info($id = 0){

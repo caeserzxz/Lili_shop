@@ -167,6 +167,10 @@ class Business extends ApiController
             $codes = explode(",",$data['data_codes']);
             #区
             $district = $RegionModel->where('id',$codes[2])->find();
+            #市
+            $city = $RegionModel->where('id',$district['pid'])->find();
+            #省
+            $province = $RegionModel->where('id',$city['pid'])->find();
         }
 
         #实景图处理
@@ -227,9 +231,9 @@ class Business extends ApiController
         $inArr['business_mobile'] = trim($data['business_mobile'],'');
         $inArr['profits'] = intval($data['profits']);
         $inArr['category_id'] = $category_id;
-        $inArr['province'] = $codes[0];
-        $inArr['city'] = $codes[1];
-        $inArr['district'] = $codes[2];
+        $inArr['province'] = $province['id'];
+        $inArr['city'] = $city['id'];
+        $inArr['district'] = $district['id'];
         $inArr['merger_name'] = $district['merger_name'];
         $inArr['address'] = trim($data['address'],'');
         $inArr['live_views'] = $imgfile_str;

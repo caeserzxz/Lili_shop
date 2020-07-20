@@ -73,9 +73,9 @@ class Agent extends AdminController
             return $this->error('操作失败:该用户已存在代理申请，不允许重复添加！');
         }
 
-        if($data['status']==1){
-            $data['token'] = $this->getToken();
-        }
+//        if($data['status']==1){
+//            $data['token'] = $this->getToken();
+//        }
         return $data;
     }
     /*------------------------------------------------------ */
@@ -106,13 +106,13 @@ class Agent extends AdminController
                 $data['merger_name'] = $city_info['merger_name'];
             }
         }
-        if($data['status']==1){
-            $info = $this->Model->where('agent_id',$data['agent_id'])->find();
-            if(empty($info['token'])){
-                #生成token
-                $data['token'] = $this->getToken();
-            }
-        }
+//        if($data['status']==1){
+//            $info = $this->Model->where('agent_id',$data['agent_id'])->find();
+//            if(empty($info['token'])){
+//                #生成token
+//                $data['token'] = $this->getToken();
+//            }
+//        }
         $data['update_time'] = time();
         $logInfo = '修改代理信息，状态：'.($data['is_ban'] == 1 ? '封禁':'正常');
         $this->_log($data['agent_id'], $logInfo );
