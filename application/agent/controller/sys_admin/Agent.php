@@ -72,10 +72,10 @@ class Agent extends AdminController
         if(empty($info)==false){
             return $this->error('操作失败:该用户已存在代理申请，不允许重复添加！');
         }
-
-//        if($data['status']==1){
-//            $data['token'] = $this->getToken();
-//        }
+        if($data['status']==1){
+            $data['token'] = $this->getToken();
+        }
+        $data['add_time'] = time();
         return $data;
     }
     /*------------------------------------------------------ */

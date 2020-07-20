@@ -104,11 +104,21 @@
             <div class="partner">
                 <div class="partner-pro">
                     <img src="__STATIC__/unique/images/myIcon19.png" alt="">
-                    <p>成为代理</p>
+                    {if condition="$agent_sta eq 2"}
+                        <p>代理管理</p>
+                    {else /}
+                        <p>成为代理</p>
+                    {/if}
+
                 </div>
                 <div class="partner-mer">
                     <img src="__STATIC__/unique/images/myIcon20.png" alt="">
-                    <p>成为商家</p>
+                    {if condition="$business_sta eq 2"}
+                        <p>商家管理</p>
+                    {else /}
+                        <p>成为商家</p>
+                    {/if}
+
                 </div>
             </div>
         </div>

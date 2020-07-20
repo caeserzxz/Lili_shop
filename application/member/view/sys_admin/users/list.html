@@ -25,6 +25,13 @@
 {else/}
 {$roleList[$vo['role_id']]['role_name']}
 {/eq}
+
+{if condition="$vo.is_business == 1"}
+    /商家
+{/if}
+{if condition="$vo.is_agent == 1"}
+    /代理
+{/if}
 </td>
 
 <td>{$vo.balance_money}</td>
