@@ -6,7 +6,11 @@
             <ul class="breadcrumb" >
                 <li>
                     <i class="fa fa-ellipsis-v"></i>
+                    {if $business_id > 0}
+                    <strong>商家业绩流水</strong>
+                    {else/}
                     <strong>会员实付流水</strong>
+                    {/if}
                 </li>
             </ul>
             <a class="btn btn-default time_sel" data-toggle="reportrange" data-change="submit">
@@ -19,6 +23,7 @@
             </select>
             <input type="hidden" value="0" name="export">
             <input type="hidden" value="{$user_id}" name="user_id">
+            <input type="hidden" value="{$business_id}" name="business_id">
             <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="请输入相关内容筛选" data-rule-required="true" />
             <button class="btn btn-sm btn-default-iq" type="submit" title="搜索"><i class="fa fa-search"></i></button>
             <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出列表</a>
@@ -29,6 +34,11 @@
      <div class="alert {if $user_id < 1} hide {/if}">
           <p>会员id：{$outline.user_id}&nbsp;&nbsp;&nbsp; 会员名称：{$outline.nick_name} &nbsp;&nbsp; 会员手机：{$outline.mobile}</p>
           <p>消费实付累计总额：{$outline.amount_actual}元</p>
+    </div>
+    <div class="alert {if $business_id < 1} hide {/if}">
+          <p>商家id：{$outline.business_id}&nbsp;&nbsp;&nbsp; 商家名称：{$outline.business_name} &nbsp;&nbsp; 商家手机：{$outline.business_mobile}</p>
+          <p>业绩累计总额：{$outline.amounts|priceFormat}元&nbsp;&nbsp;&nbsp;红包累计优惠总额：{$outline.redbag_amounts|priceFormat}元&nbsp;&nbsp;&nbsp; 货款累计总额：{$outline.bill_moneys|priceFormat}元</p>
+          <p>业绩总额：<span class="amountsTime">{$outline.amounts|priceFormat}</span>元&nbsp;&nbsp;&nbsp;红包优惠总额：<span class="redbagAmountsTime">{$outline.redbag_amounts|priceFormat}</span>元&nbsp;&nbsp;&nbsp; 货款总额：<span class="billMoneysTime">{$outline.bill_moneys|priceFormat}</span>元</p>
     </div>
     <section class="panel panel-default ">
         <div class="table-responsive " id="list_box">

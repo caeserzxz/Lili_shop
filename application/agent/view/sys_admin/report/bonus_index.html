@@ -16,17 +16,21 @@
             </a>
             <select name="change_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选" data-chang="submit">
                 <option value="0">奖项类型</option>
+                {if $business_id > 0}
+                <option value="12">跨界奖</option>
+                {/if}
+                {if $agent_id > 0}
                 <option value="13">代理奖</option>
                 <option value="14">管理奖</option>
+                {/if}
             </select>
-            <!-- <select name="search_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选">
-                <option value="0">选择流水号</option>
-                <option value="1">商城订单号</option>
-                <option value="2">线下订单号</option>
-            </select> -->
+            <select name="search_type" style="width: 130px;" data-toggle="select2" data-placeholder="按自定义筛选">
+                <option value="0">订单流水号</option>
+            </select>
             <input type="hidden" value="0" name="export">
             <input type="hidden" value="{$agent_id}" name="agent_id">
-            <input type="text" class="form-control input-large hide" value="{$search.keyword}" name="keyword" placeholder="商城订单号/线下订单号" data-rule-required="true" />
+            <input type="hidden" value="{$business_id}" name="business_id">
+            <input type="text" class="form-control input-large" value="{$search.keyword}" name="keyword" placeholder="请输入相关内容筛选" data-rule-required="true" />
             <button class="btn btn-sm btn-default-iq" type="submit" title="筛选"><i class="fa fa-search"></i></button>
             <a href="javascript:;" onclick="ExportLog()" title="导出" class="btn btn-sm btn-default fr m-t-md m-r"><i class="fa fa-file-excel-o m-r-xs"></i>导出</a>
         </div>
@@ -37,6 +41,10 @@
         <p>代理商id：{$report['agent_id']}&nbsp;&nbsp;&nbsp;代理商名称：{$report['agent_name']}&nbsp;&nbsp;&nbsp;代理商手机：{$report['agent_mobile']}</p>
         <p>代理奖累计总额：{$report['agentAwardAll']}元&nbsp;&nbsp;&nbsp;管理奖累计总额：{$report['managedAwardAll']}元</p>
         <p>代理奖总额：<span class="agentAwardTimeAll">{$report['agentAwardTimeAll']}</span>元&nbsp;&nbsp;&nbsp;管理奖总额：<span class="managedAwardTimeAll">{$report['managedAwardTimeAll']}</span>元</p>
+    </div>
+    <div class="alert {if $business_id < 1} hide {/if}">
+        <p>商家id：{$report['business_id']}&nbsp;&nbsp;&nbsp;商家名称：{$report['business_name']}&nbsp;&nbsp;&nbsp;商家手机：{$report['business_mobile']}</p>
+        <p>跨界奖累计总额：{$report['strideAwardAll']}元&nbsp;&nbsp;&nbsp;跨界奖总额：{$report['strideAwardTimeAll']}元</p>
     </div>
     <section class="panel panel-default ">
         <div class="table-responsive " id="list_box">

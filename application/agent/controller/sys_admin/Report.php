@@ -138,6 +138,9 @@ class Report extends AdminController
         $agent_id = input('agent_id','','trim');
         $this->assign("agent_id", $agent_id);
 
+        $business_id = input('business_id','','trim');
+        $this->assign("business_id", $business_id);
+
         $this->getBonusList(true);
         $this->assign("start_date", date('Y/m/d', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
@@ -150,12 +153,27 @@ class Report extends AdminController
     public function getBonusList($runData = false) {
         $PayRecordModel = new PayRecordModel();
         $AccountLogModel = new AccountLogModel();
+        $storeModel = new UserBusinessModel();
 
         $agent_id = input('agent_id','','trim');
         if ($agent_id) {
             $agent = $this->Model->where(['agent_id' => $agent_id])->find();
-            $where[] = ['user_id','=',$agent['user_id']];
+            $user_id = $agent['user_id'];
+            $exportType = 1;
+            $report['agent_id'] = $agent['agent_id'];
+            $report['agent_name'] = $agent['agent_user_name'];
+            $report['agent_mobile'] = $agent['agent_mobile'];
         }
+        $business_id = input('business_id','','trim');
+        if ($business_id) {
+            $business = $storeModel->where(['business_id' => $business_id])->find();
+            $user_id = $business['user_id'];
+            $exportType = 2;
+            $report['business_id'] = $business['business_id'];
+            $report['business_name'] = $business['business_name'];
+            $report['business_mobile'] = $business['business_mobile'];
+        }
+        if ($agent_id || $business_id) $where[] = ['user_id','=',$user_id];
 
         $change_type = input('change_type','','trim');
         if ($change_type) {
@@ -164,22 +182,23 @@ class Report extends AdminController
             $where[] = ['change_type','IN',[11,12,13,14]];
         }
         $reportrange = input('reportrange');
-        $change_time = ['change_time','between',[strtotime("-1 months"),time()]];
+        $change_time = ['change_time','between',[date('Y-m-d',strtotime("-1 months")),time()]];
         if (empty($reportrange) == false){
             $dtime = explode('-',$reportrange);
             $change_time = ['change_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
         }
         $where[] = $change_time;
 
-        /*$search['keyword'] = input('keyword','','trim');
-        $search['search_type'] = input('search_type','','trim');
-        if (empty($search['keyword']) == false && empty($search['search_type']) == false){
-            $where[] = [$search['search_type'],'=',$search['keyword']];
-        }*/
+        $search['keyword'] = input('keyword','','trim');
+        if (empty($search['keyword']) == false){
+            $log_id = $PayRecordModel->where(['order_sn' => $search['keyword']])->value('log_id');
+            $where[] = ['by_id','=',$log_id];
+        }
         $export = input('export', 0, 'intval');
-        if ($export > 0) return $this->exportBonusList($where,$agent_id);
+        if ($export > 0) return $this->exportBonusList($where,$exportType);
 
         $data = $this->getPageList($AccountLogModel,$where);
+
         $bonusText = [11 => '鼓励金奖',12 => '跨界奖',13 => '代理奖',14 => '管理奖'];
         foreach ($data['list'] as $key=>$row){
             $_row = $row;
@@ -188,22 +207,20 @@ class Report extends AdminController
             $_row['typeText'] = $bonusText[$row['change_type']];
             $data['list'][$key] = $_row;
         }
-        $report['agent_id'] = $agent['agent_id'];
-        $report['agent_name'] = $agent['agent_user_name'];
-        $report['agent_mobile'] = $agent['agent_mobile'];
-
-        $whereA[] = ['user_id','=',$agent['user_id']];
-        $whereA[] = ['change_type','IN',[13,14]];
-        // 代理奖累计总额 && 管理奖累计总额
+        $whereA[] = ['user_id','=',$user_id];
+        $whereA[] = ['change_type','IN',[12,13,14]];
+        // 代理奖累计总额 && 管理奖累计总额 && 跨界奖累计总额
         $awardAll = $AccountLogModel->field("sum('balance_money') balance_moneys,change_type")->where($whereA)->group('change_type')->column('sum(balance_money) balance_moneys','change_type');
         $report['agentAwardAll'] = $awardAll[13] > 0 ? $awardAll[13] : 0;
         $report['managedAwardAll'] = $awardAll[14] > 0 ? $awardAll[14] : 0;
+        $report['strideAwardAll'] = $awardAll[12] > 0 ? $awardAll[12] : 0;
 
         // 代理奖总额 && 管理奖总额
         $whereA[] = $change_time;
         $awardTimeAll = $AccountLogModel->field("sum('balance_money') balance_moneys,change_type")->where($whereA)->group('change_type')->column('sum(balance_money) balance_moneys','change_type');
         $report['agentAwardTimeAll'] = $awardTimeAll[13] > 0 ? $awardTimeAll[13] : 0;
         $report['managedAwardTimeAll'] = $awardTimeAll[14] > 0 ? $awardTimeAll[14] : 0;
+        $report['strideAwardTimeAll'] = $awardTimeAll[12] > 0 ? $awardTimeAll[12] : 0;
 
         $this->assign("report", $report);
         $this->assign("search", $search);
@@ -218,19 +235,16 @@ class Report extends AdminController
     /*------------------------------------------------------ */
     //-- 导出单代理商奖项流水
     /*------------------------------------------------------ */
-    public function exportBonusList($where,$agent_id = 0){
+    public function exportBonusList($where,$exportType = 1){
         $PayRecordModel = new PayRecordModel();
         $AccountLogModel = new AccountLogModel();
 
         $count = $AccountLogModel->where($where)->count();
         if ($count < 1) return $this->error('没有找到可导出的日志资料！');
-        if ($agent_id) {
-            $filename = '代理商奖项流水_'.$agent_id.'_' . date("YmdHis") . '.xls';
-        }else{
-            $filename = '代理商奖项流水_' . date("YmdHis") . '.xls';
-        }
+        $filename = '商家奖项流水_' . date("YmdHis") . '.xls';
+        if ($exportType == 1) $filename = '代理商奖项流水_' . date("YmdHis") . '.xls';
+        
         $bonusText = [11 => '鼓励金奖',12 => '跨界奖',13 => '代理奖',14 => '管理奖'];
-
 
         $export_arr['订单流水号'] = 'order_sn';
         $export_arr['奖项类型'] = 'typeText';

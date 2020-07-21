@@ -26,7 +26,7 @@
         <td>{$vo.bill_money}</td>
         <td>{$vo.add_time|dateTpl}</td>
         <td>
-            <a href="{:url('member/sys_admin.menber_encouragement/log',array('search_type' => 2,'keyword' => $vo.order_sn))}" class="m-xs" title="查看订单">【点击查看】</a>
+            <a href="{:url('member/sys_admin.menber_encouragement/log',array('search_type' => 2,'change_type' => 1,'keyword' => $vo.order_sn))}" class="m-xs" title="查看订单">【点击查看】</a>
         </td>
     </tr>
     {/volist}
@@ -37,3 +37,8 @@
     <tr><td height="300" colspan="8" align="center" valign="middle">没有相关数据！</td></tr>
 </table>
 {/empty}
+<script type="text/javascript">
+    $(".amountsTime").text("{$outline2['amountsTime']|priceFormat}");
+    $(".redbagAmountsTime").text("{$outline2['redbagAmountsTime']|priceFormat}");
+    $(".billMoneysTime").text("{$outline2['billMoneysTime']|priceFormat}");
+</script>

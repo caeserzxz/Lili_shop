@@ -1,0 +1,40 @@
+<table class="table table-hover m-b-none">
+    <thead>
+    <tr>
+        <th>商家ID</th>
+        <th>商家名称</th>
+        <th>类目</th>
+        <th>商家手机号</th>
+        <th>奖项总累计</th>
+        <th>业绩总累计</th>
+        <th>红包优惠总累计</th>
+        <th>货款总累计</th>
+        <th width="90">操作</th>
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.business_id}</td>
+        <td>{$vo.business_name}</td>
+        <td>{$vo.cate_name}</td>
+        <td>{$vo.business_mobile}</td>
+        <td>{$vo.bonus_total|priceFormat}</td>
+        <td>{$vo.amounts|priceFormat}</td>
+        <td>{$vo.redbag_amounts|priceFormat}</td>
+        <td>{$vo.bill_moneys|priceFormat}</td>
+        <td>
+            <a href="{:url('agent/sys_admin.report/bonus',array('business_id'=>$vo['business_id']))}" class="m-xs" title="查看奖项"><i class="fa fa-search"></i></a>
+            <a href="{:url('member/sys_admin.member_pay_record/log',array('business_id'=>$vo['business_id']))}" class="m-xs" title="查看业绩"><i class="fa fa-search"></i></a>
+        </td>
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" align="center" valign="middle">没有相关数据.</td>
+    </tr>
+</table>
+{/empty}   
