@@ -382,7 +382,11 @@ a {
 
 @font-face {
   font-family: 'num';
-  src: url('../font/DINMITTELSCHRIFTLTW1G.OTF') format('truetype');
+  /*src: url('../font/DIN-LIGHT-2.OTF') format('truetype');*/
+  src: url('../font/DINMITALT.TTF') format('truetype');
+  /*src: url('../font/DINMITTELSCHRIFTLTW1G.OTF') format('truetype');*/
+  /*src: url('../font/DIN-PRO-REGULAR-2.OTF') format('truetype');*/
+  /*src: url('../font/DIN-REGULAR-2.OTF') format('truetype');*/
   font-weight: normal;
   font-style: normal;
   line-height: 1;
