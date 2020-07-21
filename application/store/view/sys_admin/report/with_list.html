@@ -1,0 +1,33 @@
+<table class="table table-hover m-b-none">
+    <thead>
+    <tr>
+        <th>商家ID</th>
+        <th>商家名称</th>
+        <th>类目</th>
+        <th>商家手机</th>
+        <th>累计已提现金额</th>
+        <th>累计未提现金额</th>
+        <!-- <th width="90">操作</th> -->
+    </tr>
+    </thead>
+    <tbody>
+    {volist name="data.list" id="vo" }
+    <tr>
+        <td>{$vo.business_id}</td>
+        <td>{$vo.business_name}</td>
+        <td>{$vo.business_name}</td>
+        <td>{$vo.business_mobile}</td>
+        <td>{$vo.with_total}</td>
+        <td>{$vo.wait_total}</td>
+        <!-- <td><a href="{:url('member/sys_admin.member_pay_record/log',array('user_id'=>$vo['user_id']))}" class="m-xs" title="查看订单"><i class="fa fa-search"></i></a></td> -->
+    </tr>
+    {/volist}
+    </tbody>
+</table>
+{empty name="data.list"}
+<table width="100%">
+    <tr>
+        <td height="300" colspan="8" align="center" valign="middle">没有相关数据.</td>
+    </tr>
+</table>
+{/empty}   

@@ -2,9 +2,10 @@
 namespace app\member\controller\sys_admin;
 use app\unique\model\PayRecordModel;
 use think\Db;
-
 use app\AdminController;
 use app\member\model\UsersModel;
+use app\store\model\UserBusinessModel;
+
 /*------------------------------------------------------ */
 //-- 消费统计
 /*------------------------------------------------------ */
@@ -141,20 +142,41 @@ class MemberPayRecord extends AdminController
     /*------------------------------------------------------ */
     public function log(){
         $user_id = input('user_id', 0, 'intval');
+        $business_id = input('business_id', 0, 'intval');
+
         $this->assign('user_id',$user_id);
+        $this->assign('business_id',$business_id);
         $this->assign("start_date", date('Y/m/d', strtotime("-1 months")));
         $this->assign("end_date", date('Y/m/d'));
         $this->getOrderList(true);
 
-        $UsersModel = new UsersModel();
-        $userInfo = $UsersModel->info($user_id);
-        $outline['user_id'] = $user_id;
-        $outline['nick_name'] = $userInfo['nick_name'];
-        $outline['mobile'] = $userInfo['mobile'];
-        // 实付款金额
-        $where[] = ['user_id','=',$user_id];
-        $where[] = ['status','=',1];
-        $outline['amount_actual'] = $this->Model->where($where)->sum('amount_actual');
+        if ($user_id) {
+            $UsersModel = new UsersModel();
+            $userInfo = $UsersModel->info($user_id);
+            $outline['user_id'] = $user_id;
+            $outline['nick_name'] = $userInfo['nick_name'];
+            $outline['mobile'] = $userInfo['mobile'];
+            // 实付款金额
+            $where[] = ['user_id','=',$user_id];
+            $where[] = ['status','=',1];
+            $outline['amount_actual'] = $this->Model->where($where)->sum('amount_actual');
+        }
+        if ($business_id) {
+            $storeModel = new UserBusinessModel();
+            $storeInfo = $storeModel->where(['business_id' => $business_id])->find();
+
+            $outline['business_id'] = $business_id;
+            $outline['business_name'] = $storeInfo['business_name'];
+            $outline['business_mobile'] = $storeInfo['business_mobile'];
+
+            // 业绩累计总额 && 红包累计优惠总额 && 货款累计总额
+            $where_o[] = ['business_id','=',$business_id];
+            $where_o[] = ['status','=',1];
+            $store_report = $this->Model->field('sum(amount) amounts,sum(redbag_amount) redbag_amounts,sum(amount)-(sum(amount)*sum(profits)*0.01) as bill_moneys')->where($where_o)->find();
+            $outline['amounts'] = $store_report['amounts'];
+            $outline['redbag_amounts'] = $store_report['redbag_amounts'];
+            $outline['bill_moneys'] = $store_report['bill_moneys'];
+        }
        
         $this->assign("outline", $outline);
         return $this->fetch('order_index');
@@ -166,22 +188,43 @@ class MemberPayRecord extends AdminController
     public function getOrderList($runData = false){
 
         $user_id = input('user_id');
-        if ($user_id) $where[] = ['user_id','=',$user_id];
-
+        if ($user_id) {
+            $where[] = ['user_id','=',$user_id];
+        }
+        $business_id = input('business_id', 0, 'intval');
+        if ($business_id) {
+            $where[] = ['business_id','=',$business_id];
+            $exportType = 1;
+        }
+        $where[] = ['status','=',1];
         $reportrange = input('reportrange');
         if (empty($reportrange) == false){
             $dtime = explode('-',$reportrange);
-            $where[] = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
+            $add_time = ['add_time','between',[strtotime($dtime[0]),strtotime($dtime[1])+86399]];
         }else{
-            $where[] = ['add_time','between',[strtotime("-1 months"),time()]];
+            $add_time = ['add_time','between',[strtotime("-1 months"),time()]];
         }
+        $where[] = $add_time;
+
+        if ($business_id) {
+            // 业绩累计总额 && 红包累计优惠总额 && 货款累计总额
+            $where_o[] = ['business_id','=',$business_id];
+            $where_o[] = ['status','=',1];
+            $where_o[] = $add_time;
+            $store_report = $this->Model->field('sum(amount) amounts,sum(redbag_amount) redbag_amounts,sum(amount)-(sum(amount)*sum(profits)*0.01) as bill_moneys')->where($where_o)->find();
+            $outline2['amountsTime'] = $store_report['amounts'];
+            $outline2['redbagAmountsTime'] = $store_report['redbag_amounts'];
+            $outline2['billMoneysTime'] = $store_report['bill_moneys'];
+            $this->assign("outline2", $outline2);
+        }
+
         $keyword = input('keyword');
         if ($keyword) $where[] = ['order_sn','=',$keyword];
 
         $this->order_by = 'log_id';
         $this->sort_by = 'DESC';
         $export = input('export', 0, 'intval');
-        if ($export > 0) return $this->exportOrderList($where,$user_id);
+        if ($export > 0) return $this->exportOrderList($where,$exportType);
         $data = $this->getPageList($this->Model, $where);
 
         foreach ($data['list'] as $key => $value) {  
@@ -201,16 +244,13 @@ class MemberPayRecord extends AdminController
     /*------------------------------------------------------ */
     //-- 导出单用户鼓励金流水
     /*------------------------------------------------------ */
-    public function exportOrderList($where,$user_id = 0){
+    public function exportOrderList($where,$type = 0){
 
         $count = $this->Model->where($where)->count();
         if ($count < 1) return $this->error('没有找到可导出的日志资料！');
-        if ($user_id) {
-            $filename = '会员实付流水_'.$user_id.'_' . date("YmdHis") . '.xls';
-        }else{
-            $filename = '会员实付流水_' . date("YmdHis") . '.xls';
-        }
-
+        $filename = '会员实付流水_' . date("YmdHis") . '.xls';
+        if ($user_id) $filename = '商家业绩流水_' . date("YmdHis") . '.xls';
+        
         $export_arr['下单用户ID'] = 'user_id';
         $export_arr['订单流水号'] = 'order_sn';
         $export_arr['订单金额'] = 'amount';
