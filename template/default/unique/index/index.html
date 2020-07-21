@@ -28,7 +28,7 @@
                     <img src="__STATIC__/unique/images/selech01.png" alt="" />
                     <span class="fs30 color_9">搜索店铺</span>
                 </a>
-                <a href="#" class="sao_icon">
+                <a href="#" class="sao_icon" onclick="saoyisao();">
                     <img src="__STATIC__/unique/images/sao_icon.png" alt="" />
                 </a>
             </div>
@@ -163,6 +163,12 @@
         var lat = "{$city_info.lat}";
         var lng = "{$city_info.lng}";
         $(function () {
+            //传递商家ID到APP,便于后面做APP语音播报
+            if(appType=='Android'){
+                window.auc.getMerchantID(res.business_id);
+            }else if(appType=='IOS'){
+                window.app.getMerchantID(res.business_id);
+            }
             if (input_city == '') {
                 GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
             }else{
@@ -341,6 +347,48 @@
         //店铺详情
         function go_detail(business_id){
             window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
+        }
+        function saoyisao(){
+            console.log('---');
+            var apptype = "{$apptype}";
+            if(apptype=='Android'){
+                window.auc.Scavenging();
+                //sdk 回调qr_text函数
+                window.qr_text = function (code) {
+                    window.location.href = code;
+                }
+                function user_sao(){
+                    init_ISO();
+                    if(navigator.userAgent.match(/(Android)/i)){
+                        window.auc.Scavenging();
+                    }
+                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
+                        window.app.Scavenging();
+                    }
+                    // window.app.Scavenging();
+                }
+
+            } else {
+                user_sao();
+                function user_sao(){
+                    init_ISO();
+                    if(navigator.userAgent.match(/(Android)/i)){
+                        window.auc.Scavenging();
+                    }
+                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
+                        window.app.Scavenging();
+                    }
+                    // window.app.Scavenging();
+                }
+                window.qr_text = function (code) {
+                    if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
+                        $.alert("扫码失败！");
+                        return;
+                    } else {
+                        window.location.href = code;
+                    }
+                }
+            }
         }
     </script>
 </body>

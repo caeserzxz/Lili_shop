@@ -38,7 +38,15 @@ class Index extends ClientbaseController{
         $regionModel = new RegionModel();
         $region = $regionModel->rawCitiesData2();
         $city_info = $regionModel->where('short_name',$city)->find();
-//        dump($region);die;
+
+        //传递商家id
+        $business = (new \app\store\model\UserBusinessModel)->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+        if(empty($business)==false&&$business['is_play']==2){
+            $business_id = $business['business_id'];
+        }else{
+            $business_id = 0;
+        }
+        $this->assign('business_id',$business_id);
         $this->assign('city', $city);
         $this->assign('city_info',$city_info);
         $this->assign('slideList', SlideModel::getRows(2));//获取幻灯片

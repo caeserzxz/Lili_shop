@@ -69,6 +69,7 @@ class ClientbaseController extends BaseController{
                 session('appType','other');
             }
         }
+        $this->assign('appType',$appType);
 
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
@@ -205,10 +206,19 @@ class ClientbaseController extends BaseController{
     /*------------------------------------------------------ */
     public function logout()
     {
+        $UserBusinessModel = new \app\store\model\UserBusinessModel;
+        #存储商家id
+        $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
+        if(empty($business)==false&&$business['is_play']==2){
+            $business_id = 0;
+        }else{
+            $business_id = 0;
+        }
         session('userId', null);
         if ($this->request->isAjax()){
             return $this->success('退出成功.');
         }
+        $this->assign('business_id',$business_id);
         return $this->fetch('member@center/logout');
     }
 }

@@ -33,7 +33,7 @@ class Passport extends ApiController
         $UserBusinessModel = new UserBusinessModel();
         #存储商家id
         $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
-        if(empty($business)==false&&$business['is_play']==1){
+        if(empty($business)==false&&$business['is_play']==2){
             $data['business_id'] = $business['business_id'];
         }else{
             $data['business_id'] = 0;
