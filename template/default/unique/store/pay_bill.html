@@ -38,16 +38,57 @@
                 justify-content: space-between;
             }
 
-            .cellBox .cell .money {
-                display: -webkit-box;
+            .cellBox .cell .moneys {
+                /* display: -webkit-box; */
                 display: -webkit-flex;
-                display: flex;
-                -webkit-box-align: center;
-                -webkit-align-items: center;
+                /* display: flex; */
+                /* -webkit-box-align: center; */
+                /* -webkit-align-items: center; */
                 align-items: center;
+                -webkit-box-pack: justify;
+                -webkit-justify-content: space-between;
+                justify-content: space-between;
+                padding: 0 0.266667rem 0.2rem;
+                background-color: #fff;
+                overflow: hidden;
+                /* width: 100%; */
+            }
+            .box {
+                width: 97%;
+                height: 98%;
+                margin: 5px 5px 5px 5px;
+                background-color: #fff;
+            }
+            .box h1 {
+                font-size: 20px;
+                line-height: 200px;
+                text-align: center;
+            }
+            .case-content {
+                position: relative;
+                -webkit-box-shadow: 0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+                -moz-box-shadow: 0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+                box-shadow: 0 1px 10px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+                -o-box-shadow:0 1px 4px rgba(0,0,0,0.3),0 0 40px rgba(0,0,0,0.1) inset;
+            }
+
+            .case-content:before ,.case-content:after{
+                z-index: -1;
+                content: "";
+                background-color: #foo;
+                position: absolute;
+                top: 50%;
+                bottom: 0;
+                left: 10px;
+                right: 10px;
+                -webkit-box-shadow: 0 0 20px rgba(0,0,0,0.8);
+                -moz-box-shadow: 0 0 20px rgba(0,0,0,0.8);
+                box-shadow: 0 0 20px rgba(0,0,0,0.8);
+                -o-box-shadow:0 0 20px rgba(0,0,0,0.8);
+                border-radius: 100px/10px;
             }
         </style>
-        <div class="page-bd">
+        <div class="page-bd box case-content">
             <!-- 页面内容-->
             <div class="shop-name">
                 <div class="fs34 color_3">{$info.business_name}</div>
@@ -94,29 +135,40 @@
                 <img src="__STATIC__/unique/images/fuk.png" alt="">
             </div>
 
-            <!--<div class="cellBox">-->
-                <!--<div class="line"></div>-->
-                <!--<div class="cell">-->
-                    <!--<span class="fs28 color_9">商品金额</span>-->
-                    <!--<div class="color_3 fs28 num money">-->
-                        <!--<p class=" fm_p">￥</p><em class="fs34">100</em>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="cell">-->
-                    <!--<span class="fs28 color_9">鼓励金抵扣</span>-->
-                    <!--<div class="color_3 fs28 num money">-->
-                        <!--<p class=" fm_p">-￥</p><em class="fs34">200</em>-->
-                    <!--</div>-->
-                <!--</div>-->
-                <!--<div class="cell">-->
-                    <!--<span class="fs28 color_9">优惠券</span>-->
-                    <!--<div class="color_3 fs28 num money">-->
-                        <!--<p class="fm_p">￥</p>-->
-                        <!--<em class="fs34">300</em>-->
-                    <!--</div>-->
-                <!--</div>-->
+            <div class="cellBox">
+                <div class="line"></div>
+                <div class="cell">
+                    <span class="fs28 color_9">商品金额</span>
+                    <div class="color_3 fs28 num moneys">
+                        <p class=" fm_p">￥</p><em class="fs34 goods_money">0</em>
+                    </div>
+                </div>
+                <div class="cell">
+                    <span class="fs28 color_9">鼓励金抵扣</span>
+                    <div class="color_3 fs28 num moneys">
+                        <p class=" fm_p">-￥</p><em class="fs34 hearten_money">0</em>
+                    </div>
+                </div>
+                <div class="cell">
+                    <span class="fs28 color_9">优惠券</span>
+                    <div class="color_3 fs28 num moneys">
+                        <p class="fm_p">-￥</p>
+                        <em class="fs34 discount_money">0</em>
+                    </div>
+                </div>
+            </div>
+            <div class="cells">
+                <div class="cell">
+                    <div class="cell_hd"></div>
+                    <div class="cell_bd"><span class="fs28 fw_b color_3"></span></div>
+                    <div class="cell_ft fs26">
+                        <span class="fs28 fw_b color_3">支付金额:</span>
+                        <span class="fs28 fw_b color_3 actual_money">0.00</span>
 
-            <!--</div>-->
+                    </div>
+                </div>
+            </div>
+
             <div class="gopay button fs32 fw_b color_w BGcolor_r" >确认付款</div>
 
         </div>
@@ -244,7 +296,7 @@
             var str =  $("input[name=radiobox]:checked").attr('data-str');
             $('.mainjian').css('display','block');
             $('.mainjian').html(str);
-
+            count_money();
             $('.getCoupons').hide()
 
         }
@@ -262,6 +314,7 @@
             }
             //获取使用红包
             get_used();
+            count_money();
         })
         function get_used(type){
             var money = $('#money').val();
@@ -285,11 +338,19 @@
                         $('.used_num').show();
                         $('.not_have').hide();
                         $('#used_num').html('可使用('+res.used_num+')');
+                    }else{
+                        $('.used_num').hide();
+                        $('.used_num').hide();
+                        $('#used_num').html('可使用(0)');
                     }
                     if(res.not_used_num>0){
                         $('.not_used_num').show();
                         $('.not_have').hide();
                         $('#not_used_num').html('不可使用('+res.not_used_num+')');
+                    }else{
+                        $('.not_used_num').hide();
+                        $('.not_have').hide();
+                        $('#not_used_num').html('不可使用(0)');
                     }
                     if(res.used_num==0&&res.not_used_num==0){
                         $('.not_have').show();
@@ -387,7 +448,33 @@
             //哪个都不是
             return "false";
         }
+        $("input[name=checkbox]").change(function(){
+            count_money();
+        })
+        function count_money(){
+            var money = $('#money').val();
+            var actual_money = money;
+            //店铺红包
+            var is_hearten = $("input[name=checkbox]:checked").val();
+            var price = $("input[name=radiobox]:checked").attr('data-price');
+            var balance = $('#user_balance').val();
+            actual_money = money - price;
+            var hearten_money = 0;
+            if(is_hearten==1){
+              //选择鼓励金抵扣
+                if(actual_money<balance){
+                    hearten_money =  actual_money;
+                }else{
+                    hearten_money =  balance;
+                }
+            }
 
+            $('.goods_money').html(money);
+            $('.hearten_money').html(hearten_money);
+            $('.discount_money').html(price);
+
+            $('.actual_money').html(money-hearten_money-price);
+        }
     </script>
 </body>
 
