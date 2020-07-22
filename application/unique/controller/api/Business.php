@@ -523,7 +523,8 @@ class Business extends ApiController
         #计算前抢到的红包金额
         if($gift_info['gift_type']==1){
             #随机红包
-            $price = getPack($gift_info['surplus_money'],$gift_info['gift_num'],0.01);
+//            $price = getPack($gift_info['surplus_money'],$gift_info['gift_num'],0.01);
+            $price = getRandomMoney($gift_info['surplus_money'],$gift_info['gift_num'],0.01);
         }else{
             #平均红包
             $price =  sprintf("%.2f",$gift_info['gift_money']/$gift_info['total_num']);
@@ -538,6 +539,7 @@ class Business extends ApiController
         $inArr['add_time'] = time();
         $inArr['start_time'] = $gift_info['start_time'];
         $inArr['expire_time'] = $gift_info['end_time'];
+
         Db::startTrans();
         $res = $RedbagModel->insertGetId($inArr);
         if($res){

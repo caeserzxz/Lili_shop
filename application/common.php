@@ -905,3 +905,18 @@ function getPack($total,$num,$min)
     return $readPack;
 }
 
+function getRandomMoney($total,$num,$min){
+        if($num==1){
+            $num--;
+            return sprintf("%.2f",($total*100)/100);
+        }
+        $max = sprintf("%.2f",$total/$num*2);
+        $money = sprintf("%.2f",mt_rand($min*100,$max*100)/100);
+        $money = $total <= $min ? 0.01: $money;
+        $num--;
+        $total = $total -= $money;
+
+        return $money;
+
+}
+
