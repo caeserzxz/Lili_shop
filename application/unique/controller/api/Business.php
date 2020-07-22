@@ -508,6 +508,11 @@ class Business extends ApiController
         #商家的红包信息
         $gift_info = $BusinessGiftModel->where(['id'=>$gift_id])->find();
         if(empty($gift_info)) return $this->ajaxReturn(['code' => 0,'msg' => '红包不存在']);
+        #商家信息
+        $business = $this->Model->where(['business_id'=>$gift_info['business_id']])->find();
+        if($business['user_id']==$this->userInfo['user_id']){
+            return $this->ajaxReturn(['code' => 0,'msg' => '不可领取自己的店铺红包']);
+        }
         #是否结束
         if($gift_info['status']==3){
             return $this->ajaxReturn(['code' => -1,'msg' => '活动已结束','url'=> url('store/gift_receive',array('type'=>3))]);

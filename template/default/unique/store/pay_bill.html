@@ -15,7 +15,7 @@
         </div>
         <style>
             .cellBox {
-                padding: 0.2rem 0.266667rem 0.2rem;
+                /*padding: 0.2rem 0.266667rem 0.2rem;*/
                 background-color: #fff;
                 margin-top: 0;
             }
@@ -32,10 +32,11 @@
                 -webkit-box-align: center;
                 -webkit-align-items: center;
                 align-items: center;
-                height: 0.6rem;
+                height: 0.4rem;
                 -webkit-box-pack: justify;
                 -webkit-justify-content: space-between;
                 justify-content: space-between;
+                margin-left: 4%;
             }
 
             .cellBox .cell .moneys {
@@ -100,7 +101,7 @@
                 <input type="number" id="money" class="fs60 num textBox" placeholder="请输入金额">
             </div>
             <div class="paytype">
-                <div class="title fs34 color_3 fw_b">请选择支付方式</div>
+                <div class="title fw_b">支付方式</div>
                 {if condition="$userInfo.user_id neq ''"}
                     <div class="cells">
                         <div class="cell">
@@ -162,8 +163,9 @@
                     <div class="cell_hd"></div>
                     <div class="cell_bd"><span class="fs28 fw_b color_3"></span></div>
                     <div class="cell_ft fs26">
-                        <span class="fs28 fw_b color_3">支付金额:</span>
-                        <span class="fs28 fw_b color_3 actual_money">0.00</span>
+                        <span class="fs30 color_3">支付金额:</span>
+                        <span class="fs30  color_3">￥</span>
+                        <span class="fs30  color_3 actual_money">0.00</span>
 
                     </div>
                 </div>
@@ -454,6 +456,10 @@
         function count_money(){
             var money = $('#money').val();
             var actual_money = money;
+            if(actual_money==''){
+                actual_money = 0;
+                money = 0;
+            }
             //店铺红包
             var is_hearten = $("input[name=checkbox]:checked").val();
             var price = $("input[name=radiobox]:checked").attr('data-price');
@@ -473,7 +479,12 @@
             $('.hearten_money').html(hearten_money);
             $('.discount_money').html(price);
 
-            $('.actual_money').html(money-hearten_money-price);
+            if((money-hearten_money-price)<0){
+                $('.actual_money').html(0);
+            }else{
+                $('.actual_money').html(money-hearten_money-price);
+            }
+
         }
     </script>
 </body>

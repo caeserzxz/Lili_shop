@@ -486,7 +486,7 @@
   z-index: 99;
   height: auto;
   line-height: normal;
-  width: 3.333333rem;
+  width: 3.533333rem;
 }
 
 .chongzhi .inputBlock span {
@@ -542,7 +542,7 @@
 }
 
 .chongzhi .paytype .title {
-  padding: 0 0.266667rem;
+  /*padding: 0 0.266667rem;*/
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;

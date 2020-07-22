@@ -221,7 +221,7 @@
 }
 
 .nearShop .title {
-  padding: 0.266667rem 0.2rem;
+  padding: 0 0.2rem;
   line-height: 1;
   font-size: 0.2rem;
   color: #333333;
@@ -233,7 +233,7 @@
 }
 
 .nearShop .shop-list .list-item {
-  padding: 0.206667rem 0.2rem;
+  padding: 0.06667rem 0.2rem;
   display: -webkit-box;
   display: -webkit-flex;
   display: flex;
