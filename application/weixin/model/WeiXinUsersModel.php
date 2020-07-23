@@ -37,7 +37,7 @@ class WeiXinUsersModel extends BaseModel
                     $upArr['update_time'] = time();
                     $upArr['sex'] = $wx_arr['sex'];
                     $upArr['subscribe'] = $wx_arr['subscribe'] * 1;
-                    $upArr['wx_nickname'] = $wx_arr['nickname'];
+                    $upArr['wx_nickname'] = filterEmoji($wx_arr['nickname']);
                     $upArr['wx_headimgurl'] = $wx_arr['headimgurl'];
                     $upArr['wx_city'] = $wx_arr['city'];
                     $upArr['wx_province'] = $wx_arr['province'];
@@ -69,7 +69,7 @@ class WeiXinUsersModel extends BaseModel
 		$inarr['add_time'] = $inarr['update_time'] = time();
 		$inarr['sex'] = $wx_arr['sex'];
 		$inarr['subscribe'] = $wx_arr['subscribe'] * 1;
-		$inarr['wx_nickname'] = $wx_arr['nickname'];
+		$inarr['wx_nickname'] = filterEmoji($wx_arr['nickname']);
 		$inarr['wx_headimgurl'] = $wx_arr['headimgurl'];
 		$inarr['wx_city'] = $wx_arr['city'];
 		$inarr['wx_province'] = $wx_arr['province'];
