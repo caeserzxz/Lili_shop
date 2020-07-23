@@ -60,4 +60,17 @@ class Index extends ApiController
         $list['list'] = $SearchRecordsModel->where($where)->field("id,keyword,FROM_UNIXTIME(add_time, '%Y-%m-%d %H:%i:%s' ) as add_time")->order('add_time desc')->limit(6)->select();
         return $this->ajaxReturn($list);
     }
+
+    /*------------------------------------------------------ */
+    //-- 腾讯地址逆解析
+    /*------------------------------------------------------ */
+    public function getAddress(){
+        $lat = input('lat');
+        $lng = input('lng');
+        $key = settings('tx_key');
+
+        $url = 'https://apis.map.qq.com/ws/geocoder/v1/?location='. $lat.','.$lng.'&key='.$key;
+        $res = json_decode(curl($url));
+        return $res;
+    }
 }

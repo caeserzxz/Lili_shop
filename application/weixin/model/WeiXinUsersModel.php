@@ -80,7 +80,7 @@ class WeiXinUsersModel extends BaseModel
 			if ($res < 1) return false;
             $wxuid = $this->wxuid;
 			$userInArr['sex'] = $wx_arr['sex'] == '男' ? 1 : 2;
-			$userInArr['nick_name'] = $wx_arr['nickname'];
+			$userInArr['nick_name'] = filterEmoji($wx_arr['nickname']);
 			$userInArr['headimgurl'] = $wx_arr['headimgurl'];
 			$res = $UsersModel->register($userInArr,$wxuid);//注册会员
 			if ($res != true) return $res;

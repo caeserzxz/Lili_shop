@@ -40,7 +40,7 @@
             <a href="{:url('myqrcode')}"><img class="icon-img" src="__STATIC__/unique/images/mer_icon01.png" alt=""></a>
             <p>收款码</p>
           </div>
-          <div class="flex-item">
+          <div class="flex-item" onclick="saoyisao();">
             <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
             <p>扫一扫</p>
           </div>
@@ -111,6 +111,25 @@
 
 {/block}
 {block name="footer"}
+{notempty name="wxShare"}
+
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+        debug: false,
+        appId: '{$wxShare.appId}',
+        timestamp: {$wxShare.timestamp},
+        nonceStr: '{$wxShare.nonceStr}',
+        signature: '{$wxShare.signature}',
+        jsApiList: [
+        // 所有要调用的 API 都要加到这个列表中
+        'getLocation',
+        'scanQRCode',
+    ]
+    });
+
+</script>
+{/notempty}
 <script>
     $(function() {
         FastClick.attach(document.body);
@@ -193,6 +212,63 @@
     //我的会员
     function go_my_team(){
         window.location.href = "{:url('unique/store/my_team')}";
+    }
+    //扫一扫
+    function saoyisao(){
+        console.log('---');
+        if(is_weixin()){
+            wx.ready(function () {
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
+
+            })
+        }else{
+            var apptype = "{$apptype}";
+            if(apptype=='Android'){
+                window.auc.Scavenging();
+                //sdk 回调qr_text函数
+                window.qr_text = function (code) {
+                    window.location.href = code;
+                }
+                function user_sao(){
+                    init_ISO();
+                    if(navigator.userAgent.match(/(Android)/i)){
+                        window.auc.Scavenging();
+                    }
+                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
+                        window.app.Scavenging();
+                    }
+                    // window.app.Scavenging();
+                }
+
+            } else {
+                user_sao();
+                function user_sao(){
+                    init_ISO();
+                    if(navigator.userAgent.match(/(Android)/i)){
+                        window.auc.Scavenging();
+                    }
+                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
+                        window.app.Scavenging();
+                    }
+                    // window.app.Scavenging();
+                }
+                window.qr_text = function (code) {
+                    if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
+                        $.alert("扫码失败！");
+                        return;
+                    } else {
+                        window.location.href = code;
+                    }
+                }
+            }
+        }
+
     }
   </script>
 </body>

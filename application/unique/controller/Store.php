@@ -124,6 +124,10 @@ class Store extends ClientbaseController{
         $this->assign('business',$business);
         $this->assign('sales_count',$sales_count);
         $this->assign('title', '商家管理');
+        //获取微信jsapi参数
+        $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
+        $this->assign('wxShare',$wxShare);
+
         return $this->fetch('business');
     }
 

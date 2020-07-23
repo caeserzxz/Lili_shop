@@ -11,345 +11,380 @@
         margin-left: 1%;
     }
 </style>
-    <div class="page">
-        <div class="page-hd"></div>
+<div class="page">
+    <div class="page-hd"></div>
 
-        <div class="page-bd">
-            <!-- 页面内容-->
-            <div class="selectBox">
-                {if condition="$userInfo.headimgurl eq ''"}
-                    <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
-                {else /}
-                    <img class="headimg" src="{$userInfo.headimgurl}" alt="" />
-                {/if}
+    <div class="page-bd">
+        <!-- 页面内容-->
+        <div class="selectBox">
+            {if condition="$userInfo.headimgurl eq ''"}
+            <img class="headimg" src="__STATIC__/unique/images/myIcon19.png" alt="">
+            {else /}
+            <img class="headimg" src="{$userInfo.headimgurl}" alt="" />
+            {/if}
 
-                <a href="{:url('unique/index/region')}?city={$city}" class="fs28 fw_b addr">{$city_info.short_name}</a>
-                <a href="{:url('unique/index/search')}" class="selech">
-                    <img src="__STATIC__/unique/images/selech01.png" alt="" />
-                    <span class="fs30 color_9">搜索店铺</span>
-                </a>
-                <a href="#" class="sao_icon" onclick="saoyisao();">
-                    <img src="__STATIC__/unique/images/sao_icon.png" alt="" />
-                </a>
-            </div>
-            <div class="swiperGird" style="">
-                <div class="swiper-container swiper1" id="swiper01">
-                    <div class="swiper-wrapper">
-                        {volist name="slideList" id="slide" }
-                        <a href="{$slide.url}" class="swiper-slide" data-bg_color="{$slide.bg_color}">
-                            <img data-src="{$slide.imgurl}" class="swiper-lazy">
-                            <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
-                        </a>
-                        {/volist}
-                    </div>
-                    <div class="swiper-pagination pagination1"></div>
+            <a href="{:url('unique/index/region')}?city={$city}" class="fs28 fw_b addr">{$city_info.short_name}</a>
+            <a href="{:url('unique/index/search')}" class="selech">
+                <img src="__STATIC__/unique/images/selech01.png" alt="" />
+                <span class="fs30 color_9">搜索店铺</span>
+            </a>
+            <a href="#" class="sao_icon" onclick="saoyisao();">
+                <img src="__STATIC__/unique/images/sao_icon.png" alt="" />
+            </a>
+        </div>
+        <div class="swiperGird" style="">
+            <div class="swiper-container swiper1" id="swiper01">
+                <div class="swiper-wrapper">
+                    {volist name="slideList" id="slide" }
+                    <a href="{$slide.url}" class="swiper-slide" data-bg_color="{$slide.bg_color}">
+                        <img data-src="{$slide.imgurl}" class="swiper-lazy">
+                        <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
+                    </a>
+                    {/volist}
                 </div>
-                <!-- 功能入口 -->
-                <div class="girdBox">
-                    <div class="bannerBox">
-                        <div class="bannerSwiper">
-                            <img src="__STATIC__/unique/images/index_icon09.png" alt="" />
-                            <div class="swiper-container swiper2" id="swiper02">
-                                <div class="swiper-wrapper">
-                                    {volist name="headline" id="hl" }
-                                     <a href="{:url('shop/article/headline')}" class="swiper-slide">{$hl.title}</a>
-                                    {/volist}
-                                </div>
+                <div class="swiper-pagination pagination1"></div>
+            </div>
+            <!-- 功能入口 -->
+            <div class="girdBox">
+                <div class="bannerBox">
+                    <div class="bannerSwiper">
+                        <img src="__STATIC__/unique/images/index_icon09.png" alt="" />
+                        <div class="swiper-container swiper2" id="swiper02">
+                            <div class="swiper-wrapper">
+                                {volist name="headline" id="hl" }
+                                <a href="{:url('shop/article/headline')}" class="swiper-slide">{$hl.title}</a>
+                                {/volist}
                             </div>
                         </div>
                     </div>
-                    <div class="gird">
-                        <div class="scrllBox" id="tab1">
-                            <script type="text/html" id="listTpl1">
-                                {{each list as item index}}
-                                <a href="javascript:;" onclick="go_search({{item.id}});" class="box">
-                                    <div>
-                                        <img src="{{item.pic}}" alt="" />
-                                    </div>
-                                    <span class="fs26 color_3">{{item.name}}</span>
-                                </a>
-                                {{/each}}
-                            </script>
-
-                            <a href="#" class="box" onclick="showCategory('show')">
-                                <div>
-                                    <img src="__STATIC__/unique/images/index_icon05.png" alt="" />
-                                </div>
-                                <span class="fs26 color_3">更多分类</span>
-                            </a>
-                        </div>
-                    </div>
                 </div>
-            </div>
-            <!-- 更多分类 弹窗 -->
-            <div class="modal-category">
-                <div class="more-main">
-
-                    <div class="cate-list" id="tab2">
-                        <script type="text/html" id="listTpl2">
+                <div class="gird">
+                    <div class="scrllBox" id="tab1">
+                        <script type="text/html" id="listTpl1">
                             {{each list as item index}}
-                                <div class="list-item" onclick="go_search({{item.id}});">
-                                    <div class="title fs30 fw_b">{{item.name}}</div>
-                                    <div class="sub-list">
-                                        {{each item.list as v k}}
-                                        <a class="sub-item">
-                                            <img src="{{v.pic}}" alt="">
-                                            <p class="fs26">{{v.name}}</p>
-                                        </a>
-                                        {{/each}}
-                                    </div>
+                            <a href="javascript:;" onclick="go_search({{item.id}});" class="box">
+                                <div>
+                                    <img src="{{item.pic}}" alt="" />
                                 </div>
+                                <span class="fs26 color_3">{{item.name}}</span>
+                            </a>
                             {{/each}}
                         </script>
-                    </div>
 
-                    <div class="footer-btn">
-                        <span onclick="showCategory('hide')">点击收起</span>
-                    </div>
-
-                </div>
-
-            </div>
-            <!-- 附近商家 -->
-            <div class="nearShop">
-                <div class="title">附近商家</div>
-                <div class="shop-list" id="tab3">
-                    <script type="text/html" id="listTpl3">
-                        {{each list as item index}}
-                            <div class="list-item" onclick="go_detail({{item.business_id}});">
-                                <img class="shop-img" src="{{item.logo}}" alt="" />
-                                <div class="shop-info">
-                                    <div class="shop-name fs28 fw_b col_3">{{item.business_name}}</div>
-                                    <div class="shop-addr fs23 color_9">{{item.address}}</div>
-                                        <div class="shop-label">
-                                            {{each item.label_arr as v k}}
-                                                <span>{{v}}</span>
-                                            {{/each}}
-                                        </div>
-                                    <div class="shop-enc">
-                                        <span class="text_c">鼓励金:{{item.hearten}}%</span>
-                                    </div>
-                                </div>
-                                <div class="shop-distance">
-                                    <div class="text_c color_9">{{item.distance}}</div>
-                                    {literal}
-                                        {{if item.gift_id > 0}}
-                                            <div>
-                                                <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
-                                            </div>
-                                        {{/if}}
-                                    {/literal}
-                                </div>
+                        <a href="#" class="box" onclick="showCategory('show')">
+                            <div>
+                                <img src="__STATIC__/unique/images/index_icon05.png" alt="" />
                             </div>
-                        {{/each}}
-                    </script>
+                            <span class="fs26 color_3">更多分类</span>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
-        {include file="layouts@bottom_unique" /}
+        <!-- 更多分类 弹窗 -->
+        <div class="modal-category">
+            <div class="more-main">
+
+                <div class="cate-list" id="tab2">
+                    <script type="text/html" id="listTpl2">
+                        {{each list as item index}}
+                        <div class="list-item" onclick="go_search({{item.id}});">
+                            <div class="title fs30 fw_b">{{item.name}}</div>
+                            <div class="sub-list">
+                                {{each item.list as v k}}
+                                <a class="sub-item">
+                                    <img src="{{v.pic}}" alt="">
+                                    <p class="fs26">{{v.name}}</p>
+                                </a>
+                                {{/each}}
+                            </div>
+                        </div>
+                        {{/each}}
+                    </script>
+                </div>
+
+                <div class="footer-btn">
+                    <span onclick="showCategory('hide')">点击收起</span>
+                </div>
+
+            </div>
+
+        </div>
+        <!-- 附近商家 -->
+        <div class="nearShop">
+            <div class="title">附近商家</div>
+            <div class="shop-list" id="tab3">
+                <script type="text/html" id="listTpl3">
+                    {{each list as item index}}
+                    <div class="list-item" onclick="go_detail({{item.business_id}});">
+                        <img class="shop-img" src="{{item.logo}}" alt="" />
+                        <div class="shop-info">
+                            <div class="shop-name fs28 fw_b col_3">{{item.business_name}}</div>
+                            <div class="shop-addr fs23 color_9">{{item.address}}</div>
+                            <div class="shop-label">
+                                {{each item.label_arr as v k}}
+                                <span>{{v}}</span>
+                                {{/each}}
+                            </div>
+                            <div class="shop-enc">
+                                <span class="text_c">鼓励金:{{item.hearten}}%</span>
+                            </div>
+                        </div>
+                        <div class="shop-distance">
+                            <div class="text_c color_9">{{item.distance}}</div>
+                            {literal}
+                            {{if item.gift_id > 0}}
+                            <div>
+                                <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
+                            </div>
+                            {{/if}}
+                            {/literal}
+                        </div>
+                    </div>
+                    {{/each}}
+                </script>
+            </div>
+        </div>
     </div>
+    {include file="layouts@bottom_unique" /}
+</div>
 {/block}
 {block name="footer"}
+{notempty name="wxShare"}
 
+<script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
+<script type="text/javascript">
+    wx.config({
+            debug: false,
+            appId: '{$wxShare.appId}',
+            timestamp: {$wxShare.timestamp},
+            nonceStr: '{$wxShare.nonceStr}',
+            signature: '{$wxShare.signature}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'getLocation',
+            'scanQRCode',
+        ]
+    });
+
+</script>
+{/notempty}
 <script>
     $(function() {
         FastClick.attach(document.body);
     });
 </script>
 <script src="__STATIC__/unique/js/Swiper-4.0.7/swiper.min.js"></script>
-    <script>
-        var appType = "{$apptype}";
-        var input_city = "{$city}"
-        var lat = "{$city_info.lat}";
-        var lng = "{$city_info.lng}";
-        $(function () {
-            //传递商家ID到APP,便于后面做APP语音播报
-            if(appType=='Android'){
-                window.auc.getMerchantID(res.business_id);
-            }else if(appType=='IOS'){
-                window.app.getMerchantID(res.business_id);
-            }
-            if (input_city == '') {
-                GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
+<script>
+    var appType = "{$apptype}";
+    var input_city = "{$city}"
+    var lat = "{$city_info.lat}";
+    var lng = "{$city_info.lng}";
+    $(function () {
+        //传递商家ID到APP,便于后面做APP语音播报
+        if(appType=='Android'){
+            window.auc.getMerchantID(res.business_id);
+        }else if(appType=='IOS'){
+            window.app.getMerchantID(res.business_id);
+        }
+        if (input_city == '') {
+            GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
+        }else{
+            if(is_weixin()){
+                //微信获取
+                getlocation();
             }else{
                 if(appType=='Android'){
                     window.auc.getTencentLocBySDK();
                 }else if(appType=='IOS'){
 
                 }
-                GetLocCallBack(lat, lng);
             }
 
-            get_recommend_class();
-            get_class();
-
-            var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
-            var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
-        });
-        //安卓腾讯地图定位的回调
-        function GetTencentLocCallBack(lat_z,lng_z,city){
-            var re = '{$region|raw}';
-            var region = JSON.parse(re);
-            city = region[city];
-
-           if(city==input_city){
-               $('.addr').html(city);
-               input_city = city;
-               lat = lat_z;
-               lng = lng_z;
-           }
+            GetLocCallBack(lat, lng);
         }
 
-        var arr = new Object();
-        //sdk 回调wxLoginCallback函数
-        function GetLocCallBack(lat,lng){
-            arr.lat = lat;
-            arr.lng = lng;
-            jq_ajax("{:url('unique/api.business/index')}",arr,function (res) {
-                $('#city').text(res.city);
-                $('#address').text(res.address);
-                //提交ajax
-                arr.city = window.city = res.city_id;
-                arr.page = window.page = 0;
-                arr.latitude  = window.lat = lat;
-                arr.longitude  = window.lng = lng;
-                // console.log(arr);
-                getList(arr);
-            });
-        }
+        get_recommend_class();
+        get_class();
 
-        function createSwiper(index, _direction, time, type) {
-            var swiper = new Swiper(".swiper" + index, {
-                pagination: {
-                    el: ".pagination" + index,
-                    type: type
-                },
-                lazy: {
-                    loadPrevNext: true,
-                },
-                direction: _direction,
-                preloadImages: false,
-                paginationClickable: true,
-                loop: true,
-                autoplay: {
-                    delay: time,
-                    disableOnInteraction: false
-                },
-                onSlideChangeEnd: function (swiper) {
-                    swiper.update(); //swiper更新
-                },
-                on: {
-                    slideChangeTransitionStart: function(){
-                        if(index==1){
-                            var bg_color = $('#swiper01').find('a').eq(this.activeIndex).data('bg_color');
-                            $('.swiperGird').css('background-color',bg_color);
-                        }
-                    },
-                },
-            });
-            return swiper;
+        var swiper1 = createSwiper(1, "horizontal", 4000, "fraction");
+        var swiper2 = createSwiper(2, "vertical", 5000, "bullets");
+    });
+    //安卓腾讯地图定位的回调
+    function GetTencentLocCallBack(lat_z,lng_z,city){
+        var re = '{$region|raw}';
+        var region = JSON.parse(re);
+        city = region[city];
+
+        if(city==input_city){
+            $('.addr').html(city);
+            input_city = city;
+            lat = lat_z;
+            lng = lng_z;
         }
-        // 当用户滚动到页面底部的时候加载更多内容。
-        $('.page-bd').infinite(100);
-        var loading = false;  //状态标记
-        $('.page-bd').infinite().on("infinite", function() {
-            // loading = true;
-            // 请求数据
-            var city = "北京市";
-            var re = '{$region|raw}';
-            console.log(re.city);
-            // var a ={$region};
-            // console.log(a);
+    }
+    var arr = new Object();
+    //sdk 回调wxLoginCallback函数
+    function GetLocCallBack(lat,lng){
+        arr.lat = lat;
+        arr.lng = lng;
+        jq_ajax("{:url('unique/api.business/index')}",arr,function (res) {
+            $('#city').text(res.city);
+            $('#address').text(res.address);
+            //提交ajax
+            arr.city = window.city = res.city_id;
+            arr.page = window.page = 0;
+            arr.latitude  = window.lat = lat;
+            arr.longitude  = window.lng = lng;
+            // console.log(arr);
             getList(arr);
-            // setTimeout(function() {
-            //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
-            //     loading = false;
-            // }, 1500);   //模拟延迟
-        })
+        });
+    }
 
-        var loading = false;
-        function getList(arr){
-            if(loading) return;
-            loading = true;
-            $.ajax({
-                url:'{:url("unique/api.business/getList")}',// 跳转到 action
-                data:arr,
-                type:'post',
-                cache:false,
-                async: false,
-                dataType:'json',
-                success:function(res) {
-                    // console.log(res)
-                    if (res.list.length > 0) {
-                        $('#tab3').append(template('listTpl3',res));
-                        arr.page += 1;
-                        loading = false;
-                    }else{
-                        $.toast('加载完成');
+    function createSwiper(index, _direction, time, type) {
+        var swiper = new Swiper(".swiper" + index, {
+            pagination: {
+                el: ".pagination" + index,
+                type: type
+            },
+            lazy: {
+                loadPrevNext: true,
+            },
+            direction: _direction,
+            preloadImages: false,
+            paginationClickable: true,
+            loop: true,
+            autoplay: {
+                delay: time,
+                disableOnInteraction: false
+            },
+            onSlideChangeEnd: function (swiper) {
+                swiper.update(); //swiper更新
+            },
+            on: {
+                slideChangeTransitionStart: function(){
+                    if(index==1){
+                        var bg_color = $('#swiper01').find('a').eq(this.activeIndex).data('bg_color');
+                        $('.swiperGird').css('background-color',bg_color);
                     }
-                },error : function(res) {
-                    $.toast(res.msg);
+                },
+            },
+        });
+        return swiper;
+    }
+    // 当用户滚动到页面底部的时候加载更多内容。
+    $('.page-bd').infinite(100);
+    var loading = false;  //状态标记
+    $('.page-bd').infinite().on("infinite", function() {
+        // loading = true;
+        // 请求数据
+        var city = "北京市";
+        var re = '{$region|raw}';
+        console.log(re.city);
+        // var a ={$region};
+        // console.log(a);
+        getList(arr);
+        // setTimeout(function() {
+        //     $(".shop-list").append("<p> 我是新加载的内容 </p>");
+        //     loading = false;
+        // }, 1500);   //模拟延迟
+    })
+
+    var loading = false;
+    function getList(arr){
+        if(loading) return;
+        loading = true;
+        $.ajax({
+            url:'{:url("unique/api.business/getList")}',// 跳转到 action
+            data:arr,
+            type:'post',
+            cache:false,
+            async: false,
+            dataType:'json',
+            success:function(res) {
+                // console.log(res)
+                if (res.list.length > 0) {
+                    $('#tab3').append(template('listTpl3',res));
+                    arr.page += 1;
+                    loading = false;
+                }else{
+                    $.toast('加载完成');
                 }
-            });
-        }
-
-        // 显示隐藏  分类弹窗
-        function showCategory(type) {
-
-            if (type === 'show') {
-                $('.modal-category').fadeToggle(200, function () {
-                    $('.modal-category .more-main').slideToggle(300)
-                })
-            } else if (type === 'hide') {
-                $('.modal-category .more-main').slideToggle(300, function() {
-                    $('.modal-category').fadeToggle(200)
-                })
+            },error : function(res) {
+                $.toast(res.msg);
             }
-        }
+        });
+    }
 
-        //获取推荐分类
-        function get_recommend_class(){
-            $.ajax({
-                'url':'{:url("unique/api.index/get_recommend_class")}',
-                'type':'post',
-                'data':'',
-                'dataType':'json',
-                'success':function(res){
-                    // console.log(res);
-                    if (res.list.length > 0) {
-                        $('#tab1').prepend(template('listTpl1',res));
-                    }else{
-                        $.toast('加载完成',"text");
-                    }
+    // 显示隐藏  分类弹窗
+    function showCategory(type) {
+
+        if (type === 'show') {
+            $('.modal-category').fadeToggle(200, function () {
+                $('.modal-category .more-main').slideToggle(300)
+            })
+        } else if (type === 'hide') {
+            $('.modal-category .more-main').slideToggle(300, function() {
+                $('.modal-category').fadeToggle(200)
+            })
+        }
+    }
+
+    //获取推荐分类
+    function get_recommend_class(){
+        $.ajax({
+            'url':'{:url("unique/api.index/get_recommend_class")}',
+            'type':'post',
+            'data':'',
+            'dataType':'json',
+            'success':function(res){
+                // console.log(res);
+                if (res.list.length > 0) {
+                    $('#tab1').prepend(template('listTpl1',res));
+                }else{
+                    $.toast('加载完成',"text");
                 }
-            });
-        }
-        //获取所有分类
-        function get_class(){
-            $.ajax({
-                'url':'{:url("unique/api.index/get_class")}',
-                'type':'post',
-                'data':'',
-                'dataType':'json',
-                'success':function(res){
-                    if (res.list.length > 0) {
-                        $('#tab2').prepend(template('listTpl2',res));
-                    }else{
-                        $.toast('加载完成',"text");
-                    }
+            }
+        });
+    }
+    //获取所有分类
+    function get_class(){
+        $.ajax({
+            'url':'{:url("unique/api.index/get_class")}',
+            'type':'post',
+            'data':'',
+            'dataType':'json',
+            'success':function(res){
+                if (res.list.length > 0) {
+                    $('#tab2').prepend(template('listTpl2',res));
+                }else{
+                    $.toast('加载完成',"text");
                 }
-            });
-        }
-        //分类搜索
-        function go_search(cid){
-            window.location.href = '{:url("unique/index/search_result")}?cid='+cid;
-        }
-        //店铺详情
-        function go_detail(business_id){
-            window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
-        }
-        function saoyisao(){
-            console.log('---');
+            }
+        });
+    }
+    //分类搜索
+    function go_search(cid){
+        window.location.href = '{:url("unique/index/search_result")}?cid='+cid;
+    }
+    //店铺详情
+    function go_detail(business_id){
+        window.location.href = '{:url("unique/index/detail")}?business_id='+business_id;
+    }
+    function saoyisao(){
+        console.log('---');
+        if(is_weixin()){
+            wx.ready(function () {
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
+
+            })
+        }else{
             var apptype = "{$apptype}";
             if(apptype=='Android'){
                 window.auc.Scavenging();
@@ -390,7 +425,56 @@
                 }
             }
         }
-    </script>
+
+    }
+
+    //判断是否在微信浏览器内
+    function is_weixin(){
+        var ua = window.navigator.userAgent;
+        //判断是不是微信
+        if ( ua.indexOf("MicroMessenger") > 0 ) {
+            return true;
+        }else{
+            return false;
+        }
+
+    }
+    //微信jsApi获取用户的经纬度
+    function  getlocation(){
+        wx.ready(function () {
+            wx.getLocation({
+                type: 'wgs84', // 默认为wgs84的gps坐标，如果要返回直接给openLocation用的火星坐标，可传入'gcj02'
+                success: function (res) {
+                    var latitude = res.latitude; // 纬度，浮点数，范围为90 ~ -90
+                    var longitude = res.longitude; // 经度，浮点数，范围为180 ~ -180。
+                    //var speed = res.speed; // 速度，以米/每秒计
+                    //var accuracy = res.accuracy; // 位置精度
+                    $.ajax({
+                        'url':"{:url('unique/api.index/getAddress')}",
+                        'type':'post',
+                        'data':{'lat':latitude,'lng':longitude},
+                        'dataType':'json',
+                        'success':function(res){
+                            if(res.status==0){
+                                var re = '{$region|raw}';
+                                var region = JSON.parse(re);
+                                city = res.result.address_component.city;
+                                city = region[city];
+
+                                if(city==input_city){
+                                    $('.addr').html(city);
+                                    input_city = city;
+                                    lat = latitude;
+                                    lng = longitude;
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        })
+    }
+</script>
 </body>
 
 </html>

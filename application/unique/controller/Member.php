@@ -59,6 +59,10 @@ class Member extends ClientbaseController{
             #审核中
             $agent_sta = 4;
         }
+
+        //获取微信jsapi参数
+        $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
+        $this->assign('wxShare',$wxShare);
         $this->assign('agent_sta',$agent_sta);
 		return $this->fetch('index');
 	}

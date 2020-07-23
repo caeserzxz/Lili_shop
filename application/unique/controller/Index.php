@@ -46,6 +46,9 @@ class Index extends ClientbaseController{
         }else{
             $business_id = 0;
         }
+        //获取微信jsapi参数
+        $wxShare = (new \app\weixin\model\WeiXinModel)->getSignPackage();
+        $this->assign('wxShare',$wxShare);
         $this->assign('business_id',$business_id);
         $this->assign('city', $city);
         $this->assign('city_info',$city_info);
