@@ -61,7 +61,7 @@ class ClientbaseController extends BaseController{
         }//end
 
         //获取安装包的参数
-        $appType = input('appType');
+        $appType = input('appType')?input('appType'):input('apptype');
         if(!empty($appType)){
             if($appType=='IOS'||$appType=='Android'){
                 session('appType',$appType);
