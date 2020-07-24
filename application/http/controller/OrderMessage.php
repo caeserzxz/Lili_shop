@@ -27,6 +27,7 @@ class OrderMessage extends Server
             foreach($worker->connections as $connection) {
                 $connection->send($data);
             }
+
         });
     }
     // 接收数据
@@ -44,6 +45,20 @@ class OrderMessage extends Server
                 $data = $this->getBroadcast();
             // $connection->send($data);
         }
+        //获取临时数据
+        $list = Cache::get('temp_order_list');
+        //处理临时数据
+        if(empty($_data['type'])){
+            foreach ($_data['data'] as $k=>$v){
+               foreach ($list as $key=>$value){
+                   if($v['log_id']==$value['log_id']){
+                       unset($list[$key]);
+                   }
+               }
+            }
+        }
+        //更新临时数据
+        Cache::set('temp_order_list',$list);
 
     }
     //断开连接
@@ -67,13 +82,32 @@ class OrderMessage extends Server
         $redis = new Redis();
         $buyCount = $redis->Llen('broadcast');
 
+        //获取临时数据
+        $list = Cache::get('temp_order_list');
+        if(empty($list)) $list = [];
+
         $data['data'] = [];
         for ($i=0;$i<=$buyCount-1;$i++){
             $str = $redis->Lindex('broadcast',$i);
 
 //            $id = $redis->rPop('broadcast');
+            $arr = [];
+            $arr = json_decode($str);
+            //当发送次数小于3的时候才会继续发送
+            if(empty($arr['num'])||$arr['num']<3){
+                if(empty($arr['num'])){
+                    $arr['num'] = 1;
+                }else{
+                    $arr['num'] =  $arr['num']+1;
+                }
+                array_push($list,$arr);
+            }
             array_push($data['data'],json_decode($str));
         }
+
+        //存临时数组
+        Cache::get('temp_order_list',$list);
+
         $data['timestamp'] = time();
         $data_json =  json_encode($data,JSON_UNESCAPED_SLASHES);
         return $data_json;
