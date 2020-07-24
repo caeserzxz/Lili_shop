@@ -52,9 +52,8 @@
         <a href="{:url('wxLogin')}" class="loginbutton fs32 fw_b color_w" style="background-color: #61ce74;margin-top: 0.2rem;display: none;">微信登录</a>
         {/if}
         {if condition="settings('app_apk_path')"}
-          <div class="fs30 goregister"><a href="{:url('publics/download/app')}" class="fw_b color_3">立即下载</a></div>
+          <div class="fs30 goregister" style="margin-bottom: .6rem;"><a href="{:url('publics/download/app')}" class="fw_b color_3">立即下载</a></div>
         {/if}
-
         <div class="fs30 goregister">
             {eq name="$register_status" value="1"}
                 <a href="{:url('register')}" class="mr20 color_3">用户注册</a>
