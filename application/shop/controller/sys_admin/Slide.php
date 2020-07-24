@@ -63,11 +63,15 @@ class Slide extends AdminController
 			if(empty($data['ext_id'])) return $this->error('链接类型绑定关联值不可以为空！');
 		}
 		// 榜单只能3张,榜单banner只能1张
-		if ($data['type'] == 5 && $data['status'] == 1) {
-			$count = $this->Model->where(['type' => 5,'status' => 1])->count();
+		if ($data['type'] == 5) {
+			$where_5[] = ['type','=',5];
+			$where_5[] = ['id','<>',$data['id']];
+			$count = $this->Model->where($where_5)->count();
 			if ($count >= 1) return $this->error('榜单banner图最多一张');
-		}elseif ($data['type'] == 6 && $data['status'] == 1) {
-			$count = $this->Model->where(['type' => 6,'status' => 1])->count();
+		}elseif ($data['type'] == 6) {
+			$where_6[] = ['type','=',6];
+			$where_6[] = ['id','<>',$data['id']];
+			$count = $this->Model->where($where_6)->count();
 			if ($count >= 3) return $this->error('榜单图最多三张');
 		}
 		return $data;
