@@ -36,7 +36,7 @@
             <div class="swiper-container swiper1" id="swiper01">
                 <div class="swiper-wrapper">
                     {volist name="slideList" id="slide" }
-                    <a href="{$slide.url}" class="swiper-slide" data-bg_color="{$slide.bg_color}">
+                    <a href="{$slide.url}" class="swiper-slide" data-bg_color="#f5f5f5">
                         <img data-src="{$slide.imgurl}" class="swiper-lazy">
                         <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
                     </a>
@@ -112,8 +112,8 @@
         </div>
         <!-- 附近商家 -->
         <div class="nearShop">
-            <div class="title">附近商家</div>
-            <div class="shop-list" id="tab3">
+            <div class="title" style="line-height:3">附近商家</div>
+            <div class="shop-list" id="tab3" style="margin-top: -0.15rem">
                 <script type="text/html" id="listTpl3">
                     {{each list as item index}}
                     <div class="list-item" onclick="go_detail({{item.business_id}});">
@@ -158,13 +158,13 @@
             debug: false,
             appId: '{$wxShare.appId}',
             timestamp: {$wxShare.timestamp},
-            nonceStr: '{$wxShare.nonceStr}',
-            signature: '{$wxShare.signature}',
-            jsApiList: [
-            // 所有要调用的 API 都要加到这个列表中
-            'getLocation',
-            'scanQRCode',
-        ]
+        nonceStr: '{$wxShare.nonceStr}',
+        signature: '{$wxShare.signature}',
+        jsApiList: [
+        // 所有要调用的 API 都要加到这个列表中
+        'getLocation',
+        'scanQRCode',
+    ]
     });
 
 </script>
@@ -183,25 +183,32 @@
     $(function () {
         //传递商家ID到APP,便于后面做APP语音播报
         if(appType=='Android'){
-            window.auc.getMerchantID(res.business_id);
+            window.auc.getMerchantID("{$business_id}");
         }else if(appType=='IOS'){
-            window.app.getMerchantID(res.business_id);
+            window.app.getMerchantID("{$business_id}");
         }
         if (input_city == '') {
+
             GetLocCallBack("{$city_info.lat}", "{$city_info.lng}");
         }else{
+
             if(is_weixin()){
                 //微信获取
                 getlocation();
             }else{
+
                 if(appType=='Android'){
+
                     window.auc.getTencentLocBySDK();
+
                 }else if(appType=='IOS'){
 
+                }else{
+                    GetLocCallBack(lat, lng)
                 }
             }
 
-            GetLocCallBack(lat, lng);
+
         }
 
         get_recommend_class();
@@ -212,16 +219,18 @@
     });
     //安卓腾讯地图定位的回调
     function GetTencentLocCallBack(lat_z,lng_z,city){
-        var re = '{$region|raw}';
-        var region = JSON.parse(re);
-        city = region[city];
+        // var re = '{$region|raw}';
+        // var region = JSON.parse(re);
+        // city = region[city];;
 
-        if(city==input_city){
+        if(city==input_city&&lat_z!=''&&lng_z!=''){
             $('.addr').html(city);
             input_city = city;
             lat = lat_z;
             lng = lng_z;
         }
+
+        GetLocCallBack(lat, lng)
     }
     var arr = new Object();
     //sdk 回调wxLoginCallback函数
@@ -466,6 +475,7 @@
                                     input_city = city;
                                     lat = latitude;
                                     lng = longitude;
+                                    GetLocCallBack(lat, lng)
                                 }
                             }
                         }

@@ -68,7 +68,7 @@
                         <p class="fs26 color_3">
                             地址：{$info.address}</p>
                     </div>
-                    <div class="weui-cell__ft"><img src="__STATIC__/unique/images/shop_icon_04.png" alt=""></div>
+                    <div class="weui-cell__ft" onclick="go_map();"><img src="__STATIC__/unique/images/shop_icon_04.png" alt=""></div>
                 </div>
             </div>
 
@@ -170,6 +170,11 @@
                     $.toast(res.msg);
                 }
             });
+        }
+
+        function go_map(){
+            var url = "https://map.qq.com/nav/drive#routes/page?eword=晋印小区&epointx=112.838191&epointy=35.491803&noback=&referer=groupActivity_pcmap&ch=mc_h5marker";
+            window.location.href = url;
         }
     </script>
 </body>

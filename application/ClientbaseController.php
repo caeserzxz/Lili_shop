@@ -69,7 +69,7 @@ class ClientbaseController extends BaseController{
                 session('appType','other');
             }
         }
-        $this->assign('appType',$appType);
+        $this->assign('appType',session('appType'));
 
         //$this->is_wx = 1;//本地测试使用
         $userInfo = $this->getLoginInfo();
