@@ -36,7 +36,7 @@
             <div class="swiper-container swiper1" id="swiper01">
                 <div class="swiper-wrapper">
                     {volist name="slideList" id="slide" }
-                    <a href="{$slide.url}" class="swiper-slide" data-bg_color="{$slide.bg_color}">
+                    <a href="{$slide.url}" class="swiper-slide" data-bg_color="#f5f5f5">
                         <img data-src="{$slide.imgurl}" class="swiper-lazy">
                         <div class="swiper-lazy-preloader swiper-lazy-preloader-white"></div>
                     </a>
@@ -112,8 +112,8 @@
         </div>
         <!-- 附近商家 -->
         <div class="nearShop">
-            <div class="title">附近商家</div>
-            <div class="shop-list" id="tab3">
+            <div class="title" style="line-height:3">附近商家</div>
+            <div class="shop-list" id="tab3" style="margin-top: -0.15rem">
                 <script type="text/html" id="listTpl3">
                     {{each list as item index}}
                     <div class="list-item" onclick="go_detail({{item.business_id}});">
