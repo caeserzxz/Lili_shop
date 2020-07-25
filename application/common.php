@@ -878,6 +878,8 @@ function rand_section ($min,$max,$num,$total){
         $total -= $k;
         $data[] = $k;
     }
+
+
     return $data;
 }
 
@@ -904,19 +906,23 @@ function getPack($total,$num,$min)
     return $readPack[array_rand($readPack,1)]['money'];
     return $readPack;
 }
-
+/** 获取区间内随机红包（符合正态分布）
+ * @param $num 红包个数
+ * @param $total 红包金额
+ * @param $min  红包最小值
+ */
 function getRandomMoney($total,$num,$min){
-        if($num==1){
-            $num--;
-            return sprintf("%.2f",($total*100)/100);
-        }
-        $max = sprintf("%.2f",$total/$num*2);
-        $money = sprintf("%.2f",mt_rand($min*100,$max*100)/100);
-        $money = $total <= $min ? 0.01: $money;
+    if($num==1){
         $num--;
-        $total = $total -= $money;
+        return sprintf("%.2f",($total*100)/100);
+    }
+    $max = sprintf("%.2f",$total/$num*2);
+    $money = sprintf("%.2f",mt_rand($min*100,$max*100)/100);
+    $money = $total <= $min ? 0.01: $money;
+    $num--;
+    $total = $total -= $money;
 
-        return $money;
+    return $money;
 
 }
 

@@ -210,7 +210,7 @@ class ClientbaseController extends BaseController{
         #存储商家id
         $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
         if(empty($business)==false&&$business['is_play']==2){
-            $business_id = 0;
+            $business_id = $business['business_id'];
         }else{
             $business_id = 0;
         }

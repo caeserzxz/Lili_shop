@@ -46,9 +46,9 @@
     $(function(){
         var appType = "{$appType}";
         if(appType=='Android'){
-            window.auc.getMerchantID(res.business_id);
+            window.auc.getMerchantID("{$business_id}");
         }else if(appType=='IOS'){
-            window.app.getMerchantID(res.business_id);
+            window.app.getMerchantID("{$business_id}");
         }
     })
     var t = 2;

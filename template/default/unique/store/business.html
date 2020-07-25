@@ -173,9 +173,9 @@
                   //传递商家ID到APP,便于后面做APP语音播报
                   if(res.is_play==2){
                       if(appType=='Android'){
-                          window.auc.getMerchantID(res.business_id);
+                          window.auc.getMerchantID(business_id);
                       }else if(appType=='IOS'){
-                          window.app.getMerchantID(res.business_id);
+                          window.app.getMerchantID(business_id);
                       }
                   }else{
                       if(appType=='Android'){
