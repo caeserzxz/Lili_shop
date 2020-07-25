@@ -115,13 +115,18 @@
             <div class="title" style="line-height:3">附近商家</div>
             <div class="shop-list" id="tab3" style="margin-top: -0.15rem">
                 <script type="text/html" id="listTpl3">
+                    {literal}
                     {{each list as item index}}
                     <div class="list-item" onclick="go_detail({{item.business_id}});">
                         <img class="shop-img" src="{{item.logo}}" alt="" />
                         <div class="shop-info">
                             <div class="shop-name fs28 fw_b col_3">{{item.business_name}}</div>
                             <div class="shop-addr fs23 color_9">{{item.address}}</div>
-                            <div class="shop-label">
+                            {{if item.label_arr == ''}}
+                                <div>
+                            {{else}}
+                                <div class="shop-label">
+                            {{/if}}
                                 {{each item.label_arr as v k}}
                                 <span>{{v}}</span>
                                 {{/each}}
@@ -132,15 +137,16 @@
                         </div>
                         <div class="shop-distance">
                             <div class="text_c color_9">{{item.distance}}</div>
-                            {literal}
+
                             {{if item.gift_id > 0}}
                             <div>
                                 <img class="red-env" src="__STATIC__/unique/images/red_env.png" alt="">
                             </div>
                             {{/if}}
-                            {/literal}
+
                         </div>
                     </div>
+                    {/literal}
                     {{/each}}
                 </script>
             </div>
@@ -158,12 +164,12 @@
             debug: false,
             appId: '{$wxShare.appId}',
             timestamp: {$wxShare.timestamp},
-        nonceStr: '{$wxShare.nonceStr}',
-        signature: '{$wxShare.signature}',
-        jsApiList: [
-        // 所有要调用的 API 都要加到这个列表中
-        'getLocation',
-        'scanQRCode',
+            nonceStr: '{$wxShare.nonceStr}',
+            signature: '{$wxShare.signature}',
+            jsApiList: [
+            // 所有要调用的 API 都要加到这个列表中
+            'getLocation',
+            'scanQRCode',
     ]
     });
 

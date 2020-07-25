@@ -132,7 +132,6 @@ class Index extends ClientbaseController{
         $profits = unserialize(settings('profits'))[$info['profits']]['hearten'];
         #是否有红包活动
         $info['gift_id'] = $BusinessGiftModel->where(['business_id'=>$info['business_id'],'status'=>0])->value('id');
-
         $this->assign('profits',$profits);
         $this->assign('label',$label);
         $this->assign('imgs_list',$imgs_list);

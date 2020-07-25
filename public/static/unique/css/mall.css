@@ -765,6 +765,7 @@
   -webkit-justify-content: space-between;
           justify-content: space-between;
   background-color: #fff;
+  min-height: calc(100vh - 1.386666rem);
 }
 
 .youLike .list a {
