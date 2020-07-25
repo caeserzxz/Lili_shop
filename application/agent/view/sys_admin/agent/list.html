@@ -4,6 +4,7 @@
 <tr>
 	<th width="80">ID</th>
     <th >代理名称</th>
+    <th width="160">邀请码</th>
     <th width="160">创建时间</th>
     <th width="60">状态</th>
     <th width="160">是否审核</th>
@@ -16,6 +17,7 @@
 <tr>
 	<td>{$vo.agent_id}</td>
     <td>{$vo.agent_user_name}</td>
+    <td>{$vo.token}</td>
     <td>{$vo.add_time|dateTpl}</td>
    <td><a href="#"  class="{$vo.is_ben|tplckval='=1','active'}" data-remote="{:url('ajaxEdit',array('supplyer_id'=>$vo['supplyer_id'],'field'=>'is_ben'))}" data-ajax="true" data-toggle="class"><i class="fa fa-check text-success text"></i><i class="fa fa-times text-danger text-active"></i></a></td>
     <td>{$vo['status'] == 0 ? "未审核":$vo['status'] == 1 ? "已审核":"审核不通过"}</td>
