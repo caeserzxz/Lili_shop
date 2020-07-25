@@ -192,9 +192,6 @@ class Goods extends AdminController
             $this->assign('limit_user_level', explode(',', $data['limit_user_level']));
             $this->assign('limit_user_role', explode(',', $data['limit_user_role']));
             $goodsLog = (new GoodsLogModel)->where('goods_id', $data['goods_id'])->order('log_id DESC')->select()->toArray();
-
-            $this->assign('tagList',(new \app\shop\model\GoodsTagModel)->getAll());//获取商品标签
-
             $this->assign("goodsLog", $goodsLog);
         } else {
             $imgWhere[] = ['goods_id', '=', 0];
@@ -205,14 +202,13 @@ class Goods extends AdminController
             } else {
                 $imgWhere[] = ['admin_id', '=', AUID];
             }
-
         }
         $sku_imgs = $this->Model->getImgsListAdmin($imgWhere, true);
         foreach ($sku_imgs as $arr) {
             $products[$arr['sku_val']]['ProductImgId'] = $arr['img_id'];
             $products[$arr['sku_val']]['ProductImg'] = $arr['goods_img'];
         }
-
+        $this->assign('tagList',(new \app\shop\model\GoodsTagModel)->getAll());//获取商品标签
         $this->assign('goods_imgs', $this->Model->getImgsListAdmin($imgWhere));
         $this->assign('specifications', json_encode($specifications));
         $this->assign('products', json_encode($products));
