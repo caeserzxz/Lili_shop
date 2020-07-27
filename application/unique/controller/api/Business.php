@@ -366,6 +366,9 @@ class Business extends ApiController
         $business = $UserBusinessModel->where(['user_id'=>$this->userInfo['user_id'],'status'=>1])->find();
         if(empty($business))  return $this->ajaxReturn(['code' => 0,'msg' => '商家信息出错']);
 
+        #请输入正确的红包总额与数量
+        if(($data['gift_money']/$data['gift_num'])<0.01) return $this->ajaxReturn(['code' => 0,'msg' => '请输入正确的红包总额与数量']);
+
         #红包活动只能同时进行一个
         $where['business_id'] = $business['business_id'];
         $where['status'] = 0;

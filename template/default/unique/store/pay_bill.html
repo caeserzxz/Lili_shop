@@ -98,7 +98,7 @@
             <div class="inputBlock">
                 <div class="tips fs26 fw_b color_3">消费金额</div>
                 <span class="fs52 fw_b color_9" style="display: inline-block;">￥</span>
-                <input type="number" id="money" class="fs60 num textBox" placeholder="请输入金额">
+                <input type="number" id="money" class="fs60 num textBox" oninput="count_money()" placeholder="请输入金额">
             </div>
             <div class="paytype">
                 <div class="title fw_b">支付方式</div>
@@ -332,9 +332,13 @@
                     console.log(res)
                     if (res.used.length > 0) {
                         $('#tab1').html(template('listTpl1',res));
+                    }else{
+                        $('#tab1').html(template('listTpl1',''));
                     }
-                    if (res.used.length > 0) {
+                    if (res.not_used.length > 0) {
                         $('#tab2').html(template('listTpl2',res));
+                    }else{
+                        $('#tab2').html(template('listTpl2',''));
                     }
                     if(res.used_num>0){
                         $('.used_num').show();
@@ -342,16 +346,15 @@
                         $('#used_num').html('可使用('+res.used_num+')');
                     }else{
                         $('.used_num').hide();
-                        $('.used_num').hide();
                         $('#used_num').html('可使用(0)');
                     }
+
                     if(res.not_used_num>0){
                         $('.not_used_num').show();
                         $('.not_have').hide();
                         $('#not_used_num').html('不可使用('+res.not_used_num+')');
                     }else{
                         $('.not_used_num').hide();
-                        $('.not_have').hide();
                         $('#not_used_num').html('不可使用(0)');
                     }
                     if(res.used_num==0&&res.not_used_num==0){
@@ -453,6 +456,7 @@
         $("input[name=checkbox]").change(function(){
             count_money();
         })
+
         function count_money(){
             var money = $('#money').val();
             var actual_money = money;
