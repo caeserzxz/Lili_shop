@@ -37,7 +37,7 @@
             <div class="cell_hd"><img src="__STATIC__/unique/images/icon_add.png" alt=""></div>
             <div class="cell_bd"><span class="fs30 color_r">添加收款账户</span></div>
         </a>
-        {if condition="$sms_fun['withdraw_account']==1"}
+        {if condition="$sms_fun['withdraw']==1"}
         <div class="cell">
             <div class="cell_hd">
                 <span class="label fs28 fw_b color_3">验证码</span>
@@ -251,6 +251,7 @@ $(function() {
             success: function (res) {
                 isPost = false;
                 if (res.code == 0){
+                    _alert(res.msg);
                     return false;
                 }
                 window.location.href = '{:url("withdrawsuccess")}';
