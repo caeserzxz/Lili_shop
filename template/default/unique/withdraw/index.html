@@ -236,6 +236,9 @@ $(function() {
 			return false;
 		}
 
+        {if condition="$sms_fun['withdraw']==1"}
+        fd.append("code", $('#code').val());
+        {/if}
         fd.append("account_id", arr.account_id);
         fd.append("amount", arr.amount);
         fd.append("type", '{$type}');
