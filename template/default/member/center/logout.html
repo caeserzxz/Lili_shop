@@ -45,11 +45,14 @@
 <script>
     $(function(){
         var appType = "{$appType}";
+
         if(appType=='Android'){
-            window.auc.getMerchantID("{$business_id}");
+            window.auc.getMerchantID(0);
         }else if(appType=='IOS'){
-            window.app.getMerchantID("{$business_id}");
+            window.app.getMerchantID(0);
         }
+
+
     })
     var t = 2;
     var _time = document.getElementsByClassName("second")[0];
