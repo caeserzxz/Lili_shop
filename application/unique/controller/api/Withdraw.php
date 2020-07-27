@@ -294,7 +294,7 @@ class Withdraw extends ApiController
     /*------------------------------------------------------ */
     public function postWithdraw()
     {
-        $this->checkCode('withdraw_account',$this->userInfo['user_id'],input('code'));//验证短信验证
+        $this->checkCode('withdraw',$this->userInfo['user_id'],input('code'));//验证短信验证
     	$settings = settings();
 		$withdraw_status = settings('withdraw_status');
 		if ($withdraw_status < 1){
