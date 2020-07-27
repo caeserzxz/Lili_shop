@@ -1,112 +1,112 @@
 {extend name="layouts@base_unique" /}
 {block name="main" }
 <link rel="stylesheet" href="__STATIC__/unique/css/busIde.css">
-  <div class="page">
-    <div class="page-hd">
-      <div class="header bor-1px-b">
-        <div class="header-left">
-          <a href="javascript:history.go(-1)" class="left-arrow"></a>
-        </div>
-        <div class="header-title">商家店铺</div>
-        <div class="header-right">
-          <a href=''></a>
-        </div>
+<div class="page">
+  <div class="page-hd">
+    <div class="header bor-1px-b">
+      <div class="header-left">
+        <a href="javascript:history.go(-1)" class="left-arrow"></a>
+      </div>
+      <div class="header-title">商家店铺</div>
+      <div class="header-right">
+        <a href=''></a>
       </div>
     </div>
-    <div class="page-bd">
-      <div class="top">
-        <div class="user">
-          <div class="user-info">
-            <div class="head-img">
-              {if condition="$business.logo eq ''"}
-                <img src="__STATIC__/unique/images/myIcon19.png" alt="">
-              {else /}
-                <img src="{$business.logo}" alt="">
-              {/if}
-
-            </div>
-            <div class="info">
-              <div class="nickname fs32 fw_b">
-                <span>{$business.business_name}</span>
-                <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
-              </div>
-              <div class="address mt10">{$address}</div>
-            </div>
-          </div>
-        </div>
-
-        <div class="feature-flex">
-          <div class="flex-item">
-            <a href="{:url('myqrcode')}"><img class="icon-img" src="__STATIC__/unique/images/mer_icon01.png" alt=""></a>
-            <p>收款码</p>
-          </div>
-          <div class="flex-item" onclick="saoyisao();">
-            <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
-            <p>扫一扫</p>
-          </div>
-          <div class="flex-item" onclick="go_my_team();">
-            <img class="icon-img" src="__STATIC__/unique/images/mer_icon03.png" alt="">
-            <p>我的会员</p>
-          </div>
-        </div>
-      </div>
-
-      <div class="money num">
-        <div class="money-info">
-          <div class="money-month">
-            <div class="fs48">{$sales_count.this_month_count}</div>
-            <div class="fs26 opacity08">本月业绩（元）</div>
-          </div>
-          <div class="money-day">
-            <div class="fs48">{$sales_count.today_count}</div>
-            <div class="fs26 opacity08">今日业绩（元）</div>
-          </div>
-        </div>
-        <div class="mt60">
-          <span class="opacity08">数据更新于:<?php echo date('Y-m-d H:i:s',$sales_count['count_time'])?></span>
-          <span class="more" onclick="go_sales();">查看更多></span>
-        </div>
-      </div>
-
-      <div class="flex-grids">
-        <div class="grids-item" onclick="go_sales();">
-          <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
-          <p class="fs28 color_3 mt20">我的业绩</p>
-        </div>
-        <div class="grids-item" onclick="go_mylog();">
-          <img class="icon" src="__STATIC__/unique/images/mer_icon05.png" alt="">
-          <p class="fs28 color_3 mt20">跨界奖金</p>
-        </div>
-        <div class="grids-item" onclick="go_gift();">
-          <img class="icon" src="__STATIC__/unique/images/mer_icon06.png" alt="">
-          <p class="fs28 color_3 mt20">红包营销</p>
-        </div>
-        <div class="grids-item" onclick="go_order_money();">
-          <img class="icon" src="__STATIC__/unique/images/mer_icon07.png" alt="">
-          <p class="fs28 color_3 mt20">我的货款</p>
-        </div>
-      </div>
-
-      <div class="cells">
-        <div class="cell">
-          <div class="cell_bd">
-            <span class="fs28 fw_b color_3">APP语音播报开关</span></div>
-          <div class="cell_ft">
-            {if condition="$business.is_play eq 1"}
-              <input type="checkbox" name="is_play" id="male" value="2" class="chooseBtn" />
-            {else /}
-              <input type="checkbox" name="is_play" id="male" value="1" checked class="chooseBtn" />
-            {/if}
-            <label for="male" class="choose-label"></label>
-          </div>
-        </div>
-      </div>
-      <input type="hidden" id="business_id" value="{$business.business_id}">
-    </div>
-
-
-
   </div>
+  <div class="page-bd">
+    <div class="top">
+      <div class="user">
+        <div class="user-info">
+          <div class="head-img">
+            {if condition="$business.logo eq ''"}
+            <img src="__STATIC__/unique/images/myIcon19.png" alt="">
+            {else /}
+            <img src="{$business.logo}" alt="">
+            {/if}
+
+          </div>
+          <div class="info">
+            <div class="nickname fs32 fw_b">
+              <span>{$business.business_name}</span>
+              <a href="{:url('business_set')}" class="fs24 color_w opacity08">设置<span class="arrow-r"></span></a>
+            </div>
+            <div class="address mt10">{$address}</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="feature-flex">
+        <div class="flex-item">
+          <a href="{:url('myqrcode')}"><img class="icon-img" src="__STATIC__/unique/images/mer_icon01.png" alt=""></a>
+          <p>收款码</p>
+        </div>
+        <div class="flex-item" onclick="saoyisao();">
+          <img class="icon-img" src="__STATIC__/unique/images/mer_icon02.png" alt="">
+          <p>扫一扫</p>
+        </div>
+        <div class="flex-item" onclick="go_my_team();">
+          <img class="icon-img" src="__STATIC__/unique/images/mer_icon03.png" alt="">
+          <p>我的会员</p>
+        </div>
+      </div>
+    </div>
+
+    <div class="money num">
+      <div class="money-info">
+        <div class="money-month">
+          <div class="fs48">{$sales_count.this_month_count}</div>
+          <div class="fs26 opacity08">本月业绩（元）</div>
+        </div>
+        <div class="money-day">
+          <div class="fs48">{$sales_count.today_count}</div>
+          <div class="fs26 opacity08">今日业绩（元）</div>
+        </div>
+      </div>
+      <div class="mt60">
+        <span class="opacity08">数据更新于:<?php echo date('Y-m-d H:i:s',$sales_count['count_time'])?></span>
+        <span class="more" onclick="go_sales();">查看更多></span>
+      </div>
+    </div>
+
+    <div class="flex-grids">
+      <div class="grids-item" onclick="go_sales();">
+        <img class="icon" src="__STATIC__/unique/images/mer_icon04.png" alt="">
+        <p class="fs28 color_3 mt20">我的业绩</p>
+      </div>
+      <div class="grids-item" onclick="go_mylog();">
+        <img class="icon" src="__STATIC__/unique/images/mer_icon05.png" alt="">
+        <p class="fs28 color_3 mt20">跨界奖金</p>
+      </div>
+      <div class="grids-item" onclick="go_gift();">
+        <img class="icon" src="__STATIC__/unique/images/mer_icon06.png" alt="">
+        <p class="fs28 color_3 mt20">红包营销</p>
+      </div>
+      <div class="grids-item" onclick="go_order_money();">
+        <img class="icon" src="__STATIC__/unique/images/mer_icon07.png" alt="">
+        <p class="fs28 color_3 mt20">我的货款</p>
+      </div>
+    </div>
+
+    <div class="cells">
+      <div class="cell">
+        <div class="cell_bd">
+          <span class="fs28 fw_b color_3">APP语音播报开关</span></div>
+        <div class="cell_ft">
+          {if condition="$business.is_play eq 1"}
+          <input type="checkbox" name="is_play" id="male" value="2" class="chooseBtn" />
+          {else /}
+          <input type="checkbox" name="is_play" id="male" value="1" checked class="chooseBtn" />
+          {/if}
+          <label for="male" class="choose-label"></label>
+        </div>
+      </div>
+    </div>
+    <input type="hidden" id="business_id" value="{$business.business_id}">
+  </div>
+
+
+
+</div>
 
 
 {/block}
@@ -116,9 +116,9 @@
 <script src="http://res.wx.qq.com/open/js/jweixin-1.0.0.js"></script>
 <script type="text/javascript">
     wx.config({
-        debug: false,
-        appId: '{$wxShare.appId}',
-        timestamp: {$wxShare.timestamp},
+            debug: false,
+            appId: '{$wxShare.appId}',
+            timestamp: {$wxShare.timestamp},
         nonceStr: '{$wxShare.nonceStr}',
         signature: '{$wxShare.signature}',
         jsApiList: [
@@ -135,61 +135,63 @@
         FastClick.attach(document.body);
     });
 </script>
-  <script>
-      var  isPost = false;
-      var appType = "{$appType}";
+<script>
+    var  isPost = false;
+    var appType = "{$appType}";
     $(function () {
-      $("#city-picker").cityPicker({
-        title: "请选择省市区"
-      });
+        $("#city-picker").cityPicker({
+            title: "请选择省市区"
+        });
     })
     $(function () {
-      $('.showmodal').on('click', function () {
-        $('.modal-proxy').show()
-      })
-      $('.footer-btn').on('click', function () {
-        $('.modal-proxy').hide()
-        $('.modal-proxy-main input[type=radio]').each(function () {
-          if ($(this).prop('checked')) {
-            // 执行操作逻辑
-          }
+        $('.showmodal').on('click', function () {
+            $('.modal-proxy').show()
         })
-      })
+        $('.footer-btn').on('click', function () {
+            $('.modal-proxy').hide()
+            $('.modal-proxy-main input[type=radio]').each(function () {
+                if ($(this).prop('checked')) {
+                    // 执行操作逻辑
+                }
+            })
+        })
         if (isPost == true) return false;
         isPost = true;
-      $('.chooseBtn').on('change',function(){
-         var business_id = $('#business_id').val();
-          $.ajax({
-              'url':'{:url("unique/api.business/play_voice")}',
-              'type':'post',
-              'data':{'business_id':business_id},
-              'dataType':'json',
-              'success':function(res){
-                  isPost = false;
-                  if(res.code){
-                      $.toast(res.msg,'text');
-                      return false;
-                  }
-                  //传递商家ID到APP,便于后面做APP语音播报
-                  if(res.is_play==2){
-                      if(appType=='Android'){
-                          window.auc.getMerchantID(business_id);
-                      }else if(appType=='IOS'){
-                          window.app.getMerchantID(business_id);
-                      }
-                  }else{
-                      if(appType=='Android'){
-                          window.auc.getMerchantID(0);
-                      }else if(appType=='IOS'){
-                          window.app.getMerchantID(0);
-                      }
-                  }
+        $('.chooseBtn').on('change',function(){
+            var business_id = $('#business_id').val();
+            $.ajax({
+                'url':'{:url("unique/api.business/play_voice")}',
+                'type':'post',
+                'data':{'business_id':business_id},
+                'dataType':'json',
+                'success':function(res){
 
-                  $.toast(res.msg,'text');
-                  return false;
-              }
-          });
-      })
+                    isPost = false;
+                    if(res.code){
+                        $.toast(res.msg,'text');
+                    }
+                    //传递商家ID到APP,便于后面做APP语音播报
+                    if(res.is_play==2){
+                        alert(business_id)
+                        if(appType=='Android'){
+                            window.auc.getMerchantID(business_id);
+                        }else if(appType=='IOS'){
+                            window.app.getMerchantID(business_id);
+                        }
+                    }else{
+
+                        if(appType=='Android'){
+                            window.auc.getMerchantID(0);
+                        }else if(appType=='IOS'){
+                            window.app.getMerchantID(0);
+                        }
+                    }
+
+                    $.toast(res.msg,'text');
+                    return false;
+                }
+            });
+        })
     })
 
 
@@ -214,50 +216,50 @@
         window.location.href = "{:url('unique/store/my_team')}";
     }
     //扫一扫
-      function saoyisao(){
-          console.log('---');
-          if(is_weixin()){
-              wx.ready(function () {
-                  wx.scanQRCode({
-                      needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
-                      scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
-                      success: function (res) {
-                          var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
-                      }
-                  });
+    function saoyisao(){
+        console.log('---');
+        if(is_weixin()){
+            wx.ready(function () {
+                wx.scanQRCode({
+                    needResult: 0, // 默认为0，扫描结果由微信处理，1则直接返回扫描结果，
+                    scanType: ["qrCode","barCode"], // 可以指定扫二维码还是一维码，默认二者都有
+                    success: function (res) {
+                        var result = res.resultStr; // 当needResult 为 1 时，扫码返回的结果
+                    }
+                });
 
-              })
-          }else{
-              var apptype = "{$appType}";
-              if(apptype=='Android'){
-                  window.auc.Scavenging();
+            })
+        }else{
+            var apptype = "{$appType}";
+            if(apptype=='Android'){
+                window.auc.Scavenging();
 
-              } else if(apptype=='IOS') {
-                  window.app.Scavenging();
-              }
-              window.qr_text = function (code) {
-                  if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
-                      $.alert("扫码失败！");
-                      return;
-                  } else {
-                      window.location.href = code;
-                  }
-              }
-          }
+            } else if(apptype=='IOS') {
+                window.app.Scavenging();
+            }
+            window.qr_text = function (code) {
+                if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
+                    $.alert("扫码失败！");
+                    return;
+                } else {
+                    window.location.href = code;
+                }
+            }
+        }
 
-      }
-      //判断是否在微信浏览器内
-      function is_weixin(){
-          var ua = window.navigator.userAgent;
-          //判断是不是微信
-          if ( ua.indexOf("MicroMessenger") > 0 ) {
-              return true;
-          }else{
-              return false;
-          }
+    }
+    //判断是否在微信浏览器内
+    function is_weixin(){
+        var ua = window.navigator.userAgent;
+        //判断是不是微信
+        if ( ua.indexOf("MicroMessenger") > 0 ) {
+            return true;
+        }else{
+            return false;
+        }
 
-      }
-  </script>
+    }
+</script>
 </body>
 
 </html>
