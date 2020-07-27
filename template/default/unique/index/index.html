@@ -403,40 +403,16 @@
             var apptype = "{$appType}";
             if(apptype=='Android'){
                 window.auc.Scavenging();
-                //sdk 回调qr_text函数
-                window.qr_text = function (code) {
-                    window.location.href = code;
-                }
-                function user_sao(){
-                    init_ISO();
-                    if(navigator.userAgent.match(/(Android)/i)){
-                        window.auc.Scavenging();
-                    }
-                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
-                        window.app.Scavenging();
-                    }
-                    // window.app.Scavenging();
-                }
 
-            } else {
-                user_sao();
-                function user_sao(){
-                    init_ISO();
-                    if(navigator.userAgent.match(/(Android)/i)){
-                        window.auc.Scavenging();
-                    }
-                    if(navigator.userAgent.match(/(iPhone|iPod|ios)/i)){
-                        window.app.Scavenging();
-                    }
-                    // window.app.Scavenging();
-                }
-                window.qr_text = function (code) {
-                    if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
-                        $.alert("扫码失败！");
-                        return;
-                    } else {
-                        window.location.href = code;
-                    }
+            } else if(apptype=='IOS') {
+                window.app.Scavenging();
+            }
+            window.qr_text = function (code) {
+                if (code == '' || code == 'null' || code == null || code == undefined || code == 'undefined') {
+                    $.alert("扫码失败！");
+                    return;
+                } else {
+                    window.location.href = code;
                 }
             }
         }
