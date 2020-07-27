@@ -10,6 +10,7 @@ use app\store\model\UserBusinessModel;
 use app\agent\model\AgentModel;
 use app\unique\model\PayLogModel;
 use app\unique\model\RedbagModel;
+use think\cache\driver\Redis;
 
 /*------------------------------------------------------ */
 //-- 付款记录
@@ -146,6 +147,16 @@ class PayRecordModel extends BaseModel
         }
         $orderInfo = $this->find($upData['log_id'])->toArray();
         $this->_log($orderInfo,$_log);
+
+        //将商家存入radis队列
+        $redis = new Redis();
+        $orderInfo = $this->where('log_id',$upData['log_id'])->find();
+        $order_amount  = settings('shop_title').'到账'.$orderInfo['amount'].'元';
+        $str_arr = ['log_id'=>$orderInfo['log_id'],'business_id'=>$orderInfo['business_id'],'order_amount'=>$order_amount];
+        $str = json_encode($str_arr);
+        #将抢购id存入队列
+        $res = $redis->rPush('broadcast',$str);
+
         asynRun('unique/PayRecordModel/asynRunPaySuccessEval',['log_id'=>$upData['log_id']]);//异步执行
         return true;
     }
