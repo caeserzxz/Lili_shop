@@ -11,11 +11,14 @@ class OrderMessage extends Server
     protected $host = '0.0.0.0';
     protected $port = 8787;
     protected $connection;
+    protected $max_num;
+
     public function __construct()
     {
         $this->option = [
             'count'		=> 1,
             'name'		=> 'OrderMessage'];
+        $this->max_num = 4;
         parent::__construct();
     }
     // 启动执行
@@ -40,13 +43,6 @@ class OrderMessage extends Server
         if(!$_data) {
             return ;
         }
-        // 根据类型执行不同的业务
-        switch($_data['type']) {
-            // 登录
-            case 'login':
-                $data = $this->getBroadcast();
-            // $connection->send($data);
-        }
 
 
         if(empty($_data['type'])){
@@ -58,12 +54,21 @@ class OrderMessage extends Server
             foreach ($_data['data'] as $k=>$v){
                 foreach ($list as $key=>$value){
                     if($v['log_id']==$value['log_id']){
-                        $list[$k]['num'] = 4;
+                        $list[$key]['num'] =  $this->max_num;
                     }
                 }
             }
             //更新临时数据
             Cache::set('temp_order_list',$list);
+
+        }else{
+            // 根据类型执行不同的业务
+            switch($_data['type']) {
+                // 登录
+                case 'login':
+                    $data = $this->getBroadcast();
+                // $connection->send($data);
+            }
 
         }
 
@@ -108,36 +113,32 @@ class OrderMessage extends Server
                 continue;
             }
 
-            if(empty($arr['num'])){
-                $arr['num'] =1;
-            }else{
-                $arr['num'] = $arr['num']+1;
+            $temp_arr = [];
+            $temp_key = '';
+            foreach ($list as $k=>$v){
+                if($arr['log_id']==$v['log_id']){
+                    $temp_arr = $v;
+                    $temp_key = $k;
+                    break;
+                }
             }
 
-            //如果当前播报次数超过限制则不再播报
-            if($arr['num']>=4){
-                //删除在临时数组中的数据
-                foreach ($list as $key=>$value){
-                    if($value['log_id']==$arr['log_id']){
-                        unset($list[$key]);
-                    }
+            if(empty($temp_arr)==false){
+                if($temp_arr['num']< $this->max_num){
+                    //增加到广播的数组中
+                    array_push($data['data'],$arr);
+                    //广播次数+1
+                    $temp_arr['num'] = $temp_arr['num']+1;
+                    //更新临时数组的数据
+                    $list[$temp_key] = $temp_arr;
+                }else{
+                    //删除在临时数组中的数据
+                    unset($list[$temp_key]);
                 }
             }else{
-                //增加到广播的数组中
-                array_push($data['data'],$arr);
-
-                //更新临时数组中的次数 如果存在就更新  不存在就新增
-                $is_update = 1;
-                foreach ($list as $k=>$v){
-                    if($arr['log_id']==$v['log_id']){
-                        $list[$k] = $arr;
-                        $is_update = 2;
-                        break;
-                    }
-                }
-                if($is_update==1){
-                    array_push($list,$arr);
-                }
+                //存入临时数组
+                $arr['num'] = 1;
+                array_push($list,$arr);
             }
 
         }
