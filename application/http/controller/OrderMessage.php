@@ -58,7 +58,7 @@ class OrderMessage extends Server
             foreach ($_data['data'] as $k=>$v){
                 foreach ($list as $key=>$value){
                     if($v['log_id']==$value['log_id']){
-                        $list[$k]['num'] = $list[$k]['num']+1;
+                        $list[$k]['num'] = 4;
                     }
                 }
             }
